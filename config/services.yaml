@@ -6,6 +6,7 @@
 parameters:
     categories_directory: '%kernel.project_dir%/public/categories'
     etablissement_directory: '%kernel.project_dir%/public/etablissement'
+    uploads_directory: '%kernel.project_dir%/public/uploads'
 
 
 services:
