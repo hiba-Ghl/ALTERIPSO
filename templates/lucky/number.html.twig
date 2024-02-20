@@ -1,0 +1,11 @@
+{# templates/lucky/number.html.twig #}
+
+{#% extends 'login.html.twig' %#}
+{% block body %}
+<h1>Your lucky number is {{ number }}</h1>
+<div class="mb-3">
+    You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+    You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+    {{dump(app.user)}}
+</div>
+{% endblock %}

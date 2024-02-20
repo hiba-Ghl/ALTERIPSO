@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="icon" type="image/x-icon" href="{{ asset('images/ler.png') }}">
+		<title>ALTER
+		</title>
+		<link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
+		<link href="{{ asset('css/style.css') }}" rel="stylesheet">
+
+
+		<link href="{{ asset('css/jquery.m.toast.css') }}" rel="stylesheet">
+		<script src="{{asset('javascript/jquery.min.js')}}"></script>
+
+
+		<script src="{{ asset('javascript/bootstrap.min.js') }}"></script>
+		<script src="{{ asset('javascript/metisMenu.min.js') }}"></script>
+		<script src="{{ asset('javascript/jquery.dataTables.min.js') }}"></script>
+		<script src="{{ asset('javascript/jquery.m.toast.js') }}"></script>
+
+	</head>
+	<body>
+
+
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid">
+
+				<div class="navbar-header" style="line-height: 4; margin-right: 15px;">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+
+				</div>
+
+
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li>
+							<a href="{{ path('home')}}">
+								<i class="glyphicon glyphicon-home "></i>
+								ACCUEIL</a>
+						</li>
+
+
+						<li class="dropdown TELEVISION">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+								<i class="glyphicon glyphicon-blackboard "></i>
+								TÉLÉVISION
+								<span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+
+								<li>
+									<a href="{{ path('home')}}">
+										<i class="glyphicon glyphicon-blackboard "></i>
+										TÉLÉVISION
+									</a>
+								</li>
+
+								<li>
+									<a href="{{path('home')}}">
+										<i class="glyphicon glyphicon-list "></i>
+										Liste TÉLÉVISION</a>
+								</li>
+
+								<li class="STATISTIQUECHAINETV">
+									<a href="{{path('home')}}">
+										<i class="glyphicon glyphicon-stats"></i>
+										STATISTIQUE UTILISATION CHAINE TV</a>
+								</li>
+
+
+							</ul>
+						</li>
+
+
+						<li class="dropdown RADIO">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+								<i class="glyphicon glyphicon-equalizer "></i>
+								RADIO
+								<span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+
+								<li>
+									<a href="{{ path('home')}}">
+										<i class="glyphicon glyphicon-equalizer "></i>
+										RADIO
+									</a>
+								</li>
+
+
+								<li>
+									<a href="{{ path('home')}}">
+										<i class="glyphicon glyphicon-folder-open "></i>
+										Catégorie RADIO
+									</a>
+								</li>
+
+
+								<li>
+									<a href="{{path('home')}}">
+										<i class="glyphicon glyphicon-list "></i>
+										Liste RADIO</a>
+								</li>
+
+
+							</ul>
+						</li>
+
+
+						<li class="dropdown SERVICE">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+								<i class="glyphicon glyphicon-bell "></i>
+								SERVICE
+								<span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+
+								<li>
+									<a href="{{ path('home')}}">
+										<i class="glyphicon glyphicon-bell "></i>
+										SERVICE
+									</a>
+								</li>
+
+
+								<li>
+									<a href="{{path('home')}}">
+										<i class="glyphicon glyphicon-list "></i>
+										Liste SERVICE</a>
+								</li>
+
+
+							</ul>
+						</li>
+
+
+						<li class="dropdown VOD">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+								<i class="glyphicon glyphicon-facetime-video "></i>
+								VOD
+								<span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+
+								<li>
+									<a href="{{ path('home')}}">
+										<i class="glyphicon glyphicon-facetime-video "></i>
+										VOD
+									</a>
+								</li>
+
+
+								<li>
+									<a href="{{ path('home')}}">
+										<i class="glyphicon glyphicon-folder-open "></i>
+										Catégorie VOD
+									</a>
+								</li>
+
+
+								<li>
+									<a href="{{path('home')}}">
+										<i class="glyphicon glyphicon-list "></i>
+										Liste VOD</a>
+								</li>
+
+							</ul>
+						</li>
+
+
+						<li class="dropdown MUSIQUE">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+								<i class="glyphicon glyphicon-music "></i>
+								MUSIQUE
+								<span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+
+								<li>
+									<a href="{{ path('home')}}">
+										<i class="glyphicon glyphicon-music "></i>
+										MUSIQUE
+									</a>
+								</li>
+								<li>
+									<a href="{{path('home')}}">
+										<i class="glyphicon glyphicon-list "></i>
+										Liste MUSIQUE
+									</a>
+								</li>
+
+							</ul>
+						</li>
+
+
+						<li class="dropdown LIVREAUDIO">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+								<i class="glyphicon glyphicon-book "></i>
+								Livre audio
+								<span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+
+								<li>
+									<a href="{{ path('home')}}">
+										<i class="glyphicon glyphicon-equalizer "></i>
+										Livre audio
+									</a>
+								</li>
+
+
+								<li>
+									<a href="{{ path('home')}}">
+										<i class="glyphicon glyphicon-folder-open "></i>
+										Catégorie Livre audio
+									</a>
+								</li>
+
+
+								<li>
+									<a href="{{path('home')}}">
+										<i class="glyphicon glyphicon-list "></i>
+										Liste Livre audio</a>
+								</li>
+
+							</ul>
+						</li>
+
+						<!--
+												<li class="dropdown VIDEOS">
+													<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+														<i class="glyphicon glyphicon-facetime-video"></i>
+														Vidéo
+														<span class="caret"></span>
+													</a>
+													<ul class="dropdown-menu">
+						
+														<li>
+															<a href="{{ path('home')}}">
+																<i class="glyphicon glyphicon-equalizer "></i>
+																Vidéo
+															</a>
+														</li>
+						
+						
+														<li>
+															<a href="{{path('home')}}">
+																<i class="glyphicon glyphicon-list "></i>
+																Liste Vidéo</a>
+														</li>
+						
+													</ul>
+												</li>
+						
+						
+												<li class="dropdown JEUX">
+													<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+														<i class="glyphicon glyphicon-knight "></i>
+														JEUX
+														<span class="caret"></span>
+													</a>
+													<ul class="dropdown-menu">
+						
+														<li>
+															<a href="{{ path('home')}}">
+																<i class="glyphicon glyphicon-knight "></i>
+																JEUX
+															</a>
+														</li>
+						
+						
+														<li>
+															<a href="{{path('home')}}">
+																<i class="glyphicon glyphicon-phone "></i>
+																Liste JEUX
+															</a>
+														</li>
+						
+						
+													</ul>
+												</li>
+						
+						
+												<li class="dropdown SERVICESPAYANTS">
+													<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+														<i class="glyphicon glyphicon-euro"></i>
+														Services Payants
+														<span class="caret"></span>
+													</a>
+													<ul class="dropdown-menu">
+						
+						
+														<li>
+															<a href="{{ path('home')}}">
+																<i class="glyphicon glyphicon-knight "></i>
+																Services Payants
+															</a>
+						
+														</li>
+						
+						
+														<li>
+															<a href="{{path('home')}}">
+																<i class="glyphicon glyphicon-phone "></i>
+																Modifier PDF
+															</a>
+														</li>
+						
+													</ul>
+												</li>
+						
+						
+												<li class="dropdown CHARTES">
+													<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+														<i class="glyphicon glyphicon-file "></i>
+														Charte Patient
+														<span class="caret"></span>
+													</a>
+													<ul class="dropdown-menu">
+						
+														<li>
+															<a href="{{ path('home')}}">
+																<i class="glyphicon glyphicon-file "></i>
+																Charte Patient
+															</a>
+														</li>
+						
+						
+														<li>
+															<a href="{{path('home')}}">
+																<i class="glyphicon glyphicon-phone "></i>
+																Modifier PDF
+															</a>
+														</li>
+						
+													</ul>
+												</li>
+						
+						
+												<li class="dropdown QUESTIONNAIRE">
+													<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+														<i class="glyphicon glyphicon-pencil "></i>
+														QUESTIONNAIRE
+														<span class="caret"></span>
+													</a>
+													<ul class="dropdown-menu">
+						
+														<li>
+															<a href="{{ path('home')}}">
+																<i class="glyphicon glyphicon-pencil "></i>
+																QUESTIONNAIRE
+															</a>
+														</li>
+						
+						
+														<li>
+															<a href=" {{ path('home')}}">
+																<i class="glyphicon glyphicon-list "></i>
+																Liste QUESTIONNAIRE
+															</a>
+														</li>
+						
+						
+														<li>
+															<a href="{{path('home')}}">
+																<i class="glyphicon glyphicon-tasks "></i>
+																RESULTAT QUESTIONNAIRE
+															</a>
+														</li>
+						
+						
+													</ul>
+												</li>
+						
+						
+												<li class="dropdown APPLICATION">
+													<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+														<i class="glyphicon glyphicon-phone "></i>
+														APPLICATION
+														<span class="caret"></span>
+													</a>
+													<ul class="dropdown-menu">
+						
+														<li>
+															<a href="{{path('home')}} ">
+																<i class="glyphicon glyphicon-phone "></i>
+																APPLICATION</a>
+														</li>
+						
+						
+														<li>
+															<a href="{{path('home')}}">
+																<i class="glyphicon glyphicon-phone "></i>
+																Liste Applications
+															</a>
+														</li>
+						
+						
+													</ul>
+												</li>-->
+
+
+						<li class="dropdown ENREGISTREMENT">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+								<i class="glyphicon glyphicon-inbox "></i>
+								ENREGISTREMENT
+								<span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+
+
+								<li>
+									<a href="{{path('home')}}">
+										<i class="glyphicon glyphicon-inbox "></i>
+										Support connecté</a>
+								</li>
+
+
+								<li>
+									<a href=" {{path('home')}}">
+										<i class="glyphicon glyphicon-comment "></i>
+										Messages personnels</a>
+								</li>
+
+
+							</ul>
+						</li>
+
+
+						<li class="ANNONCES">
+							<a href="{{ path('home')}}">
+								<i class="glyphicon glyphicon-certificate"></i>
+								ANNONCES</a>
+						</li>
+
+
+						<li class="dropdown APPLICATION">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+								<i class="glyphicon glyphicon-phone "></i>
+								R-APPLICATION
+								<span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+
+								<li>
+									<a href="{{path('home')}} ">
+										<i class="glyphicon glyphicon-phone "></i>
+										R-MOBILE</a>
+								</li>
+
+
+								<li>
+									<a href="{{path('home')}}">
+										<i class="glyphicon glyphicon-phone "></i>
+										R-REMOTE
+									</a>
+								</li>
+
+
+							</ul>
+						</li>
+
+					</ul>
+
+
+					<ul class="nav navbar-nav navbar-right">
+
+
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+								<i class="glyphicon glyphicon-user "></i>
+								{{ app.user.username }}
+								(
+								{{app.user.etablissement.id}}
+								)
+								<span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a href="{{path('home')}}">
+										<i class="glyphicon glyphicon-user "></i>
+										Profil</a>
+								</li>
+
+								<li>
+									<a href="{{path('home')}}">
+										<i class="glyphicon glyphicon-modal-window "></i>
+										Gestion des Profils</a>
+								</li>
+
+
+								<li>
+									<a href="{{path('home')}}">
+										<i class="glyphicon glyphicon-flag "></i>
+										Infos établissement</a>
+								</li>
+								<li>
+									<a href="http://localhost:1111/r-import/Page_accueil.php?etab=3753613">
+										<i class="glyphicon glyphicon-import "></i>
+										Import données</a>
+								</li>
+								<li role="separator" class="divider"></li>
+								<li>
+									<a href="{{path('app_logout')}}">
+										<i class="glyphicon glyphicon-log-out "></i>
+										Deconnexion</a>
+								</li>
+
+
+							</ul>
+						</li>
+						<li>
+						<a href="{{path('app_logout')}}" <a data-toggle="tooltip" data-placement="top" title="Deconnexion"> <i class="glyphicon glyphicon glyphicon-off "></i></a>
+						</li>
+				
+				
+
+
+					</ul>
+
+
+				</div>
+	
+			</div>
+
+		</nav>
+	</body>
+
+</html>
+<br><br>
+<div class="container" style="margin-top:70px">
+	
+	{% block body %}
+	<div class="row">
+	<form action="{{ path('modifierhome')}}" name="form" method="post" enctype="multipart/form-data">
+
+
+<div class="col-md-2 xith">
+
+
+	<div class="form-group">
+
+
+		<button type="submit" id="form_save" name="form[save]" class="btn-primary btn">
+			<i class="glyphicon glyphicon-floppy-saved"></i>
+			Enregistrer</button>
+	</div>
+
+	<div class="form-group ">
+
+		<a style="width: 100%" href="" id="" name="send" class="btn-danger btn  " data-toggle="modal" data-target="#myModal">
+			<i class="glyphicon glyphicon-send"></i>
+			Mise à jour
+		</a>
+	</div>
+
+	<!--<div class="form-group">
+
+		<button type="button" id="clre" class="btn-warning btn">
+			<i class="glyphicon glyphicon-repeat"></i>
+			Décocher tout
+		</button>
+	</div>
+
+	<div class="form-group">
+
+		<button type="button" id="alla" class="btn-success btn">
+			<i class="glyphicon glyphicon-check"></i>
+			Cocher tout
+		</button>
+	</div>-->
+	<div class="form-group">
+
+
+		<a style="width: 100%" href="" id="" name="send" class="btn-info btn  " data-toggle="modal" data-target="#backa">
+			<i class="glyphicon glyphicon-picture"></i>
+			Fond d'écran
+		</a>
+
+
+	</div>
+	<!--<div class="form-group ">
+
+		<button type="button" class="btn-default btn V1" id="myBtnTheme" style="width: 100%;background-color: #046380;border: none;">
+			<i class="glyphicon glyphicon-leaf"></i>
+			Mise en page
+		</button>
+
+
+	</div>
+	<div class="form-group ">
+
+		<button type="button" class="btn-default btn" id="myBtn1" style="width: 100%">
+			<i class="glyphicon glyphicon-wrench"></i>
+			Maintenance</button>
+	</div>-->
+
+	<div class="form-group ">
+
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+			<i class="glyphicon glyphicon-wrench"></i>
+			Ajouter categorie</button>
+	</div>
+
+</div>
+
+
+<div class="col-md-10 backp " style="height: 650px;padding:25px">
+
+	{% set background=asset(etablissement.background) %}
+
+	<div class="col-md-12" style="background:url('{{background}}');height: 555px;background-size: cover!important;">
+	
+
+
+		<div class="col-md-12" style="background-color: rgba(160, 160, 160, 0.25);height: 80px;margin-bottom: 15px">
+
+			{% set ch=' ' %}
+
+
+			{% set ch='checked' %}
+
+
+			<div class="col-sm-5" style="padding: 0px ; margin-top: 10px;">
+				<a href="{{ path('home')}}">
+					<h4 style="color: #fff;text-shadow: 2px 2px #000000;"><input
+						name="logo" class="" type="checkbox" {{ch}}>
+					<!--Logo de votre société-->
+					</h4>
+					<img src="{{asset(etablissement.logo)}}" style="width: 150px;margin-top: -41px;    height: 60px;float: left;margin-right: 8px">
+
+
+				</a>
+			</div>
+
+
+			<div id="meteo" class="col-sm-6 pull-right">
+				{% set ch=' ' %}
+
+
+				{% set ch='checked' %}
+
+
+				<a href="{{ path('home')}}">
+					<!--	<h4 style="color: #fff;text-shadow: 2px 2px #000000;">
+																																																	Méteo
+																																																</h4>
+																																							
+																																															-->
+					<!--<input name="meteox" class="pull-right" {{ch}} type="checkbox">--><div id="meteo2" class="col-sm-6 pull-right"> </div>
+
+					<div id="meteo3" class="col-sm-12 pull-right"></div>
+				</a>
+
+			</div>
+
+
+		</div>
+
+		<div class="col-sm-12">
+
+			<div class="row">
+				{% for categorie in categories %}
+				{% set ch = ' ' %}
+				{% if (categorie.active == 1) %}
+				{% set ch = 'checked' %}
+				{% endif %}
+
+					<div class="col-sm-1" style="margin-right: 10px;">
+						<div style="margin-top: 5px; width: 80px; height: 80px; margin-left: 5px; position: relative;">
+							<div class="cog" style="position: absolute; padding: 3px;">
+								<button data-toggle="modal" data-target="#changeposition{{categorie.id}}" style="background-color: #f9f9f9; color: #333; border-width: 0px;" type="button" class="btn btn-default btn-xs">
+									<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+								</button>
+				
+								<input name="cat[{{categorie.Id}}]" class="caf" style="width: 100%;" type="checkbox" {{ch}}>
+							</div>
+							<img src="{{asset(categorie.logo)}}" style="width: 80px; height: 80px; border-radius: 9px;">
+							<div class="caption">
+								<a href="categories/{{categorie.Id}}">
+									<label name="titre" class="center-block" style="margin-top: -34px; font-size: 11px; color: white; text-align: center;">{{  categorie.titre|capitalize  }}</label>
+								</a>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+
+
+		</div>
+
+
+	</div>
+</div></form>
+<!-- Modals -->
+<!-- modal ajouter categories -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+	<div class="modal-content">
+		<form name="" method="post" action="{{path('ajoutercategories')}}" class="form-horizontal" enctype="multipart/form-data">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Ajouter une catégorie</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+
+
+				<strong>Infos
+				</strong>
+
+
+				<div class="form-group">
+					<label for="nom" class="col-lg-2 control-label">Nom
+					</label>
+					<div class="col-lg-10">
+
+						<input type="text" id="nom" name="nom" class="form-control"/>
+
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="titre" class="col-lg-2 control-label">Titre</label>
+					<div class="col-lg-10">
+
+						<input type="text" id="titre" name="titre" class="form-control"/>
+
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<label for="active" class="col-lg-2 control-label">Active</label>
+					<div class="col-lg-10">
+
+						<select id="active" name="active" class="form-control">
+							<option value="0">0</option>
+							<option value="1">1</option>
+						</select>
+
+					</div>
+				</div>
+				{% set usedPositions = [] %}
+				{% for category in categories %}
+					{% set usedPositions = usedPositions|merge([category.position]) %}
+				{% endfor %}
+				
+				<div class="form-group">
+					<label for="position" class="col-lg-2 control-label">Position</label>
+					<div class="col-lg-10">
+						<select id="position" name="position" class="form-control">
+							
+							{% for i in 1..40 %}
+							{% if i not in usedPositions %}
+								<option value="{{ i }}">{{ i }}</option>
+								{% endif %}
+							{% endfor %}
+						</select>
+					</div>
+				</div>
+				
+				
+				
+				<div class="form-group">
+					<label for="html" class="col-lg-2 control-label">Html</label>
+					<div class="col-lg-10">
+
+						<input type="text" id="html" name="html" class="form-control"/>
+
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="package" class="col-lg-2 control-label">Package</label>
+					<div class="col-lg-10">
+
+						<input type="text" id="package" name="package" class="form-control"/>
+
+					</div>
+				</div>
+
+				<br>
+				<strong>Média
+				</strong>
+
+
+				<div class="form-group">
+					<label for="logo" class="col-lg-2 control-label">logo</label>
+					<div class="col-lg-10">
+						<input type="file" class="form-control" id="logo" name="logo">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="backgound" class="col-lg-2 control-label">backgound</label>
+					<div class="col-lg-10">
+						<input type="file" class="form-control" id="backgound" name="backgound">
+					</div>
+				</div>
+
+
+				<br>
+				<strong>langues
+				</strong>
+
+
+				<br>
+
+
+				<table cellspacing="10" style="width: 100%;">
+					<tr>
+						<td>
+							<img style="width: 30px" src=" {{asset('images/eng.png')}}">
+							<label class="control-label required" for="EN">English</label>
+							<input style="margin-right: 10px;" type="text" id="EN" name="EN" class="form-control">
+						</td>
+						<td>
+							<img style="width: 30px" src="{{asset('images/es.png')}}">
+							<label class="control-label required" for="ES">Espagnol</label>
+							<input style="margin-right: 10px;" type="text" id="ES" name="ES" class="form-control">
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<img style="width: 30px" src=" {{asset('images/pt.png')}}">
+							<label class="control-label required" for="PT">Portugues</label>
+							<input type="text" id="PT" name="PT" class="form-control">
+						</td>
+						<td>
+							<img style="width: 30px" src=" {{asset('images/ita.png')}}">
+							<label class="control-label required" for="IT">Italiano</label>
+							<input type="text" id="IT" name="IT" class="form-control">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<img style="width: 30px" src=" {{asset('images/rus.png')}}">
+							<label class="control-label required" for="RU">Russian</label>
+							<input type="text" id="RU" name="RU" class="form-control">
+						</td>
+						<td>
+							<img style="width: 30px" src=" {{asset('images/deu.png')}}">
+							<label class="control-label required" for="DE">Deutsch</label>
+							<input type="text" id="DE" name="DE" class="form-control">
+						</td>
+
+					</tr>
+
+					<tr>
+						<td>
+							<img style="width: 30px" src=" {{asset('images/ch.png')}}">
+							<label class="control-label required" for="ZH">China</label>
+							<input type="text" id="ZH" name="ZH" class="form-control">
+						</td>
+						<td>
+							<img style="width: 30px" src=" {{asset('images/ma.png')}}">
+							<label class="control-label required" for="AR">العربية</label>
+							<input type="text" id="AR" name="AR" class="form-control">
+						</td>
+					</tr>
+
+				</table>
+
+
+			</div>
+			<div class="modal-footer">
+
+				<button type="submit" class="btn btn-success" style="background-color: #3087ce; border: 2px solid #3087ce;">
+					<i class="glyphicon glyphicon-new-window"></i>
+					Enregistrer</button>
+
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+			</div>
+		</form>
+	</div>
+</div></div>
+
+<!-- Modal  fond d'ecran -->
+<div class="modal fade" id="backa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog  modal-md" style="width:460px" role="document">
+		<div class="modal-content">
+			<form action="{{ path('modifierbackground')}}" id="myforma" name="form" method="post" enctype="multipart/form-data">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<div class="col-md-4">
+						<h4 style="line-height: 3;" class="modal-title" id="myModalLabel">Fond d'écran
+						</h4>
+					</div>
+					<div class="col-md-6">
+
+						<select class="form-control" id="backkk" name="typa">
+							<option value="images">Image Unique</option>
+							<option value="imagesmultiple">Image Multiple</option>
+							<option value="videos">Vidéo</option>
+						</select>
+					</div>
+				</div>
+				<div class="modal-body">
+					<p class="backk2" style='color:red'>
+						Cette fonction affiche uniquement un seul fond d'écran sur les télévisions
+						<br>
+						Format image : 1920 × 1080 - Type fichier : *.png ou *.jpg - Max-size : 400 Ko
+					</p>
+					<p class="alerta" style='color:red'></p>
+					
+					<input type="file" class="form-control-file" id="backgound" name="backgound">
+				</br>
+
+				<div class="multiple">
+					<p style='color:red'>
+						Affectation par :
+					</p>
+					<input type="radio" id="box" name="type" value="box" class="typeradio">
+					<label for="box">TV</label>
+					&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="radio" id="service" name="type" value="service" class="typeradio">
+					<label for="service">Service</label><br>
+					{#{ render(controller('EPSOBundle:Default:boxlist5')) }#}
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="button btn btn-primary btn-sm">
+					<i class="glyphicon glyphicon-floppy-disk"></i>
+					Enregistrer
+				</button>
+
+
+				<a data-toggle="tooltip" data-placement="top" href="{{path('home')}}" class="btn btn-danger btn-sm" onclick="return(confirm('voulez vous vraiment supprimer cette image ?'));">
+					<i class="glyphicon glyphicon-trash"></i>Supprimer image
+				</a>
+
+
+				<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
+					<i class="glyphicon glyphicon-remove"></i>Fermer</button>
+
+			</div>
+		</form>
+	</div>
+</div>
+</div>
+
+
+
+<!-- Modal changement position categories -->
+{% for categorie in categories %}
+<div class="modal fade" id="changeposition{{categorie.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+  <div class="modal-dialog" role="document" style="width:300px">
+    <div class="modal-content">
+	<form action="{{ path('modifierposition', {'id': categorie.id}) }}"  id="modifierposition{{categorie.id}}" name="modifierposition{{categorie.id}}" method="post" enctype="multipart/form-data">
+      <div class="modal-header">
+        <h5 class="modal-title" id="changepositionlabel"> {{categorie.nom}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <select class="form-control" name="selectedcat">
+													{% for categorie in categories %}
+														
+															<option value={{categorie.id}}>{{categorie.nom|lower}}</option>
+														
+													{% endfor %}
+			</select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </div>
+	  </form>
+    </div>
+	
+  </div>
+</div>
+{% endfor %}
+{% endblock %}
