@@ -67,10 +67,16 @@ class HomeController extends AbstractController
         $request = Request::createFromGlobals();
         $user = $this->getUser();
         $etablissement = $this->getUser()->getEtablissement();
+        $logoactive = $request->get('logoactive');
+        $meteoactive = $request->get('meteoactive');
+        $etablissement->setLogoactive(0);
+        $etablissement->setMeteoactive(0);
+        //var_dump($logoactive);die();
         $categories = $repository->findBy(
             ['etablissement' => $etablissement],
             ['position' => 'ASC']
         );
+        
         foreach ($categories as $cat) {
               $cat->setActive(0);
              
@@ -78,12 +84,19 @@ class HomeController extends AbstractController
         $entityManager->flush();
 
         $cat = $request->get('cat');
+        
         if (isset($cat) and !empty($cat)) {
             foreach ($cat as $key => $lg) {
                 $categorieschecked = $entityManager->getRepository(categories::class)->find($key);
                 $categorieschecked->setActive(1);
   
             }}
+            if (isset($logoactive) and !empty($logoactive)) {
+                $etablissement->setLogoactive(1);
+            }
+            if (isset($meteoactive) and !empty($meteoactive)) {
+                $etablissement->setMeteoactive(1);
+            }
             $entityManager->flush();
 
      

@@ -14,7 +14,7 @@ class Etablissement
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255, nullable: false)]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -67,6 +67,12 @@ class Etablissement
 
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Categories::class)]
     private Collection $categories;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $logoactive = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $meteoactive = null;
 
     public function __construct()
     {
@@ -334,6 +340,30 @@ class Etablissement
                 $category->setEtablissement(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLogoactive(): ?string
+    {
+        return $this->logoactive;
+    }
+
+    public function setLogoactive(?string $logoactive): static
+    {
+        $this->logoactive = $logoactive;
+
+        return $this;
+    }
+
+    public function getMeteoactive(): ?string
+    {
+        return $this->meteoactive;
+    }
+
+    public function setMeteoactive(?string $meteoactive): static
+    {
+        $this->meteoactive = $meteoactive;
 
         return $this;
     }
