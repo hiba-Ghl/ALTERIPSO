@@ -308,7 +308,7 @@ submenu.style.display = 'none';
 									</a>
 									<ul class="dropdown-menu">
 										<li>
-											<a href="{{ path('home') }}">
+											<a href="{{ path('app_television') }}">
 												<i class="glyphicon glyphicon-list"></i>
 												Liste TÉLÉVISION
 											</a>
@@ -464,7 +464,7 @@ submenu.style.display = 'none';
 
 
 								<li>
-									<a href="{{path('home')}}">
+									<a href="{{path('app_etablissement')}}">
 										<i class="glyphicon glyphicon-flag "></i>
 										Infos établissement</a>
 								</li>
@@ -506,6 +506,7 @@ submenu.style.display = 'none';
 <div class="container" style="margin-top:70px">
 
 	{% block body %}
+	
 		<div class="row">
 			<form action="{{ path('modifierhome')}}" name="form" method="post" enctype="multipart/form-data">
 
@@ -579,7 +580,7 @@ submenu.style.display = 'none';
 
 				</div>
 
-
+				<br><br>
 				<div class="col-md-10 backp " style="height: 650px;padding:25px">
 
 					{% set background=asset(etablissement.background) %}
@@ -918,7 +919,7 @@ submenu.style.display = 'none';
 					</form>
 				</div>
 			</div>
-		</div>
+			</div>
 
 
 		<!-- Modal changement position categories -->

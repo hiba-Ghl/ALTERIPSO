@@ -14,6 +14,7 @@ class CategoriesController extends AbstractController
     #[Route('/categories', name: 'app_categories')]
     public function index(): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
         return $this->render('categories/ajouter.html.twig', [
             'controller_name' => 'CategoriesController',
         ]);

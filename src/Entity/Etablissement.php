@@ -74,10 +74,14 @@ class Etablissement
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $meteoactive = null;
 
+    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Television::class)]
+    private Collection $televisions;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        $this->televisions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -364,6 +368,36 @@ class Etablissement
     public function setMeteoactive(?string $meteoactive): static
     {
         $this->meteoactive = $meteoactive;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Television>
+     */
+    public function getTelevisions(): Collection
+    {
+        return $this->televisions;
+    }
+
+    public function addTelevision(Television $television): static
+    {
+        if (!$this->televisions->contains($television)) {
+            $this->televisions->add($television);
+            $television->setEtablissement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTelevision(Television $television): static
+    {
+        if ($this->televisions->removeElement($television)) {
+            // set the owning side to null (unless already changed)
+            if ($television->getEtablissement() === $this) {
+                $television->setEtablissement(null);
+            }
+        }
 
         return $this;
     }

@@ -1,20 +1,257 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Hello EtablissementController!{% endblock %}
-
+{% extends 'home/index.html.twig' %}
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+	<style>
+		#div1 {
+			border-radius: 25px;
+			border: 2px solid #3087ce;
+			padding: 43px;
+			width: 1091px;
+			height: 300px;
+			margin-left: 10px;
+			margin-top: 10px;
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+		}
+		#div2 {
+			border-radius: 25px;
+			border: 2px solid #3087ce;
+			padding: 20px;
+			width: 1091px;
+			height: 1150px;
+			margin-left: 10px;
+			margin-top: 10px;
+		}
+	</style>
+	<!--                                                      -->
+	<div
+		style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;"><!-- <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+			   -->
+		Infos Etablissement
+	</div>
+	<div
+		id="div2">
+		<!--  -->
+		<form name="" method="post" action="{{ path('modifieretablissement', {'id': app.user.etablissement.id}) }}" class="form-horizontal" enctype="multipart/form-data">
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/wamp/www/rsmartv/src/Controller/EtablissementController.php'|file_link(0) }}">src/Controller/EtablissementController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/wamp/www/rsmartv/templates/etablissement/index.html.twig'|file_link(0) }}">templates/etablissement/index.html.twig</a></code></li>
-    </ul>
-</div>
+
+			<br>
+			<!-- nom d'etablissement -->
+			<div class="form-group">
+				<label for="nom_etablissement" class="col-lg-2 control-label">Nom d'établissement
+				</label>
+				<div class="col-lg-10">
+					<input type="text" id="nom_etablissement" name="nom_etablissement" class="form-control" value="{{app.user.etablissement.nometablissement}}"/>
+				</div>
+			</div>
+			<!-- description d'etablissement  -->
+
+			<div class="form-group">
+				<label for="description" class="col-lg-2 control-label">Type d'Etablissement</label>
+				<div class="col-lg-10">
+					<label class="radio-inline">
+						<input type="radio" name="description" id="description" value="Hôtel" {% if app.user.etablissement.description == 'Hôtel' %} checked {% endif %}>Hôtel</label>
+					<label class="radio-inline">
+						<input type="radio" name="description" id="description" value="hopital" {% if app.user.etablissement.description == 'hopital' %} checked {% endif %}>Hopital</label>
+					<label class="radio-inline">
+						<input type="radio" name="description" id="description" value="ehpad" {% if app.user.etablissement.description == 'ehpad' %} checked {% endif %}>Ehpad</label>
+					<label class="radio-inline">
+						<input type="radio" name="description" id="description" value="camping" {% if app.user.etablissement.description == 'camping' %} checked {% endif %}>Camping</label>
+					<label class="radio-inline">
+						<input type="radio" name="description" id="description" value="autres" {% if app.user.etablissement.description == 'autres' %} checked {% endif %}>Autres</label>
+				</div>
+			</div>
+			<br>
+			<!-- le genre  -->
+			<div class="form-group">
+				<label for="genre" class="col-lg-2 control-label">Genre</label>
+				<div class="col-lg-10">
+
+					<select id="genre" name="genre" class="form-control">
+						<option value="Monsieur" {% if app.user.etablissement.genre == 'Monsieur' %} selected {% endif %}>Monsieur</option>
+						<option value="Madame" {% if app.user.etablissement.genre == 'Madame' %} selected {% endif %}>Madame</option>
+						<option value="Aucun" {% if app.user.etablissement.genre == 'Aucun' %} selected {% endif %}>Aucun</option>
+
+					</select>
+				</div>
+			</div>
+
+			<!-- nom   -->
+			<div class="form-group">
+				<label for="nom" class="col-lg-2 control-label">Nom
+				</label>
+				<div class="col-lg-10">
+					<input type="text" id="nom" name="nom" class="form-control" value="{{ app.user.etablissement.nom}}"/>
+				</div>
+			</div>
+			<!-- prenom  -->
+			<div class="form-group">
+				<label for="prenom" class="col-lg-2 control-label">Prenom
+				</label>
+				<div class="col-lg-10">
+
+					<input type="text" id="prenom" name="prenom" class="form-control" value="{{ app.user.etablissement.prenom}}"/>
+
+				</div>
+			</div>
+			<!-- ville  -->
+			<div class="form-group">
+				<label for="ville" class="col-lg-2 control-label">Ville
+				</label>
+				<div class="col-lg-10">
+
+					<input type="text" id="ville" name="ville" class="form-control" value="{{ app.user.etablissement.ville}}"/>
+
+				</div>
+			</div>
+			<!-- pays  -->
+			<div class="form-group">
+				<label for="pays" class="col-lg-2 control-label">Pays
+				</label>
+				<div class="col-lg-10">
+
+					<input type="text" id="pays" name="pays" class="form-control" value="{{app.user.etablissement.pays}}"/>
+
+				</div>
+			</div>
+			<!-- addresse  -->
+			<div class="form-group">
+				<label for="adresse" class="col-lg-2 control-label">Adresse
+				</label>
+				<div class="col-lg-10">
+
+					<input type="text" id="adresse" name="adresse" class="form-control" value="{{ app.user.etablissement.adresse}}"/>
+
+				</div>
+			</div>
+			<!-- nombres de chambres  -->
+			<div class="form-group">
+				<label for="licence" class="col-lg-2 control-label">Nombre de chambres
+				</label>
+				<div class="col-lg-10">
+					<input type="number" id="nbr_chambres" name="licence" class="form-control" value="{{ app.user.etablissement.licence}}"/>
+				</div>
+			</div>
+			<!-- etat du logo   -->
+			<div class="form-group">
+				<label for="logoactive" class="col-lg-2 control-label">Logo active</label>
+				<div class="col-lg-10">
+
+					<select id="logoactive" name="logoactive" class="form-control">
+						{% if (app.user.etablissement.logoactive == 0)  %}
+							<option value="0">Non actif</option>
+							<option value="1">Actif</option>
+						{% else  %}
+							<option value="1">Actif</option>
+							<option value="0">Non actif</option>
+						{% endif %}
+					</select>
+				</div>
+			</div>
+
+			<!-- file du talechargement du logo  -->
+
+			<div class="form-group">
+				<label for="logo" class="col-lg-2 control-label">Téléchargement logo :</label>
+				<div class="col-lg-10">
+					<input type="file" class="form-control" id="logo" name="logo" value="{{ app.user.etablissement.logo }}" accept =".jpg , .peg , .png">
+				</div>
+			</div>
+			<!--- logo -->
+			<div class="form-group">
+				<label for="logo" class="col-lg-2 control-label"></label>
+				{% if app.user.etablissement.logo is not null %}
+					<img src="{{ asset(app.user.etablissement.logo) }}" class="img" style="width:auto; height: 100px;"/>
+				{% else %}
+					<p>Aucun logo n'a été téléchargé.</p>
+				{% endif %}
+			</div>
+			<!-- espace -->
+
+			<div class="form-group">
+				<div class="col-lg-10">
+					   <h4 style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 400px;padding-left: 10px;">Paramétrage des messages sur ECRAN TV </h4>         
+			   </div>
+			</div>	
+			
+			<!-- fin espace -->
+			<!-- message de bienvenue  -->
+
+			<div class="form-group">
+				<label for="msgbienvenu" class="col-lg-2 control-label">Message bienvenue</label>
+				<div class="col-lg-10">
+
+					<select id="msgbienvenu" name="msgbienvenu" class="form-control">
+
+						{% if app.user.etablissement.msgbienvenu == 0 %}
+							<option value="0">Nom/Prenom + Date de fin</option>
+							<option value="1">Nom/Prenom</option>
+							<option value="2">Date de fin</option>
+							<option value="3">Aucun Message</option>
+						{% elseif app.user.etablissement.msgbienvenu == 1 %}
+							<option value="1">Nom/Prenom</option>
+							<option value="0">Nom/Prenom + Date de fin</option>
+							<option value="2">Date de fin</option>
+							<option value="3">Aucun Message</option>
+						{% elseif app.user.etablissement.msgbienvenu == 2 %}
+							<option value="2">Date de fin</option>
+							<option value="0">Nom/Prenom + Date de fin</option>
+							<option value="1">Nom/Prenom</option>
+							<option value="3">Aucun Message</option>
+						{% else %}
+							<option value="3">Aucun Message</option>
+							<option value="0">Nom/Prenom + Date de fin</option>
+							<option value="1">Nom/Prenom</option>
+							<option value="2">Date de fin</option>
+						{% endif %}
+
+					</select>
+				</div>
+			</div>
+			<!-- message ap  -->
+			<div class="form-group">
+				<label for="msgap" class="col-lg-2 control-label">Message AP</label>
+				<div class="col-lg-10">
+
+					<select id="msgap" name="msgap" class="form-control">
+						{% if (app.user.etablissement.msgap == 0)  %}
+							<option value="0">Non actif</option>
+							<option value="1">Actif</option>
+						{% else  %}
+							<option value="1">Actif</option>
+							<option value="0">Non actif</option>
+						{% endif %}
+					</select>
+				</div>
+			</div>
+
+			<!-- message internet  -->
+			<div class="form-group">
+				<label for="accessTvInCheckout" class="col-lg-2 control-label">
+					Message internet</label>
+				<div class="col-lg-10">
+					<select id="accessTvInCheckout" name="accessTvInCheckout" class="form-control">
+						{% if (app.user.etablissement.accessTvInCheckout == 0)  %}
+							<option value="0">Non actif</option>
+							<option value="1">Actif</option>
+						{% else  %}
+							<option value="1">Actif</option>
+							<option value="0">Non actif</option>
+						{% endif %}
+					</select>
+				</div>
+			</div>
+
+
+			<br>
+			<br>
+			<!-- button enregistrer et annuler  -->
+			<button type="submit" class="btn btn-success" style="margin-left: 920px;position: absolute;background-color: #3087ce; border: 2px solid #3087ce;">
+				<i class="glyphicon glyphicon-new-window"></i>
+				Enregistrer</button>
+			<button</i type="submit" class="btn btn-success" style="margin-left: 820px; position: absolute;border: 2px solid ;" <i class="glyphicon glyphicon-new-window">>
+				Annuler</button>
+
+		</form>
+
+	</div>
+	<br>
 {% endblock %}
