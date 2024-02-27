@@ -75,6 +75,52 @@
 
 </style>
 
+{% if app.request.get('msg') is defined %}
+{% if app.request.get('msg') ==1 %}
+
+
+	<div class="alert alert-success alert-dismissible fade in" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">×</span>
+		</button>
+		<strong>
+			<i class='glyphicon glyphicon-thumbs-up'></i>
+		</strong>
+		Opération gratuité envoyée avec succés à
+		{{app.request.get('nbbox')  }}
+		TV à :
+		{{ "now"|date("H:i:s") }}
+	</div>
+
+{% elseif app.request.get('msg') ==2 %}
+
+	<div class="alert alert-danger alert-dismissible fade in" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">×</span>
+		</button>
+		<strong>
+			<i class='glyphicon glyphicon-thumbs-down'></i>
+		</strong>
+		Opération gratuité est annulée.Veulliez contacter le support.
+	</div>
+
+{% elseif app.request.get('msg') ==3 %}
+
+	<div class="alert alert-success alert-dismissible fade in" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">×</span>
+		</button>
+		<strong>
+			<i class='glyphicon glyphicon-thumbs-up'></i>
+		</strong>
+		Arrêt de l'opération de gratuité avec succés à
+		{{app.request.get('nbbox')  }}
+		TV à :
+		{{ "now"|date("H:i:s") }}
+	</div>
+
+{% endif %}
+{% endif %}
 <div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
 	Liste chaines television
 </div>
@@ -95,8 +141,8 @@
 					<th style="height: 50px;width:70px">Icons</th>
 					<th style="height: 50px;width:100px">Pays</th>
 					<th style="height: 50px;width:100px">Protocole</th>
-					<th style="height: 50px;width:70px"><input type="checkbox" id="checklist" >.  Actif</th>
-    				<th style="height: 50px;width:70px"><input type="checkbox" id="checklistgratuite" >Gratuite</th>
+					<th style="height: 50px;width:70px">Actif<br><input type="checkbox" id="checklist" ></th>
+    				<th style="height: 50px;width:70px">Gratuite<br><input type="checkbox" id="checklistgratuite" ></th>
 					<th style="height: 50px;width:150px">Actions</th>
 
 
@@ -437,12 +483,12 @@
 							{% set chg = 'checked' %}
 							{% endif %}
 						<td style="width:70px">
-							<label><input name='listeactive[{{tele.Id}}]' type="checkbox" {{ch}} ></label>
+							<label><input name='listeactive[{{tele.Id}}]' type="checkbox" {{ch}} class="jpCheckbox" ></label>
 						</td>
 
 
 						<td style="width:70px">
-							<label><input name='listegratuite[{{tele.Id}}]' type="checkbox" {{chg}}></label>
+							<label><input name='listegratuite[{{tele.Id}}]' type="checkbox" {{chg}}  class="jpCheckbox2"></label>
 						</td>
 
 
@@ -467,8 +513,8 @@
         </table>
         <!-- button enregistrer et annuler  -->
 		
-			<button type="submit" class="btn btn-success btn-sm"  href="{{path('modifier_chaine')}}" style="margin-left: 495px;margin-top: -1103px;width: 130px; /*position: absolute; */background-color: #3087ce;border: 2px solid #3087ce;"><i class="glyphicon glyphicon-new-window"></i>Enregistrer</button>
-			<button type="button" class="btn btn-danger btn-sm" style="margin-left: 635px;margin-top: -1139px;width: 130px; /*position: absolute;*/background-color: red;border: 2px solid red;"><i class="glyphicon glyphicon-new-window"></i>Annuler</button>
+			<button type="submit" class="btn btn-success btn-sm"  href="{{path('modifier_chaine')}}" style="margin-left: 495px;margin-top: -1103px;width: 130px; /*position: absolute; */background-color: #3087ce;border: 2px solid #3087ce;"><i class="glyphicon glyphicon-floppy-disk"></i>Enregistrer</button>
+			<button type="button" class="btn btn-danger btn-sm" style="margin-left: 635px;margin-top: -1139px;width: 130px; /*position: absolute;*/background-color: red;border: 2px solid red;"><i class="glyphicon glyphicon-remove"></i>Annuler</button>
 			
 			
 			
@@ -801,12 +847,12 @@
 			</td>
 		   
 			<td style="width:70px">
-				<label><input name='active' type="checkbox"  id="jpCheckbox" class="jpCheckbox"></label>
+				<label><input name='active' type="checkbox"  ></label>
 			</td>
 
 
 			<td style="width:70px">
-				<label><input name='gratuite' type="checkbox"  id="jpCheckbox2" class="jpCheckbox2" ></label>
+				<label><input name='gratuite' type="checkbox"   ></label>
 			</td>
 
 
@@ -830,7 +876,7 @@
 <div class="modal fade" id="vodmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog  modal-md" style="width:460px" role="document">
 	  <div class="modal-content">
-	<form action="{{path('home')}}"  name="" method="post" enctype="multipart/form-data"> 
+	<form action="{{path('envoyer_gratuite')}}"  name="" method="post" enctype="multipart/form-data"> 
    
 			<div class="modal-header">
 		  <a type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
@@ -844,7 +890,7 @@
 	  
   
   <div class="form-group">
-	{# {% if (typegratuite == 'stop') %}
+	 {% if (typegratuite == 'stop') %}
 		 <p style="color: red;font-size: 16px;"><B> Pas de gratuité enregistrée.</B></p>
   {% elseif (typegratuite == 'r_immediate') %}
 		 <p style="color: red;font-size: 16px;"><i class="glyphicon glyphicon-warning-sign"></i> <B> - Gratuité en cours..</B> </p>
@@ -857,28 +903,28 @@
 	{% endif %} 
   {% else %}
 	  <p style="color: red;font-size: 16px;"><B>  Pas de gratuité enregistrée.</B></p>
-   {% endif %}#}
+   {% endif %}
 		 
 	 <p>Veuillez choisir le mode de gratuité :</p>
   
   
 		  <input type="radio" id="t_gratuite" class="t_gratuite" name="t_gratuite" value="r_defini">
-		  <label for="css">Gratuité avec date debut et fin :</label><br>
+		  <label >Gratuité avec date debut et fin :</label><br>
 			 
 												   
 						  <div class="d_defini" style="display:none;">
-			  <label for="d_debut">Date début:</label>
+			  <label>Date début:</label>
 			  <input type="datetime-local" id="d_debut" name="d_debut" style="margin-left: 51px;" ><br>
   
-			  <label for="d_fin">Date fin:</label>
+			  <label >Date fin:</label>
 			  <input type="datetime-local" id="d_fin" name="d_fin" style="margin-left: 70px;" >
 		  </div>					 
 														 
 																															 
 																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																  
   
-		  <input type="radio" id="t_gratuite" class="t_gratuite" name="t_gratuite" value="r_immediate">
-		  <label for="html">Gratuité immédiate </label><br>
+		  <input type="radio"  class="t_gratuite" name="t_gratuite" value="r_immediate">
+		  <label >Gratuité immédiate </label><br>
 			
 						   
   
@@ -890,8 +936,8 @@
 		<div class="modal-footer">
 		 
 	  <button type="submit"  id='chaine_gratuite' name='chaine_gratuite' class="button btn btn-primary btn-sm"><i class="glyphicon glyphicon-floppy-disk"></i> Valider </button> 
-		<a data-toggle="tooltip" data-placement="top"   id="stopgratuite" href="{{path('home')}}" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Ce boutton va arrêter immédiatement la gratuité en cours." ><i class="glyphicon glyphicon-remove-circle"></i>Arrêter</a>
-		 <a data-toggle="tooltip" data-placement="top"   id="historique" href="{{path('home')}}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Afficher l'historique des gratuités" ><i class="glyphicon glyphicon-link"></i>Historique</a>
+		<a data-toggle="tooltip" data-placement="top"   id="stopgratuite" href="{{path('arreter_gratuite')}}" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Ce boutton va arrêter immédiatement la gratuité en cours." ><i class="glyphicon glyphicon-remove-circle"></i>Arrêter</a>
+		 <a data-toggle="tooltip" data-placement="top"   id="historique" href="{{path('historique_gratuite')}}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Afficher l'historique des gratuités" ><i class="glyphicon glyphicon-link"></i>Historique</a>
 		 <a type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i>Annuler</a>
 		</div>
 	</form> 
@@ -946,5 +992,29 @@ $(".d_defini").hide();
 });
 });
 </script>
-
+<script>
+	   
+$('#checklist').click(function() {
+ 
+ // on cherche les checkbox à l'intérieur de l'id  'magazine'
+ var magazines = $("label").find(':checkbox.jpCheckbox'); 
+	if(this.checked){ // si 'checkAll' est coché
+	   magazines.prop('checked', true); 
+	}else{ // si on décoche 'checkAll'
+	   magazines.prop('checked', false);
+	}          
+ });    
+ 
+ 
+ $('#checklistgratuite').click(function() {
+  
+ // on cherche les checkbox à l'intérieur de l'id  'magazine'
+ var magazines = $("label").find(':checkbox.jpCheckbox2'); 
+	if(this.checked){ // si 'checkAll' est coché
+	   magazines.prop('checked', true); 
+	}else{ // si on décoche 'checkAll'
+	   magazines.prop('checked', false);
+	}          
+ });   
+</script>
 {% endblock %}

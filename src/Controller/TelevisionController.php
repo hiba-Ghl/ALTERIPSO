@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use App\Entity\Etablissement;
+use App\Entity\Historiquegratuite;
 
 use App\Entity\Television;
 
@@ -18,10 +20,24 @@ class TelevisionController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
         $repository = $entityManager->getRepository(Television::class);
         $etablissement = $this->getUser()->getEtablissement();
+        $idetablissement = $etablissement->getId();
         $television  = $repository->findBy(['etablissement' => $etablissement],['numero' => 'ASC']);
        // var_dump($television);die();
+       //////////////// date debut et fin cas gratuité defini  avec type gratuité//////////////////////
+    if (file_exists("xml\chaine_gratuite_".$idetablissement.".xml")) {
+        $fichier = 'xml\chaine_gratuite_'.$idetablissement.'.xml';
+        $xml = simplexml_load_file($fichier);
+        $dd = $xml->date_debut;
+        $df = $xml->date_fin;
+        $typegratuite = $xml->typegratuite;
+      } else {
+        $dd = '10-09-1990 13:35:00';
+        $df = '10-09-1990 13:35:00';
+        $typegratuite = '0';
+      }
+      //var_dump($dd);die();  
         return $this->render('television/index.html.twig', [
-            'television' => $television,
+            'television' => $television,'typegratuite' => $typegratuite, 'dd' => $dd, 'df' => $df
         ]);
     }
 
@@ -121,7 +137,7 @@ class TelevisionController extends AbstractController
        // var_dump($television);die();
         foreach ($television as $tele) {
             $tele->setActive('0');
-            $tele->setGratuite('1');
+            $tele->setGratuite('0');
             $entityManager->persist($tele);
             $entityManager->flush();
           }
@@ -228,6 +244,201 @@ class TelevisionController extends AbstractController
         return $this->redirectToRoute('app_television');
         
     }
+
+    #[Route('/envoyer_gratuite', name: 'envoyer_gratuite')]
+    public function envoyer_gratuite(EntityManagerInterface $entityManager): Response
+    {
+        $request = Request::createFromGlobals();
+        $etablissement = $this->getUser()->getEtablissement();
+        $idetablissement = $etablissement->getId();
+      $typegratuite = $request->get('t_gratuite');
+      //var_dump($typegratuite);die();
+        if ($typegratuite == 'r_defini') {
+            $d_debut = $request->get('d_debut');
+            $d_fin = $request->get('d_fin');
+            $dd = date('d-m-Y H:i:s', strtotime($d_debut));
+            $df = date('d-m-Y H:i:s', strtotime($d_fin));
+        } else if ($typegratuite == 'r_immediate') {
+            $dd = '10-09-2021 13:35:00';
+            $df = '10-09-2099 13:35:00';
+        }
+  
+        $dt = date("[j/m/y H:i:s]");
+        $fp = fopen('logs/envoyer_date_'.$idetablissement.'.txt', 'a+'); // ouvrir le fichier ou le créer
+        fseek($fp, SEEK_END); // poser le point de lecture à la fin du fichier
+        $txt = $dt .'  dd:' . $dd . '  df:' . $df . '  type gratuité : ' . $typegratuite;
+        $nouverr = $txt . "\r\n"; // ajouter un retour à la ligne au fichier
+        fputs($fp, $nouverr); // ecrire ce texte
+        fclose($fp); //fermer le fichier
+    
+              //if (file_exists("xml\chaine_gratuite_".$idetablissement.".xml")) {
+                        file_put_contents("xml\chaine_gratuite_".$idetablissement.".xml", '<?xml version="1.0" encoding="utf-8"?>
+                    <data><date_debut>' . $dd . '</date_debut> 
+                    <date_fin>' . $df . '</date_fin>
+                    <typegratuite>' . $typegratuite . '</typegratuite> </data>');
+               
+            
+            
+                    // var_dump($d);
+                   $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                    curl_setopt($ch, CURLOPT_TIMEOUT, 1);
+                    curl_setopt($ch, CURLOPT_URL, "http://localhost:1111/package/dauntless_logger/libs/rabbitajax.php?AsyncUpdate=true");
+                    $json_as_string = curl_exec($ch);
+                    curl_close($ch);
+                    $msg = 1;
+               /* } else {
+                    $msg = 2;
+                }*/
+            
+             // $box = $em->getRepository('EPSOBundle:box')->findBy(array('etab' => $idetab, 'Support' => 'R-PH'));
+              //  $nbbox = count($box);
+                //var_dump($nbbox);die();  
+                $nbbox = 50;
+      switch ($typegratuite) {
+        case 'r_defini':
+          $typeg = 'Gratuité avec date début et fin';
+          break;
+        case 'r_immediate':
+          $typeg = 'Gratuité immédiate';
+          $dd = date("d-m-Y H:i:s");
+          $df = '-';
+          break;
+        default:
+          $typeg = 'default';
+      }
+      
+      $historiquegratuite = new Historiquegratuite();
+      $historiquegratuite->setEtablissement($etablissement);
+      $historiquegratuite->setDate(date("d-m-Y H:i:s"));
+      $historiquegratuite->setDatein($dd);
+      $historiquegratuite->setDateout($df);
+      $historiquegratuite->setType($typeg);
+  
+      $entityManager->persist($historiquegratuite);
+      $entityManager->flush();
+  
+  
+      return $this->redirectToRoute('app_television', array('msg' => $msg, 'nbbox' => $nbbox));
+     // return $this->redirectToRoute('app_television');
+    }
+    #[Route('/arreter_gratuite', name: 'arreter_gratuite')]
+    public function arreter_gratuite(EntityManagerInterface $entityManager): Response
+    {
+  
+        $request = Request::createFromGlobals();
+        $etablissement = $this->getUser()->getEtablissement();
+        $idetablissement = $etablissement->getId();
+      
+      $dd = '10-09-1990 13:35:00';
+      $df = '11-09-1990 13:35:00';
+  
+  
+      $dt = date("[j/m/y H:i:s]");
+      $fp = fopen('logs/envoyer_date_'.$idetablissement.'.txt', 'a+'); // ouvrir le fichier ou le créer
+      fseek($fp, SEEK_END); // poser le point de lecture à la fin du fichier
+      $txt = $dt . '  dd:' . $dd . '  df:' . $df . '  type gratuité : stop ';
+      $nouverr = $txt . "\r\n"; // ajouter un retour à la ligne au fichier
+      fputs($fp, $nouverr); // ecrire ce texte
+      fclose($fp); //fermer le fichier
+  
+      if (file_exists("xml\chaine_gratuite_".$idetablissement.".xml")) {
+        file_put_contents("xml\chaine_gratuite_".$idetablissement.".xml", '<?xml version="1.0" encoding="utf-8"?>
+          <data><date_debut>' . $dd . '</date_debut> 
+          <date_fin>' . $df . '</date_fin> 
+          <typegratuite>stop</typegratuite></data>');
+  
+  
+        // var_dump($d);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 1);
+        curl_setopt($ch, CURLOPT_URL, "http://localhost:1111/package/dauntless_logger/libs/rabbitajax.php?AsyncUpdate=true");
+        $json_as_string = curl_exec($ch);
+        curl_close($ch);
+  
+        //msg de confirmation = 1 si l'operation est bien passé
+        $msg = 3;
+      } else {
+        //msg de confirmation = 1 si l'operation n'est pas passé
+        $msg = 2;
+      }
+  
+     /* $em = $this->getDoctrine()->getManager();
+      $idetab = $this->get('security.token_storage')->getToken()->getUser()->getEtab()->getId();
+      $boxs = $em->getRepository('EPSOBundle:box')->findBy(array('etab' => $idetab, 'Support' => 'R-PH'));
+      $etab = $em->getRepository('EPSOBundle:etab')->findById($idetab);
+      $nbbox = count($boxs);*/
+      $nbbox = 60;
+      //var_dump($nbbox);die();
+      $typeg = 'Gratuité arrêtée';
+      $df = date("d-m-Y H:i:s");
+      $dd = '-';
+  
+      $historiquegratuite = new historiquegratuite();
+      $historiquegratuite->setEtablissement($etablissement);
+      $historiquegratuite->setDate(date("d-m-Y H:i:s"));
+      $historiquegratuite->setDatein($dd);
+      $historiquegratuite->setDateout($df);
+      $historiquegratuite->setType($typeg);
+  
+      $entityManager->persist($historiquegratuite);
+      $entityManager->flush();
+  
+      //return $this->redirectToRoute('tele');
+      return $this->redirectToRoute('app_television', array('msg' => $msg, 'nbbox' => $nbbox));
+  
+      //   return $this->redirectToRoute('tele');
+  
+    }
+  
+    
+    #[Route('/historique_gratuite', name: 'historique_gratuite')]
+    public function historique_gratuite(EntityManagerInterface $entityManager): Response
+  {
+    $request = Request::createFromGlobals();
+    $etablissement = $this->getUser()->getEtablissement();
+    $idetablissement = $etablissement->getId();
+    $repository = $entityManager->getRepository(Historiquegratuite::class);
+    $historiquegratuite  = $repository->findBy(['etablissement' => $etablissement]);
+//    $box = $em->getRepository('EPSOBundle:box')->findBy(array('etab' => $idetab, 'Support' => 'R-PH'));
+    //$nbbox = count($box);
+    $nbbox = 70;
+    //var_dump($historiquegratuite);die();
+    $date2 = $request->request->get('date2');
+    $date1 = $request->request->get('date1');
+
+
+    if (empty($date1))
+
+      $date1 = date("Y-m-d", strtotime("$date2 -90 day"));
+
+    if (empty($date2))
+
+      $date2 = date('Y-m-d');
+
+    $date2 = date("d-m-Y", strtotime("$date2"));
+    $date1 = date("d-m-Y", strtotime("$date1"));
+
+
+
+
+    $handle = fopen("logs/envoyer_date_".$idetablissement.".txt", "r");
+    if ($handle) {
+      while (($line = fgets($handle)) !== false) {
+        // process the line read.
+      }
+
+      fclose($handle);
+    } else {
+      // error opening the file.
+    }
+    //var_dump($handle);die();
+    $data = $handle;
+
+    return $this->render('television/historique.html.twig', array('date2' => $date2, 'date1' => $date1, 'data' => $data, 'historiquegratuite' => $historiquegratuite, 'nbbox' => $nbbox));
+  }
+
 
 
 }
