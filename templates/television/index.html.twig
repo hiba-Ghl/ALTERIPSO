@@ -40,6 +40,39 @@
 		filter: alpha(opacity=0);
 
 	}
+	
+  .header-fixed {
+    width: 1200px ;
+}
+
+.header-fixed > thead,
+.header-fixed > tbody,
+.header-fixed > thead > tr,
+.header-fixed > tbody > tr,
+.header-fixed > thead > tr > th,
+.header-fixed > tbody > tr > td {
+    display: block;
+}
+
+.header-fixed > tbody > tr:after,
+.header-fixed > thead > tr:after {
+    content: ' ';
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+
+.header-fixed > tbody {
+    overflow-y: auto;
+    height: 400px;
+}
+
+.header-fixed > tbody > tr > td,
+.header-fixed > thead > tr > th {
+    /*width: 20%;*/
+    float: left;
+}
+
 </style>
 
 <div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
@@ -47,21 +80,24 @@
 </div>
 
 <div id="div2">
+	<a style="margin-left: 775px;width: 130px;margin-top: -120px;" type="submit" class="btn-primary btn btn-sm  chaine_gratuite" id="desvod"  name="desvod" data-toggle="modal" data-target="#vodmodal"><i class="glyphicon glyphicon-refresh"></i> Gratuité</a>
+
+	<input id="myInput3" type="text" placeholder="Search.." style="position: absolute;height: 34px;margin-top: -66px;border-color: #3087ce;margin-left: 12px;width: 130px;border: 2px solid;border-radius: 5px;">
 	<form action="{{ path('modifier_chaine')}}" name="form" method="post" enctype="multipart/form-data">
 		<table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column">
 			<thead>
 
 				<tr>
-					<th style="width:200px;height: 50px;">Nom télévision</th>
-					<th style="height: 50px;width:350px">Ip</th>
-					<th style="height: 50px;width:100px">Port</th>
+					<th style="width:150px;height: 50px;">Nom télévision</th>
+					<th style="height: 50px;width:150px">Ip</th>
+					<th style="height: 50px;width:70px">Port</th>
 					<th style="height: 50px;width:100px">Numéro de chaîne</th>
 					<th style="height: 50px;width:70px">Icons</th>
-					<th style="height: 50px;width:150px">Pays</th>
-					<th style="height: 50px;width:120px">Protocole</th>
+					<th style="height: 50px;width:100px">Pays</th>
+					<th style="height: 50px;width:100px">Protocole</th>
 					<th style="height: 50px;width:70px"><input type="checkbox" id="checklist" >.  Actif</th>
-    				<th style="height: 50px;width:50px"><input type="checkbox" id="checklistgratuite" >Gratuite</th>
-					<th style="height: 50px;width:250px">Actions</th>
+    				<th style="height: 50px;width:70px"><input type="checkbox" id="checklistgratuite" >Gratuite</th>
+					<th style="height: 50px;width:150px">Actions</th>
 
 
 				</tr>
@@ -73,21 +109,19 @@
 
 
 					<tr class="odd gradeX">
-						<td style="width:200px">
+						<td style="width:150px">
 							<label><input name='listenom[{{tele.Id}}]' type="text" value="{{tele.nom}}" class="form-control" style="font-size: 11px;"></label>
 							<label style="visibility: hidden;">{{tele.nom}}</label>
 						</td>
 
-						
-
-							<td style="width:350px">
+							<td style="width:150px">
 								<label>
-									<textarea name='listeip[{{tele.Id}}]' class="form-control" style="margin: 0px -320px 0px 0px;width: 180px;height: 45px;font-size: 11px;">{{tele.Ip}}</textarea>
+									<textarea name='listeip[{{tele.Id}}]' class="form-control" style="margin: 0px -320px 0px 0px;width: 140px;height: 45px;font-size: 11px;">{{tele.Ip}}</textarea>
 								</label>
 							</td>
 
 
-							<td style="width:100px">
+							<td style="width:70px">
 								<label><input name='listeport[{{tele.Id}}]' type="text" value="{{tele.port}}" class="form-control" style="font-size: 11px;"></label>
 								
 							</td>
@@ -110,7 +144,7 @@
 
 						</td>
 
-						<td style="width:150px">
+						<td style="width:100px">
 							<label>
 								<select class="form-control" name='listepays[{{tele.Id}}]' style="width: 100%; font-size: 11px;">
 									<option selected="selected" value='{{tele.pays}}'>{{tele.pays}}</option>
@@ -385,7 +419,7 @@
 						</td>
 
 
-						<td style="width:120px">
+						<td style="width:100px">
 							<select class="form-control" name='listeprotocole[{{tele.Id}}]' style="width: 100%; font-size: 11px;">
 								<option selected="selected" value='{{tele.Protocole}}'>{{tele.Protocole}}</option>
 								<option value="http://">HTTP</option>
@@ -402,17 +436,17 @@
 							{% if (tele.gratuite) == 1 %}
 							{% set chg = 'checked' %}
 							{% endif %}
-						<td style="width:50px">
+						<td style="width:70px">
 							<label><input name='listeactive[{{tele.Id}}]' type="checkbox" {{ch}} ></label>
 						</td>
 
 
-						<td style="width:50px">
+						<td style="width:70px">
 							<label><input name='listegratuite[{{tele.Id}}]' type="checkbox" {{chg}}></label>
 						</td>
 
 
-						<td style="width:250px">
+						<td style="width:120px">
 							<a data-toggle="modal" data-target="#myModal5" name="send" class="{{tele.numero}} btn55 acttel btn btn-info btn-xs">
 								<i data-toggle="tooltip" data-placement="top" title="lancer la chaîne" class="glyphicon glyphicon-play-circle"></i>
 							</a>
@@ -432,31 +466,33 @@
 
         </table>
         <!-- button enregistrer et annuler  -->
-		<div style="margin-top: -488px;position: absolute;">
-			<button type="submit" class="btn btn-success"  href="{{path('modifier_chaine')}}" style="margin-left: -166px;margin-top: 68px;width: 130px;position: absolute;background-color: #3087ce;border: 2px solid #3087ce;"><i class="glyphicon glyphicon-new-window"></i>Enregistrer</button>
-			<button type="button" class="btn btn-danger" style="margin-left: -166px;margin-top: 120px;width: 130px;position: absolute;background-color: red;border: 2px solid red;"><i class="glyphicon glyphicon-new-window"></i>Annuler</button>
-			<input id="myInput3" type="text" placeholder="Search.." style="height: 44px;margin-top: 172px;border-color: #3087ce;margin-left: -166px;width: 130px;border: 2px solid;border-radius: 5px;">
+		
+			<button type="submit" class="btn btn-success btn-sm"  href="{{path('modifier_chaine')}}" style="margin-left: 495px;margin-top: -1103px;width: 130px; /*position: absolute; */background-color: #3087ce;border: 2px solid #3087ce;"><i class="glyphicon glyphicon-new-window"></i>Enregistrer</button>
+			<button type="button" class="btn btn-danger btn-sm" style="margin-left: 635px;margin-top: -1139px;width: 130px; /*position: absolute;*/background-color: red;border: 2px solid red;"><i class="glyphicon glyphicon-new-window"></i>Annuler</button>
 			
-		</div>
+			
+			
+
 	</form>
-	<form action="{{ path('ajouter_chaine')}}" name="form" method="post" enctype="multipart/form-data">
+	<form action="{{ path('ajouter_chaine')}}" name="form" method="post" enctype="multipart/form-data" style="height: 70px;">
 		<table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column">
+			<tbody style="height: auto !important;">
 		<tr class="odd gradeX" style="background-color:white;">
-			<td style="width:200px">
+			<td style="width:150px">
 				<label><input name='nom' type="text" value="" class="form-control" style="font-size: 11px;" ></label>
 				
 			</td>
 
 			
 
-				<td style="width:350px">
+				<td style="width:150px">
 					<label>
-						<textarea name='ip' class="form-control" style="margin: 0px -320px 0px 0px;width: 180px;height: 45px;font-size: 11px;"></textarea>
+						<textarea name='ip' class="form-control" style="margin: 0px -320px 0px 0px;width: 140px;height: 45px;font-size: 11px;"></textarea>
 					</label>
 				</td>
 
 
-				<td style="width:100px">
+				<td style="width:70px">
 					<label><input name='port' type="text" value="" class="form-control" style="font-size: 11px;"></label>
 					
 				</td>
@@ -480,7 +516,7 @@
 
 			</td>
 
-			<td style="width:150px">
+			<td style="width:100px">
 				<label>
 					<select class="form-control" name='pays' style="width: 100%; font-size: 11px;">
 						
@@ -755,7 +791,7 @@
 			</td>
 
 
-			<td style="width:120px">
+			<td style="width:100px">
 				<select class="form-control" name='protocole' style="width: 100%; font-size: 11px;">
 					<option value="http://">HTTP</option>
 					<option value="coax">COAX</option>
@@ -764,17 +800,17 @@
 				</select>
 			</td>
 		   
-			<td style="width:50px">
+			<td style="width:70px">
 				<label><input name='active' type="checkbox"  id="jpCheckbox" class="jpCheckbox"></label>
 			</td>
 
 
-			<td style="width:50px">
+			<td style="width:70px">
 				<label><input name='gratuite' type="checkbox"  id="jpCheckbox2" class="jpCheckbox2" ></label>
 			</td>
 
 
-			<td style="width:250px">
+			<td style="width:150px">
 
 			   
 
@@ -783,11 +819,86 @@
 				<button type="submit" data-toggle="tooltip" data-placement="top" title="Ajouter une chaîne" id="" href="{{path('ajouter_chaine')}}" class="btn btn-info btn-xs"><i data-toggle="tooltip" data-placement="top" title="Ajouter une chaîne" class="glyphicon glyphicon-plus"></i></button>
 			</td>
 		</tr>
+	</tbody>
 	</table>
 	</form>
 </div>
 <br>
+<!-- Modals -->
 
+<!-- Modal Gratuité   -->
+<div class="modal fade" id="vodmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog  modal-md" style="width:460px" role="document">
+	  <div class="modal-content">
+	<form action="{{path('home')}}"  name="" method="post" enctype="multipart/form-data"> 
+   
+			<div class="modal-header">
+		  <a type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+		  <div class="col-md-6">
+		  <h4 style="line-height: 3;" class="modal-title" id="myModalLabel">Chaine TV gratuite  </h4>
+		  </div>
+				  
+		</div>
+		<div class="modal-body">
+  
+	  
+  
+  <div class="form-group">
+	{# {% if (typegratuite == 'stop') %}
+		 <p style="color: red;font-size: 16px;"><B> Pas de gratuité enregistrée.</B></p>
+  {% elseif (typegratuite == 'r_immediate') %}
+		 <p style="color: red;font-size: 16px;"><i class="glyphicon glyphicon-warning-sign"></i> <B> - Gratuité en cours..</B> </p>
+  {% elseif (typegratuite == 'r_defini') %}
+	  {% if dd|date('Y-m-d H:i:s', 'Europe/Paris') < "now"|date('Y-m-d H:i:s', 'Africa/Casablanca')  and df|date('Y-m-d H:i:s', 'Europe/Paris') > "now"|date('Y-m-d H:i:s', 'Africa/Casablanca')  %}
+		   <p style="color: red;font-size: 13px;"><i class="glyphicon glyphicon-warning-sign"></i>  - Gratuité en cours entre le   <strong> {{dd|date('d-m-Y H:i', 'Europe/Paris')}} </strong> et <strong> {{df|date('d-m-Y H:i', 'Europe/Paris')}} </strong>
+	 </p>
+	  {% else %}
+		  <p style="color: red;font-size: 16px;"><B> Pas de gratuité enregistrée.</B></p>
+	{% endif %} 
+  {% else %}
+	  <p style="color: red;font-size: 16px;"><B>  Pas de gratuité enregistrée.</B></p>
+   {% endif %}#}
+		 
+	 <p>Veuillez choisir le mode de gratuité :</p>
+  
+  
+		  <input type="radio" id="t_gratuite" class="t_gratuite" name="t_gratuite" value="r_defini">
+		  <label for="css">Gratuité avec date debut et fin :</label><br>
+			 
+												   
+						  <div class="d_defini" style="display:none;">
+			  <label for="d_debut">Date début:</label>
+			  <input type="datetime-local" id="d_debut" name="d_debut" style="margin-left: 51px;" ><br>
+  
+			  <label for="d_fin">Date fin:</label>
+			  <input type="datetime-local" id="d_fin" name="d_fin" style="margin-left: 70px;" >
+		  </div>					 
+														 
+																															 
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																  
+  
+		  <input type="radio" id="t_gratuite" class="t_gratuite" name="t_gratuite" value="r_immediate">
+		  <label for="html">Gratuité immédiate </label><br>
+			
+						   
+  
+  
+	  
+					
+  
+		</div>
+		<div class="modal-footer">
+		 
+	  <button type="submit"  id='chaine_gratuite' name='chaine_gratuite' class="button btn btn-primary btn-sm"><i class="glyphicon glyphicon-floppy-disk"></i> Valider </button> 
+		<a data-toggle="tooltip" data-placement="top"   id="stopgratuite" href="{{path('home')}}" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Ce boutton va arrêter immédiatement la gratuité en cours." ><i class="glyphicon glyphicon-remove-circle"></i>Arrêter</a>
+		 <a data-toggle="tooltip" data-placement="top"   id="historique" href="{{path('home')}}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Afficher l'historique des gratuités" ><i class="glyphicon glyphicon-link"></i>Historique</a>
+		 <a type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i>Annuler</a>
+		</div>
+	</form> 
+	  </div>
+	</div>
+  </div>
+<!-- Scripts -->
 <script src="{{asset('javascript/jquery.min.js')}}"></script>
 <script>
     function readURL(input) {
@@ -821,6 +932,19 @@
             });
           });
         });
+</script>
+<script>
+	$(document).ready(function () {
+$('input:radio').change(function () {
+if ($(this).val() === 'r_defini') {
+$(".d_defini").show();
+$("#d_fin").attr("required","true");
+$("#d_debut").attr("required","true");
+} else {
+$(".d_defini").hide();
+}
+});
+});
 </script>
 
 {% endblock %}

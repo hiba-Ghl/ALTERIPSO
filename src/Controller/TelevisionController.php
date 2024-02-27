@@ -15,6 +15,7 @@ class TelevisionController extends AbstractController
     #[Route('/television', name: 'app_television')]
     public function index(EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
         $repository = $entityManager->getRepository(Television::class);
         $etablissement = $this->getUser()->getEtablissement();
         $television  = $repository->findBy(['etablissement' => $etablissement],['numero' => 'ASC']);
