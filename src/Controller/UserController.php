@@ -93,6 +93,59 @@ class UserController extends AbstractController
         return $this->redirectToRoute('app_login'); 
         
     }
+
+    #[Route('/profil', name: 'app_profil')]
+      public function index(): Response
+    {
+        $user = $this->getUser();
+        
+        return $this->render('user/index.html.twig', [
+            'user' => $user,
+        ]);
+    }
+
+
+    #[Route("/modifierProfil/{id}", name: "modifierProfil")]
+    public function modifierProfil(int $id, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher, Request $request): Response
+    {
+        $user = $entityManager->getRepository(User::class)->find($id);
+
+        // Récupération des données du formulaire
+        $username = $request->get('username');
+        $email = $request->get('email');
+        $password = $request->get('password');
+        $newPassword = $request->get('newPassword');
+        $confirmPassword = $request->get('confirmPassword');
+
+        // Modification des données de l'utilisateur
+        $user->setUsername($username);
+        $user->setEmail($email);
+
+        // Vérification et gestion du changement de mot de passe
+        if ($password && $newPassword && $confirmPassword) {
+            if ($passwordHasher->isPasswordValid($user, $password)) {
+                if ($newPassword === $confirmPassword) {
+                        $encodedPassword = $passwordHasher->hashPassword($user, $newPassword);
+                        $user->setPassword($encodedPassword);
+                        $this->addFlash('success', 'Mot de passe valide, votre action a été réalisée avec succès !');
+                } else {
+                        $this-> addFlash('error', 'Le nouveau mot de passe et la confirmation du mot de passe ne correspondent pas.');
+                        return $this->redirectToRoute('app_profil', ['id' => $user->getId()]);
+                    }
+             } else {
+                       $this->addFlash('error', 'Mot de passe invalide.');
+                       return $this->redirectToRoute('app_profil', ['id' => $user->getId()]);
+            }
+        }
+            
+        // Enregistrement des modifications dans la base de données
+        $entityManager->flush();
+
+        // Redirection vers la page de profil
+        $this->addFlash('success', 'Votre profil a été modifier avec succes !');
+        return $this->redirectToRoute('app_profil');
+    }
+    
 }
 
 
