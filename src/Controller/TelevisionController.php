@@ -204,7 +204,7 @@ class TelevisionController extends AbstractController
                 foreach ($active as $key => $k) {
                     $active_television  = $repository->findById($key);
                     $active_television[0]->setActive("1");
-                    $entityManager->persist($protocole_television[0]);
+                    $entityManager->persist($active_television[0]);
                     $entityManager->flush();
                 }
             }

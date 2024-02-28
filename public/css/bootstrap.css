@@ -777,7 +777,7 @@ th {
 .glyphicon-log-out:before {
   content: "\e163";
 }
-.glyphicon-new-window:before {
+.glyphicon-floppy-disk:before {
   content: "\e164";
 }
 .glyphicon-record:before {

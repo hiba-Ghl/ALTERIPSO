@@ -10,8 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: EtablissementRepository::class)]
 class Etablissement
 {
+    
     #[ORM\Id]
-    #[ORM\Column]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "NONE")]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: false)]
