@@ -98,7 +98,7 @@
 				<i class="glyphicon glyphicon-warning-sign"></i>-    vous n'avez pas assez de licences, pour ajouter un support merci d'envoyer un email à : contact@alteripso.com
 			</div>
 		{% else %}
-			<a href="{{path('home')}}" class="btn btn-info btn-sm" name="add" id="add">
+			<a href="{{path('app_ajouter_chambre')}}" class="btn btn-info btn-sm" name="add" id="add">
 				<i class="glyphicon glyphicon-plus"></i>
 				Ajouter support</a>
 			<br>
@@ -224,7 +224,7 @@
 							{% else %}
 								<td style="text-align: center; height: 50px;width: 72px;">Dynamique
 									<br><div style="color:red;">
-										({{box.chaine.name}})
+										({{box.chaine.nom}})
 									</div>
 								</td>
 							{% endif %}
@@ -248,12 +248,12 @@
 									<i class="glyphicon glyphicon-refresh"></i>
 								</a>
 
-								<a data-toggle="tooltip" data-placement="top" title="supprimer le support" id="" href="{{path('home')}}" class="ida btn btn-danger btn-xs">
+								<a data-toggle="tooltip" data-placement="top" title="supprimer le support" id="" href="{{path('app_supprimer_chambre',{'id':box.id})}}" class="ida btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer la chambre : {{box.nom}} ?')">
 									<i class="glyphicon glyphicon-trash"></i>
 								</a>
 
 
-								<a data-toggle="tooltip" data-placement="top" title="Modifier le support" id="ida" href="{{path('home')}}" class="btn btn-warning btn-xs">
+								<a data-toggle="tooltip" data-placement="top" title="Modifier le support" id="ida" href="{{path('app_modifier_chambre',{'id':box.id})}}" class="btn btn-warning btn-xs">
 									<i class="glyphicon glyphicon-edit"></i>
 								</a>
 

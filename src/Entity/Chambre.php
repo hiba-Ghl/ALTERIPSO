@@ -70,8 +70,8 @@ class Chambre
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $typeaffichage = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $chaine = null;
+    #[ORM\ManyToOne(inversedBy: 'chambres')]
+    private ?Television $chaine = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $status = null;
@@ -315,7 +315,7 @@ class Chambre
         return $this;
     }
 
-    public function getChaine(): ?string
+   /* public function getChaine(): ?string
     {
         return $this->chaine;
     }
@@ -325,7 +325,7 @@ class Chambre
         $this->chaine = $chaine;
 
         return $this;
-    }
+    }*/
 
     public function getStatus(): ?string
     {
@@ -359,6 +359,18 @@ class Chambre
     public function setService(?ServiceEtablissement $service): static
     {
         $this->service = $service;
+
+        return $this;
+    }
+
+    public function getChaine(): ?Television
+    {
+        return $this->chaine;
+    }
+
+    public function setChaine(?Television $chaine): static
+    {
+        $this->chaine = $chaine;
 
         return $this;
     }

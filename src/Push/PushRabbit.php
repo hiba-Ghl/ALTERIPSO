@@ -26,12 +26,9 @@ class PushRabbit {
         $connection->close();
     }
 
-    public function rebootBox($id_organisation, $room)
-    {
-        $queue = $id_organisation . '.' . $room . '.service';
-        $message = 'shell%%reboot';     
-        $this->MakeRabbitCall([$queue], $message);
-    }
+   
+
+
     
 
    

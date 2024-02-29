@@ -1,0 +1,370 @@
+{% extends 'home/index.html.twig' %}
+{% block body %}
+<style>
+    #div2 {
+			border-radius: 25px;
+			border: 2px solid #3087ce;
+			padding: 20px;
+			width: 1300px;
+			height: 500px;
+			margin-left: -70px;
+			margin-top: 10px;
+			background-color: white;
+		}
+</style>
+
+
+<div style="margin-top: -40px;position: absolute;border-radius: 8px;text-align: left;margin-left: -68px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 550px;padding-left: -27px;">
+    Modifier Support: {{box.nom}} - IP : {{box.ip}}
+</div>
+
+<div id="div2">
+    
+        <form action="" method="post" enctype="multipart/form-data">
+        
+        
+        
+        <table style="width: 100%;">
+        <tr>
+        <td style="width: 33%;">
+            <div  class="control-label" >
+              <label  class=" control-label">Nom Support: </label>
+             <input type="text" name="nom"  class="form-control" style="width: 75%;"  value="{{box.nom}}" >
+            </div>
+            
+        </td>
+        
+        <td style="width: 33%;">
+          <div  class="control-label" >
+            <label  class=" control-label">Support: </label>
+        {% if box.Support == 'R-TV' or box.Support == 'R-Tv' %}
+        
+        {% set a= 'Samsung' %}
+        {% elseif box.Support == 'R-LG'   %}
+        {% set a= 'LG' %}
+        
+        {% elseif box.Support == 'R-PH'   %}
+        {% set a= 'Philips' %}
+        {% elseif box.Support == 'R-BoxIp'   %}
+        {% set a= 'Box-Ip' %}
+        {% elseif box.Support == 'R-BoxCoax'   %}
+        {% set a= 'Box-Coax' %}
+        
+        {% endif %}
+        
+        
+        
+        
+        
+            <select class="form-control" name="typesupport" id="typesupport" style="width: 75%;" > 
+                   <option selected=selected value ='{{a}}'>{{a}}</option>
+                   <option value ='Box-Ip'>Box-Ip</option>
+                   <option value ='Samsung'>Samsung</option>
+                   <option value ='LG'>LG</option>
+                   <option value ='Philips'>Philips</option>     
+                   <option value ='Box-Coax'>Box-Coax</option>
+            </select> 
+          </div>
+        
+        </td>
+        <td style="width: 33%;">
+          <div  class="control-label" >
+            <label  class=" control-label">Type: </label>
+        
+        
+        
+        
+        
+        
+            <select class="form-control" name="type" id="type" style="width: 75%;" > 
+                   <option selected=selected value ='{{box.type}}'>{{box.type}}</option>
+                   <option value ='ip'>ip</option>
+                   <option value ='coax'>coax</option>
+                 
+            </select> 
+          </div>
+        
+        </td>
+        </tr>
+        <tr>
+        
+        <td style="width: 33%;">
+          
+        <div  class="control-label" >
+              <label  class=" control-label">Adresse Mac: </label>
+             <input type="text" name="mac" id="mac"  class="form-control" style="width: 75%;" placeholder="xx:xx:xx:xx:xx:xx" value="{{box.mac}}" >
+            </div>
+        
+        </td>
+        
+        <td style="width: 33%;">
+        <div  class="control-label" >
+              <label  class=" control-label">Etage: </label>
+             <input type="text" name="etage"  class="form-control" style="width: 75%;" value="{{box.Etage}}"  >
+            </div>
+        
+        </td>
+        
+        
+        <td style="width: 33%;">
+         <div  class="control-label" >
+              <label  class=" control-label">Adresse Ip: </label>
+             <input type="text" name="ip" id="ip"  class="form-control" style="width: 75%;" placeholder="127.0.0.1" value="{{box.Ip}}"   >
+          </div>
+        </td>
+        
+        </tr>
+        
+        <tr>
+        <td style="width: 33%;">
+          <div  class="control-label" >
+            <label  class=" control-label">Services: </label>
+        
+        <select  name="service" class="form-control" style="width: 75%;">
+        <option selected="selected" value="{{box.service.id}}" style="text-transform: capitalize;">{{box.service.nom}}</option>
+        {% for serv in service %}
+        {% if (serv.nom == box.service.nom ) %}
+        
+        {% else  %}
+        
+        <option  value="{{serv.id}}" style="text-transform: capitalize;">{{serv.nom}}</option>
+        {% endif %}
+        {% endfor%}
+        
+        </select>
+          </div>
+        
+        </td>
+        
+        <td style="width: 33%;">
+          <div  class="control-label" >
+            <label    class=" control-label">Type d'affichage: </label><label class="glyphicon glyphicon-question-sign" title="
+            Règle :   
+        
+        - Affichage Atreipso :
+        -> Fonctionnement normal
+        
+        - Affichage dynamique
+        * cas checkout 
+          -> afficher la chaine interne en prio.
+          -> si pas de chaine interne affichage de la 1ere chaine gratuite.
+          -> si on clique sur return on revient sur l'interface alteripso.
+        
+        * cas checkin 
+          -> on peut changer la chaine (sans revenir sur l'interface alteripso).
+          -> si on clique sur return on revient sur l'interface alteripso.
+          -> afficher la chaine choisi qq soit le bouquet
+        
+        * tv en mode veille
+          -> dés qu'on la rallume elle se remet directement sur la chaine sélectionnée
+        "   data-placement="top" ></label>
+        
+        
+        
+        <select name="typeaffichage" class="form-control typeaffichage" style="width: 75%;">
+        {% if box.typeaffichage == 1 %}
+        <option selected="selected" value="{{box.typeaffichage}}" >Alteripso</option>
+        <option  value="2" >Dynamique</option>
+        {% else %}
+        <option selected="selected" value="{{box.typeaffichage}}" >Dynamique</option>
+        <option  value="1" >Alteripso</option>
+        {% endif %}
+        
+        </select>
+          </div>
+        
+        </td>
+        
+        <td style="width: 33%;" class="listechaine">
+          <div  class="control-label" >
+            <label  class=" control-label ">Liste chaines </label>
+        
+        <select name="listechaine" class="form-control" style="width: 75%;">
+        {% if (box.chaine.id)== 0 or box.chaine.id == null %}
+        {% else %}
+        <option selected="selected" value="{{box.chaine.id}}" >{{box.chaine.nom}}</option>
+        {% endif %}
+        {% for ch in listechaine %}
+        {% if (ch.id == box.chaine.id) %}
+        
+        {% else  %}
+        
+        <option  value="{{ch.id}}" >{{ch.nom}}</option>
+        {% endif %}
+        {% endfor%}
+        
+        </select>
+          </div>
+        
+        </td>
+        
+        </tr>
+        
+        <tr>
+        {% if ( '.mp4' in box.background ) %}
+        {% else %}
+                    <td style="width: 33%;">
+                            <div class="control-label">
+                                <label  class=" control-label">
+                                    Fond d'écran:
+                                </label>
+                                <br>
+                                        <table>
+                                    <tr>
+                                    <td>
+                                    <input type="radio"  name="back" checked value="{{box.background}}">
+                                    </td>
+                                    <td>
+                                    <img  style="width:150px;height:100px;text-align:center;margin-left: 10px;" src="{{ asset('images/'~box.background) }}" alt="..." class="img-rounded img-responsive center-block">
+                                    </td>
+                                    </tr>
+                                    </table>
+                    <br>
+                                    {% for back in listback %}
+                    {% if back != box.background %}
+                                    <table>
+                                    <tr>
+                                    <td>
+                                    <input type="radio"  name="back" value="{{back}}">
+                                    </td>
+                                    <td>
+                                    <img  style="width:150px;height:100px;text-align:center;margin-left: 10px;" src="{{ asset('images/'~back) }}" alt="..." class="img-rounded img-responsive center-block">
+                                    </td>
+                                    </tr>
+                                    </table>
+                  
+                                        <br>
+                                          {% endif %}
+                                        
+                                        
+                                    
+                                    {% endfor %}
+        
+                            </div>
+        
+                        </td>
+          {% endif %}
+                    </tr>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        </table>
+        
+        <br><br><br>
+        
+        <button type="submit" class="button btn btn-primary btn-sm" style="margin-left:1px;" name="valider" onclick='return CheckForm();' ><i class="glyphicon glyphicon-floppy-disk" ></i> Enregistrer </button> 
+        
+        
+        
+        
+        
+        </form>
+        
+        <form method="POST" action="{{path('app_chambre')}}">
+        <button  type="submit"   class="button btn btn-danger btn-sm" style="width: 103px;margin-left: 111px;margin-top: -57px;" ><i class="glyphicon glyphicon-remove" ></i> Annuler </button> 
+        </form>
+        
+        
+        
+        
+        
+</div>
+
+
+
+<script type="text/javascript">
+
+$(window).load(function() {
+$(".listechaine").hide();
+   });
+$(document).ready(function(){
+
+    $(".typeaffichage").change(function(){
+   az=this.value;
+   //  alert("  azzzzz = "+az);
+  if(az=='1'){
+    $(".listechaine").hide();
+    }
+
+   else{
+     $(".listechaine").show();
+   
+  
+   }
+ 
+
+});
+});
+
+</script>
+<script>
+function CheckForm()
+{
+var type=$("#type").val();
+var msg="";
+if(type == 'Samsung' || type == 'LG' ||  type == 'Philips' ){
+
+
+if(!CheckIp("ip")){msg+="Merci d'Intoduire une adresse ip (format:127.0.0.1)";}
+if(msg!="")
+{
+  alert (msg);
+  return false;
+}}
+
+if(type == 'Box-Coax' || type == 'Box-Ip' ){
+if(!CheckMac("mac")){msg+="Merci d'Intoduire une adresse Mac (format:AA:BB:CC:DD:EE:FF)";}
+if(msg!="")
+{
+  alert (msg);
+  return false;
+}
+}
+
+
+
+return true;
+} 
+
+
+
+
+function CheckIp(ObjId)
+{
+Obj=document.getElementById(ObjId);
+var reg=new RegExp("^([0-9]{1,3}\.){1,3}[0-9]{1,3}","g");
+// var reg=new RegExp("[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}:[0-9]{5}","g");
+//[0-9]{3}.[0-9]{3}.[0-9]{3}.[0-9]{3}:[0-9]{5}
+
+
+return reg.test(Obj.value)
+} 
+
+function CheckMac(ObjId)
+{
+Obj=document.getElementById(ObjId);
+//var reg=new RegExp("^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$");
+var reg=new RegExp("^[a-fA-F0-9:]{17}|[a-fA-F0-9]{12}$");
+
+
+
+return reg.test(Obj.value)
+} 
+
+
+
+
+
+</script>
+
+
+
+{% endblock %}
