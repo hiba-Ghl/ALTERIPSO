@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\ServiceEtablissement;
 use App\Entity\Chambre;
+use App\Push\PushRabbit;
 
 
 class ChambreController extends AbstractController
@@ -76,6 +77,33 @@ class ChambreController extends AbstractController
 
 
 
+       return $this->redirectToRoute('app_chambre');
+   }
+   #[Route('/redemarrer', name: 'app_redemarrer')]
+   public function redemarrer(EntityManagerInterface $entityManager): Response
+   {
+        $request = Request::createFromGlobals();
+        $repository = $entityManager->getRepository(Chambre::class);
+        $isetablissement = $this->getUser()->getEtablissement()->getId();
+
+
+       $box = $request->get('id');
+       $boxsx = array();
+
+       if (isset($box) and !empty($box)) {
+
+            $boxs  = $repository->findById($box);
+            $chambres = $boxs[0]->getNom();
+
+           
+
+
+               $Manager = new PushRabbit();
+               $Manager->rebootBox($isetablissement, $chambres);
+           
+       }
+
+  
        return $this->redirectToRoute('app_chambre');
    }
 }

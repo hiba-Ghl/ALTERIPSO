@@ -77,7 +77,7 @@ class Chambre
     private ?string $status = null;
 
     #[ORM\ManyToOne]
-    private ?etablissement $etablissement = null;
+    private ?Etablissement $etablissement = null;
 
     #[ORM\ManyToOne(inversedBy: 'chambres')]
     private ?ServiceEtablissement $service = null;
@@ -339,12 +339,12 @@ class Chambre
         return $this;
     }
 
-    public function getEtablissement(): ?etablissement
+    public function getEtablissement(): ?Etablissement
     {
         return $this->etablissement;
     }
 
-    public function setEtablissement(?etablissement $etablissement): static
+    public function setEtablissement(?Etablissement $etablissement): static
     {
         $this->etablissement = $etablissement;
 
