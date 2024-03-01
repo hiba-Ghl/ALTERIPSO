@@ -70,7 +70,7 @@ class Chambre
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $typeaffichage = null;
 
-    #[ORM\ManyToOne(inversedBy: 'chambres')]
+    #[ORM\ManyToOne]
     private ?Television $chaine = null;
 
     #[ORM\Column(length: 255, nullable: true)]

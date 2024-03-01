@@ -22,7 +22,7 @@ class ChambreController extends AbstractController
         $repository = $entityManager->getRepository(Chambre::class);
         $repositorys = $entityManager->getRepository(ServiceEtablissement::class);
         $etablissement = $this->getUser()->getEtablissement();
-        $idetablissement = $etablissement->getId();
+        //$idetablissement = $etablissement->getId();
         $chambres  = $repository->findBy(['etablissement' => $etablissement]);
         $serviceetablissement  = $repositorys->findBy(['etablissement' => $etablissement]);
         return $this->render('chambre/index.html.twig', [
