@@ -44,8 +44,46 @@
 								ACCUEIL</a>
 						</li>
 
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var dropdowns = document.querySelectorAll('.dropdown');
+
+    dropdowns.forEach(function(dropdown) {
+        var submenu = dropdown.querySelector('.dropdown-menu');
+
+        // Ajouter un gestionnaire de survol pour le menu déroulant et le sous-menu
+        dropdown.addEventListener('mouseover', function() {  
+            dropdown.classList.add('active');
+            submenu.style.display = 'block';
+        });
+
+        // Ajouter un gestionnaire de sortie pour le menu déroulant et le sous-menu
+        dropdown.addEventListener('mouseout', function(event) {
+            // Vérifier si la souris est sortie du menu déroulant ou du sous-menu
+            if (!dropdown.contains(event.relatedTarget) && !submenu.contains(event.relatedTarget)) {
+                dropdown.classList.remove('active');
+                submenu.style.display = 'none';
+            }
+        });
+
+        submenu.addEventListener('mouseover', function() {
+            dropdown.classList.add('active');
+            submenu.style.display = 'block';
+        });
+
+        submenu.addEventListener('mouseout', function(event) {
+            // Vérifier si la souris est sortie du menu déroulant ou du sous-menu
+            if (!dropdown.contains(event.relatedTarget) && !submenu.contains(event.relatedTarget)) {
+                dropdown.classList.remove('active');
+                submenu.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
 
 						<script>
+							/*
 							document.addEventListener("DOMContentLoaded", function () {
 
 var dropdowns = document.querySelectorAll('.dropdown');
@@ -76,7 +114,8 @@ submenu.style.display = 'none';
 });
 });
 });
-						</script>
+*/
+		 </script>
 
 						<style>
 							.dropdown-menu .dropdown-menu {
@@ -86,288 +125,296 @@ submenu.style.display = 'none';
 							}
 						</style>
 
-						<!-- changements -->
-						<li class="dropdown Categories">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-								<i class="glyphicon glyphicon-list"></i>
-								CATEGORIES
-								<span class="caret"></span>
+						 <!-- changements -->
+		<li class="dropdown Categories">
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+				<i class="glyphicon glyphicon-list"></i>
+				CATEGORIES
+				<span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu">
+			<!-- Application-->
+				<li class="dropdown APPLICATION">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						
+						<i class="glyphicon glyphicon-phone"  style="margin-right: 10px;"></i>
+						APPLICATION
+						<svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+						<path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+						</svg>    
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="{{ path('app_application') }}">
+								<i class="glyphicon glyphicon-file" style="margin-right: 10px;"></i>
+								liste APPLICATION
 							</a>
-							<ul
-								class="dropdown-menu">
-								<!-- Application-->
-								<li class="dropdown APPLICATION">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-
-										<i class="glyphicon glyphicon-phone"></i>
-										APPLICATION
-										<svg width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewbox="0 0 16 16">
-											<path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-										</svg>
-									</a>
-									<ul class="dropdown-menu">
-										<li>
-											<a href="{{ path('home') }}">
-												<i class="glyphicon glyphicon-file"></i>
-												liste APPLICATION
-											</a>
-										</li>
-
-									</ul>
-								</li>
-								<!-- Charte Patient-->
-								<li class="dropdown CHARTEPATIENT">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-										<i class="glyphicon glyphicon-file"></i>
-										CHARTE PATIENT
-
-										<svg width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewbox="0 0 16 16">
-											<path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-										</svg>
-									</a>
-									<ul class="dropdown-menu">
-										<li>
-											<a href="{{ path('home') }}">
-												<i class="glyphicon glyphicon-file"></i>
-												Modifier PDF
-											</a>
-										</li>
-										<li>
-											<a href="{{ path('home') }}">
-												<i class="glyphicon glyphicon-phone"></i>
-												Charte Patient
-											</a>
-										</li>
-									</ul>
-								</li>
-								<!--JEUX -->
-								<li class="dropdown JEUX">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-										<i class="glyphicon glyphicon-knight"></i>
-										JEUX
-										<svg width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewbox="0 0 16 16">
-											<path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-										</svg>
-									</a>
-									<ul class="dropdown-menu">
-										<li>
-											<a href="{{ path('home') }}">
-												<i class="glyphicon glyphicon-knight"></i>
-												Liste JEUX
-											</a>
-										</li>
-									</ul>
-								</li>
-
-								<!-- LIVRE AUDIO -->
-								<li class="dropdown LIVREAUDIO">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-										<i class="glyphicon glyphicon-equalizer"></i>
-										LIVRE AUDIO
-										<svg width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewbox="0 0 16 16">
-											<path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-										</svg>
-									</a>
-									<ul class="dropdown-menu">
-										<li>
-											<a href="{{ path('home') }}">
-												<i class="glyphicon glyphicon-folder-open"></i>
-												Categorie LIVRE AUDIO
-											</a>
-										</li>
-										<li>
-											<a href="{{ path('home') }}">
-												<i class="glyphicon glyphicon-list"></i>
-												Liste Livre audio
-											</a>
-										</li>
-									</ul>
-								</li>
-								<!-- MUSIQUE -->
-								<li class="dropdown MUSIQUE">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-										<i class="glyphicon glyphicon-music"></i>
-										MUSIQUE
-										<svg width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewbox="0 0 16 16">
-											<path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-										</svg>
-									</a>
-									<ul class="dropdown-menu">
-										<li>
-											<a href="{{ path('home') }}">
-												<i class="glyphicon glyphicon-music"></i>
-												Liste MUSIQUE
-											</a>
-										</li>
-									</ul>
-								</li>
-								<!-- QUESTIONNAIRE-->
-								<li class="dropdown QUESTIONNAIRE">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-										<i class="glyphicon glyphicon-pencil"></i>
-										QUESTIONNAIRE
-										<svg width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewbox="0 0 16 16">
-											<path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-										</svg>
-									</a>
-									<ul class="dropdown-menu">
-
-										<li>
-											<a href="{{ path('home')}}">
-												<i class="glyphicon glyphicon-pencil "></i>
-												Liste QUESTIONNAIRE
-											</a>
-										</li>
-
-
-										<li>
-											<a href=" {{ path('home')}}">
-												<i class="glyphicon glyphicon-list "></i>
-												Resultat QUESTIONNAIRE
-											</a>
-										</li>
-									</ul>
-								</li>
-								<!-- radio-->
-								<li class="dropdown RADIO">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-										<i class="glyphicon glyphicon-equalizer"></i>
-										RADIO
-										<svg width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewbox="0 0 16 16">
-											<path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-										</svg>
-									</a>
-									<ul class="dropdown-menu ">
-										<li>
-											<a href="{{ path('app_categorie_radio') }}">
-												<i class="glyphicon glyphicon-list"></i>
-												Catégories radio
-											</a>
-										</li>
-										<li>
-											<a href="{{ path('app_radio') }}">
-												<i class="glyphicon glyphicon-stats"></i>
-												Liste radio
-											</a>
-										</li>
-									</ul>
-								</li>
-								<!-- SERVICE -->
-								<li class="dropdown SERVICE">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-										<i class="glyphicon glyphicon-bell"></i>
-										SERVICE
-										<svg width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewbox="0 0 16 16">
-											<path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-										</svg>
-									</a>
-									<ul class="dropdown-menu">
-										<li>
-											<a href="{{ path('home') }}">
-												<i class="glyphicon glyphicon-list"></i>
-												Liste Services
-											</a>
-										</li>
-									</ul>
-								</li>
-								<!-- SERVICES PAYANTS-->
-								<li class="dropdown SERVICESPAYANTS">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-										<i class="glyphicon glyphicon-euro"></i>
-										SERVICES PAYANTS
-										<svg width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewbox="0 0 16 16">
-											<path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-										</svg>
-									</a>
-									<ul class="dropdown-menu">
-										<li>
-											<a href="{{ path('home') }}">
-												<i class="glyphicon glyphicon-knight"></i>
-												Services Payants
-											</a>
-										</li>
-										<li>
-											<a href="{{ path('home') }}">
-												<i class="glyphicon glyphicon-phone"></i>
-												Modifier PDF
-											</a>
-										</li>
-									</ul>
-								</li>
-								<!-- television -->
-								<li class="dropdown TELEVISION">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-										<i class="glyphicon glyphicon-blackboard"></i>
-										TÉLÉVISION
-										<span class="caret "></span>
-									</a>
-									<ul class="dropdown-menu">
-										<li>
-											<a href="{{ path('app_television') }}">
-												<i class="glyphicon glyphicon-list"></i>
-												Liste TÉLÉVISION
-											</a>
-										</li>
-										<li>
-											<a href="{{ path('home') }}">
-												<i class="glyphicon glyphicon-stats"></i>
-												STATISTIQUE UTILISATION CHAINE TV
-											</a>
-										</li>
-									</ul>
-
-								</li>
-
-								<!-- VIDEO -->
-								<li class="dropdown VIDEO">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-										<i class="glyphicon glyphicon-facetime-video"></i>
-										VIDEO
-										<svg width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewbox="0 0 16 16">
-											<path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-										</svg>
-									</a>
-									<ul class="dropdown-menu">
-										<li>
-											<a href="{{ path('home') }}">
-												<i class="glyphicon glyphicon-equalizer"></i>
-												Liste video
-											</a>
-										</li>
-									</ul>
-								</li>
-
-
-								<!-- VOD -->
-								<li class="dropdown VOD">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-										<i class="glyphicon glyphicon-facetime-video"></i>
-										VOD
-										<svg width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewbox="0 0 16 16">
-											<path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-										</svg>
-									</a>
-									<ul class="dropdown-menu">
-										<li>
-											<a href="{{ path('home') }}">
-												<i class="glyphicon glyphicon-folder-open"></i>
-												Categorie VOD
-											</a>
-										</li>
-										<li>
-											<a href="{{ path('home') }}">
-												<i class=" glyphicon glyphicon-list"></i>
-												Liste VOD
-											</a>
-										</li>
-
-									</ul>
-								</li>
-
-
-							</ul>
 						</li>
-
+						
+					</ul>
+				</li>
+			<!-- Charte Patient-->
+				<li class="dropdown CHARTEPATIENT">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						<i class="glyphicon glyphicon-file" style="margin-right: 10px;"></i>
+						 CHARTE PATIENT
+					   <!-- <span class="caret"></span>-->
+					   <svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+		  <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+		</svg>    
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="{{ path('home') }}">
+								<i class="glyphicon glyphicon-file" style="margin-right: 10px;"></i>
+								Modifier PDF
+							</a>
+						</li>
+						<li  >
+							<a href="{{ path('home') }}">
+								<i class="glyphicon glyphicon-phone" style="margin-right: 10px;"></i>
+								Charte Patient
+							</a>
+						</li>
+					</ul>
+				</li>
+				<!--JEUX -->
+				<li class="dropdown JEUX">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						<i class="glyphicon glyphicon-knight" style="margin-right: 10px;"></i>
+						JEUX
+						 <svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+		  <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+		</svg>    
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="{{ path('home') }}">
+								<i class="glyphicon glyphicon-knight" style="margin-right: 10px;"></i>
+								Liste JEUX
+							</a>
+						</li>
+					</ul>
+				</li>
+				
+						<!-- LIVRE AUDIO -->
+				<li class="dropdown LIVREAUDIO">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						<i class="glyphicon glyphicon-equalizer" style="margin-right: 10px;"></i>
+						LIVRE AUDIO
+						 <svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+		  <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+		</svg>    
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="{{ path('home') }}">
+								<i class="glyphicon glyphicon-folder-open" style="margin-right: 10px;"></i>
+								Categorie LIVRE AUDIO
+							</a>
+						</li>
+						<li  >
+							<a href="{{ path('home') }}">
+								<i class="glyphicon glyphicon-list" style="margin-right: 10px;"></i>
+								Liste Livre audio
+							</a>
+						</li>
+					</ul>
+				</li>
+				<!-- MUSIQUE -->
+				<li class="dropdown MUSIQUE">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						<i class="glyphicon glyphicon-music"  style="margin-right: 10px;"></i>
+						MUSIQUE
+						 <svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+		  <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+		</svg>    
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="{{ path('home') }}">
+								<i class="glyphicon glyphicon-music" style="margin-right: 10px;"></i>
+								Liste MUSIQUE
+							</a>
+						</li>
+					</ul>
+				</li>
+				<!-- QUESTIONNAIRE-->
+				<li class="dropdown QUESTIONNAIRE">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						<i class="glyphicon glyphicon-pencil" style="margin-right: 10px;"></i>
+						QUESTIONNAIRE
+						 <svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+		  <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+		</svg>    
+					</a>
+					<ul class="dropdown-menu">
+					
+							<li>
+							<a href="{{ path('home')}}">
+								<i class="glyphicon glyphicon-pencil " style="margin-right: 10px;"></i>
+								Liste QUESTIONNAIRE
+							</a>
+						</li>
+		
+		
+						<li>
+							<a href=" {{ path('home')}}">
+								<i class="glyphicon glyphicon-list " style="margin-right: 10px;"></i>
+								 Resultat QUESTIONNAIRE
+							</a>
+						</li>
+					</ul>
+				</li>
+				<!-- radio-->
+				<li class="dropdown RADIO">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						<i class="glyphicon glyphicon-equalizer" style="margin-right: 10px;"></i>
+						RADIO
+						 <svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+		  <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+		</svg>    
+					</a>
+					<ul class="dropdown-menu ">
+						<li>
+							<a href="{{ path('app_categorie_radio') }}">
+								<i class="glyphicon glyphicon-list" style="margin-right: 10px;"></i>
+								Categories radio
+							</a>
+						</li>
+						<li >
+							<a href="{{ path('app_radio') }}">
+								<i class="glyphicon glyphicon-stats" style="margin-right: 10px;"></i>
+								Liste radio
+							</a>
+						</li>
+					</ul>
+				</li>
+				<!-- SERVICE -->
+				<li class="dropdown SERVICE">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						<i class="glyphicon glyphicon-bell" style="margin-right: 10px;"></i>
+						SERVICE
+						 <svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+		  <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+		</svg>    
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="{{ path('home') }}">
+								<i class="glyphicon glyphicon-list" style="margin-right: 10px;"></i>
+								Liste Services
+							</a>
+						</li>  
+					</ul>
+				</li>
+				<!-- SERVICES PAYANTS-->
+				<li class="dropdown SERVICESPAYANTS">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						<i class="glyphicon glyphicon-euro" style="margin-right: 10px;"></i>
+						SERVICES PAYANTS 
+						 <svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+		  <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+		</svg>    
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="{{ path('home') }}">
+								<i class="glyphicon glyphicon-knight" style="margin-right: 10px;"></i>
+								Services Payants
+							</a>
+						</li>
+						<li  >
+							<a href="{{ path('home') }}">
+								<i class="glyphicon glyphicon-phone" style="margin-right: 10px;"></i>
+								Modifier PDF
+							</a>
+						</li>
+					</ul>
+				</li>
+				<!-- television -->
+				<li class="dropdown TELEVISION"  >   
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+				<i class="glyphicon glyphicon-blackboard" style="margin-right: 10px;"></i>
+						TÉLÉVISION
+						<svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+						<path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+						</svg>    
+					</a>
+					 <ul class="dropdown-menu">
+						<li>
+							<a href="{{ path('app_television') }}">
+								<i class="glyphicon glyphicon-list" style="margin-right: 10px;"></i>
+								Liste TÉLÉVISION
+							</a>
+						</li>
+						<li >
+							<a href="{{ path('home') }}">
+								<i class="glyphicon glyphicon-stats" style="margin-right: 10px;"></i>
+								STATISTIQUE UTILISATION CHAINE TV
+							</a>
+						</li>
+					</ul>
+					
+				</li>
+				
+				<!-- VIDEO -->
+				<li class="dropdown VIDEO">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						<i class="glyphicon glyphicon-facetime-video" style="margin-right: 10px;"></i>
+						VIDEO
+						 <svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+		  <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+		</svg>    
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="{{ path('home') }}">
+								<i class="glyphicon glyphicon-equalizer" style="margin-right: 10px;"></i>
+								Liste video
+							</a>
+						</li>        
+					</ul>
+				</li>
+		
+				
+				
+				
+				
+				
+				<!-- VOD -->
+				<li class="dropdown VOD">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						<i class="glyphicon glyphicon-facetime-video" style="margin-right: 10px;"></i>
+						VOD
+						 <svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+		  <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+		</svg>    
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="{{ path('home') }}">
+								<i class="glyphicon glyphicon-folder-open" style="margin-right: 10px;"></i>
+								Categorie VOD
+							</a>
+						</li>
+						<li>
+							<a href="{{ path('home') }}">
+								<i class=" glyphicon glyphicon-list" style="margin-right: 10px;"></i>
+								Liste VOD
+							</a>
+						</li>
+						
+					</ul>
+				</li>
+				
+		
+		
+			</ul>
+		</li>
+		
+		
+				
 
 						<li class="dropdown ENREGISTREMENT">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">

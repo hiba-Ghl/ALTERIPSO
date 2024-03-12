@@ -33,12 +33,13 @@
 		<img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
 		CONNECTEZ-VOUS
 	</div>
+	<br>
+	{% if error %}
+				<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+	{% endif %}
 	<div id="div1">
 		<form method="post">
-			{% if error %}
-				<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-
-			{% endif %}
+			
 
 			{% if app.user %}
 				<div class="mb-3">
