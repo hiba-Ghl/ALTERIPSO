@@ -286,6 +286,19 @@ class ChambreController extends AbstractController
 
       return $this->render('chambre/modifier.html.twig', array('listechaine' => $listechaine, 'box' => $box, 'service' => $service, 'listback' => $listback));
    }
+   #[Route('/chambre/liste', name: 'app_liste_chambre')]
+   public function boxlist(EntityManagerInterface $entityManager): Response
+    {
+      $repository = $entityManager->getRepository(Chambre::class);
+      $repositorys = $entityManager->getRepository(ServiceEtablissement::class);
+      $etablissement = $this->getUser()->getEtablissement();
+      $chambres  = $repository->findBy(['etablissement' => $etablissement]);
+      $serviceetablissement  = $repositorys->findBy(['etablissement' => $etablissement]);
+      return $this->render('chambre/listechambre.html.twig', [
+          'chambres' => $chambres,'etablissement' =>$etablissement,'serviceetablissement'=>$serviceetablissement
+      ]);
+       
+    }
 
   
 }

@@ -8,6 +8,8 @@ parameters:
     etablissement_directory: '%kernel.project_dir%/public/etablissement'
     uploads_directory: '%kernel.project_dir%/public/uploads'
     chaines_directory: '%kernel.project_dir%/public/chaines'
+    radio_directory: '%kernel.project_dir%/public/radio'
+    categorie_radio_directory: '%kernel.project_dir%/public/categorie_radio'
 
 
 services:

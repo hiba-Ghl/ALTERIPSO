@@ -24,18 +24,18 @@ class TelevisionController extends AbstractController
         $television  = $repository->findBy(['etablissement' => $etablissement],['numero' => 'ASC']);
        // var_dump($television);die();
        //////////////// date debut et fin cas gratuité defini  avec type gratuité//////////////////////
-    if (file_exists("xml\chaine_gratuite_".$idetablissement.".xml")) {
-        $fichier = 'xml\chaine_gratuite_'.$idetablissement.'.xml';
-        $xml = simplexml_load_file($fichier);
-        $dd = $xml->date_debut;
-        $df = $xml->date_fin;
-        $typegratuite = $xml->typegratuite;
-      } else {
-        $dd = '10-09-1990 13:35:00';
-        $df = '10-09-1990 13:35:00';
-        $typegratuite = '0';
-      }
-      //var_dump($dd);die();  
+        if (file_exists("xml\chaine_gratuite_".$idetablissement.".xml")) {
+            $fichier = 'xml\chaine_gratuite_'.$idetablissement.'.xml';
+            $xml = simplexml_load_file($fichier);
+            $dd = $xml->date_debut;
+            $df = $xml->date_fin;
+            $typegratuite = $xml->typegratuite;
+        } else {
+            $dd = '10-09-1990 13:35:00';
+            $df = '10-09-1990 13:35:00';
+            $typegratuite = '0';
+        }
+        //var_dump($dd);die();  
         return $this->render('television/index.html.twig', [
             'television' => $television,'typegratuite' => $typegratuite, 'dd' => $dd, 'df' => $df
         ]);
@@ -395,49 +395,49 @@ class TelevisionController extends AbstractController
     
     #[Route('/historique_gratuite', name: 'historique_gratuite')]
     public function historique_gratuite(EntityManagerInterface $entityManager): Response
-  {
-    $request = Request::createFromGlobals();
-    $etablissement = $this->getUser()->getEtablissement();
-    $idetablissement = $etablissement->getId();
-    $repository = $entityManager->getRepository(Historiquegratuite::class);
-    $historiquegratuite  = $repository->findBy(['etablissement' => $etablissement]);
-//    $box = $em->getRepository('EPSOBundle:box')->findBy(array('etab' => $idetab, 'Support' => 'R-PH'));
-    //$nbbox = count($box);
-    $nbbox = 70;
-    //var_dump($historiquegratuite);die();
-    $date2 = $request->request->get('date2');
-    $date1 = $request->request->get('date1');
+    {
+        $request = Request::createFromGlobals();
+        $etablissement = $this->getUser()->getEtablissement();
+        $idetablissement = $etablissement->getId();
+        $repository = $entityManager->getRepository(Historiquegratuite::class);
+        $historiquegratuite  = $repository->findBy(['etablissement' => $etablissement]);
+        //    $box = $em->getRepository('EPSOBundle:box')->findBy(array('etab' => $idetab, 'Support' => 'R-PH'));
+        //$nbbox = count($box);
+        $nbbox = 70;
+        //var_dump($historiquegratuite);die();
+        $date2 = $request->request->get('date2');
+        $date1 = $request->request->get('date1');
 
 
-    if (empty($date1))
+        if (empty($date1))
 
-      $date1 = date("Y-m-d", strtotime("$date2 -90 day"));
+        $date1 = date("Y-m-d", strtotime("$date2 -90 day"));
 
-    if (empty($date2))
+        if (empty($date2))
 
-      $date2 = date('Y-m-d');
+        $date2 = date('Y-m-d');
 
-    $date2 = date("d-m-Y", strtotime("$date2"));
-    $date1 = date("d-m-Y", strtotime("$date1"));
-
-
+        $date2 = date("d-m-Y", strtotime("$date2"));
+        $date1 = date("d-m-Y", strtotime("$date1"));
 
 
-    $handle = fopen("logs/envoyer_date_".$idetablissement.".txt", "r");
-    if ($handle) {
-      while (($line = fgets($handle)) !== false) {
-        // process the line read.
-      }
 
-      fclose($handle);
-    } else {
-      // error opening the file.
+
+        $handle = fopen("logs/envoyer_date_".$idetablissement.".txt", "r");
+        if ($handle) {
+        while (($line = fgets($handle)) !== false) {
+            // process the line read.
+        }
+
+        fclose($handle);
+        } else {
+        // error opening the file.
+        }
+        //var_dump($handle);die();
+        $data = $handle;
+
+        return $this->render('television/historique.html.twig', array('date2' => $date2, 'date1' => $date1, 'data' => $data, 'historiquegratuite' => $historiquegratuite, 'nbbox' => $nbbox));
     }
-    //var_dump($handle);die();
-    $data = $handle;
-
-    return $this->render('television/historique.html.twig', array('date2' => $date2, 'date1' => $date1, 'data' => $data, 'historiquegratuite' => $historiquegratuite, 'nbbox' => $nbbox));
-  }
 
 
 

@@ -74,64 +74,17 @@
 		}
 	</style>
 
-	{% if app.request.get('msg') is defined %}
-		{% if app.request.get('msg') ==1 %}
 
-
-			<div class="alert alert-success alert-dismissible fade in" role="alert">
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-					<span aria-hidden="true">×</span>
-				</button>
-				<strong>
-					<i class='glyphicon glyphicon-thumbs-up'></i>
-				</strong>
-				Opération gratuité envoyée avec succés à
-				{{app.request.get('nbbox')  }}
-				TV à :
-				{{ "now"|date("H:i:s") }}
-			</div>
-
-		{% elseif app.request.get('msg') ==2 %}
-
-			<div class="alert alert-danger alert-dismissible fade in" role="alert">
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-					<span aria-hidden="true">×</span>
-				</button>
-				<strong>
-					<i class='glyphicon glyphicon-thumbs-down'></i>
-				</strong>
-				Opération gratuité est annulée.Veulliez contacter le support.
-			</div>
-
-		{% elseif app.request.get('msg') ==3 %}
-
-			<div class="alert alert-success alert-dismissible fade in" role="alert">
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-					<span aria-hidden="true">×</span>
-				</button>
-				<strong>
-					<i class='glyphicon glyphicon-thumbs-up'></i>
-				</strong>
-				Arrêt de l'opération de gratuité avec succés à
-				{{app.request.get('nbbox')  }}
-				TV à :
-				{{ "now"|date("H:i:s") }}
-			</div>
-
-		{% endif %}
-	{% endif %}
 	<div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
-		Liste chaines television
+		Liste  radio
 	</div>
 
 	<div id="div2">
-		<a style="margin-left: 775px;width: 130px;margin-top: -120px;" type="submit" class="btn-primary btn btn-sm  chaine_gratuite" id="desvod" name="desvod" data-toggle="modal" data-target="#vodmodal">
-			<i class="glyphicon glyphicon-refresh"></i>
-			Gratuité</a>
+	
 
-		<input id="myInput3" type="text" placeholder="Search.." style="position: absolute;height: 34px;margin-top: -66px;border-color: #3087ce;margin-left: 12px;width: 130px;border: 2px solid;border-radius: 5px;">
+		<input id="myInput3" type="text" placeholder="Search.." style="position: absolute;height: 35px;margin-top: -86px;border-color: #3087ce;margin-left: 777px;width: 130px;border: 2px solid;border-radius: 5px;">
 		<form
-			action="{{ path('modifier_chaine')}}" name="form" method="post" enctype="multipart/form-data">
+			action="{{ path('modifier_radio')}}" name="form" method="post" enctype="multipart/form-data">
 
 			<!--<table id="" class="table table-striped header-fixed table-bordered table-hover table-checkable order-column">-->
 			<table id="liste-chaines" class="table table-striped header-fixed table-bordered table-hover table-checkable order-column">
@@ -140,15 +93,14 @@
 				<thead>
 
 					<tr>
-						<th style="width:150px;height: 50px;">Nom télévision</th>
-						<th style="height: 50px;width:150px">Ip</th>
-						<th style="height: 50px;width:70px">Port</th>
-						<th style="height: 50px;width:100px">Numéro </th>
+						<th style="width:150px;height: 50px;">Nom Radio</th>
+						<th style="height: 50px;width:250px">Ip</th>
+						<th style="height: 50px;width:100px">Port</th>
+						<th style="height: 50px;width:200px">Catégorie </th>
 						<th style="height: 50px;width:70px">Icons</th>
 						<th style="height: 50px;width:100px">Pays</th>
 						<th style="height: 50px;width:100px">Protocole</th>
 						<th style="height: 50px;width:70px">Actif<input type="checkbox" id="checklist"></th>
-						<th style="height: 50px;width:70px">Gratuite<input type="checkbox" id="checklistgratuite"></th>
 						<th style="height: 50px;width:100px">Actions</th>
 
 
@@ -157,7 +109,7 @@
 
 				<tbody id="myTable3">
 
-					{% for tele in television %}
+					{% for tele in radio %}
 
 
 						<tr class="odd gradeX">
@@ -166,21 +118,38 @@
 								<label style="visibility: hidden;">{{tele.nom}}</label>
 							</td>
 
-							<td style="width:150px">
+							<td style="width:250px">
 								<label>
-									<textarea name='listeip[{{tele.Id}}]' class="form-control" style="margin: 0px -320px 0px 0px;width: 140px;height: 45px;font-size: 11px;">{{tele.Ip}}</textarea>
+									<textarea name='listeip[{{tele.Id}}]' class="form-control" style="margin: 0px -320px 0px 0px;width: 230px;height: 45px;font-size: 11px;">{{tele.Ip}}</textarea>
 								</label>
 							</td>
 
 
-							<td style="width:70px">
+							<td style="width:100px">
 								<label><input name='listeport[{{tele.Id}}]' type="text" value="{{tele.port}}" class="form-control" style="font-size: 11px;"></label>
 
 							</td>
 
 
-							<td style="width:100px">
-								<label><input name='listenumero[{{tele.Id}}]' type="number" value="{{tele.numero}}" class="form-control" style="font-size: 11px;"></label>
+							<td style="width:200px">
+								<label>
+									<select class="form-control" name='listcatradio[{{tele.Id}}]'  style="width: 180px; font-size: 11px;" > 
+										<option selected=selected value ='{{tele.categorie.Id}}'>{{tele.categorie.nom}}</option>
+										
+										 {% for a in categorieradio %}      
+									  {% if a.nom == tele.categorie.nom %}
+									  
+									  {% else %}
+									  <option value ='{{a.id}}'>{{a.nom}}</option>
+									  {% endif %}
+									  {% endfor %} 
+					  
+					  
+										
+									</select>
+									
+								
+								</label>
 							</td>
 
 							<td style="width:70px">
@@ -485,25 +454,20 @@
 							{% if (tele.active) == 1 %}
 								{% set ch = 'checked' %}
 							{% endif %}
-							{% if (tele.gratuite) == 1 %}
-								{% set chg = 'checked' %}
-							{% endif %}
+							
 							<td style="width:70px">
 								<label><input name='listeactive[{{tele.Id}}]' type="checkbox" {{ch}} class="jpCheckbox"></label>
 							</td>
 
 
-							<td style="width:70px">
-								<label><input name='listegratuite[{{tele.Id}}]' type="checkbox" {{chg}} class="jpCheckbox2"></label>
-							</td>
-
+							
 
 							<td style="width:120px">
 								<a data-toggle="modal" data-target="#myModal5" name="send" class="btn btn-info btn-xs">
 									<i data-toggle="tooltip" data-placement="top" title="lancer la chaîne" class="glyphicon glyphicon-play-circle"></i>
 								</a>
 
-								<a data-toggle="tooltip" data-placement="top" title="supprimer la chaîne" id="ida" href="{{path('supprimer_chaine',{'id':tele.id})}}" class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer la chaine : {{tele.nom}} ?')">
+								<a data-toggle="tooltip" data-placement="top" title="supprimer la chaîne" id="ida" href="{{path('supprimer_radio',{'id':tele.id})}}" class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer la radio : {{tele.nom}} ?')">
 									<i class="glyphicon glyphicon-trash"></i>
 								</a>
 								
@@ -527,7 +491,7 @@
 
 
 		</form>
-		<form action="{{ path('ajouter_chaine')}}" name="form" method="post" enctype="multipart/form-data" style="height: 70px;">
+		<form action="{{ path('ajouter_radio')}}" name="form" method="post" enctype="multipart/form-data" style="height: 70px;">
 			<table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column">
 				<tbody style="height: auto !important;">
 					<tr class="odd gradeX" style="background-color:white;">
@@ -537,21 +501,32 @@
 						</td>
 
 
-						<td style="width:150px">
+						<td style="width:250px">
 							<label>
-								<textarea name='ip' class="form-control" style="margin: 0px -320px 0px 0px;width: 140px;height: 45px;font-size: 11px;"></textarea>
+								<textarea name='ip' class="form-control" style="margin: 0px -320px 0px 0px;width: 230px;height: 45px;font-size: 11px;"></textarea>
 							</label>
 						</td>
 
 
-						<td style="width:70px">
+						<td style="width:100px">
 							<label><input name='port' type="text" value="" class="form-control" style="font-size: 11px;"></label>
 
 						</td>
 
 
-						<td style="width:100px">
-							<label><input name='numero' type="number" value="" class="form-control" style="font-size: 11px;"></label>
+						<td style="width:200px">
+							<label>
+								<select class="form-control" name='catradio'  style="width: 180px; font-size: 11px;" > 
+																	
+									 {% for a in categorieradio %}      
+									  <option value ='{{a.id}}'>{{a.nom}}</option>
+								  
+								  {% endfor %} 
+				  
+				  
+									
+								</select>
+							</label>
 						</td>
 
 						<td style="width:70px">
@@ -856,9 +831,7 @@
 						</td>
 
 
-						<td style="width:70px">
-							<label><input name='gratuite' type="checkbox"></label>
-						</td>
+						
 
 
 						<td style="width:150px">
@@ -875,127 +848,6 @@
 	</div>
 	<br>
 	<!-- Modals -->
-	<!-- Modal lancement direct de chaine sur tv -->
-	<div class="modal fade" id="myModal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-		<div class="modal-dialog modal-sm" role="document"> 
-			  
-	  
-					  <div class="modal-content">
-						<form action="{{ path('home')}}" name="form" method="post" enctype="multipart/form-data">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title checkAllbox" id="myModalLabel">Liste Support connecté à choisir </h4>
-					  </div>
-					<div class="modal-body">	
-						
-					 </div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-						<button id='btn5' type="submit" class="btn btn-primary"> Confirmer</button>
-					</div>
-				</form>
-				  </div>
-	  
-	  
-		</div>
-	  </div>
-	
-	<!-- Modal Gratuité   -->
-		<div class="modal fade" id="vodmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> 
-			<div class="modal-dialog  modal-md" style="width:460px" role="document">
-				<div class="modal-content">
-				<form action="{{path('envoyer_gratuite')}}" name="" method="post" enctype="multipart/form-data">
-
-					<div class="modal-header">
-						<a type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</a>
-						<div class="col-md-6">
-							<h4 style="line-height: 3;" class="modal-title" id="myModalLabel">Chaine TV gratuite
-							</h4>
-						</div>
-
-					</div>
-					<div class="modal-body">
-
-
-						<div class="form-group">
-							{% if (typegratuite == 'stop') %}
-								<p style="color: red;font-size: 16px;">
-									<B>
-										Pas de gratuité enregistrée.</B>
-								</p>
-							{% elseif (typegratuite == 'r_immediate') %}
-								<p style="color: red;font-size: 16px;">
-									<i class="glyphicon glyphicon-warning-sign"></i>
-									<B>
-										- Gratuité en cours..</B>
-								</p>
-							{% elseif (typegratuite == 'r_defini') %}
-								{% if dd|date('Y-m-d H:i:s', 'Europe/Paris') < "now"|date('Y-m-d H:i:s', 'Africa/Casablanca')  and df|date('Y-m-d H:i:s', 'Europe/Paris') > "now"|date('Y-m-d H:i:s', 'Africa/Casablanca')  %}
-									<p style="color: red;font-size: 13px;">
-										<i class="glyphicon glyphicon-warning-sign"></i>
-										- Gratuité en cours entre le
-										<strong>
-											{{dd|date('d-m-Y H:i', 'Europe/Paris')}}
-										</strong>
-										et
-										<strong>
-											{{df|date('d-m-Y H:i', 'Europe/Paris')}}
-										</strong>
-									</p>
-								{% else %}
-									<p style="color: red;font-size: 16px;">
-										<B>
-											Pas de gratuité enregistrée.</B>
-									</p>
-								{% endif %}
-							{% else %}
-								<p style="color: red;font-size: 16px;">
-									<B>
-										Pas de gratuité enregistrée.</B>
-								</p>
-							{% endif %}
-
-							<p>Veuillez choisir le mode de gratuité :</p>
-
-
-							<input type="radio" id="t_gratuite" class="t_gratuite" name="t_gratuite" value="r_defini">
-							<label>Gratuité avec date debut et fin :</label><br>
-
-
-							<div class="d_defini" style="display:none;">
-								<label>Date début:</label>
-								<input type="datetime-local" id="d_debut" name="d_debut" style="margin-left: 51px;"><br>
-
-								<label>Date fin:</label>
-								<input type="datetime-local" id="d_fin" name="d_fin" style="margin-left: 70px;">
-							</div>
-
-
-							<input type="radio" class="t_gratuite" name="t_gratuite" value="r_immediate">
-							<label>Gratuité immédiate
-							</label><br>
-
-
-						</div>
-						<div class="modal-footer">
-
-							<button type="submit" id='chaine_gratuite' name='chaine_gratuite' class="button btn btn-primary btn-sm">
-								<i class="glyphicon glyphicon-floppy-disk"></i>
-								Valider
-							</button>
-							<a data-toggle="tooltip" data-placement="top" id="stopgratuite" href="{{path('arreter_gratuite')}}" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Ce boutton va arrêter immédiatement la gratuité en cours.">
-								<i class="glyphicon glyphicon-remove-circle"></i>Arrêter</a>
-							<a data-toggle="tooltip" data-placement="top" id="historique" href="{{path('historique_gratuite')}}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Afficher l'historique des gratuités">
-								<i class="glyphicon glyphicon-link"></i>Historique</a>
-							<a type="button" class="btn btn-default btn-sm" data-dismiss="modal">
-								<i class="glyphicon glyphicon-remove"></i>Annuler</a>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
 	
 
 	<!-- Scripts -->

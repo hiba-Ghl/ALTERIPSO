@@ -79,11 +79,19 @@ class Etablissement
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Television::class)]
     private Collection $televisions;
 
+    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: CategorieRadio::class)]
+    private Collection $categorieRadios;
+
+    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Radio::class)]
+    private Collection $radios;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->categories = new ArrayCollection();
         $this->televisions = new ArrayCollection();
+        $this->categorieRadios = new ArrayCollection();
+        $this->radios = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -398,6 +406,66 @@ class Etablissement
             // set the owning side to null (unless already changed)
             if ($television->getEtablissement() === $this) {
                 $television->setEtablissement(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CategorieRadio>
+     */
+    public function getCategorieRadios(): Collection
+    {
+        return $this->categorieRadios;
+    }
+
+    public function addCategorieRadio(CategorieRadio $categorieRadio): static
+    {
+        if (!$this->categorieRadios->contains($categorieRadio)) {
+            $this->categorieRadios->add($categorieRadio);
+            $categorieRadio->setEtablissement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategorieRadio(CategorieRadio $categorieRadio): static
+    {
+        if ($this->categorieRadios->removeElement($categorieRadio)) {
+            // set the owning side to null (unless already changed)
+            if ($categorieRadio->getEtablissement() === $this) {
+                $categorieRadio->setEtablissement(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Radio>
+     */
+    public function getRadios(): Collection
+    {
+        return $this->radios;
+    }
+
+    public function addRadio(Radio $radio): static
+    {
+        if (!$this->radios->contains($radio)) {
+            $this->radios->add($radio);
+            $radio->setEtablissement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRadio(Radio $radio): static
+    {
+        if ($this->radios->removeElement($radio)) {
+            // set the owning side to null (unless already changed)
+            if ($radio->getEtablissement() === $this) {
+                $radio->setEtablissement(null);
             }
         }
 
