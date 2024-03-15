@@ -300,5 +300,23 @@ class ChambreController extends AbstractController
        
     }
 
+
+    #[Route('/service/ajouter', name: 'app_ajouter_service_etablissement')]
+    public function ajouterserviceetablissement(EntityManagerInterface $entityManager): Response
+    {
+     $request = Request::createFromGlobals();
+     $etablissement = $this->getUser()->getEtablissement(); 
+       $nom = $request->get("nom");
+          $service = new ServiceEtablissement();
+          $service->setEtablissement($etablissement);
+          $service->setNom($nom);
+      
+          $entityManager->persist($service);
+          $entityManager->flush();
+       
+       
+ 
+          return $this->redirectToRoute('app_chambre');
+    }
   
 }

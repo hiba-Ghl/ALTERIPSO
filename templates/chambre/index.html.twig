@@ -86,7 +86,9 @@
 	</div>
 
 	<div id="div2">
-
+		<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal"><i class="glyphicon glyphicon-plus"></i>
+			Ajouter Service Etablissement
+		</button>
 
 		{% set nb =  chambres|length %}
 		{% if nb >= etablissement.licence  %}
@@ -97,6 +99,8 @@
 				<br>
 				<i class="glyphicon glyphicon-warning-sign"></i>-    vous n'avez pas assez de licences, pour ajouter un support merci d'envoyer un email à : contact@alteripso.com
 			</div>
+				
+	
 		{% else %}
 			<a href="{{path('app_ajouter_chambre')}}" class="btn btn-info btn-sm" name="add" id="add">
 				<i class="glyphicon glyphicon-plus"></i>
@@ -279,9 +283,42 @@
 	</div>
 	<br>
 	<!-- Modals -->
+	<!-- Modal ajout service etablissement -->		
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<form action="{{path('app_ajouter_service_etablissement')}}" name="form" method="post" enctype="multipart/form-data">
+		<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">Ajouter Service Etablissement</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label for="inputEmail" class="col-lg-2 control-label">Nom Service</label>
+					<div class="col-lg-10">
+		
+						<input type="text" id="nom" name="nom" class="form-control"/>
+		
+					</div>
+					<br><br>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button id='' type="submit" class="btn btn-primary " name="">
+					<i class="glyphicon glyphicon-floppy-disk"></i>Valider</button>
 
+				<button type="button" class="btn btn-danger" data-dismiss="modal">
+					<i class="glyphicon glyphicon-remove"></i>Annuler</button>
+			</div>
+		</div>
+		</div>
+		</form>
+	</div>
 	<!-- Modal -->
-		<div id="myModal" class="modal fade" role="dialog"> <form action="{{path('app_checkin')}}" name="form" method="post" enctype="multipart/form-data">
+		<div id="myModal" class="modal fade" role="dialog"> 
+			<form action="{{path('app_checkin')}}" name="form" method="post" enctype="multipart/form-data">
 			<div
 				class="modal-dialog">
 
@@ -375,10 +412,12 @@
 
 
 				</div>
-			</div>
-		</form>
+				</div>
+			</form>
 
-	</div>
+		</div>
+
+
 
 	<!-- Scripts -->
     <!-- online -->
