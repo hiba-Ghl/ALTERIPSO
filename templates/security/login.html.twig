@@ -23,7 +23,7 @@
 			border: 2px solid #3087ce;
 			padding: 20px;
 			width: 1091px;
-			height: 950px;
+			height: 1000px;
 			margin-left: 10px;
 			margin-top: 10px;
 		}
@@ -43,7 +43,7 @@
 
 			{% if app.user %}
 				<div class="mb-3">
-					You are logged in as
+					Vous êtes connecté en tant que
 					{{ app.user.userIdentifier }},
 					<a href="{{ path('app_logout') }}">Logout</a>
 				</div>
@@ -75,13 +75,18 @@
 				<label>
 					<input type="checkbox" name="_remember_me">
 					Se souvenir de moi
+				<a href="{#{path('app_forgot_password_request')}#}" style="margin-left: 100px;">Mot de passe oublié ? </a>
 				</label>
 
-				<button type="submit" class="btn btn-success" style="margin-left: 755px;position: absolute;background-color: #3087ce; border: 2px solid #3087ce;">
+				 
+				<button type="submit" class="btn btn-success" style="margin-left: 505px;position: absolute;background-color: #3087ce; border: 2px solid #3087ce;">
 					<i class="glyphicon glyphicon-log-in"></i>
-					Connexion</button>
+					Connexion
+				</button>
 
 			</div>
+
+
 
 
 		</form>
@@ -94,6 +99,23 @@
 		<img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
 		INSCRIVEZ-VOUS
 	</div>
+	<br>
+ 
+
+{% for message in app.flashes('error') %}
+    <div class="alert alert-danger">
+        {{ message }}
+		        <span class="close" onclick="closeAlert(this)">×</span> 
+    </div>
+{% endfor %}
+
+<script>
+	function closeAlert(element) 
+	{
+		element.parentElement.style.display = 'none';  
+	}
+</script>
+
 	<div id="div2">
 
 		<form name="createUser" method="post" action="{{ path('app_register')}}" class="fos_user_registration_register form-horizontal">
@@ -116,7 +138,6 @@
 				</div>
 			</div>
 
-
 			<div class="form-group">
 				<label for="inputPassword" class="col-lg-2 control-label">Nom
 				</label>
@@ -135,18 +156,17 @@
 
 				</div>
 			</div>
+  
 
+<div class="form-group">
+    <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+    <div class="col-lg-10">
+        <input type="email" id="fos_user_registration_form_email" name="email" required="required" class="form-control"/>
+       
+    </div>
+</div>
 
-			<div class="form-group">
-				<label for="inputEmail" class="col-lg-2 control-label">Email</label>
-				<div class="col-lg-10">
-
-					<input type="email" id="fos_user_registration_form_email" name="email" required="required" class="form-control"/>
-
-				</div>
-			</div>
-
-
+ 
 			<br>
 			<strong>Coordonnées
 			</strong>
@@ -463,35 +483,68 @@
 			<br>
 			<strong>Coordonnées utilisateur
 			</strong>
+ 
 
+<div class="form-group">
+    <label for="inputEmail" class="col-lg-2 control-label">Identifiant</label>
+    <div class="col-lg-10">
+        <input type="text" id="fos_user_registration_form_username" name="username" required="required" maxlength="255" pattern=".{2,}" class="form-control"/>
+     
+    </div>
+</div>
 
-			<div class="form-group">
-				<label for="inputEmail" class="col-lg-2 control-label">Identifiant</label>
-				<div class="col-lg-10">
+<div id="fos_user_registration_form_plainPassword">
+    <div class="form-group">
+        <label class="col-sm-2 control-label required" for="fos_user_registration_form_plainPassword_first">Mot de passe</label>
+        <div class="col-sm-10"><input type="password" id="fos_user_registration_form_plainPassword_first" name="password" required="required" class="form-control"/></div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label required" for="fos_user_registration_form_plainPassword_second">Confirmation du Mot de passe</label>
+        <div class="col-sm-10">
+            <input type="password" id="fos_user_registration_form_plainPassword_second" name="fos_user_registration_form[plainPassword][second]" required="required" class="form-control"/>
+            <span id="passwordError" style="color: red; display: none;">Les mots de passe ne correspondent pas.</span>
+        </div>
+    </div>
+</div>
 
-					<input type="text" id="fos_user_registration_form_username" name="username" required="required" maxlength="255" pattern=".{2,}" class="form-control"/>
+<script>
 
+document.addEventListener("DOMContentLoaded", function() {
+    // Récupère les éléments du formulaire pour les mots de passe et le message d'erreur
+    var passwordInput = document.getElementById('fos_user_registration_form_plainPassword_first');
+    var confirmPasswordInput = document.getElementById('fos_user_registration_form_plainPassword_second');
+    var passwordError = document.getElementById('passwordError');
 
-				</div>
-			</div>
+    // Fonction pour valider la correspondance des mots de passe
+    function validatePassword() {
+        // Vérifie si les valeurs des champs de mot de passe sont différentes
+        if (passwordInput.value !== confirmPasswordInput.value) {
+            // Affiche le message d'erreur si les mots de passe ne correspondent pas
+            passwordError.style.display = 'block';
+        } else {
+            // Masque le message d'erreur si les mots de passe correspondent
+            passwordError.style.display = 'none';
+        }
+    }
 
+    // Fonction qui semble être redondante et inutile dans ce contexte
+    function validateOnInput() {
+        // Vérifie si le message d'erreur est actuellement affiché
+        if (passwordError.style.display === 'block') {
+            // Appelle la fonction de validation des mots de passe si le message d'erreur est affiché
+            validatePassword();
+        }
+    }
 
-			<div id="fos_user_registration_form_plainPassword">
-				<div class="form-group">
-					<label class="col-sm-2 control-label required" for="fos_user_registration_form_plainPassword_first">Mot de passe</label>
-					<div class="col-sm-10"><input type="password" id="fos_user_registration_form_plainPassword_first" name="password" required="required" class="form-control"/></div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-2 control-label required" for="fos_user_registration_form_plainPassword_second">Comfirmation du Mot de passe</label>
-					<div class="col-sm-10"><input type="password" id="fos_user_registration_form_plainPassword_second" name="fos_user_registration_form[plainPassword][second]" required="required" class="form-control"/></div>
-				</div>
-			</div>
+    // Ajoute un écouteur d'événement pour détecter les saisies dans le champ de confirmation du mot de passe
+    confirmPasswordInput.addEventListener('input', validatePassword);
+});
 
+</script>
 
-    
             <br>
        
-            <button type="submit" class="btn btn-success" style="margin-left: 920px;position: absolute;background-color: #3087ce; border: 2px solid #3087ce;"><i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer</button>
+            <button type="submit" class="btn btn-success" style="margin-left: 920px;position: absolute;background-color: #3087ce; border: 2px solid #3087ce;"><i class="glyphicon glyphicon-new-window"></i> Enregistrer</button>
 
 			<input type="hidden" id="fos_user_registration_form__token" name="fos_user_registration_form[_token]" class="form-control" value="vjHbISa7zrduRLLWTCpNBApOU8VaUtZOcmumqM-mVTQ"/></form>
 

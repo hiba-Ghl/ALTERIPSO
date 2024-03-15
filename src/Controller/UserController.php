@@ -22,6 +22,107 @@ class UserController extends AbstractController
         $this->requestStack = $requestStack;
     }
 
+
+    #[Route('/register', name: 'app_register')]
+    public function register(EntityManagerInterface $entityManager,UserPasswordHasherInterface $passwordHasher ): Response
+    
+    
+    {
+        
+
+        $request = Request::createFromGlobals();
+
+        $entityManager->flush();
+
+
+        // enregistrement des infos etablissement : 
+        $etablissement = new Etablissement();
+
+        $idetablissement =  mt_rand(10000, 99999);
+        $genre = $request->get("genre");
+        $nom = $request->get("nom");
+        $prenom = $request->get("prenom");
+        $nom_etablissement = $request->get("nom_etablissement");
+        $adresse = $request->get("adresse");
+        $code = $request->get("code");
+        $ville = $request->get("ville");
+        $pays = $request->get("pays");
+       
+        $etablissement->setId($idetablissement);
+        $etablissement->setGenre($genre);
+        $etablissement->setNom($nom);
+        $etablissement->setPrenom($prenom);
+        $etablissement->setNomEtablissement($nom_etablissement);
+        $etablissement->setAdresse($adresse);
+        $etablissement->setCode($code);
+        $etablissement->setVille($ville);
+        $etablissement->setPays($pays);
+
+        //var_dump($idetablissement);die();
+
+         // Sauvegarder l'etablissement dans la base de données
+         $entityManager->persist($etablissement);
+        
+        // Vérifiez si $nom est null avant d'appeler setNom()
+        if ($nom !== null) {
+            $etablissement->setNom($nom);
+        }  
+
+       
+
+        // Créer une instance de l'entité utilisateur
+        $user = new User();
+
+        $username = $request->get("username");
+        $password = $request->get("password");
+        $email = $request->get("email");
+
+
+
+        // Définir les propriétés de l'utilisateur
+        $user->setUsername($username);
+        $user->setEmail($email);
+ 
+        // Vérifier si l'email est déjà utilisé
+        $existingEmailUser = $entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
+
+        // Vérifier si l'username est déjà utilisé
+        $existingUsernameUser = $entityManager->getRepository(User::class)->findOneBy(['username' => $username]);
+
+        // Si un utilisateur avec cet email ou username existe déjà, afficher un message d'erreur
+        if ($existingEmailUser !== null && $existingUsernameUser !== null) {
+            $this->addFlash('error', 'Cet email et identifiant sont déjà utilisés.');
+            return $this->redirectToRoute('app_login');
+        } 
+        elseif ($existingEmailUser !== null) {
+            $this->addFlash('error', 'Cet email est déjà utilisé.');
+            return $this->redirectToRoute('app_login');
+        } 
+        elseif ($existingUsernameUser !== null) {
+            $this->addFlash('error', 'Cet identifiant est déjà utilisé.');
+            return $this->redirectToRoute('app_login');
+        }
+
+        $plaintextPassword=$password; // Vous devrez peut-être encoder le mot de passe
+           // hash the password (based on the security.yaml config for the $user class)
+           $hashedPassword = $passwordHasher->hashPassword(
+            $user,
+            $plaintextPassword
+        );
+        $user->setPassword($hashedPassword);
+        $user->setEtablissement($etablissement);
+
+        // Sauvegarder l'utilisateur dans la base de données
+        $entityManager->persist($user);
+        
+        $entityManager->flush();
+       // return new Response('Utilisateur créé avec succès!'.$user->getId());
+        return $this->redirectToRoute('app_login');
+      
+    }
+        
+
+/*
     #[Route('/register', name: 'app_register')]
     public function register(EntityManagerInterface $entityManager,UserPasswordHasherInterface $passwordHasher): Response
     
@@ -73,6 +174,30 @@ class UserController extends AbstractController
         $password = $request->get("password");
         $email = $request->get("email");
 
+
+        // Vérifier si l'email est déjà utilisé
+        $existingEmailUser = $entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
+
+        // Vérifier si l'username est déjà utilisé
+        $existingUsernameUser = $entityManager->getRepository(User::class)->findOneBy(['username' => $username]);
+
+        // Si un utilisateur avec cet email ou username existe déjà, afficher un message d'erreur
+        if ($existingEmailUser !== null && $existingUsernameUser !== null) {
+            $this->addFlash('error', 'Cet email et identifiant sont déjà utilisés.');
+            return $this->redirectToRoute('app_login');
+        } 
+        elseif ($existingEmailUser !== null) {
+            $this->addFlash('error', 'Cet email est déjà utilisé.');
+            return $this->redirectToRoute('app_login');
+        } 
+        elseif ($existingUsernameUser !== null) {
+            $this->addFlash('error', 'Cet identifiant est déjà utilisé.');
+            return $this->redirectToRoute('app_login');
+        }
+
+
+
+
         // Définir les propriétés de l'utilisateur
         $user->setUsername($username);
         $user->setEmail($email);
@@ -93,7 +218,7 @@ class UserController extends AbstractController
         return $this->redirectToRoute('app_login'); 
         
     }
-
+    */
     #[Route('/profil', name: 'app_profil')]
       public function index(): Response
     {
