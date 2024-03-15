@@ -69,8 +69,8 @@ class CategoriesController extends AbstractController
            // Répondre avec un message de succès ou rediriger vers une autre page
          //  return new Response('Fichiers téléchargés avec succès !');
        }
-       $fileName = 'categories/' . $fileName1;
-       $fileNamebackgound = 'categories/' . $fileName2;
+       $fileName = 'images/categories/' . $fileName1;
+       $fileNamebackgound = 'images/categories/' . $fileName2;
 
      //  var_dump($fileName1.'    '.$fileName2);
        // var_dump($request);
@@ -149,8 +149,8 @@ class CategoriesController extends AbstractController
 
            // Répondre avec un message de succès ou rediriger vers une autre page
          //  return new Response('Fichiers téléchargés avec succès !');
-         $fileName = 'categories/' . $fileName1;
-         $fileNamebackgound = 'categories/' . $fileName2;
+         $fileName = 'images/categories/' . $fileName1;
+         $fileNamebackgound = 'images/categories/' . $fileName2;
 
          $categories->setLogo($fileName);
         $categories->setBackgound($fileNamebackgound);

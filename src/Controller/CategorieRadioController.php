@@ -67,7 +67,7 @@ class CategorieRadioController extends AbstractController
 
     #[Route('/categorieradio/ajouter', name: 'app_ajouter_categorieradio')]
     public function ajoutercategorieradio(EntityManagerInterface $entityManager): Response
-        {
+    {
             $user = $this->getUser();
             $etablissement = $this->getUser()->getEtablissement();
         
@@ -96,7 +96,7 @@ class CategorieRadioController extends AbstractController
             // Répondre avec un message de succès ou rediriger vers une autre page
 
             //  return new Response('Fichiers téléchargés avec succès !');
-            $fileName = 'categorie_radio/' . $fileName1;
+            $fileName = 'images/categorie_radio/' . $fileName1;
         }
         
         
@@ -166,7 +166,7 @@ class CategorieRadioController extends AbstractController
 
             // Répondre avec un message de succès ou rediriger vers une autre page
             //  return new Response('Fichiers téléchargés avec succès !');
-            $fileName = 'categorie_radio/' . $fileName1;
+            $fileName = 'images/categorie_radio/' . $fileName1;
         }
         
         

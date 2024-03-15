@@ -4,12 +4,13 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-    categories_directory: '%kernel.project_dir%/public/categories'
-    etablissement_directory: '%kernel.project_dir%/public/etablissement'
+    categories_directory: '%kernel.project_dir%/public/images/categories'
+    etablissement_directory: '%kernel.project_dir%/public/images/etablissement'
     uploads_directory: '%kernel.project_dir%/public/uploads'
-    chaines_directory: '%kernel.project_dir%/public/chaines'
-    radio_directory: '%kernel.project_dir%/public/radio'
-    categorie_radio_directory: '%kernel.project_dir%/public/categorie_radio'
+    chaines_directory: '%kernel.project_dir%/public/images/chaines'
+    radio_directory: '%kernel.project_dir%/public/images/radio'
+    categorie_radio_directory: '%kernel.project_dir%/public/images/categorie_radio'
+    application_directory: '%kernel.project_dir%/public/images/application'
 
 
 services:

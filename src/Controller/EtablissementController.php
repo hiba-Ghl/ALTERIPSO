@@ -48,7 +48,7 @@ class EtablissementController extends AbstractController
 
            // Répondre avec un message de succès ou rediriger vers une autre page
          //  return new Response('Fichiers téléchargés avec succès !');
-         $fileName = 'etablissement/' . $fileName;
+         $fileName = 'images/etablissement/' . $fileName;
          
 
          
@@ -118,7 +118,7 @@ class EtablissementController extends AbstractController
                     $file->move($this->getParameter('etablissement_directory'), $logo);
             
                     // Chemin du fichier pour enregistrer dans la base de données
-                    $logoPath = 'etablissement/' . $logo;
+                    $logoPath = 'images/etablissement/' . $logo;
             
                     $etablissement->setLogo($logoPath);
                 } else {

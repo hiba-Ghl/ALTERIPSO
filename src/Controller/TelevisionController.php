@@ -74,7 +74,7 @@ class TelevisionController extends AbstractController
 
            // Répondre avec un message de succès ou rediriger vers une autre page
          //  return new Response('Fichiers téléchargés avec succès !');
-         $fileName = 'chaines/' . $fileName1;
+         $fileName = 'images/chaines/' . $fileName1;
        }
        else 
        $fileName = 'images/no_image.png';
@@ -224,7 +224,7 @@ class TelevisionController extends AbstractController
                 if (!empty($k)) {
                     $fileName = md5(uniqid()) . '.' . $k->guessExtension();
                     $k->move($this->getParameter('chaines_directory'), $fileName);
-                    $fileName = 'chaines/' . $fileName;
+                    $fileName = 'images/chaines/' . $fileName;
                 } else {
                     $fileName = $thatlistfile[0]->getLogo();
                 }

@@ -85,6 +85,12 @@ class Etablissement
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Radio::class)]
     private Collection $radios;
 
+    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Support::class)]
+    private Collection $supports;
+
+    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Application::class)]
+    private Collection $applications;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -92,6 +98,8 @@ class Etablissement
         $this->televisions = new ArrayCollection();
         $this->categorieRadios = new ArrayCollection();
         $this->radios = new ArrayCollection();
+        $this->supports = new ArrayCollection();
+        $this->applications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -466,6 +474,68 @@ class Etablissement
             // set the owning side to null (unless already changed)
             if ($radio->getEtablissement() === $this) {
                 $radio->setEtablissement(null);
+            }
+        }
+
+        return $this;
+    }
+
+ 
+
+    /**
+     * @return Collection<int, Support>
+     */
+    public function getSupports(): Collection
+    {
+        return $this->supports;
+    }
+
+    public function addSupport(Support $support): static
+    {
+        if (!$this->supports->contains($support)) {
+            $this->supports->add($support);
+            $support->setEtablissement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSupport(Support $support): static
+    {
+        if ($this->supports->removeElement($support)) {
+            // set the owning side to null (unless already changed)
+            if ($support->getEtablissement() === $this) {
+                $support->setEtablissement(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Application>
+     */
+    public function getApplications(): Collection
+    {
+        return $this->applications;
+    }
+
+    public function addApplication(Application $application): static
+    {
+        if (!$this->applications->contains($application)) {
+            $this->applications->add($application);
+            $application->setEtablissement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeApplication(Application $application): static
+    {
+        if ($this->applications->removeElement($application)) {
+            // set the owning side to null (unless already changed)
+            if ($application->getEtablissement() === $this) {
+                $application->setEtablissement(null);
             }
         }
 

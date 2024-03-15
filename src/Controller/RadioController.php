@@ -63,7 +63,7 @@ class RadioController extends AbstractController
 
            // Répondre avec un message de succès ou rediriger vers une autre page
          //  return new Response('Fichiers téléchargés avec succès !');
-         $fileName = 'radio/' . $fileName1;
+         $fileName = 'images/radio/' . $fileName1;
        }
        else 
        $fileName = 'images/no_image.png';
@@ -202,7 +202,7 @@ class RadioController extends AbstractController
                 if (!empty($k)) {
                     $fileName = md5(uniqid()) . '.' . $k->guessExtension();
                     $k->move($this->getParameter('radio_directory'), $fileName);
-                    $fileName = 'radio/' . $fileName;
+                    $fileName = 'images/radio/' . $fileName;
                 } else {
                     $fileName = $thatlistfile[0]->getLogo();
                 }
