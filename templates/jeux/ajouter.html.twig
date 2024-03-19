@@ -1,0 +1,134 @@
+{% extends 'home/index.html.twig' %}
+{% block body %}
+<style>
+    #div2 {
+			border-radius: 25px;
+			border: 2px solid #3087ce;
+			padding: 20px;
+			width: 1300px;
+			height: 250px;
+			margin-left: -70px;
+			margin-top: 10px;
+			background-color: white;
+		}
+</style>
+
+
+<div style="margin-top: -40px;position: absolute;border-radius: 8px;text-align: left;margin-left: -68px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: -27px;">
+    Ajouter Jeux 
+</div>
+
+<div id="div2">
+
+
+	
+		<form action="{{path('app_ajouter_jeux')}}" method="post" enctype="multipart/form-data">
+
+
+			<table style="width: 100%;">
+				<tr>
+					<td style="width: 33%;">
+						<div class="control-label">
+							<label  class=" control-label">Nom Jeux:
+							</label>
+							<input type="text" name="nom" class="form-control" style="width: 75%;">
+						</div>
+
+					</td>
+
+					<td style="width: 33%;">
+						<div class="control-label">
+							<label  class=" control-label">Package:
+							</label>
+							<input type="text" name="package" class="form-control" style="width: 75%;">
+						</div>
+
+					</td>
+
+					<td style="width: 33%;">
+						<div class="control-label">
+							<label  class=" control-label">Active:
+							</label>
+
+
+							<select class="form-control" name="active" id="active" style="width: 75%;">
+
+								<option value='0'>0</option>
+								<option value='1'>1</option>
+
+							</select>
+						</div>
+
+					</td>
+
+
+				</tr>
+				
+                <tr>
+
+					<td style="width: 33%;">
+
+						<div class="control-label">
+							<label  class=" control-label">Position:
+							</label>
+							<input type="number" name="position" id="position" class="form-control" style="width: 75%;" >
+						</div>
+
+					</td>
+
+					<td style="width: 33%;">
+						<div class="form-group">
+							<label >logo :</label>
+							<input type="file" class="form-control-file" id="logo" name="logo" style="width: 75%;" >
+						</div>
+					</td>
+
+					<td style="width: 33%;">
+						<div class="control-label">
+							<label  class=" control-label">
+								Protocole:
+							</label>
+							<select class="form-control" name="protocole" id="protocole" style="width: 75%;">
+								{% for support in supports %}
+									<option value="{{support.protocole}}">{{support.nom|upper}}</option>
+								{% endfor %}
+
+							</select>
+						</div>
+
+					</td>
+
+				</tr>
+
+			</table>
+
+			<br>
+
+			<button type="submit" class="button btn btn-primary btn-sm" style="margin-left:940px;" name="valider" >
+				<i class="glyphicon glyphicon-floppy-disk"></i>
+				Enregistrer
+			</button>
+
+
+		</form>
+
+		<form method="POST" action="{{path('app_jeux')}}">
+			<button type="submit" class="button btn btn-danger btn-sm" style="width: 103px;margin-left: 1050px;margin-top: -57px;">
+				<i class="glyphicon glyphicon-remove"></i>
+				Annuler
+			</button>
+		</form>
+
+
+	
+
+</div>
+<!-- Scripts -->
+<script type="text/javascript">
+
+
+</script>
+	
+
+
+{% endblock %}

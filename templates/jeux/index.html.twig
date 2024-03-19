@@ -1,0 +1,212 @@
+{% extends 'home/index.html.twig' %}
+{% block body %}
+
+
+	<style>
+		#div1 {
+			border-radius: 25px;
+			border: 2px solid #3087ce;
+			padding: 43px;
+			width: 1091px;
+			height: 300px;
+			margin-left: -70px;
+			margin-top: 10px;
+		}
+		#div2 {
+			border-radius: 25px;
+			border: 2px solid #3087ce;
+			padding: 20px;
+			width: 1300px;
+			height: 900px;
+			margin-left: -70px;
+			margin-top: 10px;
+			background-color: white;
+		}
+		.nav-item {
+			display: inline-block;
+			width: 150px; /* Largeur fixe de chaque élément de la barre de navigation */
+			text-align: center; /* Pour centrer le texte à l'intérieur de chaque élément */
+			text-decoration: underline;
+			color: black;
+		}
+
+		input[type='number'] {
+			-moz-appearance: textfield;
+		}
+
+		input::-webkit-outer-spin-button,
+		input::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+		}
+		.active-tab {
+			background-color: #ccc; /* Couleur de fond de l'onglet actif */
+		}
+	</style>
+
+	<p id='p'></p>
+	<div style="margin-top: -40px;position: absolute;border-radius: 8px;text-align: left;margin-left: -68px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: -27px;">
+		Liste jeuxs
+	</div>
+
+	<div id="div2">
+
+
+		
+        <form action="{{ path('app_modifier_homejeux')}}" name="test" method="post" enctype="multipart/form-data" onsubmit="return check_fields(this)">
+
+
+            
+            <input type="hidden" name="ongletActif" value="{{ app.request.query.get('ongletActif') }}">
+   
+
+			<div class="col-md-12">
+				<a href="{{path('app_ajouter_jeux')}}" class="btn btn-info btn-sm" name="add" id="add">
+					<i class="glyphicon glyphicon-plus"></i>
+					Ajouter jeux</a>
+
+				<button id="sauv" type="submit" class="btn btn-success btn-sm ">
+					<i class="glyphicon glyphicon-floppy-disk"></i>
+					Sauvegarder
+				</button>
+
+
+				<br><br><br>
+
+				<nav>
+					<div class="nav nav-tabs" id="nav-tab" role="tablist">
+						{% for support in supports %}
+							<a class="nav-item nav-link" id="nav-{{ support.id }}-tab" data-toggle="tab" href="#{{ support.id }}" role="tab" aria-controls="nav-{{ support.id }}" aria-selected="true">{{ support.nom }}</a>
+						{% endfor %}
+					</div>
+				</nav>
+				<br><br>
+				<div class="tab-content" id="nav-tabContent">
+					{% for support in supports %}
+						<div class="tab-pane fade" id="{{support.id}}" role="tabpanel" aria-labelledby="nav-profile-tab">
+							{% for jeux in jeuxs %}
+								{% if support.protocole == jeux.protocole %}
+
+
+									{% set ch=' ' %}
+									{% if(jeux.active=='1') %}
+										{% set ch='checked' %}
+									{% endif %}
+
+
+									<div class="col-sm-6 col-md-2 col-md-2-14">
+										<div class="thumbnail" style="padding:0px;background-color: rgba(255, 119, 1, 0);border: 1px solid #545658;">
+											<img style="width:90%;margin-left:auto;margin-right:auto;margin-top:8px;margin-bottom:8px;height: 138px;" src="{{ asset(jeux.logo) }}" alt="..." class="img-rounded img-responsive center-block">
+											<div class="caption" style="background: #020202bd;padding:1px">
+												<h5 style="text-align: center;color:#fff;margin-bottom: 4px;">{{jeux.nom}}</h5>
+												{% set ch = '' %}
+												{% if jeux.active  == 1 %}
+													{% set ch = 'checked' %}
+												{% endif %}
+
+												<input name="listeactive[{{jeux.id}}]" class="caf3" style="width:100%" type="checkbox" {{ch}}>
+												<input type="text" name="listeposition[{{jeux.id}}]" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" value="{{jeux.position}}" style="width: 27px;margin-top: -205px;position: absolute;margin-left: 59px;height: 26px;background-color: #020202bd;color: white;border-radius: 4px;"/>
+
+												<a data-toggle="tooltip" data-placement="top" title="modifier l'jeux" href="{{path('app_modifier_jeux',{'id':jeux.id})}}" class="btn btn-warning btn-xs" style="margin-top: -406px;background-color: #020202bd;border-color: #020202bd;">
+													<i class="glyphicon glyphicon-pencil"></i>
+												</a>
+
+												<a data-toggle="tooltip" data-placement="top" title="supprimer l'jeux" href="{{path('app_supprimer_jeux',{'id':jeux.id})}}" class="btn btn-danger btn-xs" style="margin-top: -406px;background-color: #020202bd;border-color: #020202bd;" onclick="return(confirm('voulez vous vraiment supprimer ce jeux ?'));">
+													<i class="glyphicon glyphicon-trash"></i>
+												</a>
+
+											</div>
+										</div>
+									</div>
+
+
+								{% endif %}
+							{% endfor %}
+						</div>
+					{% endfor %}
+
+				</div>
+                
+		</form>
+	</div>
+		<!-- scripts -->
+	<!--<script>
+			$(document).ready(function () { // Récupérer l'identifiant de l'onglet actif depuis l'URL
+            var ongletActif = "{{ app.request.query.get('ongletActif') }}";
+
+            // Si aucun onglet n'est déjà sélectionné dans l'URL, sélectionner le premier onglet
+            if (! ongletActif) { // Simuler un clic sur le premier onglet pour l'afficher et le marquer comme actif
+            $('.nav-item.nav-link:first').addClass('active-tab').trigger('click');
+            } else { // Simuler un clic sur l'onglet spécifié par le paramètre ongletActif pour l'afficher et le marquer comme actif
+            $('#nav-' + ongletActif + '-tab').addClass('active-tab').trigger('click');
+            }
+
+            // Gérer le clic sur les onglets
+            $('.nav-item.nav-link').click(function () { // Supprimer la classe active de tous les onglets
+            $('.nav-item.nav-link').removeClass('active-tab');
+            // Ajouter la classe active à l'onglet cliqué
+            $(this).addClass('active-tab');
+            });
+            });
+	</script>-->
+    <script>
+            $(document).ready(function () {
+                // Récupérer l'identifiant de l'onglet actif depuis l'URL
+                var ongletActif = "{{ app.request.query.get('ongletActif') }}";
+
+                // Si aucun onglet n'est déjà sélectionné dans l'URL, sélectionner le premier onglet
+                if (!ongletActif) {
+                    // Simuler un clic sur le premier onglet pour l'afficher et le marquer comme actif
+                    $('.nav-item.nav-link:first').addClass('active-tab').trigger('click');
+                } else {
+                    // Simuler un clic sur l'onglet spécifié par le paramètre ongletActif pour l'afficher et le marquer comme actif
+                    $('#nav-' + ongletActif + '-tab').addClass('active-tab').trigger('click');
+                }
+
+                // Gérer le clic sur les onglets
+                $('.nav-item.nav-link').click(function () {
+                    // Supprimer la classe active de tous les onglets
+                    $('.nav-item.nav-link').removeClass('active-tab');
+                    // Ajouter la classe active à l'onglet cliqué
+                    $(this).addClass('active-tab');
+
+                    // Mettre à jour la valeur du champ caché avec l'identifiant de l'onglet
+                    var ongletId = $(this).attr('id').split('-')[1];
+                    $('input[name="ongletActif"]').val(ongletId);
+                });
+            });
+    </script>
+    <script language="javascript">
+   /* function check_fields(form, ongletActif) {
+        // Récupérer tous les champs de position de l'onglet actif dans le formulaire
+        var positions = form.querySelectorAll('input[name^="listeposition[' + ongletActif + ']"]');
+        var positionValues = [];
+        var duplicates = [];
+
+        // Parcourir les champs de position et stocker les valeurs dans un tableau
+        positions.forEach(function(position) {
+            var value = parseInt(position.value);
+            if (positionValues.includes(value)) {
+                // Si la valeur est déjà dans le tableau, ajouter la valeur aux doublons
+                if (!duplicates.includes(value)) {
+                    duplicates.push(value);
+                }
+            } else {
+                positionValues.push(value);
+            }
+        });
+
+        // Si des doublons sont trouvés, afficher un message d'erreur avec les valeurs dupliquées
+        if (duplicates.length > 0) {
+            var duplicateValuesString = duplicates.join(', '); // Convertir le tableau de doublons en une chaîne séparée par des virgules
+            alert('Des doublons de position ont été détectés pour les valeurs suivantes : ' + duplicateValuesString + '. Veuillez corriger les valeurs avant de sauvegarder.');
+            return false; // Empêcher la soumission du formulaire
+        }
+
+        // Si aucun doublon n'est trouvé, autoriser la soumission du formulaire
+        return true;
+    }*/
+</script>
+
+
+
+	{% endblock %}

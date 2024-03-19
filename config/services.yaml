@@ -11,6 +11,7 @@ parameters:
     radio_directory: '%kernel.project_dir%/public/images/radio'
     categorie_radio_directory: '%kernel.project_dir%/public/images/categorie_radio'
     application_directory: '%kernel.project_dir%/public/images/application'
+    jeux_directory: '%kernel.project_dir%/public/images/jeux'
 
 
 services:
