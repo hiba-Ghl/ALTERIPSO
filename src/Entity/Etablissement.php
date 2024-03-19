@@ -91,6 +91,9 @@ class Etablissement
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Application::class)]
     private Collection $applications;
 
+    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Jeux::class)]
+    private Collection $jeuxes;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -100,6 +103,7 @@ class Etablissement
         $this->radios = new ArrayCollection();
         $this->supports = new ArrayCollection();
         $this->applications = new ArrayCollection();
+        $this->jeuxes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -536,6 +540,36 @@ class Etablissement
             // set the owning side to null (unless already changed)
             if ($application->getEtablissement() === $this) {
                 $application->setEtablissement(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Jeux>
+     */
+    public function getJeuxes(): Collection
+    {
+        return $this->jeuxes;
+    }
+
+    public function addJeux(Jeux $jeux): static
+    {
+        if (!$this->jeuxes->contains($jeux)) {
+            $this->jeuxes->add($jeux);
+            $jeux->setEtablissement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJeux(Jeux $jeux): static
+    {
+        if ($this->jeuxes->removeElement($jeux)) {
+            // set the owning side to null (unless already changed)
+            if ($jeux->getEtablissement() === $this) {
+                $jeux->setEtablissement(null);
             }
         }
 

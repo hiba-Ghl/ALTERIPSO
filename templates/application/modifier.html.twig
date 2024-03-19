@@ -1,0 +1,102 @@
+{% extends 'home/index.html.twig' %}
+{% block body %}
+<style>
+    #div2 {
+			border-radius: 25px;
+			border: 2px solid #3087ce;
+			padding: 20px;
+			width: 1300px;
+			height: 250px;
+			margin-left: -70px;
+			margin-top: 10px;
+			background-color: white;
+		}
+</style>
+
+
+<div style="margin-top: -40px;position: absolute;border-radius: 8px;text-align: left;margin-left: -68px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: -27px;">
+    Ajouter Application 
+</div>
+
+<div id="div2">
+
+
+	
+<form action="" method="post" enctype="multipart/form-data">
+      
+        <div style="width: 100%;">
+            <div style="float: left; width: 25%;">
+                <img src="{{ asset(application.logo) }}" alt="..." class="img-rounded img-responsive" style="width: 170px;height: 170px;">
+            </div>
+            <div style="float: left; width: 67%;">
+                <table style="width: 100%;">
+                    <tr>
+                        <td>
+                            <div class="control-label">
+                                <label class="control-label">Nom Application:</label>
+                                <input type="text" name="nom" class="form-control" value="{{application.nom}}">
+                            </div>
+                        </td>
+                        <td style="width: 20px;"></td> <!-- Ajouter une marge de 20px entre les deux colonnes -->
+                        <td>
+                            <div class="control-label">
+                                <label class="control-label">Package:</label>
+                                <input type="text" name="package" class="form-control" value="{{application.package}}">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="control-label">
+                                <label class="control-label">Protocole:</label>
+                                <select class="form-control" name="protocole" id="protocole">
+                                    {% set idsupport = application.protocole %}
+                                    {% for support in supports %}
+                                        {% if support.protocole == idsupport %}
+                                            <option selected value="{{ support.protocole }}">{{ support.nom|upper }}</option>
+                                        {% else %}
+                                            <option value="{{ support.protocole }}">{{ support.nom|upper }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                
+                            </div>
+                        </td>
+                        <td style="width: 20px;"></td> <!-- Ajouter une marge de 20px entre les deux colonnes -->
+                        <td>
+                            <div class="form-group">
+                                <label>Logo:</label>
+                                <input type="file" class="form-control-file" id="logo" name="logo">
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <br>
+        <button type="submit" class="button btn btn-primary btn-sm" style="margin-left:940px;" name="valider" >
+            <i class="glyphicon glyphicon-floppy-disk"></i>
+            Enregistrer
+        </button>
+    </form>
+    
+		<form method="POST" action="{{path('app_application')}}">
+			<button type="submit" class="button btn btn-danger btn-sm" style="width: 103px;margin-left: 1050px;margin-top: -57px;">
+				<i class="glyphicon glyphicon-remove"></i>
+				Annuler
+			</button>
+		</form>
+
+
+	
+
+</div>
+<!-- Scripts -->
+<script type="text/javascript">
+
+
+</script>
+	
+
+
+{% endblock %}
