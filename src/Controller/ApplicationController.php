@@ -27,6 +27,7 @@ class ApplicationController extends AbstractController
         $support = $this->getUser()->getEtablissement()->getSupports();
         $applicationsCollection = $this->getUser()->getEtablissement()->getApplications();
     
+        
         // Convertir la PersistentCollection en tableau PHP
         $applicationsArray = $applicationsCollection->toArray();
     

@@ -11,16 +11,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 class JeuxController extends AbstractController
 {
-    /*#[Route('/jeux', name: 'app_jeux')]
-    public function index(EntityManagerInterface $entityManager): Response
-    {
-      
-     $support =  $this->getUser()->getEtablissement()->getSupports();
-     $jeux =  $this->getUser()->getEtablissement()->getApplications();
-         return $this->render('jeux/index.html.twig', [
-            'supports' => $support,'jeuxs' => $jeux
-        ]);
-    }*/
     #[Route('/jeux', name: 'app_jeux')]
     public function index(EntityManagerInterface $entityManager): Response
     {

@@ -129,25 +129,6 @@
 		</form>
 	</div>
 		<!-- scripts -->
-	<!--<script>
-			$(document).ready(function () { // Récupérer l'identifiant de l'onglet actif depuis l'URL
-            var ongletActif = "{{ app.request.query.get('ongletActif') }}";
-
-            // Si aucun onglet n'est déjà sélectionné dans l'URL, sélectionner le premier onglet
-            if (! ongletActif) { // Simuler un clic sur le premier onglet pour l'afficher et le marquer comme actif
-            $('.nav-item.nav-link:first').addClass('active-tab').trigger('click');
-            } else { // Simuler un clic sur l'onglet spécifié par le paramètre ongletActif pour l'afficher et le marquer comme actif
-            $('#nav-' + ongletActif + '-tab').addClass('active-tab').trigger('click');
-            }
-
-            // Gérer le clic sur les onglets
-            $('.nav-item.nav-link').click(function () { // Supprimer la classe active de tous les onglets
-            $('.nav-item.nav-link').removeClass('active-tab');
-            // Ajouter la classe active à l'onglet cliqué
-            $(this).addClass('active-tab');
-            });
-            });
-	</script>-->
     <script>
             $(document).ready(function () {
                 // Récupérer l'identifiant de l'onglet actif depuis l'URL
