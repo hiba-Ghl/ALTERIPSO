@@ -19,6 +19,9 @@
               .container1 {
                 display: flex;
               }
+              .container2 {
+                display: flex;
+              }
               
       </style>
       <!-- En-tête de la page -->                                  
@@ -295,16 +298,18 @@
             {% endif %}
         <!--affichage formulaire de type prise rendez vous-->  
         {% elseif serviceEnChambresdetails.getTypeServiceEnChambre() is not null and serviceEnChambresdetails.getTypeServiceEnChambre().getNom()|lower == "prise rendez vous"  %} 
-            <div id="priseSection" >
-                <div class="form-group" style="margin-left:30px;" >
-                  
-                      <label for="Descriptionprise" style="margin-left: 6px;">Description</label>
-                      <input type="text" style="width: 97%;" class="form-control" id="Descriptionprise" name="Descriptionprise" value="{{ data.Description }}">
-                </div>
+          <div id="priseSection" >
+            <div class="form-group" style="margin-left:30px;" >
+              
+                  <label for="Descriptionprise" style="margin-left: 6px;">Description</label>
+                  <input type="text" style="width: 97%;" class="form-control" id="Descriptionprise" name="Descriptionprise" value="{{ data.Description }}">
+            </div>
+              
                 <div class="container1">
-                  <label  style="margin-left: 27px;">Horaires</label>
+                <label  style="margin-left: 27px;">Horaires</label>
+                <div class="container2" style="margin-left: 25px;">
                   <div class="container1">
-                    <label style="margin-left: 27px;">Lundi</label>
+                    <label style="margin-left: 35px;">Lundi</label>
                     <div class="form-row" style="margin-left:27px" >
                       <div class="form-group col-md-6" style="width: 150px;">
                       <!-- Champ de nom de service en chambre -->
@@ -321,7 +326,7 @@
                 </div>
                 <div class="container1" style="margin-left: 100px;">
                     <label >Mardi</label>
-                    <div class="form-row" style="margin-left:27px" >
+                    <div class="form-row" style="margin-left:23px" >
                       <div class="form-group col-md-6" style="width: 150px;">
                       <!-- Champ de nom de service en chambre -->
                         <label for="debutmardi">Début</label>
@@ -333,85 +338,88 @@
                         <input type="time" class="form-control" id="Finmardi" name="Finmardi" value="{{data.Mardi.fin}}">
                       </div>
                     </div>
-                  </div>
-                  <div class="container1" style="margin-left: 45px;">
-                    <label style="margin-left: 27px;">Merecredi</label>
-                    <div class="form-row" style="margin-left:27px" >
-                      <div class="form-group col-md-6" style="width: 150px;">
-                      <!-- Champ de nom de service en chambre -->
-                        <label for="debutmerc">Début</label>
-                        <input type="time"  class="form-control" id="debutmerc" name="debutmerc" value="{{data.Merecredi.debut}}">
-                      </div>
-                      <div class="form-group col-md-6" style="margin-left:15px;width: 150px;">
-                      <!-- Champ de description de service en chambre -->
-                        <label for="Finmerc">Fin</label>
-                        <input type="time" class="form-control" id="Finmerc" name="Finmerc" value="{{data.Merecredi.fin}}">
-                      </div>
+                </div>
+              </div>
+              <div class="container2">
+                <div class="container1" style="margin-left: 80px;">
+                  <label style="margin-left: 27px;">Merecredi</label>
+                  <div class="form-row" style="margin-left:27px" >
+                    <div class="form-group col-md-6" style="width: 150px;">
+                    <!-- Champ de nom de service en chambre -->
+                      <label for="debutmerc">Début</label>
+                      <input type="time"  class="form-control" id="debutmerc" name="debutmerc" value="{{data.Merecredi.debut}}">
                     </div>
-                  </div>
-                  <div class="container1" style="margin-left: 75px;">
-                    <label style="margin-left: 27px;">Jeudi</label>
-                    <div class="form-row" style="margin-left:27px" >
-                      <div class="form-group col-md-6" style="width: 150px;">
-                      <!-- Champ de nom de service en chambre -->
-                        <label for="debutjeudi">Début</label>
-                        <input type="time"  class="form-control" id="debutjeudi" name="debutjeudi" value="{{data.Jeudi.debut}}">
-                      </div>
-                      <div class="form-group col-md-6" style="margin-left:15px;width: 150px;">
-                      <!-- Champ de description de service en chambre -->
-                        <label for="Finjeudi">Fin</label>
-                        <input type="time" class="form-control" id="Finjeudi" name="Finjeudi" value="{{data.Jeudi.fin}}">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="container1" style="margin-left: 50px;">
-                    <label style="margin-left: 27px;">Vendredi</label>
-                    <div class="form-row" style="margin-left:27px" >
-                      <div class="form-group col-md-6" style="width: 150px;">
-                      <!-- Champ de nom de service en chambre -->
-                        <label for="debutven">Début</label>
-                        <input type="time"  class="form-control" id="debutven" name="debutven" value="{{data.Vendredi.debut}}">
-                      </div>
-                      <div class="form-group col-md-6" style="margin-left:15px;width: 150px;">
-                      <!-- Champ de description de service en chambre -->
-                        <label for="Finven">Fin</label>
-                        <input type="time" class="form-control" id="Finven" name="Finven" value="{{data.Vendredi.fin}}">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="container1" style="margin-left: 60px;">
-                    <label style="margin-left: 27px;">Samedi</label>
-                    <div class="form-row" style="margin-left:27px" >
-                      <div class="form-group col-md-6" style="width: 150px;">
-                      <!-- Champ de nom de service en chambre -->
-                        <label for="debutsam">Début</label>
-                        <input type="time"  class="form-control" id="debutsam" name="debutsam" value="{{data.Samedi.debut}}">
-                      </div>
-                      <div class="form-group col-md-6" style="margin-left:15px;width: 150px;">
-                      <!-- Champ de description de service en chambre -->
-                        <label for="Finsam">Fin</label>
-                        <input type="time" class="form-control" id="Finsam" name="Finsam" value="{{data.Samedi.fin}}">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="container1" style="margin-left: 43px;">
-                    <label style="margin-left: 27px;">Dimanche</label>
-                    <div class="form-row" style="margin-left:27px" >
-                      <div class="form-group col-md-6" style="width: 150px;">
-                      <!-- Champ de nom de service en chambre -->
-                        <label for="debutdim">Début</label>
-                        <input type="time"  class="form-control" id="debutdim" name="debutdim" value="{{data.Dimanche.debut}}">
-                      </div>
-                      <div class="form-group col-md-6" style="margin-left:15px;width: 150px;">
-                      <!-- Champ de description de service en chambre -->
-                        <label for="Findim">Fin</label>
-                        <input type="time" class="form-control" id="Findim" name="Findim" value="{{data.Dimanche.fin}}">
-                      </div>
+                    <div class="form-group col-md-6" style="margin-left:15px;width: 150px;">
+                    <!-- Champ de description de service en chambre -->
+                      <label for="Finmerc">Fin</label>
+                      <input type="time" class="form-control" id="Finmerc" name="Finmerc" value="{{data.Merecredi.fin}}">
                     </div>
                   </div>
                 </div>
-        
-        
+                <div class="container1" style="margin-left: 75px;">
+                  <label style="margin-left: 27px;">Jeudi</label>
+                  <div class="form-row" style="margin-left:27px" >
+                    <div class="form-group col-md-6" style="width: 150px;">
+                    <!-- Champ de nom de service en chambre -->
+                      <label for="debutjeudi">Début</label>
+                      <input type="time"  class="form-control" id="debutjeudi" name="debutjeudi" value="{{data.Jeudi.debut}}">
+                    </div>
+                    <div class="form-group col-md-6" style="margin-left:15px;width: 150px;">
+                    <!-- Champ de description de service en chambre -->
+                      <label for="Finjeudi">Fin</label>
+                      <input type="time" class="form-control" id="Finjeudi" name="Finjeudi" value="{{data.Jeudi.fin}}">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="container2">
+                <div class="container1" style="margin-left: 87px;">
+                  <label style="margin-left: 27px;">Vendredi</label>
+                  <div class="form-row" style="margin-left:27px" >
+                    <div class="form-group col-md-6" style="width: 150px;">
+                    <!-- Champ de nom de service en chambre -->
+                      <label for="debutven">Début</label>
+                      <input type="time"  class="form-control" id="debutven" name="debutven" value="{{data.Vendredi.debut}}">
+                    </div>
+                    <div class="form-group col-md-6" style="margin-left:15px;width: 150px;">
+                    <!-- Champ de description de service en chambre -->
+                      <label for="Finven">Fin</label>
+                      <input type="time" class="form-control" id="Finven" name="Finven" value="{{data.Vendredi.fin}}">
+                    </div>
+                  </div>
+                </div>
+                <div class="container1" style="margin-left: 60px;">
+                  <label style="margin-left: 27px;">Samedi</label>
+                  <div class="form-row" style="margin-left:27px" >
+                    <div class="form-group col-md-6" style="width: 150px;">
+                    <!-- Champ de nom de service en chambre -->
+                      <label for="debutsam">Début</label>
+                      <input type="time"  class="form-control" id="debutsam" name="debutsam" value="{{data.Samedi.debut}}">
+                    </div>
+                    <div class="form-group col-md-6" style="margin-left:15px;width: 150px;">
+                    <!-- Champ de description de service en chambre -->
+                      <label for="Finsam">Fin</label>
+                      <input type="time" class="form-control" id="Finsam" name="Finsam" value="{{data.Samedi.fin}}">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="container1" style="margin-left: 80px;">
+                <label style="margin-left: 27px;">Dimanche</label>
+                <div class="form-row" style="margin-left:27px" >
+                  <div class="form-group col-md-6" style="width: 150px;">
+                  <!-- Champ de nom de service en chambre -->
+                    <label for="debutdim">Début</label>
+                    <input type="time"  class="form-control" id="debutdim" name="debutdim" value="{{data.Dimanche.debut}}">
+                  </div>
+                  <div class="form-group col-md-6" style="margin-left:15px;width: 150px;">
+                  <!-- Champ de description de service en chambre -->
+                    <label for="Findim">Fin</label>
+                    <input type="time" class="form-control" id="Findim" name="Findim" value="{{data.Dimanche.fin}}">
+                  </div>
+                </div>
+              </div>
+            </div>
         {% endif %}
      <!--boutton annulation et enregistrement des donnees-->
       <span style="margin-left: 800px; margin-top:50px;">

@@ -81,7 +81,7 @@ class ServiceenchambreController extends AbstractController
         $user = $this->getUser();
         $etablissement = $this->getUser()->getEtablissement();
         $typeserviceEnChambreRepository = $this->entityManager->getRepository(TypeServiceEnChambre::class);
-        $typeserviceEnChambres = $typeserviceEnChambreRepository->findBy(['etablissement'=>$etablissement]);
+        $typeserviceEnChambres = $typeserviceEnChambreRepository->findBy(['etablissement'=>$etablissement],['nom' => 'ASC']);
         return $this->render('service_en_chambre/ajouter.html.twig', [
             'user' => $user,
             'typeserviceEnChambres' => $typeserviceEnChambres,
