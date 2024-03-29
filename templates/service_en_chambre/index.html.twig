@@ -1,0 +1,382 @@
+{% extends 'home/index.html.twig' %}
+  {% block body %}
+
+    <!-- Styles spécifiques à cette page -->
+    <style>
+      /* Définition des styles pour le corps de la page */
+      body { 
+        font-size: 140%; 
+      }
+      /* Styles pour les titres de niveau 2 */
+      h2 {
+        text-align: center;
+        padding: 20px 0;
+      }
+      /* Styles pour la légende des tableaux */
+      table caption {
+        padding: .5em 0;
+      }
+      /* Styles pour les colonnes des tableaux avec une classe dataTable */
+      table.dataTable th,
+      table.dataTable td {
+        white-space: nowrap;
+      }
+      /* Styles pour les éléments avec la classe 'p' */
+      .p {
+        text-align: center;
+        padding-top: 140px;
+        font-size: 14px;
+      }
+      /* Styles pour la div avec l'ID 'div2' */
+      #div2 {
+              border-radius: 25px;
+              border: 2px solid #3087ce;
+              padding: 20px;
+              width: 1300px;
+              height: auto;
+              margin-left: -70px;
+              margin-top: 10px;
+              background-color: white;
+            }
+        /* Styles généraux pour tous les éléments */
+            *{
+              margin:0px;
+              padding:0px;
+              box-sizing: border-box;
+              font-family: sans-serif;
+          }
+          /* Styles pour le corps de la page */
+          body{
+              background-color: #F0F0F0;
+      
+          }
+          /* Styles pour la conteneur des cartes */
+          .card-container{
+              display: flex;
+              justify-content: center;
+              flex-wrap: wrap;
+              margin-top: 50px;
+          }
+          /* Styles pour chaque carte */
+          .card{
+              width: 300PX;
+              height: 260px;
+              background-color: #F0F0F0;
+              border-radius: 8px;
+              overflow: hidden;
+              box-shadow: 0px 2px 4px rgb(0, 0, 0, 2);
+              margin: 20px;
+          }
+        /* Styles pour les images à l'intérieur des cartes */
+          .card img{
+              width: 100%;
+              height: 60%;
+          }
+          /* Styles pour le contenu des cartes */
+          .card-content{
+              padding: 16 px;
+          }
+/* Styles pour les titres dans le contenu des cartes */
+          .card-content h3{
+             font-size: 28px;
+             margin-bottom: 8px;
+          }
+          /* Styles pour les paragraphes dans le contenu des cartes */
+          .card-content p{
+              color: #666;
+              font-size: 15px;
+          }
+        /* Styles pour les boutons dans le contenu des cartes */
+          .card-content .btn1{
+            display: inline-block;
+            padding: 8px 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: -6px;
+            color: #fff;
+          }
+          .btn1:hover {
+            background-color: grey;
+          }
+          .card-content .btn2{
+            display: inline-block;
+            padding: 8px 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: -6px;
+            color: #fff;
+          }
+          .btn2:hover {
+            background-color: grey;
+          }
+          .card-content .btn3{
+            display: inline-block;
+            padding: 8px 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: -6px;
+            color: #fff;
+          }
+          .btn3:hover {
+            background-color: grey;
+          }
+          .card-content .btn4{
+            display: inline-block;
+            padding: 8px 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: -6px;
+            color: #fff;
+          }
+          .modal-confirm {		
+            color: #636363;
+            width: 400px;
+          }
+          .modal-confirm .modal-content {
+            padding: 20px;
+            border-radius: 5px;
+            border: none;
+            text-align: center;
+            font-size: 14px;
+          }
+          .modal-confirm .modal-header {
+            border-bottom: none;   
+            position: relative;
+          }
+          .modal-confirm h4 {
+            text-align: center;
+            font-size: 26px;
+            margin: 30px 0 -10px;
+          }
+          .modal-confirm .close {
+            position: absolute;
+            top: -5px;
+            right: -2px;
+          }
+          .modal-confirm .modal-body {
+            color: #999;
+          }
+          .modal-confirm .modal-footer {
+            border: none;
+            text-align: center;		
+            border-radius: 5px;
+            font-size: 13px;
+            padding: 10px 15px 25px;
+          }
+          .modal-confirm .modal-footer a {
+            color: #999;
+          }		
+          .modal-confirm .icon-box {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            border-radius: 50%;
+            z-index: 9;
+            text-align: center;
+            border: 3px solid #f15e5e;
+          }
+          .modal-confirm .icon-box i {
+            color: #f15e5e;
+            font-size: 46px;
+            display: inline-block;
+            margin-top: 13px;
+          }
+          .modal-confirm .btn, .modal-confirm .btn:active {
+            color: #fff;
+            border-radius: 4px;
+            background: #60c7c1;
+            text-decoration: none;
+            transition: all 0.4s;
+            line-height: normal;
+            min-width: 120px;
+            border: none;
+            min-height: 40px;
+            border-radius: 3px;
+            margin: 0 5px;
+          }
+          .modal-confirm .btn-secondary {
+            background: #c1c1c1;
+          }
+          .modal-confirm .btn-secondary:hover, .modal-confirm .btn-secondary:focus {
+            background: #a8a8a8;
+          }
+          .modal-confirm .btn-danger {
+            background: #f15e5e;
+          }
+          .modal-confirm .btn-danger:hover, .modal-confirm .btn-danger:focus {
+            background: #ee3535;
+          }
+          .trigger-btn {
+            display: inline-block;
+            margin: 100px auto;
+          }
+    </style>
+    <!-- En-tête de la page -->
+    <div style="margin-top: -40px;position: absolute;border-radius: 8px;text-align: left;margin-left: -68px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 27px;">
+      Service en chambre
+    </div>
+    <!-- Contenu principal de la page -->
+    <div id="div2">
+       <!-- Boutons d'ajout de service en chambre -->
+      <a  href="{{ path('service_formu') }}" class="btn btn-info btn-sm" name="add" id="add">
+          <i class="glyphicon glyphicon-plus"></i>
+          Ajouter service
+        </a>
+        <!-- Boutons d'ajout de type de service -->
+        <button  data-toggle="modal" data-target="#exampleModal" class="btn btn-success btn-sm" name="add" id="add">
+          <i class="glyphicon glyphicon-plus"></i>
+          Ajouter Type service
+        </button>
+        <a  href="{{ path('service_en_chambre') }}" class="btn btn-danger btn-sm" name="add" id="add">
+          <i class="glyphicon glyphicon-inbox"></i>
+          Sauvgarder
+        </a>
+    <!-- Affichage des services en chambre -->
+    <div class="card-container">
+      {% if serviceEnChambres is empty %}
+          <p>Il n'y a aucun service disponible!!!</p>
+      {% else %}
+        {% for serviceEnChambre in serviceEnChambres %}
+          <!-- Affichage des détails du service -->
+          <div class="card">
+              
+              <!-- Affichage image du service en chambre-->
+              <img src="{{ asset('serviceinroom/' ~ serviceEnChambre.getLogo()) }}" style="position: relative;display: inline-block;"/>
+              <div class="card-content">
+                  <!-- Affichage le nom de service en chambre -->
+                  <h3 style="text-align: center; margin-left: auto; margin-right: auto;margin-top:5px">{{ serviceEnChambre.getNom()}}</h3>
+                  <!-- Affichage le description service en chambre -->
+                  
+                <a href="{{ path('page_details_service_en_chambre', {'id': serviceEnChambre.getId()}) }}" class="btn3" style="position: absolute;margin-top:-190px;margin-bottom: 12px;margin-left: 12px;"><i class="glyphicon glyphicon-pencil"></i></a>
+                <a href="{{path('app_supprimer_service_en_chambre',{'id':serviceEnChambre.id})}}"  class="btn1" data-toggle="tooltip" data-placement="top" title="supprimer le service" style="position: absolute;margin-top:-190px;margin-left: 50px;" onclick="return confirm('Voulez-vous vraiment supprimer le service : {{serviceEnChambre.nom}} ?')"><i class="glyphicon glyphicon-trash"></i></a>
+                <input type="text" value="{{ serviceEnChambre.getPosition()}}" id="position_{{ serviceEnChambre.getId() }}" name="position" onchange="updatePosition({{ serviceEnChambre.getId() }})" style="position: absolute;margin-top:-190px;background-color: rgba(0, 0, 0, 0.7);color: white;width: 32px; height:35px;border-radius: 8px;margin-left: 87px;text-align: center; ">
+                <input type="checkbox" id="Active_{{ serviceEnChambre.getId() }}" {% if serviceEnChambre.isActive() == 0 %}checked{% endif %} onchange="updateActive({{ serviceEnChambre.getId() }})" style="margin-left: 150px;margin-top:20px" name="Active">
+ 
+              </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+     <!-- Modal pour l'ajout de type de service -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- ... (contenu du modal) ... -->
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <form name="" method="post" action="{{path('ajoutercategoriesservice')}}" class="form-horizontal" enctype="multipart/form-data">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="font-weight: bold; font-size: 20px; margin-top:15px;">Ajouter type service</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <strong>Infos</strong>
+                <div class="form-group">
+                  <!-- ... champ du Nom ... -->
+                  <label for="nom" class="col-lg-2 control-label">Nom
+                  </label>
+                  <div class="col-lg-10">
+                    <input type="text" id="nom" name="nom" class="form-control"/>
+                  </div>
+                </div>
+                <div class="form-group">
+                    <!-- ... champ du description ... -->
+                    <label for="description" class="col-lg-2 control-label">Description</label>
+                    <div class="col-lg-10">
+                        <textarea id="description" name="Description" class="form-control"></textarea>
+                    </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <!-- ... boutton pour ajouter type de service ... -->
+                <button type="submit" href="" class="btn btn-success" style="background-color: #3087ce; border: 2px solid #3087ce;">
+                  <i class="glyphicon glyphicon-floppy-disk"></i>
+                  Enregistrer</button>
+                  <!-- ...  boutton pour annuler le module ... -->
+                  <button type="button" class="btn btn-danger"  data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i>Annuler</button>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!--script pour changer la position du service en chambre-->
+      <script>
+        // Fonction pour vérifier les positions uniques
+        function checkUniquePositions() {
+            var positions = document.querySelectorAll('input[name="position"]');
+            var positionValues = Array.from(positions).map(input => input.value);
+    
+            var uniquePositions = new Set(positionValues);
+    
+            if (uniquePositions.size !== positionValues.length) {
+                // Afficher une alerte si des positions sont répétées
+                alert("Veuillez saisir des valeurs de position uniques.");
+            }
+        }
+    
+        // Ajouter un gestionnaire d'événements pour les changements de position
+        document.addEventListener("DOMContentLoaded", function() {
+            var positionInputs = document.querySelectorAll('input[name="position"]');
+            positionInputs.forEach(function(input) {
+                input.addEventListener("change", checkUniquePositions);
+            });
+        });
+    </script>
+    
+   <script>
+    function updateActive(serviceId) {
+        var isActive = document.getElementById('Active_' + serviceId).checked ? 0 : 1;
+        $.ajax({
+            url: "{{ path('update_active_service') }}",
+            method: "POST",
+            data: { id: serviceId, active: isActive },
+            success: function(response) {
+                // Gérer la réponse du serveur
+                console.log("État mis à jour avec succès !");
+            },
+            error: function(xhr, status, error) {
+                // Gérer les erreurs
+                console.error(error);
+            }
+        });
+    }
+</script>
+<script>
+  // Ajouter un gestionnaire d'événements pour les changements de position
+document.addEventListener("DOMContentLoaded", function() {
+  var positionInputs = document.querySelectorAll('input[name="position"]');
+  positionInputs.forEach(function(input) {
+      input.addEventListener("change", function(event) {
+          var position = event.target.value;
+          var serviceId = event.target.id.split('_')[1]; // Récupérer l'ID du service
+
+          // Envoi de la requête AJAX
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "/update-position/" + serviceId, true);
+          xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+          xhr.onreadystatechange = function() {
+              if (xhr.readyState === XMLHttpRequest.DONE) {
+                  if (xhr.status === 200) {
+                      // Afficher un message de succès ou effectuer d'autres actions nécessaires
+                      console.log("Position mise à jour avec succès.");
+                  } else {
+                      // Gérer les erreurs
+                      console.error("Erreur lors de la mise à jour de la position.");
+                  }
+              }
+          };
+          xhr.send("position=" + encodeURIComponent(position));
+      });
+  });
+});
+
+</script>
+
+
+
+  {% endblock %}

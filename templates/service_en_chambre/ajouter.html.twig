@@ -1,0 +1,591 @@
+{% extends 'home/index.html.twig' %}
+  {% block body %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.4.1/jsgrid.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.4.1/jsgrid-theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.17.0/skin-themeroller/ui.fancytree.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.4.1/jsgrid.min.js"></script>
+    <!-- Styles spécifiques à cette page -->    
+    <style>
+        /* Styles pour la div avec l'ID 'div2' */
+            #div2 {
+                border-radius: 25px;
+                border: 2px solid #3087ce;
+                padding: 20px;
+                width: 1091px;
+                height: auto;
+                margin-left: 10px;
+                margin-top: 10px;
+                background-color: white;
+            }
+            /*champ de couleur qui est vide*/
+            .error {
+              box-shadow: 0 0 5px #FF0000;/* Ombre rouge */
+            }
+            .container1 {
+                display: flex;
+              }
+
+       
+    </style>
+    <!-- En-tête de la page -->                                  
+    <div style="margin-top:-15px; border-radius: 8px;text-align: center;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 350px;padding-left: 10px;">
+      Ajouter un service en chambre
+    </div>
+    
+    <div id="div2">
+    
+    <!-- Formulaire d'ajout de service -->
+    <form name="" method="post" action="{{ path('ajouterservice') }}" class="form-horizontal" enctype="multipart/form-data" onsubmit="return validateForm()">  
+           <br>
+            <!-- Champs du formulaire pour ajouter un service -->
+           <div class="form-row" style="margin-left:27px">
+                <div class="form-group col-md-6">
+                <!-- Champ de nom de service en chambre -->
+                <label for="nom">Nom service</label>
+                <input type="text" class="form-control" id="nom" name="nom">
+                </div>
+                <div class="form-group col-md-6" style="margin-left:27px">
+                <!-- Champ de description de service en chambre -->
+                <label for="Description">Description</label>
+                <input type="text" class="form-control" id="Description" name="Description">
+                </div>
+            </div>
+            <div class="form-group" style="margin-left:30px;" >
+              <!-- Champ de logo de service en chambre -->
+                <label for="logo" style="margin-left: 6px;">Logo</label>
+                <input type="file" style="width: 97%;" class="form-control" id="logo" name="logo" accept=".jpg, .jpeg, .png">
+            </div>
+           
+            <!-- Champs des langues -->
+            <div  style="width:1005px;margin-left:32px;margin-bottom:15px;margin-top:20px">
+                  <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" >
+                   <span > <i class="glyphicon glyphicon-plus"></i></span>
+                  </a><label style="margin-left: 5px;">Langues</label>
+             
+              <div id="collapseTwo" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <div id="inputGroup1" >
+                    <div class="form-row" style="margin-left:27px">
+                        <div class="form-group col-md-6">
+                            <img style="width: 30px" src=" {{asset('images/eng.png')}}">
+                        <label for="EN">English</label>
+                        <input type="text" class="form-control" id="EN" name="EN">
+                        </div>
+                        <div class="form-group col-md-6" style="margin-left:27px">
+                            <img style="width: 30px" src="{{asset('images/es.png')}}">
+                        <label for="ES">Espagnol</label>
+                        <input type="text" class="form-control" id="ES" name="ES">
+                        </div>
+                    </div>
+              
+                    <div class="form-row" style="margin-left:27px">
+                        <div class="form-group col-md-6">
+                            <img style="width: 30px" src=" {{asset('images/pt.png')}}">
+                        <label for="PT">Portugues</label>
+                        <input type="text" class="form-control" id="PT" name="PT">
+                        </div>
+                        <div class="form-group col-md-6" style="margin-left:27px">
+                            <img style="width: 30px" src=" {{asset('images/ita.png')}}">
+                        <label for="IT">Italiano</label>
+                        <input type="text" class="form-control" id="IT" name="IT">
+                        </div>
+                    </div>
+                    <div class="form-row" style="margin-left:27px">
+                        <div class="form-group col-md-6">
+                            <img style="width: 30px" src=" {{asset('images/rus.png')}}">
+                        <label for="RU">Russian</label>
+                        <input type="text" class="form-control" id="RU" name="RU">
+                        </div>
+                        <div class="form-group col-md-6" style="margin-left:27px">
+                          <img style="width: 30px" src=" {{asset('images/deu.png')}}">
+                        <label for="DE">Deutsch</label>
+                        <input type="text" class="form-control" id="DE" name="DE">
+                        </div>
+                    </div>
+                    <div class="form-row" style="margin-left:27px">
+                        <div class="form-group col-md-6">
+                            <img style="width: 30px" src=" {{asset('images/ch.png')}}">
+                        <label for="ZH">China</label>
+                        <input type="text" class="form-control" id="ZH" name="ZH">
+                        </div>
+                        <div class="form-group col-md-6" style="margin-left:27px">
+                            <img style="width: 30px" src=" {{asset('images/ma.png')}}">
+                        <label for="AR">العربية</label>
+                        <input type="text" class="form-control" id="AR" name="AR">
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <script>
+              $(document).ready(function(){
+                $('.accordion-toggle').click(function(){
+                  $(this).find('i').toggleClass('glyphicon-plus glyphicon-minus');
+                });
+              });
+            </script>
+           
+            <!-- Champ des type de service -->
+            <div class="form-group"  style="margin-left:30px;">
+                <label for="type_service_en_chambre">Type service en chambre</label>
+                 <!-- Affichage Liste des types services -->
+                <select style="width: 97%;" id="type_service_en_chambre" name="type_service_en_chambre" class="form-control" onchange="toggleSection()">
+                    <option selected>Aucun</option>
+                    {% for typeServiceEnChambre in typeserviceEnChambres %}
+                      <option value="{{ typeServiceEnChambre.id }}" data-id="{{ typeServiceEnChambre.id }}" data-nom="{{ typeServiceEnChambre.nom }}">{{ typeServiceEnChambre.nom }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div id="achatSection" style="display: none;">
+              <!--button radio pour choix du forum-->
+              <div style="margin-left: 47px;">
+                <div class="form-group" style="display: inline-block; margin-right: 20px;">
+                    <input type="radio" id="prixRadio" name="typePrix" value="prixnormal1" checked onchange="toggleInput('prix')">
+                    <!--button radio pour choix du forum prix normal-->
+                    <label for="prixRadio">Prix normal</label>
+                </div>
+                
+                <div class="form-group" style="display: inline-block;">
+                    <!--button radio pour choix du forum prix par quantite-->
+                    <input type="radio" id="quantiteRadio" name="typePrix" value="prixquantite1" onchange="toggleInput('quantite')">
+                    <label for="quantiteRadio">Prix par quantité</label>
+                </div>
+              </div> 
+              <!--affichage forum prix par prix normal-->
+              <div id="prixnormal">
+                <div class="form-group" style="margin-left:30px;">
+                      <label for="Devise" >Devise</label>
+                      <select style="width: 97%;" id="Devise" name="Devise" class="form-control">
+                            <option value="1">MAD</option>
+                            <option value="2">Dollar</option>
+                            <option value="3">Euro</option>
+                      </select>
+                </div>
+              
+                <div class="form-group" style="margin-left:30px;" >
+                        <!-- Champ prix -->
+                        <label for="prix" style="margin-left: 6px;">Prix</label>
+                        <input type="number" style="width: 97%;" class="form-control" id="prix" name="prix">
+                </div>
+                <div class="form-row" style="margin-left:27px">
+                        <!-- Champ Quantite Min  -->
+                        <div class="form-group col-md-6">
+                        <label for="qmin">Quantite Min :</label>
+                        <input type="number" class="form-control" id="qmin" name="qmin">
+                        </div>
+                        <!-- Champ Quantite MAX  -->
+                        <div class="form-group col-md-6" style="margin-left:27px">
+                        <label for="qmax">Quantite MAX :</label>
+                        <input type="number" class="form-control" id="qmax" name="qmax">
+                        </div>
+                </div>
+            </div>
+          <!--affichage forum prix par quantite-->
+          <div id="prixquantite">
+            <div id="table-container">
+                <table id="myTable"  style="margin-left: 27px;" style="margin-left: 27px;">
+                    <tr>
+                        <td style="width: 500px;"><label for="exampleInputPassword1">Quantité</label><input  type="number" name="inputqte[]" class="form-control"></td>
+                        <td style="width: 500px;"><label for="exampleInputPassword1">Prix</label><input type="number" name="inputprice[]" class="form-control"></td>
+                    </tr>
+                </table>
+            </div>
+            <button type="button" id="add-button" class="btn btn-primary" style="margin-left: 27px;margin-top:14px;">Ajouter Quantité/Prix</button>
+
+            <script>
+                document.getElementById("add-button").addEventListener("click", function() {
+                    var table = document.getElementById("myTable");
+                    var newRow = table.insertRow();
+                    var cell1 = newRow.insertCell(0);
+                    var cell2 = newRow.insertCell(1);
+                    cell1.innerHTML = '<label for="exampleInputPassword1">Quantité</label><input type="number" name="inputqte[]" class="form-control">';
+                    cell2.innerHTML = '<label for="exampleInputPassword1">Prix</label><input type="number" name="inputprice[]" class="form-control">';
+                });
+            </script>
+							
+          </div>
+          <!--affichage duree-->
+          <div style="margin-left: 25px; margin-right:17px;">
+              <label>Durée (min): pour livrer commande en chambre</label><br>
+              {% for i in 1..60 %}
+                  <label>
+                      <input type="checkbox"  name="time[]" value="{{ i }}">
+                      {{ i }}
+                  </label>
+              {% endfor %}
+          </div>
+        </div>
+            
+          <!--forum du liste requete-->
+          <div id="listSection" style="display: none;">
+            <div class="form-row" style="margin-left:30px">
+              <!-- Champ saisir des requetes  -->
+                <div class="form-group col-md-11">
+                    <label for="requete">Saisissez une requête (40 caractères)</label>
+                    <input type="text" class="form-control" id="requete" name="requete" maxlength="40" placeholder="Entrez une requete">
+                </div>
+                <!-- boutton pour ajout des requetes  -->
+                <div class="form-group col-md-1" style="margin-left: 15px;margin-top:23px">
+                    <a  class="btn btn-success form-control" onclick="addText()" style="margin-top: 10000 px;"><i class="glyphicon glyphicon-plus"></i> </a>
+                </div>
+            </div>
+            <div class="form-group" style="margin-left:30px;" >
+                <label for="listrequte" style="margin-left: 6px;">Liste requetes</label>
+                <textarea class="form-control"  style="width: 97%;" id="listrequte" value="listrequte" name="listrequte" readonly></textarea>
+            </div>
+          </div>
+
+          <!--Table du Menu-->
+          <div id="menuSection" style=" width:1000px; margin-left:30px;margin-bottom:25px;display: none;">
+            <div class="alert alert-info">
+              <strong>Info!</strong>Veuillez remplir le menu.
+            </div>
+          </div>
+          <!--formulaire prise rendez vous-->
+          <div id="priseSection" style="display: none;">
+            <div class="form-group" style="margin-left:30px;" >
+              
+                  <label for="Descriptionprise" style="margin-left: 6px;">Description</label>
+                  <input type="text" style="width: 97%;" class="form-control" id="Descriptionprise" name="Descriptionprise">
+            </div>
+            <div class="container1">
+              <label  style="margin-left: 27px;">Horaires</label>
+              <div class="container1">
+                <label style="margin-left: 27px;">Lundi</label>
+                <div class="form-row" style="margin-left:27px" >
+                  <div class="form-group col-md-6" style="width: 150px;">
+                  <!-- Champ de nom de service en chambre -->
+                    <label for="debutlundi">Début</label>
+                    <input type="time"  class="form-control" id="debutlundi" name="debutlundi">
+                  </div>
+                  <div class="form-group col-md-6" style="margin-left:15px;width: 150px;">
+                  <!-- Champ de description de service en chambre -->
+                    <label for="Finlundi">Fin</label>
+                    <input type="time" class="form-control" id="Finlundi" name="Finlundi">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="container1" style="margin-left: 100px;">
+                <label >Mardi</label>
+                <div class="form-row" style="margin-left:27px" >
+                  <div class="form-group col-md-6" style="width: 150px;">
+                  <!-- Champ de nom de service en chambre -->
+                    <label for="debutmardi">Début</label>
+                    <input type="time"  class="form-control" id="debutmardi" name="debutmardi">
+                  </div>
+                  <div class="form-group col-md-6" style="margin-left:15px;width: 150px;">
+                  <!-- Champ de description de service en chambre -->
+                    <label for="Finmardi">Fin</label>
+                    <input type="time" class="form-control" id="Finmardi" name="Finmardi">
+                  </div>
+                </div>
+              </div>
+              <div class="container1" style="margin-left: 45px;">
+                <label style="margin-left: 27px;">Merecredi</label>
+                <div class="form-row" style="margin-left:27px" >
+                  <div class="form-group col-md-6" style="width: 150px;">
+                  <!-- Champ de nom de service en chambre -->
+                    <label for="debutmerc">Début</label>
+                    <input type="time"  class="form-control" id="debutmerc" name="debutmerc">
+                  </div>
+                  <div class="form-group col-md-6" style="margin-left:15px;width: 150px;">
+                  <!-- Champ de description de service en chambre -->
+                    <label for="Finmerc">Fin</label>
+                    <input type="time" class="form-control" id="Finmerc" name="Finmerc">
+                  </div>
+                </div>
+              </div>
+              <div class="container1" style="margin-left: 75px;">
+                <label style="margin-left: 27px;">Jeudi</label>
+                <div class="form-row" style="margin-left:27px" >
+                  <div class="form-group col-md-6" style="width: 150px;">
+                  <!-- Champ de nom de service en chambre -->
+                    <label for="debutjeudi">Début</label>
+                    <input type="time"  class="form-control" id="debutjeudi" name="debutjeudi">
+                  </div>
+                  <div class="form-group col-md-6" style="margin-left:15px;width: 150px;">
+                  <!-- Champ de description de service en chambre -->
+                    <label for="Finjeudi">Fin</label>
+                    <input type="time" class="form-control" id="Finjeudi" name="Finjeudi">
+                  </div>
+                </div>
+              </div>
+              <div class="container1" style="margin-left: 50px;">
+                <label style="margin-left: 27px;">Vendredi</label>
+                <div class="form-row" style="margin-left:27px" >
+                  <div class="form-group col-md-6" style="width: 150px;">
+                  <!-- Champ de nom de service en chambre -->
+                    <label for="debutven">Début</label>
+                    <input type="time"  class="form-control" id="debutven" name="debutven">
+                  </div>
+                  <div class="form-group col-md-6" style="margin-left:15px;width: 150px;">
+                  <!-- Champ de description de service en chambre -->
+                    <label for="Finven">Fin</label>
+                    <input type="time" class="form-control" id="Finven" name="Finven">
+                  </div>
+                </div>
+              </div>
+              <div class="container1" style="margin-left: 60px;">
+                <label style="margin-left: 27px;">Samedi</label>
+                <div class="form-row" style="margin-left:27px" >
+                  <div class="form-group col-md-6" style="width: 150px;">
+                  <!-- Champ de nom de service en chambre -->
+                    <label for="debutsam">Début</label>
+                    <input type="time"  class="form-control" id="debutsam" name="debutsam">
+                  </div>
+                  <div class="form-group col-md-6" style="margin-left:15px;width: 150px;">
+                  <!-- Champ de description de service en chambre -->
+                    <label for="Finsam">Fin</label>
+                    <input type="time" class="form-control" id="Finsam" name="Finsam">
+                  </div>
+                </div>
+              </div>
+              <div class="container1" style="margin-left: 43px;">
+                <label style="margin-left: 27px;">Dimanche</label>
+                <div class="form-row" style="margin-left:27px" >
+                  <div class="form-group col-md-6" style="width: 150px;">
+                  <!-- Champ de nom de service en chambre -->
+                    <label for="debutdim">Début</label>
+                    <input type="time"  class="form-control" id="debutdim" name="debutdim">
+                  </div>
+                  <div class="form-group col-md-6" style="margin-left:15px;width: 150px;">
+                  <!-- Champ de description de service en chambre -->
+                    <label for="Findim">Fin</label>
+                    <input type="time" class="form-control" id="Findim" name="Findim">
+                  </div>
+                </div>
+              </div>
+            </div>
+          <!-- button enregistrer et annuler  -->
+          <span style="margin-left: 800px;">
+            <a href="{{ path('service_en_chambre') }}" class="btn btn-danger" style=" border: 2px solid ; padding: 12px" > <i class="glyphicon glyphicon-remove"></i>  Annuler</a>
+            <button type="submit" class="btn btn-success" style="background-color: #3087ce; border: 2px solid #3087ce;margin-left:13px;"><i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer</button>
+          </span>
+     </form>
+    </div>
+
+  <!-- script d'ajout des requetes  -->
+  <script>
+    function addText() {
+      // Récupérer la valeur du champ de saisie
+      var inputText = document.getElementById("requete").value;
+
+      // Récupérer le contenu actuel du textarea
+      var currentText = document.getElementById("listrequte").value;
+
+      // Ajouter le texte du champ dans le textarea avec un saut de ligne
+      document.getElementById("listrequte").value = currentText + inputText + "\n";
+
+      // Effacer le champ de saisie après l'ajout
+      document.getElementById("requete").value = "";
+    }
+  </script>
+
+  <!-- script pour ajout nouveau champ prix/quantit  -->
+  <script>
+    function createElement(type, className, textContent = null) {
+      var element = document.createElement(type);
+      element.className = className;
+        if (textContent !== null) {
+           element.textContent = textContent;
+        }
+              
+       return element;
+    }
+              
+    function ajouterChampQuantitePrix() {
+      var divRow = createElement("div", "form-row");
+      divRow.style.marginLeft = "27px";
+              
+      // Créer les éléments pour Quantité
+      var divQuantite = createElement("div", "form-group col-md-6");
+      divQuantite.appendChild(createElement("label", null, "Quantité:"));
+      divQuantite.appendChild(createElement("input", "form-control", null, "quantite[]"));
+              
+      // Créer les éléments pour Prix
+      var divPrix = createElement("div", "form-group col-md-6");
+      divPrix.style.marginLeft = "27px";
+      divPrix.appendChild(createElement("label", null, "Prix:"));
+      divPrix.appendChild(createElement("input", "form-control", null, "prix[]"));
+              
+      divRow.appendChild(divQuantite);
+      divRow.appendChild(divPrix);
+              
+      // Récupérer le conteneur prixquantite
+      var prixquantite = document.getElementById("prixquantite");
+              
+      // Insérer les nouveaux champs avant le bouton Enregistrer
+      prixquantite.insertBefore(divRow, prixquantite.lastElementChild.previousElementSibling);
+    }
+  </script>
+
+ <!-- script pour changer le forum entre forum prix normal et prix par quantite  -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Afficher initialement le champ "Prix" et cacher le champ "Quantité"
+      var prixnormal = document.getElementById("prixnormal");
+      var prixquantite = document.getElementById("prixquantite");
+      prixnormal.style.display = "block";
+      prixquantite.style.display = "none";
+    });
+
+    function toggleInput(inputType) {
+      var prixnormal = document.getElementById("prixnormal");
+      var prixquantite = document.getElementById("prixquantite");
+
+      // Cacher tous les champs d'entrée
+      prixnormal.style.display = "none";
+      prixquantite.style.display = "none";
+
+      // Afficher le champ d'entrée en fonction du type sélectionné
+      if (inputType === 'prix') {
+        prixnormal.style.display = "block";
+      } else if (inputType === 'quantite') {
+        prixquantite.style.display = "block";
+      }
+    }
+  </script>
+  
+   <!-- script pour afficher forum selon le type de service  -->
+  <!--<script>
+    function toggleSection() {
+        var selectedValue = document.getElementById("type_service_en_chambre").value;
+        var achatSection = document.getElementById("achatSection");
+        var listSection = document.getElementById("listSection");
+        var menuSection = document.getElementById("menuSection");
+
+        // Masquer toutes les sections
+        achatSection.style.display = "none";
+        listSection.style.display = "none";
+        menuSection.style.display = "none";
+
+        // Afficher la section appropriée en fonction de la valeur sélectionnée
+        if (selectedValue === "Achat" || selectedValue === "achat" ) {
+            achatSection.style.display = "block";
+        } else if (selectedValue === "List" || selectedValue === "list") {
+            listSection.style.display = "block";
+        }else if(selectedValue === "Menu" || selectedValue === "menu"){
+            menuSection.style.display = "block";
+        }
+        
+    }
+  </script>-->
+
+  <script>
+    function toggleSection() {
+        var selectElement = document.getElementById("type_service_en_chambre");
+        var selectedOption = selectElement.options[selectElement.selectedIndex];
+        
+        var selectedId = selectedOption.getAttribute("data-id");
+        var selectedNom = selectedOption.getAttribute("data-nom");
+
+        var achatSection = document.getElementById("achatSection");
+        var listSection = document.getElementById("listSection");
+        var menuSection = document.getElementById("menuSection");
+        var priseSection = document.getElementById("priseSection");
+        
+        // Masquer toutes les sections
+        achatSection.style.display = "none";
+        listSection.style.display = "none";
+        menuSection.style.display = "none";
+        priseSection.style.display = "none";
+
+        // Afficher la section appropriée en fonction de la valeur sélectionnée
+        if (selectedNom === "Achat" || selectedNom === "achat") {
+            achatSection.style.display = "block";
+        } else if (selectedNom === "List" || selectedNom === "list") {
+            listSection.style.display = "block";
+        } else if (selectedNom === "Menu" || selectedNom === "menu") {
+            menuSection.style.display = "block";
+        }else if (selectedNom === "Prise rendez vous" || selectedNom === "prise rendez vous") {
+            priseSection.style.display = "block";
+        }
+        
+    }
+</script>
+  <!-- verification des champs vide  -->
+  <script>
+    function validateForm() {
+        // Récupérer les valeurs des champs
+        var nom = document.getElementById("nom");
+        //var description = document.getElementById("Description");
+        var logo = document.getElementById("logo");
+
+        // Vérifier si les champs sont vides
+        if (nom.value.trim() === '') {
+            // Appliquer la classe d'erreur au champ
+            nom.classList.add("error");
+        } else {
+            // Retirer la classe d'erreur si le champ est rempli
+            nom.classList.remove("error");
+        }
+
+        if (description.value.trim() === '') {
+            // Appliquer la classe d'erreur au champ
+            description.classList.add("error");
+        } else {
+            // Retirer la classe d'erreur si le champ est rempli
+            description.classList.remove("error");
+        }
+
+        if (logo.value.trim() === '') {
+            // Appliquer la classe d'erreur au champ
+            logo.classList.add("error");
+        } else {
+            // Retirer la classe d'erreur si le champ est rempli
+            logo.classList.remove("error");
+        }
+
+        // Vérifier si au moins un champ est vide
+        if (nom.value.trim() === '' || description.value.trim() === '' || logo.value.trim() === '') {
+            // Empêcher la soumission du formulaire
+            return false;
+        }
+
+        // Continuer avec la soumission normale si les champs sont remplis
+        return true;
+    }
+
+    // Ajouter cette fonction à l'événement onsubmit du formulaire
+    document.getElementById("formId").onsubmit = function () {
+        return validateForm();
+    };
+  </script>
+<!--affichage les champs des langues-->
+  <script>
+    document.getElementById('toggleInputs').addEventListener('click', function() {
+        var inputGroup = document.getElementById('inputGroup1');
+        if (inputGroup.style.display === 'none') {
+            inputGroup.style.display = 'block';
+        } else {
+            inputGroup.style.display = 'none';
+        }
+    });
+</script>
+
+
+<!--<script>
+  // public/js/translate.js
+$(document).ready(function() {
+  $('#nom').on('input', function() {
+      var textToTranslate = $(this).val();
+
+      // Appel AJAX pour envoyer le texte à traduire au serveur
+      $.ajax({
+          url: '/translate',
+          method: 'POST',
+          data: { text_to_translate: textToTranslate },
+          success: function(response) {
+              // Mettre à jour le champ de texte en anglais avec la traduction
+              $('#EN').val(response.translated_text);
+          }
+      });
+  });
+});
+
+</script>-->
+{% endblock %}

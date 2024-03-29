@@ -1,0 +1,625 @@
+{% extends 'home/index.html.twig' %}
+    {% block body %}
+      <!-- Styles spécifiques à cette page -->    
+      <style>
+          /* Styles pour la div avec l'ID 'div2' */
+              #div2 {
+                  border-radius: 25px;
+                  border: 2px solid #3087ce;
+                  padding: 20px;
+                  width: 1091px;
+                  height: auto;
+                  margin-left: 10px;
+                  margin-top: 10px;
+                  background-color: white;
+              }
+              .container {
+                display: flex;
+              }
+              .container1 {
+                display: flex;
+              }
+              
+      </style>
+      <!-- En-tête de la page -->                                  
+     
+    <div style="margin-top: -40px;position: absolute;border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 27px;">
+      Modifier  {{ serviceEnChambresdetails.getNom()}}
+    </div>
+    <form name="" id="saveDataBtn" method="post" action="{{ path('modifierservice',{'id': serviceEnChambresdetails.getId()}) }}" class="form-horizontal" enctype="multipart/form-data" onsubmit="prepareAndSubmit(event)">
+    <div id="div2">
+      <!--champ des donnees-->
+      <div class="container">
+        <div class="element1">
+          <img src="{{ asset('serviceinroom/' ~ serviceEnChambresdetails.getLogo()) }}" style="width:350px;height:250px"/>
+        </div>
+        <div class="element2" style="margin-left:35px">
+          <div class="form-group" >
+            <label for="nom">Nom de service</label>
+            <input type="text" class="form-control" style="width: 647px;" id="nom" name="nom" value="{{ serviceEnChambresdetails.getNom() }}">
+          </div>
+          <div class="form-group" >
+            <label for="Description">Description</label>
+            <input type="text" class="form-control" style="width: 647px;" id="Description" name="Description" value="{{ serviceEnChambresdetails.getDescription()}}">
+          </div>
+          <div class="form-group" >
+            <label for="logo">Logo</label>
+            <input type="file" class="form-control" style="width: 647px;" id="logo" name="logo" accept=".jpg, .jpeg, .png">
+            
+            {% if ancienLogo is defined %}   
+                <p >{{ ancienLogo }}</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <!--liste de type de service en chambre-->
+      <div class="form-group" style="margin-top: 14px;margin-left:29px">
+            <label for="type_service_en_chambre">Type service en chambre</label>
+            <select style="width: 1000px;" id="type_service_en_chambre" name="type_service_en_chambre" class="form-control" onchange="toggleSection()">
+                    
+                    {% for typeServiceEnChambre in typeserviceEnChambres %}
+                      <option {% if serviceEnChambresdetails.getTypeServiceEnChambre().getNom() == typeServiceEnChambre.getNom() %} selected {% endif %} value="{{ typeServiceEnChambre.id }}" data-id="{{ typeServiceEnChambre.id }}" data-nom="{{ typeServiceEnChambre.nom }}">{{ typeServiceEnChambre.nom }}</option>
+                   
+                    {% endfor %}
+                </select>
+          </div>
+
+      <!--champs langues-->
+      <div  style="width:1005px;margin-left:32px;margin-bottom:-5px;margin-top:-2px">
+                  <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" >
+                   <span > <i class="glyphicon glyphicon-plus"></i></span>
+                  </a><label style="margin-left: 5px;">Langues</label>
+             
+              <div id="collapseTwo" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <div id="inputGroup1" >
+                    <div class="form-row" style="margin-left:27px">
+                        <div class="form-group col-md-6">
+                            <img style="width: 30px" src=" {{asset('images/eng.png')}}">
+                        <label for="EN">English</label>
+                        <input type="text" class="form-control" id="EN" name="EN" value="{{ serviceEnChambresdetails.getEn()}}">
+                        </div>
+                        <div class="form-group col-md-6" style="margin-left:27px">
+                            <img style="width: 30px" src="{{asset('images/es.png')}}">
+                        <label for="ES">Espagnol</label>
+                        <input type="text" class="form-control" id="ES" name="ES"  value="{{ serviceEnChambresdetails.getEs()}}">
+                        </div>
+                    </div>
+              
+                    <div class="form-row" style="margin-left:27px">
+                        <div class="form-group col-md-6">
+                            <img style="width: 30px" src=" {{asset('images/pt.png')}}">
+                        <label for="PT">Portugues</label>
+                        <input type="text" class="form-control" id="PT" name="PT" value="{{ serviceEnChambresdetails.getPt()}}">
+                        </div>
+                        <div class="form-group col-md-6" style="margin-left:27px">
+                            <img style="width: 30px" src=" {{asset('images/ita.png')}}">
+                        <label for="IT">Italiano</label>
+                        <input type="text" class="form-control" id="IT" name="IT" value="{{ serviceEnChambresdetails.getIt()}}">
+                        </div>
+                    </div>
+                    <div class="form-row" style="margin-left:27px">
+                        <div class="form-group col-md-6">
+                            <img style="width: 30px" src=" {{asset('images/rus.png')}}">
+                        <label for="RU">Russian</label>
+                        <input type="text" class="form-control" id="RU" name="RU" value="{{ serviceEnChambresdetails.getRu()}}">
+                        </div>
+                        <div class="form-group col-md-6" style="margin-left:27px">
+                          <img style="width: 30px" src=" {{asset('images/deu.png')}}">
+                        <label for="DE">Deutsch</label>
+                        <input type="text" class="form-control" id="DE" name="DE" value="{{ serviceEnChambresdetails.getDe()}}">
+                        </div>
+                    </div>
+                    <div class="form-row" style="margin-left:27px">
+                        <div class="form-group col-md-6">
+                            <img style="width: 30px" src=" {{asset('images/ch.png')}}">
+                        <label for="ZH">China</label>
+                        <input type="text" class="form-control" id="ZH" name="ZH" value="{{ serviceEnChambresdetails.getZh()}}">
+                        </div>
+                        <div class="form-group col-md-6" style="margin-left:27px">
+                            <img style="width: 30px" src=" {{asset('images/ma.png')}}">
+                        <label for="AR">العربية</label>
+                        <input type="text" class="form-control" id="AR" name="AR" value="{{ serviceEnChambresdetails.getAr()}}">
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+           
+      <br>
+      <!--affichage formulaire de type menu-->
+        {% if serviceEnChambresdetails.getTypeServiceEnChambre() is not null and serviceEnChambresdetails.getTypeServiceEnChambre().getNom()|lower == "menu" %}
+            <a  data-toggle="modal" data-target="#exampleModal" class="btn btn-success btn-sm" name="addcat" id="addcat" style="margin-bottom: 15px;">
+                <i class="glyphicon glyphicon-plus"></i>
+                Ajouter Catégorie
+            </a>
+            <table id="exampleo" style="width:100%" summary="extended functionality" class="table table-bordered table-hover dt-responsive">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Prix</th>
+                        <th>Catégorie</th>
+                    
+                    </tr>
+                </thead>
+                <script>
+                    // Cette fonction ajoute .00 à la fin du nombre saisi par l'utilisateur
+                    function ajouterDecimales(input) {
+                        // Vérifier si l'entrée est un nombre
+                        if (!isNaN(input.value)) {
+                            // Formater le nombre avec deux décimales et ajouter .00 à la fin
+                            input.value = parseFloat(input.value).toFixed(2);
+                        }
+                    }
+                </script>
+                <tbody>
+                    {% for item in data %}
+                    <tr>
+                        <td><input type="text" name="inputname[]" class="form-control" value="{{ item.nom }}"><div class='hide'></div></td>
+                        <td><input type="text" name="inputdesc[]" class="form-control" value="{{ item.description }}" maxlength="120"><div class='hide'></div></td>
+                        <td><input type="text" name="inputprice[]" class="form-control"  value="{{ item.prix }}"onblur="ajouterDecimales(this)"><div class='hide'></div></td>
+                        <td>
+                            <select class="form-control" name="inputcat[]">
+                                {% if categorieOptions is empty %}
+                                    <option value="" selected>Vide</option>
+                                {% else %}
+                                    {% for category in categorieOptions %}
+                                        <option {% if item.cat == category.name %} selected {% endif %}>{{ category.name }}</option>
+                                    {% endfor %}
+                                {% endif %}
+                            </select>
+                        </td>
+                        
+                    </tr>
+                {% endfor %}
+                </tbody>
+        
+            </table>
+
+            
+            <button type="button" class="form-control" id="add-button" style="margin-bottom: 18px;">Ajouter</button>
+           
+        <!--affichage formulaire de type list-->
+        {% elseif serviceEnChambresdetails.getTypeServiceEnChambre() is not null and serviceEnChambresdetails.getTypeServiceEnChambre().getNom()|lower == "list"  %} 
+            <div id="listSection" >
+                
+                <div class="form-group" style="margin-left:30px;" >
+                    <label for="listrequte" style="margin-left: 6px;">Saisissez une requête (40 caractères)</label>
+                    <textarea class="form-control"  style="width: 97%;" id="listrequte" name="listrequte">{{ listrequete }}</textarea>
+                </div>
+            </div>
+        <!--affichage formulaire de type achat-->
+        {% elseif serviceEnChambresdetails.getTypeServiceEnChambre() is not null and serviceEnChambresdetails.getTypeServiceEnChambre().getNom()|lower == "achat"  %} 
+          
+         
+            <div id="achatSection" >
+              <!--button radio pour choix du forum-->
+              
+              <div style="margin-left: 47px;">
+                
+                <div class="form-group" style="display: inline-block; margin-right: 20px;">
+                    <input type="radio" id="prixRadio" name="typePrix" value="prixnormal1"     onchange="toggleInput('prix')">
+                    <!--button radio pour choix du forum prix normal-->
+                    <label for="prixRadio">Prix normal</label>
+                </div>
+                
+                <div class="form-group" style="display: inline-block;">
+                    <!--button radio pour choix du forum prix par quantite-->
+                    <input type="radio" id="quantiteRadio" name="typePrix" value="prixquantite1"  onchange="toggleInput('quantite')">
+                    <label for="quantiteRadio">Prix par quantité</label>
+                </div>
+              </div> 
+              <!--affichage forum prix par prix normal-->
+              
+              <div id="prixnormal">
+                {% for item in data2 %}
+                
+                <div class="form-group" style="margin-left:30px;">
+                      <label for="Devise" >Devise</label>
+                      <select style="width: 97%;" id="Devise" name="Devise" class="form-control">
+                          <option value="1" {% if item.devise == '1' %} selected {% endif %}>MAD</option>
+                          <option value="2" {% if item.devise == '2' %} selected {% endif %}>Dollar</option>
+                          <option value="3" {% if item.devise == '3' %} selected {% endif %}>Euro</option>
+                      </select>
+                </div>
+              
+                <div class="form-group" style="margin-left:30px;" >
+                        <!-- Champ prix -->
+                        <label for="prix" style="margin-left: 6px;">Prix</label>
+                        <input type="number" style="width: 97%;" class="form-control" id="prix" name="prix"  value="{{ item.prix }}">
+                </div>
+                <div class="form-row" style="margin-left:27px">
+                        <!-- Champ Quantite Min  -->
+                        <div class="form-group col-md-6">
+                        <label for="qmin">Quantite Min :</label>
+                        <input type="number" class="form-control" id="qmin" name="qmin" value="{{ item.qmin }}">
+                        </div>
+                        <!-- Champ Quantite MAX  -->
+                        <div class="form-group col-md-6" style="margin-left:27px">
+                        <label for="qmax">Quantite MAX :</label>
+                        <input type="number" class="form-control" id="qmax" name="qmax" value="{{ item.qmax }}">
+                        </div>
+                </div>
+              {% endfor %}
+            </div>
+          
+          <!--affichage forum prix par quantite-->
+            <div id="prixquantite">
+                <div id="table-container" >
+                <table id="myTable" style="margin-left: 27px;">
+                    {% for item in data3 %}
+                    <tr>
+                        <td style="width: 500px;"><label for="exampleInputPassword1" >Quantité</label><input type="number" name="inputqte[]" class="form-control" value="{{ item.nom }}" ></td>
+                        <td style="width: 500px;"><label for="exampleInputPassword1">Prix</label><input type="number" name="inputprice[]" class="form-control" value="{{ item.quantite }}"></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <button type="button" class="btn btn-primary" style="margin-left: 27px;margin-top:14px;" id="add-button">Ajouter Quantité/Prix</button>
+            
+            <script>
+                document.getElementById("add-button").addEventListener("click", function() {
+                    var table = document.getElementById("myTable");
+                    var newRow = table.insertRow();
+                    var cell1 = newRow.insertCell(0);
+                    var cell2 = newRow.insertCell(1);
+                    cell1.innerHTML = '<label for="exampleInputPassword1">Quantité</label><input type="number" name="inputqte[]" class="form-control">';
+                    cell2.innerHTML = '<label for="exampleInputPassword1">Prix</label><input type="number" name="inputprice[]" class="form-control">';
+                });
+            </script>          
+            </div>
+       
+          <!--affichage duree-->
+            {% if formatContenu == 'format1' %}
+                <div style="margin-left: 25px; margin-right:17px;">
+                    <label>Durée (min): pour livrer commande en chambre</label><br>
+                    {% for i in 1..60 %}
+                        <label>
+                    <input type="checkbox"  name="time[]" value="{{ i }}"  {% if i in data2[0]['time'] %} checked {% endif %}>
+                            {{ i }}
+                        </label>
+                    {% endfor %}
+                </div>
+            {% elseif formatContenu == 'format2' %}
+                <div style="margin-left: 25px; margin-right:17px;">
+                    <label>Durée (min): pour livrer commande en chambre</label><br>
+                    {% for i in 1..60 %}
+                        <label>
+                    <input type="checkbox" name="time[]" value="{{ i }}"  {% if i in data3[0]['time'] %} checked {% endif %}>
+                            {{ i }}
+                        </label>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        <!--affichage formulaire de type prise rendez vous-->  
+        {% elseif serviceEnChambresdetails.getTypeServiceEnChambre() is not null and serviceEnChambresdetails.getTypeServiceEnChambre().getNom()|lower == "prise rendez vous"  %} 
+            <div id="priseSection" >
+                <div class="form-group" style="margin-left:30px;" >
+                  
+                      <label for="Descriptionprise" style="margin-left: 6px;">Description</label>
+                      <input type="text" style="width: 97%;" class="form-control" id="Descriptionprise" name="Descriptionprise" value="{{ data.Description }}">
+                </div>
+                <div class="container1">
+                  <label  style="margin-left: 27px;">Horaires</label>
+                  <div class="container1">
+                    <label style="margin-left: 27px;">Lundi</label>
+                    <div class="form-row" style="margin-left:27px" >
+                      <div class="form-group col-md-6" style="width: 150px;">
+                      <!-- Champ de nom de service en chambre -->
+                        <label for="debutlundi">Début</label>
+                        <input type="time"  class="form-control" id="debutlundi" name="debutlundi" value="{{data.Lundi.debut}}">
+                      </div>
+                      <div class="form-group col-md-6" style="margin-left:15px;width: 150px;">
+                      <!-- Champ de description de service en chambre -->
+                        <label for="Finlundi">Fin</label>
+                        <input type="time" class="form-control" id="Finlundi" name="Finlundi" value="{{data.Lundi.fin}}">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="container1" style="margin-left: 100px;">
+                    <label >Mardi</label>
+                    <div class="form-row" style="margin-left:27px" >
+                      <div class="form-group col-md-6" style="width: 150px;">
+                      <!-- Champ de nom de service en chambre -->
+                        <label for="debutmardi">Début</label>
+                        <input type="time"  class="form-control" id="debutmardi" name="debutmardi" value="{{data.Mardi.debut}}">
+                      </div>
+                      <div class="form-group col-md-6" style="margin-left:15px;width: 150px;">
+                      <!-- Champ de description de service en chambre -->
+                        <label for="Finmardi">Fin</label>
+                        <input type="time" class="form-control" id="Finmardi" name="Finmardi" value="{{data.Mardi.fin}}">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="container1" style="margin-left: 45px;">
+                    <label style="margin-left: 27px;">Merecredi</label>
+                    <div class="form-row" style="margin-left:27px" >
+                      <div class="form-group col-md-6" style="width: 150px;">
+                      <!-- Champ de nom de service en chambre -->
+                        <label for="debutmerc">Début</label>
+                        <input type="time"  class="form-control" id="debutmerc" name="debutmerc" value="{{data.Merecredi.debut}}">
+                      </div>
+                      <div class="form-group col-md-6" style="margin-left:15px;width: 150px;">
+                      <!-- Champ de description de service en chambre -->
+                        <label for="Finmerc">Fin</label>
+                        <input type="time" class="form-control" id="Finmerc" name="Finmerc" value="{{data.Merecredi.fin}}">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="container1" style="margin-left: 75px;">
+                    <label style="margin-left: 27px;">Jeudi</label>
+                    <div class="form-row" style="margin-left:27px" >
+                      <div class="form-group col-md-6" style="width: 150px;">
+                      <!-- Champ de nom de service en chambre -->
+                        <label for="debutjeudi">Début</label>
+                        <input type="time"  class="form-control" id="debutjeudi" name="debutjeudi" value="{{data.Jeudi.debut}}">
+                      </div>
+                      <div class="form-group col-md-6" style="margin-left:15px;width: 150px;">
+                      <!-- Champ de description de service en chambre -->
+                        <label for="Finjeudi">Fin</label>
+                        <input type="time" class="form-control" id="Finjeudi" name="Finjeudi" value="{{data.Jeudi.fin}}">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="container1" style="margin-left: 50px;">
+                    <label style="margin-left: 27px;">Vendredi</label>
+                    <div class="form-row" style="margin-left:27px" >
+                      <div class="form-group col-md-6" style="width: 150px;">
+                      <!-- Champ de nom de service en chambre -->
+                        <label for="debutven">Début</label>
+                        <input type="time"  class="form-control" id="debutven" name="debutven" value="{{data.Vendredi.debut}}">
+                      </div>
+                      <div class="form-group col-md-6" style="margin-left:15px;width: 150px;">
+                      <!-- Champ de description de service en chambre -->
+                        <label for="Finven">Fin</label>
+                        <input type="time" class="form-control" id="Finven" name="Finven" value="{{data.Vendredi.fin}}">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="container1" style="margin-left: 60px;">
+                    <label style="margin-left: 27px;">Samedi</label>
+                    <div class="form-row" style="margin-left:27px" >
+                      <div class="form-group col-md-6" style="width: 150px;">
+                      <!-- Champ de nom de service en chambre -->
+                        <label for="debutsam">Début</label>
+                        <input type="time"  class="form-control" id="debutsam" name="debutsam" value="{{data.Samedi.debut}}">
+                      </div>
+                      <div class="form-group col-md-6" style="margin-left:15px;width: 150px;">
+                      <!-- Champ de description de service en chambre -->
+                        <label for="Finsam">Fin</label>
+                        <input type="time" class="form-control" id="Finsam" name="Finsam" value="{{data.Samedi.fin}}">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="container1" style="margin-left: 43px;">
+                    <label style="margin-left: 27px;">Dimanche</label>
+                    <div class="form-row" style="margin-left:27px" >
+                      <div class="form-group col-md-6" style="width: 150px;">
+                      <!-- Champ de nom de service en chambre -->
+                        <label for="debutdim">Début</label>
+                        <input type="time"  class="form-control" id="debutdim" name="debutdim" value="{{data.Dimanche.debut}}">
+                      </div>
+                      <div class="form-group col-md-6" style="margin-left:15px;width: 150px;">
+                      <!-- Champ de description de service en chambre -->
+                        <label for="Findim">Fin</label>
+                        <input type="time" class="form-control" id="Findim" name="Findim" value="{{data.Dimanche.fin}}">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+        
+        
+        {% endif %}
+     <!--boutton annulation et enregistrement des donnees-->
+      <span style="margin-left: 800px; margin-top:50px;">
+        <a href="{{ path('service_en_chambre') }}" class="btn btn-danger" style=" border: none; padding: 12px" > <i class="glyphicon glyphicon-remove"></i>  Annuler</a>
+        <input type="hidden" id="jsonDataInput" name="jsonData">
+        <button type="submit"  class="btn btn-success" style="background-color: #3087ce; border: 2px solid #3087ce;margin-left:13px;"><i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer</button>
+      </span>
+      </form>
+      
+      <!--Model d'ajout Catégorie-->
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- ... (contenu du modal) ... -->
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="modalForm" name="" method="post" action="{{path('ajouter_categorie_service_file', {'id': serviceEnChambresdetails.getId()})}}" class="form-horizontal" enctype="multipart/form-data">                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="font-weight: bold; font-size: 20px; margin-top:15px;">Ajouter Catégorie</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <strong>Infos</strong>
+                <div class="form-group">
+                <!-- ... champ du Nom ... -->
+                <label for="nomcat" class="col-lg-2 control-label">Nom Catégorie
+                </label>
+                <div class="col-lg-10">
+                    <input type="text" id="nomcat" name="nomcat" class="form-control"/>
+                </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- ... boutton pour ajouter type de service ... -->
+                <button type="submit" href="" class="btn btn-success" style="background-color: #3087ce; border: 2px solid #3087ce;">
+                <i class="glyphicon glyphicon-floppy-disk"></i>
+                Enregistrer</button>
+                <!-- ...  boutton pour annuler le module ... -->
+                <button type="button" class="btn btn-danger"  data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i>Annuler</button>
+            </div>
+            </form>
+     
+        </div>
+        </div>
+      </div>
+    </div>
+
+  <!---->
+  
+  <!-- script d'ajout des requetes  -->
+  <script>
+    function addText() {
+      // Récupérer la valeur du champ de saisie
+      var inputText = document.getElementById("requete").value;
+
+      // Récupérer le contenu actuel du textarea
+      var currentText = document.getElementById("listrequte").value;
+
+      // Ajouter le texte du champ dans le textarea avec un saut de ligne
+      document.getElementById("listrequte").value = currentText + inputText + "\n";
+
+      // Effacer le champ de saisie après l'ajout
+      document.getElementById("requete").value = "";
+    }
+  </script>
+<!--ajouter des nouveux champs dans la table menu-->
+<script>
+    document.getElementById("add-button").addEventListener("click", function() {
+        var table = document.getElementById("exampleo").getElementsByTagName('tbody')[0];
+        var newRow = table.insertRow(table.rows.length);
+
+        var cell1 = newRow.insertCell(0);
+        var cell2 = newRow.insertCell(1);
+        var cell3 = newRow.insertCell(2);
+        var cell4 = newRow.insertCell(3);
+
+        cell1.innerHTML = '<input type="text" name="inputname[]" class="form-control"><div class="hide"></div>';
+        cell2.innerHTML = '<input type="text" name="inputdesc[]"  class="form-control" maxlength="120"><div class="hide"></div>';
+        cell3.innerHTML = '<input type="text" name="inputprice[]" class="form-control" onblur="ajouterDecimales(this)"><div class="hide"></div>';
+
+        // Créer le menu déroulant pour les catégories
+        var selectOptions = '<select class="form-control" name="inputcat[]">';
+        {% if categorieOptions is empty %}
+            selectOptions += '<option value="" selected>Vide</option>';
+        {% else %}
+            {% for category in categorieOptions %}
+                selectOptions += '<option>{{ category.name }}</option>';
+            {% endfor %}
+        {% endif %}
+        selectOptions += '</select>';
+        cell4.innerHTML = selectOptions;
+    });
+</script>
+
+ <!-- script pour ajout nouveau champ prix/quantit -->
+ <script>
+    function createElement(type, className, textContent = null) {
+      var element = document.createElement(type);
+      element.className = className;
+        if (textContent !== null) {
+           element.textContent = textContent;
+        }
+              
+       return element;
+    }
+              
+    function ajouterChampQuantitePrix() {
+      var divRow = createElement("div", "form-row");
+      divRow.style.marginLeft = "27px";
+              
+      // Créer les éléments pour Quantité
+      var divQuantite = createElement("div", "form-group col-md-6");
+      divQuantite.appendChild(createElement("label", null, "Quantité:"));
+      divQuantite.appendChild(createElement("input", "form-control", null, "quantite"));
+              
+      // Créer les éléments pour Prix
+      var divPrix = createElement("div", "form-group col-md-6");
+      divPrix.style.marginLeft = "27px";
+      divPrix.appendChild(createElement("label", null, "Prix:"));
+      divPrix.appendChild(createElement("input", "form-control", null, "prix"));
+              
+      divRow.appendChild(divQuantite);
+      divRow.appendChild(divPrix);
+              
+      // Récupérer le conteneur prixquantite
+      var prixquantite = document.getElementById("prixquantite");
+              
+      // Insérer les nouveaux champs avant le bouton Enregistrer
+      prixquantite.insertBefore(divRow, prixquantite.lastElementChild.previousElementSibling);
+    }
+  </script>
+
+ <!-- script pour changer le forum entre forum prix normal et prix par quantite  -->
+  <script>
+    // Fonction pour basculer entre les formats en fonction du bouton radio sélectionné
+    function toggleFormat(format) {
+        if (format === 'format1') {
+            document.getElementById('prixnormal').style.display = 'block';
+            document.getElementById('prixquantite').style.display = 'none';
+            document.getElementById('prixRadio').checked = true;
+        } else if (format === 'format2') {
+            document.getElementById('prixnormal').style.display = 'none';
+            document.getElementById('prixquantite').style.display = 'block';
+            document.getElementById('quantiteRadio').checked = true;
+        }
+    }
+
+    // Écouteur d'événements pour détecter le changement dans le bouton radio
+    document.querySelectorAll('input[name="typePrix"]').forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            toggleFormat(this.value);
+        });
+    });
+
+    // Appel initial pour afficher le bon format en fonction du formatContenu au chargement de la page
+    toggleFormat('{{ formatContenu }}');
+</script>
+<!--script pour changement de radio-->
+<script>
+    // Fonction pour basculer entre les formats en fonction du bouton radio sélectionné
+    function toggleFormat() {
+        if (document.getElementById('prixRadio').checked) {
+            document.getElementById('prixnormal').style.display = 'block';
+            document.getElementById('prixquantite').style.display = 'none';
+        } else if (document.getElementById('quantiteRadio').checked) {
+            document.getElementById('prixnormal').style.display = 'none';
+            document.getElementById('prixquantite').style.display = 'block';
+        }
+    }
+
+    // Écouteur d'événements pour détecter le changement dans le bouton radio
+    document.querySelectorAll('input[name="typePrix"]').forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            toggleFormat();
+        });
+    });
+
+    // Appel initial pour afficher le bon format en fonction du formatContenu au chargement de la page
+    toggleFormat();
+</script>
+
+<!--limite caractere des requete-->
+<script>
+    var textarea = document.getElementById('listrequte');
+
+    textarea.addEventListener('input', function() {
+        var lines = this.value.split('\n');
+        for (var i = 0; i < lines.length; i++) {
+            if (lines[i].length > 40) {
+                lines[i] = lines[i].substring(0, 40);
+            }
+        }
+        this.value = lines.join('\n');
+    });
+</script>
+<!--script pour changer les icons-->
+<script>
+  $(document).ready(function(){
+    $('.accordion-toggle').click(function(){
+      $(this).find('i').toggleClass('glyphicon-plus glyphicon-minus');
+    });
+  });
+</script>
+<!--script pour datatable-->
+<script>
+  $('table').DataTable({
+  "language": {
+      "url": "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+  }
+  });
+</script>
+{% endblock %}
