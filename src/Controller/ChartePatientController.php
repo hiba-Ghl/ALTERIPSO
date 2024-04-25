@@ -46,6 +46,7 @@ class ChartePatientController extends AbstractController
 
             // $fileName=' ';
             $file = $this->request->files->get('file');
+           // var_dump($file);die();
             if (!empty($file)) {
                 $fileName = md5(uniqid()) . '.' . $file->guessExtension();
                 $file->move($this->getParameter('charte_patient_directory'), $fileName);

@@ -94,6 +94,12 @@ class Etablissement
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Jeux::class)]
     private Collection $jeuxes;
 
+    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: CategorieLivreaudio::class)]
+    private Collection $categorieLivreaudios;
+
+    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Livreaudio::class)]
+    private Collection $livreaudios;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -104,6 +110,8 @@ class Etablissement
         $this->supports = new ArrayCollection();
         $this->applications = new ArrayCollection();
         $this->jeuxes = new ArrayCollection();
+        $this->categorieLivreaudios = new ArrayCollection();
+        $this->livreaudios = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -570,6 +578,66 @@ class Etablissement
             // set the owning side to null (unless already changed)
             if ($jeux->getEtablissement() === $this) {
                 $jeux->setEtablissement(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CategorieLivreaudio>
+     */
+    public function getCategorieLivreaudios(): Collection
+    {
+        return $this->categorieLivreaudios;
+    }
+
+    public function addCategorieLivreaudio(CategorieLivreaudio $categorieLivreaudio): static
+    {
+        if (!$this->categorieLivreaudios->contains($categorieLivreaudio)) {
+            $this->categorieLivreaudios->add($categorieLivreaudio);
+            $categorieLivreaudio->setEtablissement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategorieLivreaudio(CategorieLivreaudio $categorieLivreaudio): static
+    {
+        if ($this->categorieLivreaudios->removeElement($categorieLivreaudio)) {
+            // set the owning side to null (unless already changed)
+            if ($categorieLivreaudio->getEtablissement() === $this) {
+                $categorieLivreaudio->setEtablissement(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Livreaudio>
+     */
+    public function getLivreaudios(): Collection
+    {
+        return $this->livreaudios;
+    }
+
+    public function addLivreaudio(Livreaudio $livreaudio): static
+    {
+        if (!$this->livreaudios->contains($livreaudio)) {
+            $this->livreaudios->add($livreaudio);
+            $livreaudio->setEtablissement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLivreaudio(Livreaudio $livreaudio): static
+    {
+        if ($this->livreaudios->removeElement($livreaudio)) {
+            // set the owning side to null (unless already changed)
+            if ($livreaudio->getEtablissement() === $this) {
+                $livreaudio->setEtablissement(null);
             }
         }
 

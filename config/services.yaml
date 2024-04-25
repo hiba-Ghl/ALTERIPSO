@@ -12,6 +12,8 @@ parameters:
     categorie_radio_directory: '%kernel.project_dir%/public/images/categorie_radio'
     application_directory: '%kernel.project_dir%/public/images/application'
     jeux_directory: '%kernel.project_dir%/public/images/jeux'
+    categorie_livreaudio_directory: '%kernel.project_dir%/public/images/categorie_livreaudio'
+    livreaudio_directory: '%kernel.project_dir%/public/images/livreaudio'
     charte_patient_directory: '%kernel.project_dir%/public/pdf/charte_patient'
     service_in_room_directory: '%kernel.project_dir%/public/serviceinroom'
 

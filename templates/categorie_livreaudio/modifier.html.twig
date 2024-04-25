@@ -1,0 +1,167 @@
+{% extends 'home/index.html.twig' %}
+{% block body %}
+
+<style>
+		#div1 {
+			border-radius: 25px;
+			border: 2px solid #3087ce;
+			padding: 20px;
+			width: 1091px;
+			height: 300px;
+			margin-left: 10px;
+			margin-top: 10px;
+			
+			padding: 43px;
+
+		}
+		#div2 {
+			border-radius: 25px;
+			border: 2px solid #3087ce;
+			padding: 20px;
+			width: 1091px;
+			height: 750px;
+			margin-left: 10px;
+			margin-top: 10px;
+		}
+	</style>
+<!-- ajouter categories                                                      -->
+
+<div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 390px;padding-left: 10px;">
+    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+    Modifier la  catégorie livreaudio : {{categorielivreaudio.nom}}
+</div>
+
+<div id="div2">
+
+    <form name="" method="post" action="" class="form-horizontal" enctype="multipart/form-data">
+
+
+        <strong>Infos
+        </strong>
+
+
+
+        <div class="form-group">
+            <label  class="col-lg-2 control-label">Nom
+            </label>
+            <div class="col-lg-10">
+
+                <input type="text" id="nom" name="nom" class="form-control" value="{{categorielivreaudio.nom}}"/>
+
+            </div>
+        </div>
+
+       
+		<div class="form-group">
+				<label  class="col-lg-2 control-label">Active</label>
+				<div class="col-lg-10">
+
+					<select id="active" name="active" class="form-control">
+                        {% if categorielivreaudio.active == 0 %}
+						<option value="0">0</option>
+						<option value="1">1</option>
+                        {% else %}
+                        <option value="1">1</option>
+                        <option value="0">0</option>
+                        {% endif %}
+						
+					</select>
+
+				</div>
+			</div>
+
+        <div class="form-group">
+            <label  class="col-lg-2 control-label">Position</label>
+            <div class="col-lg-10">
+
+                <input type="number" id="position" name="position" class="form-control" value="{{categorielivreaudio.position}}"/>
+
+            </div>
+        </div>
+
+
+        <br>
+     
+
+
+
+
+        <div class="form-group">
+            <label >logo :</label>
+           <center><input type="file" class="form-control-file" id="logo" name="logo"></center> 
+        </div>
+ 
+
+        <br>
+        <strong>langues
+        </strong>
+
+      <table cellspacing="10" style="width: 100%;">
+            <tr>
+                <td>
+                    <img style="width: 30px" src=" {{asset('images/eng.png')}}">
+                    <label class="control-label required" for="EN">English</label>
+                    <input style="margin-right: 10px;" type="text" id="EN" name="EN" class="form-control" value="{{categorielivreaudio.en}}">
+                </td>
+                <td>
+                    <img style="width: 30px" src="{{asset('images/es.png')}}">
+                    <label class="control-label required" for="ES">Espagnol</label>
+                    <input style="margin-right: 10px;" type="text" id="ES" name="ES" class="form-control" value="{{categorielivreaudio.es}}">
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <img style="width: 30px" src=" {{asset('images/pt.png')}}">
+                    <label class="control-label required" for="PT">Portugues</label>
+                    <input type="text" id="PT" name="PT" class="form-control" value="{{categorielivreaudio.pt}}">
+                </td>
+                <td>
+                    <img style="width: 30px" src=" {{asset('images/ita.png')}}">
+                    <label class="control-label required" for="IT">Italiano</label>
+                    <input type="text" id="IT" name="IT" class="form-control" value="{{categorielivreaudio.it}}">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <img style="width: 30px" src=" {{asset('images/rus.png')}}">
+                    <label class="control-label required" for="RU">Russian</label>
+                    <input type="text" id="RU" name="RU" class="form-control" value="{{categorielivreaudio.ru}}">
+                </td>
+                <td>
+                    <img style="width: 30px" src=" {{asset('images/deu.png')}}">
+                    <label class="control-label required" for="DE">Deutsch</label>
+                    <input type="text" id="DE" name="DE" class="form-control" value="{{categorielivreaudio.de}}">
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>
+                    <img style="width: 30px" src=" {{asset('images/ch.png')}}">
+                    <label class="control-label required" for="ZH">China</label>
+                    <input type="text" id="ZH" name="ZH" class="form-control" value="{{categorielivreaudio.zh}}">
+                </td>
+                <td>
+                    <img style="width: 30px" src=" {{asset('images/ma.png')}}">
+                    <label class="control-label required" for="AR">العربية</label>
+                    <input type="text" id="AR" name="AR" class="form-control" value="{{categorielivreaudio.ar}}">
+                </td>
+            </tr>
+
+        </table>
+
+
+
+      
+
+        <br>
+   
+        <button type="submit" name="valider" class="btn btn-success" style="margin-left: 920px;position: absolute;background-color: #3087ce; border: 2px solid #3087ce;"><i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer</button>
+
+        </form>
+
+
+</div>
+<br> <br> <br> <br>
+{% endblock %}
