@@ -39,10 +39,10 @@ class LivreaudioController extends AbstractController
 
         $nom = $request->get("nom");
         $ip = $request->get("ip");
-        $port = $request->get("port");
+       // $port = $request->get("port");
         //$numero = $request->get("numero");
-        $pays = $request->get("pays");
-        $protocole = $request->get("protocole");
+       // $pays = $request->get("pays");
+        //$protocole = $request->get("protocole");
         $active = $request->get("active");
         $catlivreaudio = $request->get("catlivreaudio");
         $categorielivreaudio =  $entityManager->getRepository(CategorieLivreaudio::class)->findById($catlivreaudio)[0];
@@ -77,11 +77,11 @@ class LivreaudioController extends AbstractController
         $livreaudio->setEtablissement($etablissement);
         $livreaudio->setNom($nom);
         $livreaudio->setIp($ip);
-        $livreaudio->setPort($port);
+        //$livreaudio->setPort($port);
        $livreaudio->setCategorie($categorielivreaudio);
-       $livreaudio->setPays($pays);
-       $livreaudio->setPays($pays);
-       $livreaudio->setProtocole($protocole);
+      // $livreaudio->setPays($pays);
+      // $livreaudio->setPays($pays);
+       //$livreaudio->setProtocole($protocole);
        $livreaudio->setLogo($fileName);
         if (isset($active) and !empty($active)) 
            $livreaudio->setActive(1);
@@ -148,7 +148,7 @@ class LivreaudioController extends AbstractController
                     $entityManager->flush();
                 }
             }
-        $port = $request->get("listeport");
+       /* $port = $request->get("listeport");
             if (isset($port) and !empty($port)) {
                 foreach ($port as $key => $k) {
                     $port_television  = $repository->findById($key);
@@ -156,7 +156,7 @@ class LivreaudioController extends AbstractController
                     $entityManager->persist($port_television[0]);
                     $entityManager->flush();
                 }
-            }
+            }*/
         $catlivreaudio = $request->get("listcatlivreaudio");
             if (isset($catlivreaudio) and !empty($catlivreaudio)) {
                 foreach ($catlivreaudio as $key => $k) {
@@ -167,7 +167,7 @@ class LivreaudioController extends AbstractController
                     $entityManager->flush();
                 }
             }
-        $pays = $request->get("listepays");
+      /*  $pays = $request->get("listepays");
             if (isset($pays) and !empty($pays)) {
                 foreach ($pays as $key => $k) {
                     $pays_television  = $repository->findById($key);
@@ -184,7 +184,7 @@ class LivreaudioController extends AbstractController
                     $entityManager->persist($protocole_television[0]);
                     $entityManager->flush();
                 }
-            }
+            }*/
         $active = $request->get("listeactive");
             if (isset($active) and !empty($active)) {
                 foreach ($active as $key => $k) {

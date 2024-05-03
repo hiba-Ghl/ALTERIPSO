@@ -15,7 +15,7 @@
 			border-radius: 25px;
 			border: 2px solid #3087ce;
 			padding: 20px;
-			width: 1250px;
+			width: 1050px;
 			height: auto;
 			margin-left: 10px;
 			margin-top: 10px;
@@ -94,12 +94,12 @@
 
 					<tr>
 						<th style="width:150px;height: 50px;">Nom Livreaudio</th>
-						<th style="height: 50px;width:250px">Ip</th>
-						<th style="height: 50px;width:100px">Port</th>
+						<th style="height: 50px;width:250px">Url</th>
+						<!--<th style="height: 50px;width:100px">Port</th>-->
 						<th style="height: 50px;width:200px">Catégorie </th>
 						<th style="height: 50px;width:70px">Icons</th>
-						<th style="height: 50px;width:100px">Pays</th>
-						<th style="height: 50px;width:100px">Protocole</th>
+						<!--<th style="height: 50px;width:100px">Pays</th>
+						<th style="height: 50px;width:100px">Protocole</th>-->
 						<th style="height: 50px;width:70px">Actif<input type="checkbox" id="checklist"></th>
 						<th style="height: 50px;width:100px">Actions</th>
 
@@ -125,10 +125,10 @@
 							</td>
 
 
-							<td style="width:100px">
+							<!--<td style="width:100px">
 								<label><input name='listeport[{{tele.Id}}]' type="text" value="{{tele.port}}" class="form-control" style="font-size: 11px;"></label>
 
-							</td>
+							</td>-->
 
 
 							<td style="width:200px">
@@ -165,7 +165,7 @@
 
 							</td>
 
-							<td style="width:100px">
+							<!--<td style="width:100px">
 								<label>
 									<select class="form-control pdf-select" name='listepays[{{tele.Id}}]' style="width: 100%; font-size: 11px;">
 										<option selected value='{{tele.pays}}'>{{tele.pays}}</option>
@@ -437,10 +437,10 @@
 
 									</select>
 								</label>
-							</td>
+							</td>-->
 
 
-							<td style="width:100px">
+							<!--<td style="width:100px">
 								<select class="form-control" name='listeprotocole[{{tele.Id}}]' style="width: 100%; font-size: 11px;">
 									<option selected value='{{tele.Protocole}}'>{{tele.Protocole}}</option>
 									<option value="http://">HTTP</option>
@@ -448,7 +448,7 @@
 									<option value="udp://@">UDP</option>
 
 								</select>
-							</td>
+							</td>-->
 							{% set ch = ' ' %}
 							{% set chg = ' ' %}
 							{% if (tele.active) == 1 %}
@@ -463,9 +463,9 @@
 							
 
 							<td style="width:120px">
-								<a data-toggle="modal" data-target="#myModal5" name="send" class="btn btn-info btn-xs">
+							<!--	<a data-toggle="modal" data-target="#myModal5" name="send" class="btn btn-info btn-xs">
 									<i data-toggle="tooltip" data-placement="top" title="lancer la chaîne" class="glyphicon glyphicon-play-circle"></i>
-								</a>
+								</a>-->
 
 								<a data-toggle="tooltip" data-placement="top" title="supprimer la chaîne" id="ida" href="{{path('supprimer_livreaudio',{'id':tele.id})}}" class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer la livreaudio : {{tele.nom}} ?')">
 									<i class="glyphicon glyphicon-trash"></i>
@@ -508,10 +508,10 @@
 						</td>
 
 
-						<td style="width:100px">
+						<!--<td style="width:100px">
 							<label><input name='port' type="text" value="" class="form-control" style="font-size: 11px;"></label>
 
-						</td>
+						</td>-->
 
 
 						<td style="width:200px">
@@ -542,7 +542,7 @@
 
 						</td>
 
-						<td style="width:100px">
+						<!--<td style="width:100px">
 							<label>
 								<select class="form-control" name='pays' style="width: 100%; font-size: 11px;">
 
@@ -814,17 +814,17 @@
 
 								</select>
 							</label>
-						</td>
+						</td>-->
 
 
-						<td style="width:100px">
+					<!--<td style="width:100px">
 							<select class="form-control" name='protocole' style="width: 100%; font-size: 11px;">
 								<option value="http://">HTTP</option>
 								<option value="coax">COAX</option>
 								<option value="udp://@">UDP</option>
 
 							</select>
-						</td>
+						</td>-->
 
 						<td style="width:70px">
 							<label><input name='active' type="checkbox"></label>
