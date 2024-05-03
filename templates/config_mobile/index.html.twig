@@ -1,0 +1,574 @@
+{% extends 'home/index.html.twig' %}
+{% block body %}
+<head>
+  <!-- Autres balises head ... -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+
+	<div>
+		<h1>
+			<strong id="cat">
+				Paramètrage
+			</strong>
+			R-Mobile</h1>
+		
+	</div>
+	<hr>
+
+	<style type="text/css">
+		label {
+			display: inline-block;
+			text-transform: lowercase;
+		}
+		label::first-letter {
+			text-transform: capitalize;
+		}
+		#rcorners {
+			border-radius: 25px;
+			border: 2px solid #73AD21;
+			padding: 20px;
+			width: 360px;
+			height: 215px;
+			margin-left: 10px;
+			margin-top: 10px;
+            background-color: white;
+		}
+		#rcorners2 {
+			border-radius: 25px;
+			border: 2px solid #73AD21;
+			padding: 20px;
+			width: 1091px;
+			height: 527px;
+			margin-left: 10px;
+			margin-top: 10px;
+            background-color: white;
+		}
+		#rcorners3 {
+			border-radius: 25px;
+			border: 2px solid #73AD21;
+			padding: 20px;
+			width: 1091px;
+			height: 300px;
+			margin-left: 10px;
+			margin-top: 10px;
+            background-color: white;
+		}
+		#rcorners4 {
+			border-radius: 25px;
+			border: 2px solid #73AD21;
+			padding: 20px;
+			width: 1091px;
+			height: 646px;
+			margin-left: 10px;
+			margin-top: 10px;
+            background-color: white;
+		}
+		.television:hover {
+			border: 4px solid red !important;
+			/*background-image: url("uploads/tele.png") opacity: 0.5;*/
+		}
+		.radio:hover {
+			border: 4px solid green !important;
+		}
+		.service1:hover {
+			border: 4px solid #025fcc !important;
+		}
+		.vod:hover {
+			border: 4px solid yellow !important;
+		}
+		.jeux:hover {
+			border: 4px solid #621717 !important;
+		}
+		.application:hover {
+			border: 4px solid #9a1d84 !important;
+		}
+		.questionnaire:hover {
+			border: 4px solid #928790 !important;
+		}
+		.support1:hover {
+			border: 4px solid #07478e !important;
+		}
+		.livreaudio:hover {
+			border: 4px solid #ca33d8 !important;
+		}
+		.charte:hover {
+			border: 4px solid #ff8956 !important;
+		}
+		.servicepayant:hover {
+			border: 4px solid #c0882e !important;
+		}
+	</style>
+	<form action="">
+		<div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #73AD21;width: 250px;padding-left: 10px;">
+			Informations établissement
+		</div>
+
+		<div id="rcorners2">
+			<style>
+				/* Custom CSS styles for the table */
+				.col-lg-12 {
+					width: 100%;
+				}
+
+				.col-lg-6 {
+					width: 50%;
+					display: inline-block;
+					vertical-align: top; /* Align the cells at the top */
+				}
+
+				/* Align the labels to the right */
+				.control-label {
+					text-align: right;
+				}
+
+				/* Adjust spacing between fields (optional) */
+				.form-control {
+					margin-bottom: 10px;
+				}
+				.form-group{
+					margin-bottom: 0px !important;
+				}
+
+				#infoIcon2 , #infoIcon4 , #infoIcon3 , #infoIcon {
+  font-size: 20px; /* Ajustez la taille de l'icône si nécessaire */
+}
+
+			</style>
+
+			<table class="col-lg-12">
+				<tr>
+					<td class="col-lg-6">
+						<label for="inputEmail" class="control-label required">Identifiant de l'application: <span id="infoIcon2" style="cursor: pointer; margin-left: 0px;" onclick="showImage2()">
+  <i class="fas fa-info-circle" style="color: black;margin-left: 305px;margin-top: 14px;"></i>
+</span>
+</label>
+						<input type="text" name="info_id" value="{{config.infoId}}" class="form-control">
+						<br>
+						<label for="inputEmail" class="control-label required">Adresse:</label>
+						<input type="text" name="info_adresse" value="{{config.infoAdresse}}" class="form-control">
+						<br>
+						<label for="inputEmail" class="control-label required">Tél:</label>
+						<input type="text" name="info_tel" value="{{config.infoTel}}" class="form-control">
+						<br>
+						<label for="inputEmail" class="control-label required">Num Siret:</label>
+						<input type="text" name="info_siret" value="{{config.infoSiret}}" class="form-control">
+						<br>
+						<label for="inputEmail" class="control-label required">E-mail:</label>
+						<input type="text" name="info_email" value="{{config.infoEmail}}" class="form-control">
+					</td>
+					<td class="col-lg-6">
+					<br>
+						<label for="inputEmail" class="control-label required">Chambre - Caféteria:</label>
+						<input type="text" name="info_chambre" value="{{config.infochambre}}" class="form-control">
+						<br>
+						<label for="inputEmail" class="control-label required">Code Postal:</label>
+						<input type="text" name="info_cp" value="{{config.infoCP}}" class="form-control">
+						<br>
+						<label for="inputEmail" class="control-label required">Ville:</label>
+						<input type="text" name="info_ville" value="{{config.infoVille}}" class="form-control" onchange="this.value = this.value.charAt(0).toUpperCase() + this.value.substr(1);">
+						<br>
+						<label for="inputEmail" class="control-label required">Pays:</label>
+						<input type="text" name="info_pays" value="{{config.infoPays}}" class="form-control" onchange="this.value = this.value.charAt(0).toUpperCase() + this.value.substr(1);">
+						<br>
+					</td>
+				</tr>
+			</table>
+
+
+		</div>
+
+
+		<br><br>
+		<div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #73AD21;width: 300px;padding-left: 10px;">
+			Informations mail facture
+		</div>
+		<br>
+		<style>
+			/* Custom CSS styles for the container div */
+			#rcorners3 {
+				text-align: left;
+				width: 96%; /* Adjust the width as needed */
+				/*margin: 0 auto;*/ /* To center the container */
+			}
+
+			/* Adjust spacing between fields (optional) */
+			.form-control {
+				margin-bottom: 10px;
+			}
+
+			/* Adjust the label width (optional) */
+			.control-label {
+				width: 100%;
+				display: inline-block;
+				text-align: left;
+				padding-right: 10px;
+			}
+		</style>
+
+		<div id="rcorners3">
+			<label for="inputEmail" class="control-label required">Objet:</label>
+			<input type="text" name="facture_objet" value="{{config.factureObjet}}" class="form-control" onchange="this.value = this.value.charAt(0).toUpperCase() + this.value.substr(1);">
+			<br>
+			<label for="inputEmail" class="control-label required">Titre:</label>
+			<input type="text" name="facture_title" value="{{config.factureTitle}}" class="form-control" onchange="this.value = this.value.charAt(0).toUpperCase() + this.value.substr(1);">
+			<br>
+			<label for="inputEmail" class="control-label required">Fin Mail:</label>
+			<input type="text" name="facture_footer" value="{{config.factureFooter}}" class="form-control" onchange="this.value = this.value.charAt(0).toUpperCase() + this.value.substr(1);">
+		</div>
+
+
+		<br><br>
+
+
+		<div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #73AD21;width: 300px;padding-left: 10px;">
+			Informations application
+		</div>
+
+		
+
+  <div id="rcorners4">
+    <table class="col-lg-12">
+      <tr >
+        <td class="col-lg-6">
+
+
+
+        <br>
+
+        <label for="inputEmail" class="control-label required">Titre de l'application:</label>
+        <input type="text" name="title" value="{{config.title}}" class="form-control">
+        <br>
+
+        <label for="inputEmail" class="control-label required">Prix casque (hors taxe):</label>
+        <input type="text" name="prix_casque" value="{{config.prixCasque}}" class="form-control">
+        <br>
+
+        
+  
+				<label for="inputEmail" class="control-label required">Nom fichier image: (saisir nom fichier) 
+				<span id="infoIcon3" style="cursor: pointer; margin-left: 0px;" onclick="showImage3()">
+  <i class="fas fa-info-circle" style="color: black;margin-left: 231px;margin-top: 14px;"></i>
+</span>
+</label>  <input type="text" name="img_affichage" value="{{config.imgAffichage}}" class="form-control" >
+<br>
+
+        <label for="inputEmail" class="control-label required">Nom fichier logo:(saisir nom fichier) <span id="infoIcon4" style="cursor: pointer; margin-left: 0px;" onclick="showImage4()">
+  <i class="fas fa-info-circle" style="color: black;margin-left: 240px;margin-top: 14px;"></i>
+</span></label>
+       <input type="text" name="img_logo" value="{{config.imgLogo}}" class="form-control">
+        <br>
+
+        <label for="inputEmail" class="control-label required">Statut:</label>
+        <select class="form-control" name="phase" id="phase">
+          <option selected="selected" value='{{config.phase}}'>{{config.phase}}</option>
+          <option value='Test'>Test</option>
+          <option value='Production'>Production</option>
+        </select>
+      </td>
+      <td class="col-lg-6">
+
+     <label for="inputEmail" class="control-label required">Type de date: <span id="infoIcon" style="cursor: pointer; margin-left: 0px;" onclick="showImage()">
+  <i class="fas fa-info-circle" style="color: black;margin-left: 372px;margin-top: 14px;"></i>
+</span> </label>
+<select class="form-control" name="date_version" id="date_version">
+{% if(config.dateVersion == '1')%}
+{% set valued='V1-Séjour libre' %}
+{% else %}
+{% set valued='V2-Durée imposée' %}
+{% endif %}
+  <option selected="selected" value='{{config.dateVersion}}'>{{valued}}</option>
+  {% if(config.dateVersion == '1')%}
+   <option value='2'>V2-Durée imposée</option>
+   {% else %}
+  <option value='1'>V1-Séjour libre</option>
+  {% endif %}
+</select>
+
+<div id="infoModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img src="{{asset('images/r-mobile/date.jpg')}}" alt="Image d'information">
+  </div>
+</div>
+
+<div id="infoModal2" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal2()">&times;</span>
+    <img src="{{asset('images/r-mobile/code.jpg')}}" alt="Image d'information">
+  </div>
+</div>
+
+<div id="infoModal3" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal3()">&times;</span>
+    <img src="{{asset('images/r-mobile/app.jpg')}}" alt="Image d'information">
+  </div>
+</div>
+
+<div id="infoModal4" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal4()">&times;</span>
+    <img src="{{asset('images/r-mobile/logo.jpg')}}" alt="Image d'information">
+  </div>
+</div>
+
+<script>
+function showImage() {
+  var modal = document.getElementById('infoModal');
+  modal.style.display = 'block';
+}
+
+function closeModal() {
+  var modal = document.getElementById('infoModal');
+  modal.style.display = 'none';
+}
+
+function showImage2() {
+  var modal = document.getElementById('infoModal2');
+  modal.style.display = 'block';
+}
+
+function closeModal2() {
+  var modal = document.getElementById('infoModal2');
+  modal.style.display = 'none';
+}
+
+function showImage3() {
+  var modal = document.getElementById('infoModal3');
+  modal.style.display = 'block';
+}
+
+function closeModal3() {
+  var modal = document.getElementById('infoModal3');
+  modal.style.display = 'none';
+}
+
+function showImage4() {
+  var modal = document.getElementById('infoModal4');
+  modal.style.display = 'block';
+}
+
+function closeModal4() {
+  var modal = document.getElementById('infoModal4');
+  modal.style.display = 'none';
+}
+</script>
+<style>
+/* Ajouter le style pour la fenêtre modale */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 4% auto;
+  padding: 20px;
+  width: 32%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+</style>
+        <br>
+
+      <div class="form-group f_date">
+  <label for="inputEmail" class="control-label required">Valeurs:exemple: 1-3-5 (saisir des chiffres croissant)</label>
+  <input type="text" name="date_valeurs" value="{{config.dateValeurs}}" class="form-control" oninput="formatInput(this)">
+  <br>
+</div>
+
+<script>
+function formatInput(input) {
+  // Remove any non-digit characters from the input
+  const cleanedInput = input.value.replace(/\D/g, '');
+
+  // Limit the input to three digits
+  const formattedInput = cleanedInput.slice(0, 3);
+
+  // Insert dashes at the appropriate positions
+  const formattedValue = formattedInput
+    .replace(/(\d{1})(\d{1})/, '$1-$2')
+    .replace(/(\d{1})(\d{1})$/, '$1-$2');
+
+  // Update the input field value with the formatted value
+  input.value = formattedValue;
+}
+</script>
+
+        <label for="inputEmail" class="control-label required">Type de paiement:</label>
+        <select class="form-control" name="payement_version" id="payement_version">
+          <option selected="selected" value='{{config.payementVersion}}'>{{config.payementVersion}}</option>
+		  {% if config.payementVersion == 'stripe'%}
+          <option value='payline'>payline</option>
+		  {% else %}
+          <option value='stripe'>stripe</option>
+		  {% endif %}
+        </select>
+        <br>
+
+        <div class="form-group f_payline">
+          <label for="inputEmail" class="control-label required"  style="margin-top: 19px;">Id:</label>
+          <input type="text" name="payement_id" value="{{config.payementId}}" class="form-control">
+          <br>
+
+          <label for="inputEmail" class="control-label required"  style="margin-top: 19px;">Key:</label>
+          <input type="text" name="payement_key" value="{{config.payementKey}}" class="form-control">
+          <br>
+
+          <label for="inputEmail" class="control-label required">Vad:</label>
+          <input type="text" name="payement_vad" value="{{config.payementVad}}" class="form-control">
+          <br>
+        </div>
+
+        <div class="form-group f_stripe">
+          <label for="inputEmail" class="control-label required" style="margin-top: 19px;">Pk:</label>
+          		  <input type="text" name="payement_pk" value="{{config.payementPk}}" class="form-control">
+          <br>
+
+          <label for="inputEmail" class="control-label required"  style="margin-top: 19px;">Sk:</label>
+          <input type="text" name="payement_sk" value="{{config.payementSk}}" class="form-control">
+          <br>
+        </div>
+        <br>
+       </td>
+      </tr>
+    </table>
+  </div>
+
+
+<button type="submit" class="button btn btn-primary btn-sm" style="margin-left: 800px;margin-top: -129px;" name="valider" id="btnEnregistrer">
+  <i class="glyphicon glyphicon-floppy-disk"></i>
+  Enregistrer
+</button>
+<script>
+document.getElementById('btnEnregistrer').addEventListener('click', function(event) {
+  var payementVersionSelect = document.getElementById('payement_version').value;
+  var payementPkInput = document.querySelector('input[name="payement_pk"]');
+  var payementSkInput = document.querySelector('input[name="payement_sk"]');
+
+  if (payementVersionSelect === 'payline') {
+    var payementIdInput = document.querySelector('input[name="payement_id"]');
+    var payementKeyInput = document.querySelector('input[name="payement_key"]');
+    var payementVadInput = document.querySelector('input[name="payement_vad"]');
+
+    if (!/^\d{14}$/.test(payementIdInput.value)) {
+      event.preventDefault(); // Empêche l'enregistrement du formulaire
+      alert('Le champ "Id" doit être composé de 14 chiffres.');
+    }
+
+    if (!/^.{20}$/.test(payementKeyInput.value)) {
+      event.preventDefault(); // Empêche l'enregistrement du formulaire
+      alert('Le champ "Key" doit être composé de 20 caractères.');
+    }
+
+    if (!/^\d{7}$/.test(payementVadInput.value)) {
+      event.preventDefault(); // Empêche l'enregistrement du formulaire
+      alert('Le champ "Vad" doit être composé de 7 chiffres.');
+    }
+  } else if (payementVersionSelect === 'stripe') {
+    if (!payementPkInput.value.startsWith('pk_') || !payementSkInput.value.startsWith('sk_')) {
+      event.preventDefault(); // Empêche l'enregistrement du formulaire
+      alert('Les champs "Pk" et "Sk" doivent commencer par "pk_" et "sk_" respectivement.');
+    }
+  }
+});
+</script>
+<!-- ... Votre code HTML ... -->
+
+
+
+<script>
+document.getElementById('btnEnregistrer').addEventListener('click', function(event) {
+  var infoEmailInput = document.querySelector('input[name="info_email"]');
+  var infoEmailValue = infoEmailInput.value.trim();
+
+  // Effectuer la validation de l'adresse e-mail
+  if (!isValidEmail(infoEmailValue)) {
+    event.preventDefault(); // Empêche l'enregistrement du formulaire
+    alert("L'adresse e-mail n'est pas valide.");
+    infoEmailInput.focus(); // Met l'accent sur le champ d'adresse e-mail en cas d'erreur
+  }
+});
+
+function isValidEmail(email) {
+  // Utilisez une expression régulière pour vérifier si l'adresse e-mail est valide
+  var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailPattern.test(email);
+}
+</script>
+<script>
+// ... Votre code existant ...
+
+// Fonction pour ajouter automatiquement le préfixe "pk_" et "sk_" aux champs payement_pk et payement_sk
+function handlePkSkPrefix(event) {
+  if (event.target.name === 'payement_pk' || event.target.name === 'payement_sk') {
+    const prefix = event.target.name === 'payement_pk' ? 'pk_' : 'sk_';
+    if (!event.target.value.startsWith(prefix)) {
+      event.target.value = prefix + event.target.value;
+    }
+  }
+}
+
+// Ajout de l'événement keydown aux champs payement_pk et payement_sk
+document.querySelector('input[name="payement_pk"]').addEventListener('keydown', handlePkSkPrefix);
+document.querySelector('input[name="payement_sk"]').addEventListener('keydown', handlePkSkPrefix);
+
+// ... Suite de votre code existant ...
+</script>
+<!-- ... Suite de votre code HTML ... -->
+
+
+</form><script>// Fonction pour afficher ou masquer les blocs en fonction de la valeur des champs date_version et payement_version
+function handleVisibility() {
+var dateVersionSelect = document.getElementById('date_version');
+var payementVersionSelect = document.getElementById('payement_version');
+var fDateDiv = document.querySelector('.f_date');
+var fPaylineDiv = document.querySelector('.f_payline');
+var fStripeDiv = document.querySelector('.f_stripe');
+
+if (dateVersionSelect.value === '2') {
+fDateDiv.style.display = 'block';
+} else {
+fDateDiv.style.display = 'none';
+}
+
+if (payementVersionSelect.value === 'payline') {
+fPaylineDiv.style.display = 'block';
+fStripeDiv.style.display = 'none';
+} else if (payementVersionSelect.value === 'stripe') {
+fPaylineDiv.style.display = 'none';
+fStripeDiv.style.display = 'block';
+} else {
+fPaylineDiv.style.display = 'none';
+fStripeDiv.style.display = 'none';
+}
+}
+
+// Appel initial de la fonction pour mettre à jour l'affichage en fonction des valeurs initiales
+handleVisibility();
+
+// Ajout d'événements de changement pour les sélecteurs date_version et payement_version
+document.getElementById('date_version').addEventListener('change', handleVisibility);
+document.getElementById('payement_version').addEventListener('change', handleVisibility);</script><form method="POST" action="{{ path('app_config_mobile') }}"><button type="submit" class="button btn btn-danger btn-sm" style="margin-left: 909px;width: 101px;margin-top: -167px;">
+<i class="glyphicon glyphicon-remove"></i>
+Annuler</button></form>{% endblock %}

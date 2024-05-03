@@ -100,6 +100,9 @@ class Etablissement
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Livreaudio::class)]
     private Collection $livreaudios;
 
+    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Configmobile::class)]
+    private Collection $configmobiles;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -112,6 +115,7 @@ class Etablissement
         $this->jeuxes = new ArrayCollection();
         $this->categorieLivreaudios = new ArrayCollection();
         $this->livreaudios = new ArrayCollection();
+        $this->configmobiles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -638,6 +642,36 @@ class Etablissement
             // set the owning side to null (unless already changed)
             if ($livreaudio->getEtablissement() === $this) {
                 $livreaudio->setEtablissement(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Configmobile>
+     */
+    public function getConfigmobiles(): Collection
+    {
+        return $this->configmobiles;
+    }
+
+    public function addConfigmobile(Configmobile $configmobile): static
+    {
+        if (!$this->configmobiles->contains($configmobile)) {
+            $this->configmobiles->add($configmobile);
+            $configmobile->setEtablissement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConfigmobile(Configmobile $configmobile): static
+    {
+        if ($this->configmobiles->removeElement($configmobile)) {
+            // set the owning side to null (unless already changed)
+            if ($configmobile->getEtablissement() === $this) {
+                $configmobile->setEtablissement(null);
             }
         }
 
