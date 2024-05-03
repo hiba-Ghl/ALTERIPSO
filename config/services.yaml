@@ -15,6 +15,7 @@ parameters:
     categorie_livreaudio_directory: '%kernel.project_dir%/public/images/categorie_livreaudio'
     livreaudio_directory: '%kernel.project_dir%/public/images/livreaudio'
     charte_patient_directory: '%kernel.project_dir%/public/pdf/charte_patient'
+    service_payant_directory: '%kernel.project_dir%/public/pdf/service_payant'
     service_in_room_directory: '%kernel.project_dir%/public/serviceinroom'
 
 

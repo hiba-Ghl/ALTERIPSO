@@ -1,0 +1,62 @@
+
+
+{% extends 'home/index.html.twig' %}
+{% block body %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<style>
+		#div1 {
+			border-radius: 25px;
+			border: 2px solid #3087ce;
+			padding: 43px;
+			width: 1091px;
+			height: 300px;
+			margin-left: 10px;
+			margin-top: 10px;
+
+		}
+		#div2 {
+			border-radius: 25px;
+			border: 2px solid #3087ce;
+			padding: 20px;
+			width: 1091px;
+			height: auto;
+			margin-left: 10px;
+			margin-top: 10px;
+		}
+	</style>
+
+
+<div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
+       Services Payants
+		
+</div>
+	<div id="div2">
+<form action="" method="post" enctype="multipart/form-data">
+
+<input  type="file" name="file" id="file" class="upload"   accept=".pdf"   /> <br> 
+<label style="color: red" >Seul les fichiers pdf peuvent être téléchargés </label><br>
+<button type="submit"  class="button btn btn-primary btn-sm"  name="valider" ><i class="glyphicon glyphicon-floppy-disk" ></i> Enregistrer </button> 
+
+
+
+
+<h3> REPERTOIRE DU FICHIER : </h3>
+{{ asset(package)}}
+
+
+
+<body>
+    <object data="{{ asset(package)}}" type="application/pdf" width="100%" height="600px">
+        <p>Impossible d'afficher le fichier PDF. Vous pouvez le <a href="{{ asset(package)}}">télécharger ici</a>.</p>
+    </object>
+</body>
+
+</form>
+</div>
+
+
+{% endblock %}
