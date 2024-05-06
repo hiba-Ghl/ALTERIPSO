@@ -22,11 +22,14 @@ class ChambreController extends AbstractController
         $repository = $entityManager->getRepository(Chambre::class);
         $repositorys = $entityManager->getRepository(ServiceEtablissement::class);
         $etablissement = $this->getUser()->getEtablissement();
-        //$idetablissement = $etablissement->getId();
+        $idetab = $etablissement->getId();
         $chambres  = $repository->findBy(['etablissement' => $etablissement]);
+        $ar = array();
+        $Manager = new PushRabbit();
+        $ar=$Manager->isConnected($idetab,$chambres);
         $serviceetablissement  = $repositorys->findBy(['etablissement' => $etablissement]);
         return $this->render('chambre/index.html.twig', [
-            'chambres' => $chambres,'etablissement' =>$etablissement,'serviceetablissement'=>$serviceetablissement
+            'chambres' => $chambres,'etablissement' =>$etablissement,'serviceetablissement'=>$serviceetablissement,'ar'=>$ar
         ]);
     }
 
@@ -318,5 +321,58 @@ class ChambreController extends AbstractController
  
           return $this->redirectToRoute('app_chambre');
     }
+
+    #[Route('/chambre/message', name: 'app_envoyer_message_chambre')]
+    public function envoyermessage(EntityManagerInterface $entityManager)
+    {
+      $request = Request::createFromGlobals();
+      $repository = $entityManager->getRepository(Chambre::class);
+      $etablissement = $this->getUser()->getEtablissement();
+      $idetab= $etablissement->getId();
+      $chambres  = $repository->findBy(['etablissement' => $etablissement]);
+      $ar = array();
+      $Manager = new PushRabbit();
+      $ar=$Manager->isConnected($idetab,$chambres);
+      $valider = $request->get('valider');
+      if (isset($valider)) {
+            $box = $request->get('list');
+            $msg = $request->get('Question');
+            $idetablissement = $this->getUser()->getEtablissement()->getId();
+              
+            $date = new \DateTime();
+            $dateString = $date->format('Y-m-d H:i:s'); 
+
+ 
+            $queues = array();
+            
+            if (isset($box) and !empty($box)) {
+                foreach ($box as $key => $k) {
+                 
+
+                    $boxs  = $repository->findById($key);
+                    $chambre= $boxs[0]->getNom();
+                    $queue = $idetablissement . '.' . $chambre . '.service';
+                    array_push($queues,$queue);  
+                    $boxs[0]->setdate($dateString);
+                    $entityManager->persist($boxs[0]);
+                    $entityManager->flush();
+ 
+                    
+                }
+                $message = 'rpost%%'.$msg;  
+                $Manager = new PushRabbit();
+                $Manager->MakeRabbitCall($queues, $message);  
+            }
+        
+
+     
+
+
+            return $this->redirectToRoute('app_envoyer_message_chambre');}
+
+            return $this->render('chambre/message.html.twig', array('boxs' => $chambres,'ar'=>$ar));
+    }
+   
+
   
 }

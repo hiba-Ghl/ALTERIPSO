@@ -162,7 +162,7 @@
 				</thead>
 
 				<tbody>
-
+					{% set i=0 %}
 
 					{% for box in chambres %}
 
@@ -176,35 +176,18 @@
 
 							<!--<td class="{#{i}#}"></td>-->
 
-							<td style="text-align: center;  height: 50px;width: 72px;">
-								<a data-toggle="tooltip" data-placement="top" name="envoyerr" id="envoyerr" title="Etat  support" id="ida" href="{{path('home')}}" class="btn btn-default btn-xs">
-									<i class="glyphicon glyphicon-off"></i>
-								</a><br>
+							{% if ar[i] == 0 %} 
 
 
-								{% if box.etat == 'ON' or box.etat == 'On' or box.etat == 'normal' %}
-									<p style="text-align: center;">
-										<i style="color:green;text" class="glyphicon glyphicon-stop"></i>ON
-										{#{box.etat}#}
-									</p>
+							<td><p style="text-align: center;" ><i style="color:red;text" class="glyphicon glyphicon-stop"></i> OFF</p></td>
 
-								{% elseif box.etat == 'OFF'  %}
-									<p style="text-align: center;">
-										<i style="color:red;text" class="glyphicon glyphicon-stop"></i>OFF</p>
+							{% else %} 
 
-								{% elseif box.etat == 'warm' or  box.etat =='Standby' %}
-									<p style="text-align: center;">
-										<i style="color:#ED7F10;" class="glyphicon glyphicon-stop"></i>Standby</p>
-
-								{% else %}
-									<p style="text-align: center;">
-										{{box.etat}}</p>
+							<td><p style="text-align: center;" ><i style="color:green;text" class="glyphicon glyphicon-stop"></i> ON </p></td>
 
 
-								{% endif %}
+							{% endif  %} 
 
-
-							</td>
 
 							<td style="text-align: center;  height: 50px;width: 72px;">{{box.Ip}}</td>
 
@@ -265,9 +248,9 @@
 							</td>
 
 						</tr>
+						{% set i=i+1 %}
 
-
-						{% endfor%}
+						{% endfor %}
 
 						{#{ dump(nb) }#}
 					</tbody>
