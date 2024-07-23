@@ -33,9 +33,13 @@ class ServiceEtablissement
     #[ORM\OneToMany(mappedBy: 'service', targetEntity: Chambre::class)]
     private Collection $chambres;
 
+    #[ORM\OneToMany(mappedBy: 'service', targetEntity: Questionnaire::class)]
+    private Collection $questionnaires;
+
     public function __construct()
     {
         $this->chambres = new ArrayCollection();
+        $this->questionnaires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -127,6 +131,36 @@ class ServiceEtablissement
             // set the owning side to null (unless already changed)
             if ($chambre->getService() === $this) {
                 $chambre->setService(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Questionnaire>
+     */
+    public function getQuestionnaires(): Collection
+    {
+        return $this->questionnaires;
+    }
+
+    public function addQuestionnaire(Questionnaire $questionnaire): static
+    {
+        if (!$this->questionnaires->contains($questionnaire)) {
+            $this->questionnaires->add($questionnaire);
+            $questionnaire->setService($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestionnaire(Questionnaire $questionnaire): static
+    {
+        if ($this->questionnaires->removeElement($questionnaire)) {
+            // set the owning side to null (unless already changed)
+            if ($questionnaire->getService() === $this) {
+                $questionnaire->setService(null);
             }
         }
 

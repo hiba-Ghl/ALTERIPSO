@@ -1,0 +1,322 @@
+{% extends 'home/index.html.twig' %}
+
+{% block body %}
+<style>
+     #div {
+            border-radius: 25px;
+            border: 2px solid #3087ce;
+            padding: 20px;
+            background-color: white;
+            margin-left: -70px;
+            margin-top: 10px;
+        }
+        table {
+            width: 100%;
+        }
+        table td {
+            padding: 10px;
+            vertical-align: top;
+        }
+        .lang-table {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .lang-table img {
+            width: 30px;
+            vertical-align: middle;
+        }
+        .lang-table label {
+            margin-left: 10px;
+        }
+        .lang-table input {
+            width: 100%;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .control-label {
+            margin-bottom: 10px;
+        }
+        
+       .btn-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+            height: 100%; 
+            margin-left: 75%;
+        }
+
+        .btn-container .btn {
+            margin-left: 10px; /* Add space between buttons */
+        }
+        #option{
+            font-weight: bold;
+        }
+</style>
+
+<div style="position: absolute; margin-top: -40px; border-radius: 8px; text-align: left; margin-left: -70px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 250px; padding-left: 10px; text-align: center;">
+    Ajouter Question
+</div>
+
+<div id="div">
+    <form action="{{ path('app_ajouter_question') }}" method="post">
+        <table>
+            <tr>
+                <td colspan="2" style="width: 85%;">
+                    <div class="form-group">
+                        <label class="e">Entrer question : Français (max 120 caractères)</label>
+                        <input type="text" maxlength="120" class="form-control" id="fr" name="fr">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div>
+                        <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                            <span><i class="glyphicon glyphicon-plus"></i></span>
+                        </a>
+                        <label style="margin-left: 5px;">Langues</label>
+                    </div>
+                    <script>
+                        $(document).ready(function(){
+                            $('.accordion-toggle').click(function(){
+                                $(this).find('i').toggleClass('glyphicon-plus glyphicon-minus');
+                            });
+                        });
+                    </script>
+                    <div id="collapseTwo" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="lang-table">
+                                <tr>
+                                    <td>
+                                        <img src="{{ asset('images/eng.png') }}">
+                                        <label for="EN">English</label>
+                                        <input type="text" maxlength="120" class="form-control" id="EN" name="EN">
+                                    </td>
+                                    <td>
+                                        <img src="{{ asset('images/es.png') }}">
+                                        <label for="ES">Espagnol</label>
+                                        <input type="text" maxlength="120" class="form-control" id="ES" name="ES">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <img src="{{ asset('images/pt.png') }}">
+                                        <label for="PT">Portugues</label>
+                                        <input type="text" maxlength="120" class="form-control" id="PT" name="PT">
+                                    </td>
+                                    <td>
+                                        <img src="{{ asset('images/ita.png') }}">
+                                        <label for="IT">Italiano</label>
+                                        <input type="text" maxlength="120" class="form-control" id="IT" name="IT">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <img src="{{ asset('images/rus.png') }}">
+                                        <label for="RU">Russian</label>
+                                        <input type="text" maxlength="120" class="form-control" id="RU" name="RU">
+                                    </td>
+                                    <td>
+                                        <img src="{{ asset('images/deu.png') }}">
+                                        <label for="DE">Deutsch</label>
+                                        <input type="text" maxlength="120" class="form-control" id="DE" name="DE">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <img src="{{ asset('images/ch.png') }}">
+                                        <label for="ZH">China</label>
+                                        <input type="text" maxlength="120" class="form-control" id="ZH" name="ZH">
+                                    </td>
+                                    <td>
+                                        <img src="{{ asset('images/ma.png') }}">
+                                        <label for="AR">العربية</label>
+                                        <input type="text" maxlength="120" class="form-control" id="AR" name="AR">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 33%;">
+                    <div class="control-label">
+                        <label class="control-label">Services</label>
+                        <select class="form-control" id="serviceSelect" name="Service" required="required">
+                            <option value="">choisir un service</option>
+                            {% for s in serviceetablissement %}
+                                <option value="{{ s.id }}">{{ s.nom|upper }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </td>
+                <td style="width: 33%;">
+                    <div class="control-label">
+                        <label class="control-label">Utiliser une question existante</label>
+                        <select class="form-control" id="copie" name="copie">
+                            <option selected="selected" value="aucune">Aucune</option>
+                            {% for service in serviceetablissement %}
+                                <option id="option" value="copie_{{ service.id }}">copie du Questionnaire de {{ service.nom }}</option>
+                            {% endfor %}
+                            {% for service in serviceetablissement %}
+                                <optgroup label="Questionnaire de {{ service.nom }}">
+                                    {% for question in questionsByService[service.id] %}
+                                        <option id ="takeQuestion" value="{{ question.id }}"
+                                            data-fr="{{ question.fr }}"
+                                            data-en="{{ question.en }}"
+                                            data-es="{{ question.es }}"
+                                            data-it="{{ question.it }}"
+                                            data-pt="{{ question.pt }}"
+                                            data-ru="{{ question.ru }}"
+                                            data-de="{{ question.de }}"
+                                            data-zh="{{ question.zh }}"
+                                            data-ar="{{ question.ar }}">
+                                            {{ question.fr }}
+                                        </option>
+                                    {% endfor %}
+                                </optgroup>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 33%;" id="positionRow">
+                    <div class="control-label">
+                        <label class="control-label">Position:</label>
+                        <select class="form-control" id="positionSelect" name="Position" >
+                            <option selected="selected" value=''></option>
+                        </select>
+                    </div>
+                </td>
+            
+                <td style="width: 33%;">
+                    <div class="form-group">
+                        <label class="control-label">Actif</label>
+                        <select id="form_Active" name="Active" class="form-control" >
+                            <option value="1" selected="selected">Actif</option>
+                            <option value="0">Non Actif</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="btn-container">
+                        <button type="submit" name="valider" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-saved"></i> Enregistrer</button>
+                        <div><a class="btn btn-danger" href="{{ path('app_questionnaire') }}" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a></div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<script>
+    document.getElementById('copie').addEventListener('change', function () {
+        const selectedOption = this.options[this.selectedIndex];
+        const frField = document.getElementById('fr');
+        const enField = document.getElementById('EN');
+        const esField = document.getElementById('ES');
+        const itField = document.getElementById('IT');
+        const ptField = document.getElementById('PT');
+        const ruField = document.getElementById('RU');
+        const deField = document.getElementById('DE');
+        const zhField = document.getElementById('ZH');
+        const arField = document.getElementById('AR');
+        const collapseTwo = document.getElementById('collapseTwo');
+
+        if (selectedOption.value !== 'Aucune') {
+            frField.value = selectedOption.getAttribute('data-fr') || '';
+            enField.value = selectedOption.getAttribute('data-en') || '';
+            esField.value = selectedOption.getAttribute('data-es') || '';
+            itField.value = selectedOption.getAttribute('data-it') || '';
+            ptField.value = selectedOption.getAttribute('data-pt') || '';
+            ruField.value = selectedOption.getAttribute('data-ru') || '';
+            deField.value = selectedOption.getAttribute('data-de') || '';
+            zhField.value = selectedOption.getAttribute('data-zh') || '';
+            arField.value = selectedOption.getAttribute('data-ar') || '';
+            
+            // Hide the language fields
+            collapseTwo.classList.remove('in');
+        } else {
+            frField.value = '';
+            enField.value = '';
+            esField.value = '';
+            itField.value = '';
+            ptField.value = '';
+            ruField.value = '';
+            deField.value = '';
+            zhField.value = '';
+            arField.value = '';
+            
+            // Show the language fields
+            collapseTwo.classList.add('in');
+        }
+    });
+</script>
+<script>
+$(document).ready(function() {
+    // Initial check on page load
+    checkRequiredFields();
+
+    // Check when the 'copie' dropdown changes
+    $('#copie').on('change', function() {
+        checkRequiredFields();
+    });
+
+    function checkRequiredFields() {
+        var selectedOption = $('#copie').val();
+        var frField = $('#fr');
+        var positionField = $('#positionSelect');
+
+        if (selectedOption === 'aucune') {
+            frField.attr('required', 'required');
+            positionField.attr('required', 'required');
+        } else {
+            frField.removeAttr('required');
+            // Check if 'takeQuestion' option is selected and make position field required
+            if ($('#copie option:selected').attr('id') === 'takeQuestion') {
+                positionField.attr('required', 'required');
+            } else {
+                positionField.removeAttr('required');
+            }
+        }
+    }
+});
+</script>
+<script>
+    document.getElementById('serviceSelect').addEventListener('change', function () {
+    const serviceId = this.value;
+    const positionsByService = {{ positionsByService|json_encode|raw }};
+    const firstFreePositionByService = {{ firstFreePositionByService|json_encode|raw }};
+    const positionSelect = document.getElementById('positionSelect');
+
+    // Clear the position select options
+    positionSelect.innerHTML = '<option value=""></option>';
+
+    // Get the occupied positions for the selected service
+    const occupiedPositions = positionsByService[serviceId] || [];
+
+    // Add available positions to the select
+    for (let i = 1; i <= 20; i++) {
+        if (!occupiedPositions.includes(i)) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            positionSelect.appendChild(option);
+        }
+    }
+
+    // Set the first free position as selected
+    const firstFreePosition = firstFreePositionByService[serviceId];
+    if (firstFreePosition) {
+        positionSelect.value = firstFreePosition;
+    }
+});
+</script>
+
+
+{% endblock %}

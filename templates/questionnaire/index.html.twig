@@ -1,0 +1,201 @@
+{% extends 'home/index.html.twig' %}
+{% block body %}
+<h1>Liste<strong id="cat">QUESTIONNAIRE</strong></h1>
+<hr>
+
+<script src="{{ asset('javascript/jquery.min.js') }}"></script>
+
+<style type="text/css">
+    body{
+          overflow: hidden;
+    }
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 15px;
+        text-align: left;
+    }
+
+    .table thead tr {
+        background-color: #E3E9EE;
+        color: #333;
+        font-weight: bold;
+    }
+
+    .table thead th {
+        padding: 12px 15px;
+        border: 1px solid #edfbfe;
+        text-align: center;
+    }
+
+    .table tbody tr {
+        border-bottom: 1px solid #f2f2f2;
+    }
+
+    .table tbody td {
+        padding: 12px 15px;
+        text-align: center;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #F5F7F9;
+    }
+
+    .form-check-input {
+        margin-top: 0;
+    }
+
+    .form-check-label {
+        margin-left: 5px;
+    }
+
+    .table tbody td:last-child {
+        text-align: center;
+    }
+
+    .div {
+        border-radius: 25px;
+        border: 2px solid #3087ce;
+        padding: 20px;
+        width: auto;
+        height: auto;
+        margin-left: -70px;
+        margin-top: 10px;
+        background-color: white;
+    }
+
+    #myselect {
+        width: 200%;
+        margin-left: 3%;
+        margin-top: 6%;
+        height: 1%;
+        background-color: #F2F2F2;
+        color: black;
+        border: 0.5px dotted #4C4FF1;
+    }
+
+    .table-container {
+        width: 100%;
+        height: 400px; /* Ajustez la hauteur selon vos besoins */
+        overflow-y: scroll; /* Pour le défilement vertical */
+        overflow-x: auto; /* Pour le défilement horizontal */
+    }
+</style>
+
+<div class="div">
+    <div>
+        <form method="post" action="{{ path('update_active') }}">
+            <table>
+                <tr>
+                    <td>
+                        <a href="{{ path('app_ajouter_question') }}" class="btn btn-info btn-sm" name="add" id="add">
+                            <i class="glyphicon glyphicon-plus"></i> Ajouter des questions
+                        </a>
+                    </td>
+                    <td>
+                        <button style="margin-left:-30%;" class="btn btn-success btn-sm " type="submit" name="save-button" id="save-button">
+                            <i class="glyphicon glyphicon-inbox"></i> Sauvegarder
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label style="margin-top:20px;font-size:14px" class="form-label" for="myselect">Liste des services établissement créés :</label>
+                    </td>
+                    {% set selectedServiceId = app.request.query.get('serviceId') %}
+                    <td>
+                        <select id="myselect" class="form-control" name="selectservices">
+                            <option value="">Recherche par service</option>
+                            {% for s in serviceetablissement %}
+                                <option value="{{ s.id }}" {% if s.id == selectedServiceId %}selected{% endif %}>{{ s.nom|upper }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="table-container">
+                <table class="table" id="myTab">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Question</th>
+                            <th>Position</th>
+                            <th>Service</th>
+                            <th>
+                                <input type="checkbox" class="form-check-input" id="checklist"> Active
+                            </th>
+                            <th style="text-align:left;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="questionnaireTableBody">
+                        {% for questionnaire in questionnaire %}
+                            <tr class="questionnaire-row" data-service="{{ questionnaire.service.id }}">
+                                <td style="text-align:left;">{{ questionnaire.fr }}</td>
+                                <td>{{ questionnaire.position }}</td>
+                                <td>{{ questionnaire.service.nom }}</td>
+                                <td>
+                                    <input name='list[{{ questionnaire.id }}]' type="checkbox" class="btncheckbox" {% if questionnaire.active %}checked{% endif %}>
+                                </td>
+                                <td style="text-align:right;">
+                                    <a data-toggle="tooltip" data-placement="top" title="Modifier la question" href="{{ path('app_modifier_question', {'id': questionnaire.id}) }}" class="btn btn-warning btn-xs">
+                                        <i class="glyphicon glyphicon-pencil"></i>
+                                    </a>
+                                    <a data-toggle="tooltip" data-placement="top" title="Supprimer la question" href="{{ path('app_supprimer_question', {'id': questionnaire.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer cette question : {{ questionnaire.fr }} ?')" class="btn btn-danger btn-xs">
+                                        <i class="glyphicon glyphicon-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('myselect').addEventListener('change', function() {
+        var selectedService = this.value.toLowerCase();
+        var rows = document.querySelectorAll('.questionnaire-row');
+
+        rows.forEach(function(row) {
+            var serviceId = row.getAttribute('data-service');
+            if (selectedService === "" || serviceId === selectedService) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+
+    // Filtrer les lignes lors du chargement de la page
+    window.addEventListener('load', function() {
+        var selectedService = document.getElementById('myselect').value.toLowerCase();
+        var rows = document.querySelectorAll('.questionnaire-row');
+
+        rows.forEach(function(row) {
+            var serviceId = row.getAttribute('data-service');
+            if (selectedService === "" || serviceId === selectedService) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+
+    document.getElementById('checklist').addEventListener('click', function() {
+        var selectedService = document.getElementById('myselect').value.toLowerCase();
+        var checkboxes;
+        if (selectedService === "") {
+            checkboxes = document.querySelectorAll('.btncheckbox');
+        } else {
+            checkboxes = document.querySelectorAll('.questionnaire-row[data-service="' + selectedService + '"] .btncheckbox');
+        }
+        checkboxes.forEach(function(checkbox) {
+            checkbox.checked = document.getElementById('checklist').checked;
+        });
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,227 @@
+{% extends 'home/index.html.twig' %}
+{% block body %}
+    <style>
+        #div {
+                border-radius: 25px;
+                border: 2px solid #3087ce;
+                padding: 20px;
+                width: auto;
+                height: auto;
+                margin-left: -70px;
+                margin-top: 10px;
+                background-color: white;
+            }
+            form{
+                margin-left:120px;
+                font-size:14px;
+                
+            } 
+        .language-field {
+            display: none;
+        }
+         .lang-table {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .lang-table img {
+            width: 30px;
+            vertical-align: middle;
+        }
+        .lang-table label {
+            margin-left: 10px;
+            margin-bottom: 10px;
+            margin-top:15px
+        }
+        .lang-table input {
+            width: 75%;
+            /* margin-bottom: 10px */
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        .control-label {
+            margin-bottom: 15px;
+            margin-top:10x;
+        }
+    </style>
+
+     <div style="margin-top: -40px;position: absolute;border-radius: 8px;text-align: center;margin-left: -68px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: -20px;">
+        Modifier Question 
+      </div>
+
+
+    <div id="div">
+        <form action="{{path('app_modifier_question',{'id':questionnaire.id})}}" method="post">
+            <table style="width: 100%;">
+                    <tr>
+                        <td style="width: 44%;">
+                                <div class="form-group">
+                                <label class="control-label">Entrer question : Français(max120caractères)</label>
+                                <textarea id="fr"  name="fr" maxlength="120" class="form-control" style="width:75%;" >{{questionnaire.Fr}}</textarea>
+                            </div>
+                        </td>
+                      <td style="width: 44%;">
+                                    <div class="form-group">
+                                    <label class=" control-label">Services</label>
+                                    <select class="form-control" id="serviceSelect" name="Service" style="width: 75%;">
+                                    <option value="{{questionnaire.service.id }}" selected>{{questionnaire.service.nom|upper}}</option>
+                                       {% for s in serviceetablissement %}
+                                            {% if questionnaire.service.nom not in s.nom  %}
+                                                <option value="{{s.id}}" >{{s.nom|upper}}</option>
+                                            {% endif %}   
+
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                        </td>
+                    </tr>
+                    <tr>
+                    <td colspan="2">
+                        <div>
+                            <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                <span><i class="glyphicon glyphicon-plus"></i></span>
+                            </a>
+                            <label style="margin-left: 5px;">Langues</label>
+                        </div>
+                        <script>
+                            $(document).ready(function(){
+                                $('.accordion-toggle').click(function(){
+                                    $(this).find('i').toggleClass('glyphicon-plus glyphicon-minus');
+                                });
+                            });
+                        </script>
+                        <div id="collapseTwo" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <table class="lang-table">
+                                    <tr>
+                                        <td>
+                                            <img style="width: 30px" src=" {{asset('images/eng.png')}}">
+                                            <label for="EN">English</label>
+                                            <textarea id="en" name="en" maxlength="120" class="form-control e" style="width:75%;">{{questionnaire.En}}</textarea>
+                                        </td>
+                                        <td>
+                                            <img style="width: 30px" src=" {{asset('images/es.png')}}">
+                                            <label for="ES">Espagnol</label>
+                                            <textarea id="es" name="es" maxlength="120" class="form-control e" style="width:75%;">{{questionnaire.Es}}</textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                <img style="width: 30px" src=" {{asset('images/pt.png')}}">
+                                            <label for="PT">Portugues</label>
+                                            <textarea id="pr"  name="pr" maxlength="120" class="form-control e" style="width:75%;">{{questionnaire.Pt}}</textarea>
+                                        </td>
+                                        <td>
+                                <img style="width: 30px" src=" {{asset('images/ita.png')}}">
+                                            <label for="IT">Italiano</label>
+                                            <textarea id="it" name="it"  maxlength="120" class="form-control e" style="width:75%;">{{questionnaire.It}}</textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                <img style="width: 30px" src=" {{asset('images/rus.png')}}">
+                                            <label for="RU">Russian</label>
+                                            <textarea id="rus" name="rus" maxlength="120" class="form-control e" style="width:75%;">{{questionnaire.Ru}}</textarea>
+                                        </td>
+                                        <td>
+                                <img style="width: 30px" src=" {{asset('images/deu.png')}}">
+                                            <label for="DE">Deutsch</label>
+                                            <textarea id="deu" name="dtsh"  maxlength="120" class="form-control e" style="width:75%;">{{questionnaire.De}}</textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                <img style="width: 30px" src=" {{asset('images/ch.png')}}">
+                                            <label for="ZH">China</label>
+                                            <textarea id="chi" name="chi"  maxlength="120" class="form-control e" style="width:75%;">{{questionnaire.Zh}}</textarea>
+                                        </td>
+                                        <td>
+                                <img style="width: 30px" src=" {{asset('images/ma.png')}}">
+                                            <label for="AR">العربية</label>
+                                            <textarea id="ar" name="ar"  maxlength="120" class="form-control e" style="width:75%;">{{questionnaire.Ar}}</textarea>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <br>
+                <br>
+                    <tr style="margin-top:10px;">
+                            <td style="width: 44%;">
+                                <div class="control-label">
+                                    <label class=" control-label"> Position: </label>
+                                    <select class="form-control" id="positionSelect" name="Position" style="width: 75%;">
+                                        <option value={{questionnaire.position}} selected>{{questionnaire.position}}</option>
+                                        <option value=""></option>
+                                </div>
+                            </td>
+                            <td style="width: 44%;">
+                                <div class="form-group">
+                                    <label class="control-label">Actif</label>
+                                    <select id="form_Active" name="Active" class="form-control" style="width: 75%;">
+                                        {% if questionnaire.active == 0 %}
+                                            <option value="0" selected>Non actif</option>
+                                            <option value="1">Actif</option>
+                                        {% else %}
+                                            <option value="1" selected>Actif</option>
+                                            <option value="0">Non actif</option>
+                                        {% endif %}
+                                    </select>
+                            </div>
+
+                            </td>
+                            
+                    </tr>
+                    <tr>      
+                        <td  colspan="2" style="width: 44%;">
+                            <div class="col-md-12" style="margin-top:30px;margin-left:66%;" >
+                                <button type="submit" name="valider" class="btn btn-primary"><i class='glyphicon glyphicon-floppy-saved'></i> Modifier</button> 
+                                <a class="button btn btn-danger " href="{{path('app_questionnaire')}}" role="button"><i class="glyphicon glyphicon-remove" ></i> Annuler</a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            <form>
+        </div>
+          <script>
+            function showLanguageField() {
+                var language = document.getElementById("languageSelect").value;
+                var fields = document.getElementsByClassName("language-field");
+
+                for (var i = 0; i < fields.length; i++) {
+                    fields[i].style.display = "none";
+                }
+
+                if (language) {
+                    document.getElementById(language + "-field").style.display = "block";
+                }
+            }
+         </script>
+           <script>
+            document.getElementById('serviceSelect').addEventListener('change', function () {
+                const serviceId = this.value;
+                const positionsByService = {{ positionsByService|json_encode|raw }};
+                const positionSelect = document.getElementById('positionSelect');
+
+                // Clear the position select options
+                positionSelect.innerHTML = '<option value=""></option>';
+
+                // Get the occupied positions for the selected service
+                const occupiedPositions = positionsByService[serviceId] || [];
+
+                // Add available positions to the select
+                for (let i = 1; i <= 20; i++) {
+                    if (!occupiedPositions.includes(i)) {
+                        const option = document.createElement('option');
+                        option.value = i;
+                        option.textContent = i;
+                        positionSelect.appendChild(option);
+                    }
+                }
+            });
+    </script>
+{% endblock %}
+
+      

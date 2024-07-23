@@ -103,6 +103,12 @@ class Etablissement
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Configmobile::class)]
     private Collection $configmobiles;
 
+    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Questionnaire::class)]
+    private Collection $questionnaires;
+
+    #[ORM\ManyToOne(inversedBy: 'etablissement')]
+    private ?Services $services = null;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -116,6 +122,7 @@ class Etablissement
         $this->categorieLivreaudios = new ArrayCollection();
         $this->livreaudios = new ArrayCollection();
         $this->configmobiles = new ArrayCollection();
+        $this->questionnaires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -674,6 +681,48 @@ class Etablissement
                 $configmobile->setEtablissement(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Questionnaire>
+     */
+    public function getQuestionnaires(): Collection
+    {
+        return $this->questionnaires;
+    }
+
+    public function addQuestionnaire(Questionnaire $questionnaire): static
+    {
+        if (!$this->questionnaires->contains($questionnaire)) {
+            $this->questionnaires->add($questionnaire);
+            $questionnaire->setEtablissement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestionnaire(Questionnaire $questionnaire): static
+    {
+        if ($this->questionnaires->removeElement($questionnaire)) {
+            // set the owning side to null (unless already changed)
+            if ($questionnaire->getEtablissement() === $this) {
+                $questionnaire->setEtablissement(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getServices(): ?Services
+    {
+        return $this->services;
+    }
+
+    public function setServices(?Services $services): static
+    {
+        $this->services = $services;
 
         return $this;
     }

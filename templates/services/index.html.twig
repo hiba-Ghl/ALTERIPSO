@@ -1,0 +1,311 @@
+{% extends 'home/index.html.twig' %}
+{% block body %}
+	<style>
+		#div1 {
+			border-radius: 25px;
+			border: 2px solid #3087ce;
+			padding: 43px;
+			width: 1091px;
+			height: 300px;
+			margin-left: -70px;
+			margin-top: 10px;
+
+		}
+		#div2 {
+			border-radius: 25px;
+			border: 2px solid #3087ce;
+			padding: 20px;
+			width: 1300px;
+			height: 900px;
+			margin-left: -70px;
+			margin-top: 10px;
+			background-color: white;
+		}
+
+
+		.fileUpload {
+			position: relative;
+			overflow: hidden;
+			/* margin: 10px;*/
+		}
+		.fileUpload input.upload {
+			position: absolute;
+			top: 0;
+			right: 0;
+			margin: 0;
+			padding: 0;
+			font-size: 20px;
+			cursor: pointer;
+			opacity: 0;
+			filter: alpha(opacity=0);
+
+		}
+
+		.w {
+			width: 70px;
+		}
+		.header-fixed {
+			width: 1200px;
+		}
+
+		.header-fixed > thead,
+		.header-fixed > tbody,
+		.header-fixed > thead > tr,
+		.header-fixed > tbody > tr,
+		.header-fixed > thead > tr > th,
+		.header-fixed > tbody > tr > td {
+			display: block;
+		}
+
+		.header-fixed > tbody > tr:after,
+		.header-fixed > thead > tr:after {
+			content: ' ';
+			display: block;
+			visibility: hidden;
+			clear: both;
+		}
+
+		.header-fixed > tbody {
+			overflow-y: auto;
+			height: 500px;
+		}
+
+		.header-fixed > tbody > tr > td,
+		.header-fixed > thead > tr > th {
+			/*width: 20%;*/
+			float: left;
+		}
+		.paginate_button {
+			margin-left: 2px;
+		}
+	</style>
+
+	<p id='p'></p>
+	<div style="margin-top: -40px;position: absolute;border-radius: 8px;text-align: left;margin-left: -68px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: -27px;">
+		Liste Services
+	</div>
+
+	<div id="div2">
+	
+
+			<a href="{{path('app_ajouter_services')}}" class="btn btn-info btn-sm" name="add" id="add">
+				<i class="glyphicon glyphicon-plus"></i>
+				Ajouter service</a>
+			<br>
+		
+
+
+		
+
+
+
+		<hr>
+		
+
+
+		<div style="color: red;font-size: 14px;">Choisissez le modèle d'extraction de données:</div>
+		<br>
+		<div class="modnt"></div>
+        
+        {{dump(services)}}
+		<div  id="myDiv" class="col-md-12" margin-buttom:25px>
+
+
+			<!--<table class="table table-striped table-bordered table-hover" id="dataTables-example">-->
+			<table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column" id="dataTables-example">
+				<thead>
+
+					<tr>
+						<th style="text-align: center;  height: 50px;width: 100px;"></th>
+						<th style="text-align: center;height: 50px;width: 150px;">Nom Service</th>
+						<th style="text-align: center;height: 50px;width: 50px;">Position</th>
+						<th style="text-align: center;height: 50px;width: 50px;">Active</th>
+						<th style="text-align: center;height: 50px;width: 100px;">Type</th>
+						<th style="text-align: center;height: 50px;width: 350px;">Source</th>
+						<th style="text-align: center;height: 50px;width: 100px;">Actions</th>
+
+
+					</tr>
+				</thead>
+
+				<tbody>
+					{% set i=0 %}
+
+					{% for service in services %}
+
+
+						<tr class="odd gradeX">
+							<td style="text-align: center;  height: 50px;width: 122px;">{{service.logo}}</td>
+							<td style="text-align: center;  height: 50px;width: 172px;">{{service.nom}}</td>
+                            <td style="text-align: center; height: 50px;width: 72px;">{{service.position}}</td>
+							<td style="text-align: center; height: 50px;width: 72px;">{{service.active}}</td>
+							<td style="text-align: center; height: 50px;width: 122px;">{{service.type}}</td>
+							<td style="text-align: center; height: 50px;width: 372px;">{{service.src}}</td>
+							<td style="text-align: center; height: 50px;width: 122px;">
+								<a data-toggle="tooltip" data-placement="top" title="redémarrer le support" href="{{path('app_redemarrer',{'id':service.id})}}"   class="reboot btn btn-info btn-xs">
+									<i class="glyphicon glyphicon-refresh"></i>
+								</a>
+								<a data-toggle="tooltip" data-placement="top" title="supprimer le support" id="" href="{{path('app_supprimer_chambre',{'id':service.id})}}" class="ida btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer la chambre : {{service.nom}} ?')">
+									<i class="glyphicon glyphicon-trash"></i>
+								</a>
+								<a data-toggle="tooltip" data-placement="top" title="Modifier le support" id="ida" href="{{path('app_modifier_chambre',{'id':service.id})}}" class="btn btn-warning btn-xs">
+									<i class="glyphicon glyphicon-edit"></i>
+								</a>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</tbody>
+			</table>
+		</div>
+		<!-- fin div2-->
+
+
+	</div>
+	<br>
+	<!-- Modals -->
+
+	
+
+	<!-- Scripts -->
+    <!-- online -->
+	<!--<script src="https://code.jquery.com/jquery-3.5.1.js"></script>-->
+    <script src="{{asset('javascript/jquery.min.js')}}"> </script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+	<style type="text/css" src="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css"></style>
+	<style type="text/css" src="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css"></style>
+
+
+	<!-- offline -->
+	<!--<script src="{{asset('javascript/jquery-3.5.1.js')}}"></script>
+				<script src="{{asset('javascript/jszip.min.js')}}"></script>
+				<script src="{{asset('javascript/pdfmake.min.js')}}"></script>
+				<script src="{{asset('javascript/vfs_fonts.js')}}"></script>
+				<link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet">
+				<link href="{{ asset('css/buttons.dataTables.min.css') }}" rel="stylesheet">
+				-->
+
+  <script src="{{ asset('javascript/datatables2.min.js') }}"></script>
+
+    <script>
+    
+
+        var maintable = $('#dataTables-example').DataTable({
+           aLengthMenu: [[-1, 10, 100, 200],["All", 10, 100, 200]],
+           "aaSorting": [[ 1, "dsc" ]],
+                responsive: true,
+                 dom: 'Bfrtip',
+                 info: false, // Masquer les informations sur le tableau
+                paging: false, // Masquer la pagination
+        buttons: [
+            { extend: 'copy', className: 'btn-info w' ,title: 'Liste Support Connecté'},
+            { extend: 'excel', className: 'btn-danger w' ,title: 'Liste Support Connecté'},
+            { extend: 'csv', className: 'btn-warning w' ,title: 'Liste Support Connecté'},
+            { extend: 'pdf', className: 'btn-primary w' ,title: 'Liste Support Connecté',orientation:'landscape',
+             customize: function(doc) {
+              const o_date = new Intl.DateTimeFormat;
+              const f_date = (m_ca, m_it) => Object({...m_ca, [m_it.type]: m_it.value});
+              const m_date = o_date.formatToParts().reduce(f_date, {});
+              //console.log(m_date.day + '-' + m_date.month + '-' + m_date.year);
+                                doc['footer'] = (function(page, pages) {
+                    return {
+                      columns: [
+                        {
+                          alignment: 'center',
+                          text: [
+                          
+                            { text: page.toString(), italics: true },
+                  ' / ',
+                            { text: pages.toString(), italics: true },
+
+                            { text: '   |'+ m_date.day + '-' + m_date.month + '-' + m_date.year },
+
+                            
+                  ]
+                      }],
+                      margin: [10, 0]
+                    }
+                  });
+              }
+
+          },   
+
+      // { extend: 'print', className: 'btn-default w' ,title: 'Liste Support Connecté'},
+
+
+
+
+        ]
+        });
+        </script>
+	<script type="text/javascript">
+
+
+		$(function () {
+$('#envoyerr').click(function () {
+$.toast('<i class="glyphicon glyphicon-fire"></i> envoie en cours ...', {
+'align': 'top',
+'type': 'success'
+});
+});
+});
+	</script>
+
+
+	<script>
+
+
+		$(document).ready(function () {
+$('#checkAllboxnx').click(function () {
+
+$(".boxchecke").prop("checked", false);
+if (this.checked) {
+
+$(".boxchecke:visible").each(function () {
+$(this).prop("checked", true);
+});
+}
+});
+
+});
+	</script>
+	<script>
+		function Check() {
+
+
+var msg = "";
+if (nb > etablissement.licence) {
+msg += "vous avez atteint le nb de licence";
+}
+if (msg != "") {
+alert(msg);
+return false;
+}
+
+
+return true;
+}
+	</script>
+	<script>
+		function getval2(sel) { // alert(sel.value);
+$('input').val(sel.value);
+// $(this).toggle($(this).text().toLowerCase().indexOf(sel.value.toLowerCase()) > -1)
+maintable.search(sel.value).draw();
+
+}
+	</script>
+    
+<script type="text/javascript">
+  // recherhe par service
+function getval(sel)
+{
+   
+     $('#myInput').val(sel.value);
+     $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(sel.value.toLowerCase()) > -1)
+    });
+}
+</script>
+{% endblock %}
