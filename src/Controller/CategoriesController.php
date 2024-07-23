@@ -54,7 +54,7 @@ class CategoriesController extends AbstractController
     
 
        $file1 = $request->files->get('logo');
-       $file2 = $request->files->get('backgound');
+       $file2 = $request->files->get('background');
 
        // Vérifiez si les fichiers ont été téléchargés
        if ($file1 && $file2) {
@@ -70,7 +70,7 @@ class CategoriesController extends AbstractController
          //  return new Response('Fichiers téléchargés avec succès !');
        }
        $fileName = 'images/categories/' . $fileName1;
-       $fileNamebackgound = 'images/categories/' . $fileName2;
+       $fileNamebackground = 'images/categories/' . $fileName2;
 
      //  var_dump($fileName1.'    '.$fileName2);
        // var_dump($request);
@@ -95,7 +95,7 @@ class CategoriesController extends AbstractController
         $categories->setPosition($position);
         $categories->setHtml($html);
         $categories->setLogo($fileName);
-        $categories->setBackgound($fileNamebackgound);
+        $categories->setBackground($fileNamebackground);
         $categories->setPackage($package);
         $categories->setFR($FR);
         $categories->setEN($EN);
@@ -135,7 +135,7 @@ class CategoriesController extends AbstractController
     
 
        $file1 = $request->files->get('logo');
-       $file2 = $request->files->get('backgound');
+       $file2 = $request->files->get('background');
 
        // Vérifiez si les fichiers ont été téléchargés
        if ($file1 && $file2) {
@@ -150,10 +150,10 @@ class CategoriesController extends AbstractController
            // Répondre avec un message de succès ou rediriger vers une autre page
          //  return new Response('Fichiers téléchargés avec succès !');
          $fileName = 'images/categories/' . $fileName1;
-         $fileNamebackgound = 'images/categories/' . $fileName2;
+         $fileNamebackground = 'images/categories/' . $fileName2;
 
          $categories->setLogo($fileName);
-        $categories->setBackgound($fileNamebackgound);
+        $categories->setBackground($fileNamebackground);
        }
       
 

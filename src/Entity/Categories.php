@@ -68,7 +68,7 @@ class Categories
     private ?Etablissement $etablissement = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $backgound = null;
+    private ?string $background = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $typemenu = null;
@@ -292,14 +292,14 @@ class Categories
         return $this;
     }
 
-    public function getBackgound(): ?string
+    public function getBackground(): ?string
     {
-        return $this->backgound;
+        return $this->background;
     }
 
-    public function setBackgound(?string $backgound): static
+    public function setBackground(?string $background): static
     {
-        $this->backgound = $backgound;
+        $this->background = $background;
 
         return $this;
     }
