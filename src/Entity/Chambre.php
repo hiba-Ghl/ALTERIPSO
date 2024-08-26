@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ChambreRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ChambreRepository::class)]
@@ -81,6 +83,14 @@ class Chambre
 
     #[ORM\ManyToOne(inversedBy: 'chambres')]
     private ?ServiceEtablissement $service = null;
+
+    #[ORM\OneToMany(mappedBy: 'chambre', targetEntity: ResultatQuestionnaire::class)]
+    private Collection $resultatQuestionnaires;
+
+    public function __construct()
+    {
+        $this->resultatQuestionnaires = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -371,6 +381,36 @@ class Chambre
     public function setChaine(?Television $chaine): static
     {
         $this->chaine = $chaine;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ResultatQuestionnaire>
+     */
+    public function getResultatQuestionnaires(): Collection
+    {
+        return $this->resultatQuestionnaires;
+    }
+
+    public function addResultatQuestionnaire(ResultatQuestionnaire $resultatQuestionnaire): static
+    {
+        if (!$this->resultatQuestionnaires->contains($resultatQuestionnaire)) {
+            $this->resultatQuestionnaires->add($resultatQuestionnaire);
+            $resultatQuestionnaire->setChambre($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResultatQuestionnaire(ResultatQuestionnaire $resultatQuestionnaire): static
+    {
+        if ($this->resultatQuestionnaires->removeElement($resultatQuestionnaire)) {
+            // set the owning side to null (unless already changed)
+            if ($resultatQuestionnaire->getChambre() === $this) {
+                $resultatQuestionnaire->setChambre(null);
+            }
+        }
 
         return $this;
     }

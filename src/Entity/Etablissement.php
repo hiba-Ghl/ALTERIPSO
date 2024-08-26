@@ -109,6 +109,9 @@ class Etablissement
     #[ORM\ManyToOne(inversedBy: 'etablissement')]
     private ?Services $services = null;
 
+    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: ResultatQuestionnaire::class)]
+    private Collection $resultatQuestionnaires;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -123,6 +126,7 @@ class Etablissement
         $this->livreaudios = new ArrayCollection();
         $this->configmobiles = new ArrayCollection();
         $this->questionnaires = new ArrayCollection();
+        $this->resultatQuestionnaires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -723,6 +727,36 @@ class Etablissement
     public function setServices(?Services $services): static
     {
         $this->services = $services;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ResultatQuestionnaire>
+     */
+    public function getResultatQuestionnaires(): Collection
+    {
+        return $this->resultatQuestionnaires;
+    }
+
+    public function addResultatQuestionnaire(ResultatQuestionnaire $resultatQuestionnaire): static
+    {
+        if (!$this->resultatQuestionnaires->contains($resultatQuestionnaire)) {
+            $this->resultatQuestionnaires->add($resultatQuestionnaire);
+            $resultatQuestionnaire->setEtablissement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResultatQuestionnaire(ResultatQuestionnaire $resultatQuestionnaire): static
+    {
+        if ($this->resultatQuestionnaires->removeElement($resultatQuestionnaire)) {
+            // set the owning side to null (unless already changed)
+            if ($resultatQuestionnaire->getEtablissement() === $this) {
+                $resultatQuestionnaire->setEtablissement(null);
+            }
+        }
 
         return $this;
     }

@@ -1,0 +1,679 @@
+{% extends 'home/index.html.twig' %}
+{% block body %}
+<h1>Resultat<strong id="cat">QUESTIONNAIRE</strong></h1>
+<hr>
+{# J'ai appliqué des styles CSS pour mettre en forme la page  #}
+<style type="text/css">
+    h1{
+        margin-top:-2%;
+        margin-left:-70%;
+    }
+    h3{
+        margin-left:-15%;
+        font-size:20px;
+    }
+    .div {
+        border-radius: 25px;
+        border: 2px solid #3087ce;
+        padding: 20px;
+        margin-left: -70px;
+        margin-top: 10px;
+        background-color: white;
+    }
+    .container{
+        text-align:center;
+        margin-bottom:40px;
+    }
+    table {
+        border-collapse: separate;
+        border-spacing: 5px; 
+    }
+    td {
+        padding: 10px;
+    }
+    tr {
+        margin-bottom: 20px;
+    }
+    #service_id {
+        width: 110%;
+        height: 1%;
+        background-color: #F2F2F2;
+        color: black;
+        border: 0.5px dotted #4C4FF1;
+    }
+    #chambre_id {
+        width: 100%;
+        height: 1%;
+        background-color: #F2F2F2;
+        color: black;
+        border: 0.5px dotted #4C4FF1;
+    }
+    input[type="date"] {
+        width: 60%;
+        height: 40px;
+        background-color: #F2F2F2;
+        color: black;
+        border: 0.5px dotted #4C4FF1;
+    }
+
+    #filtre td {
+        padding: 10px;
+    }
+    label{
+        font-size:14px;
+    }
+    .table thead {
+        position: -webkit-sticky; /* Pour les navigateurs basés sur WebKit */
+        position: sticky;
+        z-index: 2;
+        top:0;
+        background-color:white;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .table caption {
+        position: sticky;
+        top: 0;
+        z-index: 3;
+        text-align: left;
+    }
+     .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 15px;
+        text-align: left;
+        border:1px solid #FF9538;
+    }
+
+    .table thead tr {
+        background-color: white;
+        color: black;
+        font-weight: bold;
+    }
+
+    .table thead th {
+        padding: 12px 15px;
+        border: 1px solid black;
+        text-align: center;
+        background-color:white;
+    }
+
+    .table tbody tr {
+        border-bottom: 1px solid #f2f2f2;
+    }
+
+    .table tbody td {
+        padding: 12px 15px;
+        text-align: center;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: white;
+    }
+    .table tbody td:last-child {
+        text-align: center;
+    }
+
+    .table th img {
+            width:30px;
+            vertical-align: middle;
+            cursor: pointer;
+
+        }
+    .table-container {
+        width: 100%;
+        height: 400px;
+        overflow-y: scroll;
+        overflow-x: auto;
+        position:relative;
+    }
+    .title{
+        background-color:#FF9538;
+        color:white;
+        font-size:30px;
+        padding: 1px 5px;
+    }
+    @media print {
+        h1{
+            margin-left:2%;
+        }
+        #buttons, #choix{
+            display:none;
+        }
+        #printableArea, #printableArea * {
+            margin-left:1%;
+        }
+    }
+</style>
+<div class="div">
+    <form method="get" action="{{ path('app_resultat_questionnaire') }}">
+      <div class="container">
+    {# partie de filtrage #}
+    <table id="filtre">
+        <tr>
+         <td>
+            <label class="form-label" for="start_date">Date Début: </label>
+            <input id="start_date" name="start_date" type="date" class="form_control" value="{{ startDate|default('2020-01-01') }}">
+        </td>
+        <td>
+            <label class="form-label" for="end_date">Date Fin:</label>
+            <input id="end_date" name="end_date" type="date" class="form_control" value="{{ endDate|default("now"|date("Y-m-d")) }}">
+        </td>
+            <td>
+                <label class="form-label" for="chambre_id">Support ID:</label>
+            </td>
+            <td>
+                <select id="chambre_id" class="form-control" name="chambre_id">
+                    <option value="">Tous les chambres</option>
+                    {% for chambre in chambres %}
+                        <option value="{{ chambre.id }}" {{ selectedChambreId == chambre.id ? 'selected' : '' }}>
+                            {{ chambre.nom }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label style="width:380%;" class="form-label" for="myselect">Liste des services établissement:</label>
+            </td>
+            <td>
+                <select id="service_id" class="form-control" name="service_id">
+                    <option value="">Tous les services</option>
+                    {% for s in serviceetablissement %}
+                        <option value="{{ s.id }}" {{ selectedServiceId == s.id ? 'selected' : '' }}>
+                            {{ s.nom }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td>
+                <button style="margin-left: 30%;" data-toggle="tooltip" data-placement="top" class="btn btn-sm btn-primary" type="submit" name="search-button" id="search-button">Rechercher<i class="glyphicon glyphicon-search"></i></button>
+            </td>
+            <td>
+                <button id="printPdfBtn" class="btn btn-sm btn-warning" style="margin-left:-55px;width:60%;">Imprimer</button>
+            </td>
+            <td>
+                <button id="exportPdfBtn" class="btn btn-sm btn-danger" style="margin-left:-85px;">Exporter en PDF</button>
+                <button id="exportExcelBtn" class="btn btn-sm btn-success">Exporter en Excel</button>
+            </td>
+        </tr>
+    </table>
+</div>
+    {# partie d'affichage #}
+       <h3 id="titre">
+            Les statistiques du questionnaire
+            {% if startDate and endDate %}
+                du {{ startDate }} au {{ endDate }}
+            {% endif %}
+            {% if selectedServiceId %}
+                {% set selectedService = serviceetablissement|filter(service => service.id == selectedServiceId)|first %}
+                pour le service {{ selectedService.nom }}
+            {% else %}
+                pour tous les services
+            {% endif %}
+            {% if selectedChambreId %}
+                {% set selectedChambre = chambres|filter(chambre => chambre.id == selectedChambreId)|first %}
+                et le support {{ selectedChambre.nom }}
+            {% else %}
+                et tous les supports
+            {% endif %}
+    </h3>
+            <div class="table-container">
+        <table class="table" id="example">
+        <caption class="title"><h6>statistiques de satisfaction par nombre de vote</h6></caption>
+            <thead>
+                <tr>
+                    <th style="text-align:left;">Questions</th>
+                    <th data-title="Extrêmement satisfait"><img src="{{ asset('images/0.png') }}" alt="Extrêmement satisfait" title="Extrêmement satisfait"></th>
+                    <th  data-title="Très satisfait"><img src="{{ asset('images/1.png') }}" alt="Très satisfait" title="Très satisfait"></th>
+                    <th  data-title="satisfait"><img src="{{ asset('images/2.png') }}" alt="Satisfait" title="Satisfait"></th>
+                    <th  data-title="Mécontent"><img src="{{ asset('images/3.png') }}" alt="Mécontent" title="Mécontent"></th>
+                    <th  data-title="Très Mécontent"><img src="{{ asset('images/4.png') }}" alt="Très mécontent" title="Très mécontent"></th>
+
+                </tr>
+            </thead>
+            <tbody>
+            {% for questionnaire in questionnaires %}
+            <tr class="questionnaire-row" data-service="{{ questionnaire.service.id }}">
+            <!-- Afficher la question en français -->
+            <td>{{ questionnaire.fr }}</td>
+             <!-- Récupérer les votes pour le questionnaire actuel -->
+            {% set votes = voteCounts[questionnaire.id] ?? [0, 0, 0, 0, 0] %}
+            <!-- Afficher le nombre de votes pour chaque niveau de satisfaction -->
+                <td>{{ votes[0] }}</td>
+                <td>{{ votes[1] }}</td>
+                <td>{{ votes[2] }}</td>
+                <td>{{ votes[3] }}</td>
+                <td>{{ votes[4] }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </form>
+</div>
+ <!-- Hidden table for printing -->
+        <div id="printableArea" style="display:none; border:1px solid gray;">
+            <h3>
+                Les statistiques du questionnaire
+                {% if startDate and endDate %}
+                    du {{ startDate }} au {{ endDate }}
+                {% endif %}
+                {% if selectedServiceId %}
+                    {% set selectedService = serviceetablissement|filter(service => service.id == selectedServiceId)|first %}
+                    pour le service {{ selectedService.nom }}
+                {% else %}
+                    pour tous les services
+                {% endif %}
+                {% if selectedChambreId %}
+                    {% set selectedChambre = chambres|filter(chambre => chambre.id == selectedChambreId)|first %}
+                    et le support {{ selectedChambre.nom }}
+                {% else %}
+                    et tous les supports
+                {% endif %}
+            </h3>
+            <table>
+                <caption class="title"><h6>statistiques de satisfaction par nombre de vote</h6></caption>
+                <thead>
+                    <<tr>
+                    <th style="text-align:left;">Questions</th>
+                    <th data-title="Extrêmement satisfait"><img src="{{ asset('images/0.png') }}" alt="Extrêmement satisfait" title="Extrêmement satisfait"></th>
+                    <th  data-title="Très satisfait"><img src="{{ asset('images/1.png') }}" alt="Très satisfait" title="Très satisfait"></th>
+                    <th  data-title="satisfait"><img src="{{ asset('images/2.png') }}" alt="Satisfait" title="Satisfait"></th>
+                    <th  data-title="Mécontent"><img src="{{ asset('images/3.png') }}" alt="Mécontent" title="Mécontent"></th>
+                    <th  data-title="Très Mécontent"><img src="{{ asset('images/4.png') }}" alt="Très mécontent" title="Très mécontent"></th>
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for questionnaire in questionnaires %}
+                <tr class="questionnaire-row" data-service="{{ questionnaire.service.id }}">
+                <!-- Afficher la question en français -->
+                <td>{{ questionnaire.fr }}</td>
+                <!-- Récupérer les votes pour le questionnaire actuel -->
+                {% set votes = voteCounts[questionnaire.id] ?? [0, 0, 0, 0, 0] %}
+                <!-- Afficher le nombre de votes pour chaque niveau de satisfaction -->
+                    <td>{{ votes[0] }}</td>
+                    <td>{{ votes[1] }}</td>
+                    <td>{{ votes[2] }}</td>
+                    <td>{{ votes[3] }}</td>
+                    <td>{{ votes[4] }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+<div class="div">
+{# partie de diagramme #}
+  <table class="table">
+    <caption class="title"><h6>statistiques de satisfaction par pourcentages</h6></caption>
+    <tr>
+        <td id="choix">Veuillez sélectionner les diagrammes selon vos préférences</td>
+    </tr>
+    <tr  id="buttons">
+        <td>
+            <button id="pieChartBtn" class="btn btn-sm btn-primary">Diagramme en secteur</button>
+            <button id="barChartBtn" class="btn btn-sm btn-secondary">Diagramme en barres</button>
+            <button id="lineChartBtn" class="btn btn-sm btn-success">Diagramme en lignes</button>
+            <button id="columnChartBtn" class="btn btn-sm btn-danger">Diagramme en colonnes</button>
+            <button id="areaChartBtn" class="btn btn-sm btn-warning">Diagramme en aires</button>
+        </td> 
+    </tr>
+    <tr>
+        <td> <div id="chart_div" style="width: 900px; height: 500px;"></div> </td>
+    </tr>
+</table>
+
+{# script de diagramme #}
+<script src="{{ asset('javascript/jquery.min.js') }}"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script type="text/javascript">
+    {# Charger la bibliothèque de Google Charts #}
+    google.charts.load("current", {packages:["corechart"]});
+    {# Définir la fonction de rappel qui sera exécutée une fois la bibliothèque chargée #}
+    google.charts.setOnLoadCallback(drawPieChart);
+
+    {# Fonction pour obtenir les données sous forme de tableau #}
+    function getDataArray() {
+        {# Récupérer les données des votes au format JSON depuis la variable Twig #}
+        var voteCountsJson = '{{ voteCountsJson | e('js') }}';
+
+        {# Convertir la chaîne JSON en objet JavaScript #}
+        var voteData = JSON.parse(voteCountsJson);
+
+        {# Initialiser le tableau de données avec les en-têtes des colonnes #}
+        var dataArray = [['Satisfaction', 'Nombre de votes']];
+
+        {# Initialiser un tableau pour compter les votes pour chaque niveau de satisfaction #}
+        var totalVotes = [0, 0, 0, 0, 0];
+
+        {# Boucler à travers chaque question pour additionner les votes #}
+        for (var questionId in voteData) {
+            if (voteData.hasOwnProperty(questionId)) {
+                var votes = voteData[questionId] || [0, 0, 0, 0, 0];
+                // Additionner les votes pour chaque niveau de satisfaction
+                for (var i = 0; i < 5; i++) {
+                    totalVotes[i] += votes[i];
+                }
+            }
+        }
+
+        {# Ajouter les totaux des votes pour chaque niveau de satisfaction au tableau de données #}
+        dataArray.push(['Extrêmement satisfait', totalVotes[0]]);
+        dataArray.push(['Très satisfait', totalVotes[1]]);
+        dataArray.push(['Satisfait', totalVotes[2]]);
+        dataArray.push(['Mécontent', totalVotes[3]]);
+        dataArray.push(['Très mécontent', totalVotes[4]]);
+
+        {# Retourner le tableau de données #}
+        return dataArray;
+    }
+
+    {# Fonction pour dessiner le diagramme en secteurs (camembert) #}
+    function drawPieChart() {
+        // Convertir les données en tableau de données Google Charts
+        var data = google.visualization.arrayToDataTable(getDataArray());
+
+        {# Calculer le pourcentage pour chaque segment #}
+        var totalVotes = data.getDistinctValues(1).reduce((a, b) => a + b, 0);
+        for (var i = 0; i < data.getNumberOfRows(); i++) {
+            var percentage = ((data.getValue(i, 1) / totalVotes) * 100).toFixed(2);
+            data.setValue(i, 0, data.getValue(i, 0) + ' (' + percentage + '%)');
+        }
+
+        {# Définir les options de configuration du diagramme #}
+        var options = {
+            title: 'Les statistiques des résultats du questionnaire',
+            pieHole: 0.4, // Créer un diagramme en anneau (donut)
+            pieSliceText: 'label', // Afficher les labels sur les segments
+            tooltip: { text: 'percentage' } // Afficher le pourcentage dans l'infobulle
+        };
+
+        {# Créer le diagramme en secteurs et le dessiner dans l'élément avec l'ID 'chart_div' #}
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+    }
+
+    {# Fonction pour dessiner le diagramme en barres #}
+    function drawBarChart() {
+        var data = google.visualization.arrayToDataTable(getDataArray());
+        var options = {
+            title: 'Les statistiques des résultats du questionnaire',
+            chartArea: {width: '50%'},
+            hAxis: {title: 'Nombre de votes'},
+            vAxis: {title: 'Satisfaction'}
+        };
+
+        var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+    }
+
+    {# Fonction pour dessiner le diagramme en lignes #}
+    function drawLineChart() {
+        var data = google.visualization.arrayToDataTable(getDataArray());
+        var options = {
+            title: 'Les statistiques des résultats du questionnaire',
+            hAxis: {title: 'Satisfaction'},
+            vAxis: {title: 'Nombre de votes'}
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+    }
+
+    {# Fonction pour dessiner le diagramme en colonnes #}
+    function drawColumnChart() {
+        var data = google.visualization.arrayToDataTable(getDataArray());
+        var options = {
+            title: 'Les statistiques des résultats du questionnaire',
+            chartArea: {width: '50%'},
+            hAxis: {title: 'Satisfaction'},
+            vAxis: {title: 'Nombre de votes'}
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+    }
+
+    {# Fonction pour dessiner le diagramme en aires #}
+    function drawAreaChart() {
+        var data = google.visualization.arrayToDataTable(getDataArray());
+        var options = {
+            title: 'Les statistiques des résultats du questionnaire',
+            hAxis: {title: 'Satisfaction'},
+            vAxis: {title: 'Nombre de votes'}
+        };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+    }
+
+    {# Ajouter des écouteurs d'événements pour les boutons de sélection de diagrammes #}
+    document.getElementById('pieChartBtn').addEventListener('click', drawPieChart);
+    document.getElementById('barChartBtn').addEventListener('click', drawBarChart);
+    document.getElementById('lineChartBtn').addEventListener('click', drawLineChart);
+    document.getElementById('columnChartBtn').addEventListener('click', drawColumnChart);
+    document.getElementById('areaChartBtn').addEventListener('click', drawAreaChart);
+</script>
+
+
+{# importer les liens de script pour PDF et EXCEL #}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+
+{# script pour exporter un pdf et Excel  #}
+<script>
+    {# PDF export function #}
+    document.getElementById('exportPdfBtn').addEventListener('click', function () {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        {# Récupérer les valeurs des filtres #}
+        const startDate = document.getElementById('start_date').value;
+        const endDate = document.getElementById('end_date').value;
+        const chambreSelect = document.getElementById('chambre_id');
+        const chambreName = chambreSelect.options[chambreSelect.selectedIndex].text;
+        const serviceSelect = document.getElementById('service_id');
+        const serviceName = serviceSelect.options[serviceSelect.selectedIndex].text;
+
+        {# Construire le titre en utilisant les filtres #}
+        let title = `Les statistiques du questionnaire du ${startDate} au ${endDate}`;
+        if (serviceName && serviceName !== 'Tous les services') {
+            title += ` pour le service ${serviceName}`;
+        } else {
+            title += ' pour tous les services';
+        }
+        if (chambreName && chambreName !== 'Tous les chambres') {
+            title += ` et le support ${chambreName}`;
+        } else {
+            title += ' et tous les supports';
+        }
+
+        {# Réduire la taille de la police du titre #}
+        doc.setFontSize(12);  // Ajustez cette valeur selon vos besoins
+
+        {# Diviser le titre en lignes adaptées à la largeur de la page #}
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const margin = 10;
+        const textWidth = pageWidth - margin * 2;
+        const splitTitle = doc.splitTextToSize(title, textWidth);
+
+        {# Ajouter le titre au document PDF, ligne par ligne, et centré #}
+        let y = 10;  // Position verticale de départ
+        splitTitle.forEach(line => {
+            const textWidth = doc.getTextWidth(line);
+            const x = (pageWidth - textWidth) / 2;  // Calculer la position horizontale pour centrer le texte
+            doc.text(line, x, y);
+            y += 10;  // Déplacer la position verticale pour la ligne suivante
+        });
+
+        {# Capturez le graphique sous forme d'image à l'aide de html2canvas #}
+        html2canvas(document.getElementById('chart_div')).then(canvas => {
+            const imgData = canvas.toDataURL('image/png');
+            doc.addImage(imgData, 'PNG', 10, y + 10, 180, 100);  // Ajuster la position de l'image
+
+            {# Ajouter le tableau au PDF #}
+            const table = document.getElementById('example');
+            const tableData = [];
+
+            const headers = table.querySelectorAll('thead th');
+            const headerRow = [];
+            headers.forEach(header => {
+                headerRow.push(header.dataset.title || header.textContent.trim());
+            });
+            tableData.push(headerRow);
+
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const rowData = [];
+                const cells = row.querySelectorAll('td');
+                cells.forEach(cell => {
+                    rowData.push(cell.textContent.trim());
+                });
+                tableData.push(rowData);
+            });
+
+            doc.autoTable({
+                head: [tableData[0]],
+                body: tableData.slice(1),
+                startY: y + 120  // Ajuster la position de début du tableau
+            });
+
+            doc.save('statistiques.pdf');
+        });
+    });
+
+{# Excel export function #}
+    document.getElementById('exportExcelBtn').addEventListener('click', async function () {
+        const ExcelJS = window.ExcelJS;
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Statistiques');
+
+        {# Récupérer les valeurs du service et du support #}
+        const serviceId = document.getElementById('service_id').selectedOptions[0].text;
+        const chambreId = document.getElementById('chambre_id').selectedOptions[0].text;
+        const startDate = document.getElementById('start_date').value;
+        const endDate = document.getElementById('end_date').value;
+
+        {# Ajouter un titre #}
+        worksheet.mergeCells('A1:E1');
+        worksheet.getCell('A1').value = `Les statistiques du questionnaire du ${startDate} au ${endDate}, Service: ${serviceId}, Support: ${chambreId}`;
+        worksheet.getCell('A1').font = { size: 16, bold: true };  // Taille de police pour simuler un titre <h3>
+        worksheet.getCell('A1').alignment = { vertical: 'middle', horizontal: 'center' };
+
+        {# Capturez le graphique sous forme d'image à l'aide de html2canvas #}
+        const canvas = await html2canvas(document.getElementById('chart_div'));
+        const imgData = canvas.toDataURL('image/png');
+        const imgId = workbook.addImage({
+            base64: imgData,
+            extension: 'png',
+        });
+
+        {# Ajoutez l'image à la feuille de calcul #}
+        worksheet.addImage(imgId, 'A3:C17');
+
+        {# Convertir le tableau en feuille de calcul #}
+        const table = document.getElementById('example');
+        const headers = table.querySelectorAll('thead th');
+        headers.forEach((header, colIndex) => {
+            worksheet.getCell(19, colIndex + 1).value = header.dataset.title || header.textContent.trim();
+            worksheet.getCell(19, colIndex + 1).font = { bold: true };
+            worksheet.getColumn(colIndex + 1).width = header.textContent.trim().length + 15;
+        });
+
+        const rows = table.querySelectorAll('tbody tr');
+        rows.forEach((row, rowIndex) => {
+            const cells = row.querySelectorAll('td');
+            cells.forEach((cell, cellIndex) => {
+                worksheet.getCell(rowIndex + 20, cellIndex + 1).value = cell.textContent.trim();
+                worksheet.getColumn(cellIndex + 1).width = Math.max(worksheet.getColumn(cellIndex + 1).width, cell.textContent.trim().length + 15);
+            });
+        });
+
+        {# Enregistrer le fichier Excel #}
+        const buffer = await workbook.xlsx.writeBuffer();
+        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'statistiques.xlsx';
+        a.click();
+        URL.revokeObjectURL(url);
+    });
+</script>
+<script>
+  {# Fonction pour vérifier si le tableau est vide #}
+    function checkTableEmpty() {
+        const tableBody = document.querySelector('#example tbody');
+        
+        {# Vérifiez s'il y a des lignes dans le corps du tableau #}
+        if (tableBody.rows.length === 0) {
+            {# Assurez-vous que l'alerte ne s'affiche pas plusieurs fois #}
+            if (!document.querySelector('#no-data-alert')) {
+                alert('Aucune donnée trouvée pour les critères spécifiés.');
+                {# Créez un élément pour marquer que l'alerte a été affichée #}
+                const noDataAlert = document.createElement('div');
+                noDataAlert.id = 'no-data-alert';
+                noDataAlert.style.display = 'none'; // Cachez-le
+                document.body.appendChild(noDataAlert);
+            }
+        } else {
+            {# Si des données sont présentes, assurez-vous que l'élément d'alerte est supprimé #}
+            const noDataAlert = document.querySelector('#no-data-alert');
+            if (noDataAlert) {
+                noDataAlert.remove();
+            }
+        }
+    }
+
+    {# Vérifiez le tableau après avoir cliqué sur le bouton de recherche #}
+    document.getElementById('search-button').addEventListener('click', function() {
+        checkTableEmpty();
+    });
+
+    {# Vérifiez le tableau après avoir changé la sélection de service #}
+    document.getElementById('service_id').addEventListener('change', function() {
+        checkTableEmpty();
+    });
+
+    {# Vérifiez le tableau après avoir changé la sélection de support #}
+    document.getElementById('chambre_id').addEventListener('change', function() {
+        checkTableEmpty();
+    });
+
+    {# Vérifiez le tableau après avoir chargé la page #}
+    window.addEventListener('load', function() {
+        checkTableEmpty();
+    });
+</script>
+  
+</div>
+<script>
+
+   document.getElementById('printPdfBtn').addEventListener('click', function() {
+    {# Afficher la zone imprimable #}
+    const printableArea = document.getElementById('printableArea');
+    printableArea.style.display = 'block';
+
+    {# je m'assure que l'autre contenu est masqué #}
+    document.querySelector('.div').style.display = 'none';
+    
+    {# Impression de déclenchement #}
+    window.print();
+
+    {# Masquer à nouveau la zone imprimable après l'impression #}
+    printableArea.style.display = 'none';
+    
+    // Restore the other content
+    document.querySelector('.div').style.display = 'block';
+    });
+
+</script>
+
+{% endblock %}

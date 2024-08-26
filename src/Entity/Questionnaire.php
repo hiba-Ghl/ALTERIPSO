@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\QuestionnaireRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: QuestionnaireRepository::class)]
@@ -54,6 +56,14 @@ class Questionnaire
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $ar = null;
+
+    #[ORM\OneToMany(mappedBy: 'questionnaire', targetEntity: ResultatQuestionnaire::class)]
+    private Collection $resultatQuestionnaires;
+
+    public function __construct()
+    {
+        $this->resultatQuestionnaires = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -225,6 +235,36 @@ class Questionnaire
     public function setAr(?string $ar): static
     {
         $this->ar = $ar;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ResultatQuestionnaire>
+     */
+    public function getResultatQuestionnaires(): Collection
+    {
+        return $this->resultatQuestionnaires;
+    }
+
+    public function addResultatQuestionnaire(ResultatQuestionnaire $resultatQuestionnaire): static
+    {
+        if (!$this->resultatQuestionnaires->contains($resultatQuestionnaire)) {
+            $this->resultatQuestionnaires->add($resultatQuestionnaire);
+            $resultatQuestionnaire->setQuestionnaire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResultatQuestionnaire(ResultatQuestionnaire $resultatQuestionnaire): static
+    {
+        if ($this->resultatQuestionnaires->removeElement($resultatQuestionnaire)) {
+            // set the owning side to null (unless already changed)
+            if ($resultatQuestionnaire->getQuestionnaire() === $this) {
+                $resultatQuestionnaire->setQuestionnaire(null);
+            }
+        }
 
         return $this;
     }

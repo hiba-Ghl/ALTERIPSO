@@ -57,6 +57,8 @@ class UserController extends AbstractController
         $etablissement->setCode($code);
         $etablissement->setVille($ville);
         $etablissement->setPays($pays);
+        $etablissement->setBackground("images/etablissement/9370fa166a00496307ce1087bf750d1b.png");
+        $etablissement->setLogo("images/etablissement/9370fa166a00496307ce1087bf750d1b.png");
 
         //var_dump($idetablissement);die();
 
