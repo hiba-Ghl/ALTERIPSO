@@ -71,7 +71,10 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <div>
+                
+                    <div>            
+                        <button type="button" id="translateBtn" class="btn btn-info">Traduire la question</button>
+                        &nbsp;&nbsp;&nbsp;
                         <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
                             <span><i class="glyphicon glyphicon-plus"></i></span>
                         </a>
@@ -317,6 +320,39 @@ $(document).ready(function() {
     }
 });
 </script>
+<script>
+    document.getElementById('translateBtn').addEventListener('click', function() {
+    // Récupérer la question en français
+    const questionFr = document.getElementById('fr').value;
+    
+    // Vérifier que la question n'est pas vide
+    if (questionFr.trim() === '') {
+        alert('Veuillez entrer une question avant de la traduire.');
+        return;
+    }
+
+    // URL du service de traduction (ici Google Translate)
+    const baseUrl = 'https://translate.google.com/?sl=fr&tl=';
+    
+    // Langues pour la traduction
+    const languages = {
+        'EN': 'en', // Anglais
+        'ES': 'es', // Espagnol
+        'PT': 'pt', // Portugais
+        'IT': 'it', // Italien
+        'RU': 'ru', // Russe
+        'DE': 'de', // Allemand
+        'ZH': 'zh-CN', // Chinois
+        'AR': 'ar' // Arabe
+    };
+
+    // Ouvrir un nouvel onglet pour chaque langue
+    for (const [key, lang] of Object.entries(languages)) {
+        window.open(`${baseUrl}${lang}&text=${encodeURIComponent(questionFr)}`, '_blank');
+    }
+});
+</script>
+
 
 
 {% endblock %}

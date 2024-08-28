@@ -24,6 +24,53 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         parent::__construct($registry, User::class);
     }
+    public function findAllEmails(): array
+    {
+        // Requête pour récupérer tous les emails existants
+        $qb = $this->createQueryBuilder('u')
+                   ->select('u.email')
+                   ->getQuery();
+
+        // Extraire les emails du résultat
+        $results = $qb->getArrayResult();
+        return array_map(fn($row) => $row['email'], $results);
+    }
+
+    public function findAllUsernames(): array
+    {
+        // Requête pour récupérer tous les usernames existants
+        $qb = $this->createQueryBuilder('u')
+                ->select('u.username')  // Sélectionner uniquement le champ 'username'
+                ->getQuery();
+
+        // Extraire les usernames du résultat
+        $results = $qb->getArrayResult();
+        return array_map(fn($row) => $row['username'], $results);
+    }
+
+    public function findUsersByRoles(array $roles): array
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        // Création d'une condition pour vérifier si l'un des rôles spécifiés est présent dans le tableau de rôles de l'utilisateur
+        $qb->where(
+            $qb->expr()->orX(
+                ...array_map(
+                    fn($role) => $qb->expr()->like('u.roles', ':role_'.$role),
+                    $roles
+                )
+            )
+        );
+
+        // Définition des paramètres de requête
+        foreach ($roles as $role) {
+            $qb->setParameter('role_'.$role, '%'.$role.'%');
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.

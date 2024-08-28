@@ -4,6 +4,7 @@
 
 {% block body %}
 	<!--                                                    sign in                                                -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 	<style>
 		#div1 {
@@ -28,6 +29,14 @@
 			margin-top: 10px;
 		}
 	</style>
+	{% for type, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert alert-{{ type }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+	{% endfor %}
+
 	<br><br><br><br>
 	<div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
 		<img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
@@ -51,7 +60,7 @@
 
 
 			<label for="username">Utilisateur</label>
-			<input type="text" value="{{ last_username }}" name="_username" id="username" class="form-control"  required >
+			<input type="text" name="_username" value="{{last_username}}" id="username" class="form-control"  required >
 			<br>
 			<label for="password">Mot de passe</label>
 			<input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
@@ -115,7 +124,16 @@
 		element.parentElement.style.display = 'none';  
 	}
 </script>
-
+{# Afficher les erreurs s'il y en a #}
+    {# {% if bugs is defined and bugs|length > 0 %}
+        <div class="alert alert-danger">
+            <ul>
+                {% for bug in bugs %}
+                    <li>{{ bug }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %} #}
 	<div id="div2">
 
 		<form name="createUser" method="post" action="{{ path('app_register')}}" class="fos_user_registration_register form-horizontal">
@@ -142,8 +160,7 @@
 				<label for="inputPassword" class="col-lg-2 control-label">Nom
 				</label>
 				<div class="col-lg-10">
-
-					<input type="text" id="nom" name="nom" class="form-control"/>
+					<input type="text" id="nom" name="nom" class="form-control" value="{{ nom|default('') }}"/>
 
 				</div>
 			</div>
@@ -152,7 +169,7 @@
 				<label for="inputEmail" class="col-lg-2 control-label">Prénom</label>
 				<div class="col-lg-10">
 
-					<input type="text" id="prenom" name="prenom" class="form-control"/>
+					<input type="text" id="prenom" name="prenom" class="form-control" value="{{ prenom|default('') }}"/>
 
 				</div>
 			</div>
@@ -161,8 +178,10 @@
 <div class="form-group">
     <label for="inputEmail" class="col-lg-2 control-label">Email</label>
     <div class="col-lg-10">
-        <input type="email" id="fos_user_registration_form_email" name="email" required="required" class="form-control"/>
-       
+        <input type="email" id="fos_user_registration_form_email" name="email" required="required" class="form-control" value="{{ email|default('') }}"/>
+            {% if bugs['email'] is defined %}
+            <div style="color:red;">{{ bugs['email'] }}</div>
+        {% endif %} 
     </div>
 </div>
 
@@ -175,7 +194,7 @@
 			<div class="form-group">
 				<label for="inputEmail" class="col-lg-2 control-label">Nom établissement</label>
 				<div class="col-lg-10">
-					<input type="text" id="nom_etablissement" name="nom_etablissement" class="form-control"/>
+					<input type="text" id="nom_etablissement" name="nom_etablissement" class="form-control" value="{{ nom_etablissement|default('') }}"/>
 				</div>
 			</div>
 
@@ -183,7 +202,7 @@
 			<div class="form-group">
 				<label for="inputEmail" class="col-lg-2 control-label">Adresse</label>
 				<div class="col-lg-10">
-					<input type="text" id="adresse" name="adresse" class="form-control"/>
+					<input type="text" id="adresse" name="adresse" class="form-control" value="{{ adresse|default('') }}"/>
 				</div>
 			</div>
 
@@ -192,7 +211,7 @@
 				<label for="inputEmail" class="col-lg-2 control-label">Code Postal
 				</label>
 				<div class="col-lg-10">
-					<input type="text" id="code" name="code" class="form-control"/>
+					<input type="text" id="code" name="code" class="form-control" value="{{ code|default('') }}"/>
 				</div>
 			</div>
 
@@ -200,7 +219,7 @@
 			<div class="form-group">
 				<label for="inputEmail" class="col-lg-2 control-label">Ville</label>
 				<div class="col-lg-10">
-					<input type="text" id="ville" name="ville" class="form-control"/>
+					<input type="text" id="ville" name="ville" class="form-control" value="{{ ville|default('') }}"/>
 				</div>
 			</div>
 
@@ -210,6 +229,7 @@
 				<div class="col-lg-10">
 
 					<select id="pays" name="pays" required="required" class="form-control">
+						<option value="{{ pays|default('') }}"> {{ ville|default('') }} </option>
 						<option value="France" selected="selected">France</option>
 						<option value="Afghanistan">Afghanistan</option>
 						<option value="Algeria">Algeria</option>
@@ -488,25 +508,88 @@
 <div class="form-group">
     <label for="inputEmail" class="col-lg-2 control-label">Identifiant</label>
     <div class="col-lg-10">
-        <input type="text" id="fos_user_registration_form_username" name="username" required="required" maxlength="255" pattern=".{2,}" class="form-control"/>
-     
+        <input type="text" id="fos_user_registration_form_username" name="username" required="required" maxlength="255" pattern=".{2,}" class="form-control" value="{{ username|default('') }}"/>
+           {% if bugs['username'] is defined %}
+            <div style="color:red;">{{ bugs['username'] }}</div>
+        {% endif %}
     </div>
 </div>
 
 <div id="fos_user_registration_form_plainPassword">
     <div class="form-group">
-        <label class="col-sm-2 control-label required" for="fos_user_registration_form_plainPassword_first">Mot de passe</label>
-        <div class="col-sm-10"><input type="password" id="fos_user_registration_form_plainPassword_first" name="password" required="required" class="form-control"/></div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label required" for="fos_user_registration_form_plainPassword_second">Confirmation du Mot de passe</label>
-        <div class="col-sm-10">
-            <input type="password" id="fos_user_registration_form_plainPassword_second" name="fos_user_registration_form[plainPassword][second]" required="required" class="form-control"/>
-            <span id="passwordError" style="color: red; display: none;">Les mots de passe ne correspondent pas.</span>
+    <label class="col-sm-2 control-label required" for="fos_user_registration_form_plainPassword_first">Mot de passe</label>
+    <div class="col-sm-10">
+        <div class="input-group">
+            <input type="password" id="fos_user_registration_form_plainPassword_first" name="password" required="required" class="form-control" value="{{ password|default('') }}"/>
+            <span class="input-group-addon" style="background-color:white;cursor: pointer;" onclick="togglePasswordVisibility('fos_user_registration_form_plainPassword_first', this)">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+            </span>
         </div>
     </div>
 </div>
+<div class="form-group">
+    <label class="col-sm-2 control-label required" for="fos_user_registration_form_plainPassword_second">Confirmation du Mot de passe</label>
+    <div class="col-sm-10">
+        <div class="input-group">
+            <input type="password" id="fos_user_registration_form_plainPassword_second" name="fos_user_registration_form[plainPassword][second]" required="required" class="form-control" value="{{ password|default('') }}"/>
+            <span class="input-group-addon" style="background-color:white;cursor: pointer;" onclick="togglePasswordVisibility('fos_user_registration_form_plainPassword_second', this)">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+            </span>
+        </div>
+        <span id="passwordError" style="color: red; display: none;">Les mots de passe ne correspondent pas.</span>
+    </div>
+</div>
 
+<script>
+function togglePasswordVisibility(inputId, iconElement) {
+    var input = document.getElementById(inputId);
+    var isPasswordVisible = input.type === 'text';
+
+    // Toggle the input type between password and text
+    input.type = isPasswordVisible ? 'password' : 'text';
+
+    // Toggle the icon class
+    var icon = iconElement.querySelector('i');
+    icon.className = isPasswordVisible ? 'fa fa-eye' : 'fa fa-eye-slash';
+}
+</script>
+
+
+<script>
+	// document.addEventListener('DOMContentLoaded', function() {
+	// 	const passwordInput = document.getElementById('fos_user_registration_form_plainPassword_first');
+
+	// 	passwordInput.addEventListener('input', function() {
+	// 		const password = passwordInput.value;
+	// 		const strengthMessage = document.createElement('small');
+	// 		strengthMessage.id = 'passwordStrengthMessage';
+	// 		strengthMessage.classList.add('form-text', 'text-muted');
+			
+	// 		// Remove the existing strength message if present
+	// 		const existingMessage = document.getElementById('passwordStrengthMessage');
+	// 		if (existingMessage) {
+	// 			existingMessage.remove();
+	// 		}
+
+	// 		if (password.length < 8) {
+	// 			strengthMessage.textContent = "Le mot de passe doit contenir au moins 8 caractères.";
+	// 		} else if (!/(?=.*[a-z])/.test(password)) {
+	// 			strengthMessage.textContent = "Le mot de passe doit contenir au moins une minuscule.";
+	// 		} else if (!/(?=.*[A-Z])/.test(password)) {
+	// 			strengthMessage.textContent = "Le mot de passe doit contenir au moins une majuscule.";
+	// 		} else if (!/(?=.*\d)/.test(password)) {
+	// 			strengthMessage.textContent = "Le mot de passe doit contenir au moins un chiffre.";
+	// 		} else if (!/(?=.*\W)/.test(password)) {
+	// 			strengthMessage.textContent = "Le mot de passe doit contenir au moins un caractère spécial.";
+	// 		} else {
+	// 			strengthMessage.textContent = "Le mot de passe est fort.";
+	// 		}
+
+	// 		// Append the strength message below the input field
+	// 		passwordInput.parentNode.appendChild(strengthMessage);
+	// 	});
+	// });
+</script>
 <script>
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -544,7 +627,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             <br>
        
-            <button type="submit" class="btn btn-success" style="margin-left: 920px;position: absolute;background-color: #3087ce; border: 2px solid #3087ce;"><i class="glyphicon glyphicon-new-window"></i> Enregistrer</button>
+            <button type="submit" class="btn btn-success" style="margin-left: 920px;position: absolute;background-color: #3087ce; border: 2px solid #3087ce;"><i class="glyphicon glyphicon-floppy-disk"></i>  Enregistrer</button>
 
 			<input type="hidden" id="fos_user_registration_form__token" name="fos_user_registration_form[_token]" class="form-control" value="vjHbISa7zrduRLLWTCpNBApOU8VaUtZOcmumqM-mVTQ"/></form>
 

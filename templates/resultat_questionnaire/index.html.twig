@@ -1,6 +1,6 @@
 {% extends 'home/index.html.twig' %}
 {% block body %}
-<h1>Resultat<strong id="cat">QUESTIONNAIRE</strong></h1>
+<h1>Resultat <strong id="cat"> QUESTIONNAIRE</strong></h1>
 <hr>
 {# J'ai appliqué des styles CSS pour mettre en forme la page  #}
 <style type="text/css">
@@ -12,14 +12,54 @@
         margin-left:-15%;
         font-size:20px;
     }
-    .div {
-        border-radius: 25px;
-        border: 2px solid #3087ce;
-        padding: 20px;
-        margin-left: -70px;
-        margin-top: 10px;
-        background-color: white;
-    }
+  /* Styles pour la ligne des dates */
+.date-row .form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Ajuster l'espacement si nécessaire */
+}
+
+.date-row .form-group label {
+    margin-right: 2px; /* Espace entre le label et l'input/select */
+    min-width: 90px; /* Largeur minimale pour les labels */
+}
+
+.date-row .form-group input[type="date"],
+.date-row .form-group select {
+    flex-grow: 1; /* L'input/select prend plus d'espace */
+    max-width: 100%; /* Assurer qu'il ne dépasse pas */
+    box-sizing: border-box; /* Inclure padding et bordure dans la largeur */
+}
+
+#start_date,
+#end_date,
+#chambre_id {
+    background-color: #F2F2F2;
+    color: black;
+    border: 0.5px dotted #4C4FF1;
+}
+
+/* Styles pour la ligne des boutons */
+.button-row .form-group {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 10px; /* Ajuster l'espacement si nécessaire */
+}
+
+.button-row .form-group button {
+    margin: 0 5px; /* Espace entre les boutons */
+    flex: 1; /* Les boutons prennent de l'espace équitablement */
+}
+
+.div {
+    border-radius: 25px;
+    border: 2px solid #3087ce;
+    padding: 20px;
+    margin-left: -60px;
+    margin-top: 10px;
+    background-color: white;
+}
     .container{
         text-align:center;
         margin-bottom:40px;
@@ -35,68 +75,51 @@
         margin-bottom: 20px;
     }
     #service_id {
-        width: 110%;
-        height: 1%;
         background-color: #F2F2F2;
         color: black;
         border: 0.5px dotted #4C4FF1;
     }
-    #chambre_id {
+   
+    #filtre td {
+        padding: 5px;
+    }
+    
+    .table-container {
         width: 100%;
-        height: 1%;
-        background-color: #F2F2F2;
-        color: black;
-        border: 0.5px dotted #4C4FF1;
-    }
-    input[type="date"] {
-        width: 60%;
-        height: 40px;
-        background-color: #F2F2F2;
-        color: black;
-        border: 0.5px dotted #4C4FF1;
+        height: 400px; /* Hauteur fixe pour permettre le défilement */
+        overflow-y: auto; /* Défilement vertical uniquement */
+        overflow-x: auto; /* Défilement horizontal si nécessaire */
+        position: relative;
     }
 
-    #filtre td {
-        padding: 10px;
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 15px;
+        text-align: left;
+        border: 1px solid #FF9538;
     }
-    label{
-        font-size:14px;
-    }
+
     .table thead {
         position: -webkit-sticky; /* Pour les navigateurs basés sur WebKit */
         position: sticky;
-        z-index: 2;
-        top:0;
-        background-color:white;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .table caption {
-        position: sticky;
         top: 0;
-        z-index: 3;
-        text-align: left;
-    }
-     .table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 20px 0;
-        font-size: 15px;
-        text-align: left;
-        border:1px solid #FF9538;
-    }
-
-    .table thead tr {
         background-color: white;
-        color: black;
-        font-weight: bold;
+        z-index: 2;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
     .table thead th {
         padding: 12px 15px;
         border: 1px solid black;
         text-align: center;
-        background-color:white;
+        background-color: white;
+    }
+
+    .table thead tr {
+        background-color: white;
+        color: black;
+        font-weight: bold;
     }
 
     .table tbody tr {
@@ -111,23 +134,13 @@
     .table tbody tr:nth-child(even) {
         background-color: white;
     }
-    .table tbody td:last-child {
-        text-align: center;
-    }
 
     .table th img {
-            width:30px;
-            vertical-align: middle;
-            cursor: pointer;
-
-        }
-    .table-container {
-        width: 100%;
-        height: 400px;
-        overflow-y: scroll;
-        overflow-x: auto;
-        position:relative;
+        width: 30px;
+        vertical-align: middle;
+        cursor: pointer;
     }
+
     .title{
         background-color:#FF9538;
         color:white;
@@ -147,23 +160,26 @@
     }
 </style>
 <div class="div">
-    <form method="get" action="{{ path('app_resultat_questionnaire') }}">
+    <form method="get" action=""{{ path('app_resultat_questionnaire') }}">
       <div class="container">
     {# partie de filtrage #}
     <table id="filtre">
-        <tr>
-         <td>
-            <label class="form-label" for="start_date">Date Début: </label>
-            <input id="start_date" name="start_date" type="date" class="form_control" value="{{ startDate|default('2020-01-01') }}">
+    <tr class="date-row">
+        <td>
+            <div class="form-group">
+                <label class="form-label" for="start_date">Date Début: </label>
+                <input id="start_date" name="start_date" type="date" class="form-control" value="{{ startDate ? startDate|date('Y-m-d') : '2020-01-01' }}">
+            </div>
         </td>
         <td>
-            <label class="form-label" for="end_date">Date Fin:</label>
-            <input id="end_date" name="end_date" type="date" class="form_control" value="{{ endDate|default("now"|date("Y-m-d")) }}">
+            <div class="form-group">
+                <label class="form-label" for="end_date">Date Fin: </label>
+                <input id="end_date" name="end_date" type="date" class="form-control" value="{{ endDate ? endDate|date('Y-m-d') : 'now'|date('Y-m-d') }}">
+            </div>
         </td>
-            <td>
+        <td>
+            <div class="form-group">
                 <label class="form-label" for="chambre_id">Support ID:</label>
-            </td>
-            <td>
                 <select id="chambre_id" class="form-control" name="chambre_id">
                     <option value="">Tous les chambres</option>
                     {% for chambre in chambres %}
@@ -172,13 +188,11 @@
                         </option>
                     {% endfor %}
                 </select>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label style="width:380%;" class="form-label" for="myselect">Liste des services établissement:</label>
-            </td>
-            <td>
+            </div>
+        </td>
+          <td>
+            <div class="form-group">
+                <label class="form-label" for="service_id"> Service: </label>
                 <select id="service_id" class="form-control" name="service_id">
                     <option value="">Tous les services</option>
                     {% for s in serviceetablissement %}
@@ -187,25 +201,27 @@
                         </option>
                     {% endfor %}
                 </select>
-            </td>
-            <td>
-                <button style="margin-left: 30%;" data-toggle="tooltip" data-placement="top" class="btn btn-sm btn-primary" type="submit" name="search-button" id="search-button">Rechercher<i class="glyphicon glyphicon-search"></i></button>
-            </td>
-            <td>
-                <button id="printPdfBtn" class="btn btn-sm btn-warning" style="margin-left:-55px;width:60%;">Imprimer</button>
-            </td>
-            <td>
-                <button id="exportPdfBtn" class="btn btn-sm btn-danger" style="margin-left:-85px;">Exporter en PDF</button>
-                <button id="exportExcelBtn" class="btn btn-sm btn-success">Exporter en Excel</button>
-            </td>
-        </tr>
-    </table>
+            </div>
+        </td>
+    </tr>
+
+    <tr class="button-row">
+        <td colspan="2">
+            <div class="form-group">
+                <button data-toggle="tooltip" data-placement="top" class="btn btn-sm btn-primary" type="submit" name="search-button" id="search-button">Rechercher<i class="glyphicon glyphicon-search"></i></button>                   
+                        <button id="printPdfBtn" class="btn btn-sm btn-warning">Imprimer</button>
+                        <button id="exportPdfBtn" class="btn btn-sm btn-danger">Exporter en PDF</button>
+                        <button id="exportExcelBtn" class="btn btn-sm btn-success">Exporter en Excel</button>
+            </div>
+        </td>
+    </tr>
+</table>
 </div>
     {# partie d'affichage #}
        <h3 id="titre">
             Les statistiques du questionnaire
-            {% if startDate and endDate %}
-                du {{ startDate }} au {{ endDate }}
+             {% if startDate and endDate %}
+                du {{ startDate|date('Y-m-d') }} au {{ endDate|date('Y-m-d') }}
             {% endif %}
             {% if selectedServiceId %}
                 {% set selectedService = serviceetablissement|filter(service => service.id == selectedServiceId)|first %}
@@ -220,35 +236,36 @@
                 et tous les supports
             {% endif %}
     </h3>
-            <div class="table-container">
+    <div class="table-container">
         <table class="table" id="example">
-        <caption class="title"><h6>statistiques de satisfaction par nombre de vote</h6></caption>
+        <caption class="title"><h6>Statistiques de satisfaction par nombre de vote</h6></caption>
             <thead>
                 <tr>
                     <th style="text-align:left;">Questions</th>
                     <th data-title="Extrêmement satisfait"><img src="{{ asset('images/0.png') }}" alt="Extrêmement satisfait" title="Extrêmement satisfait"></th>
                     <th  data-title="Très satisfait"><img src="{{ asset('images/1.png') }}" alt="Très satisfait" title="Très satisfait"></th>
-                    <th  data-title="satisfait"><img src="{{ asset('images/2.png') }}" alt="Satisfait" title="Satisfait"></th>
+                    <th  data-title="Satisfait"><img src="{{ asset('images/2.png') }}" alt="Satisfait" title="Satisfait"></th>
                     <th  data-title="Mécontent"><img src="{{ asset('images/3.png') }}" alt="Mécontent" title="Mécontent"></th>
                     <th  data-title="Très Mécontent"><img src="{{ asset('images/4.png') }}" alt="Très mécontent" title="Très mécontent"></th>
 
                 </tr>
             </thead>
-            <tbody>
-            {% for questionnaire in questionnaires %}
-            <tr class="questionnaire-row" data-service="{{ questionnaire.service.id }}">
-            <!-- Afficher la question en français -->
-            <td>{{ questionnaire.fr }}</td>
-             <!-- Récupérer les votes pour le questionnaire actuel -->
-            {% set votes = voteCounts[questionnaire.id] ?? [0, 0, 0, 0, 0] %}
-            <!-- Afficher le nombre de votes pour chaque niveau de satisfaction -->
-                <td>{{ votes[0] }}</td>
-                <td>{{ votes[1] }}</td>
-                <td>{{ votes[2] }}</td>
-                <td>{{ votes[3] }}</td>
-                <td>{{ votes[4] }}</td>
-            </tr>
-            {% endfor %}
+            <tbody>                 
+              {% for questionnaire in questionnaires %}
+                    <tr class="questionnaire-row" data-service="{{ questionnaire.service.id }}">
+                    <!-- Afficher la question en français -->
+                    <td style="text-align:left;" >{{ questionnaire.fr }}</td>
+                    <!-- Récupérer les votes pour le questionnaire actuel -->
+                    {% set votes = voteCounts[questionnaire.id] ?? [0, 0, 0, 0, 0] %}
+                    <!-- Afficher le nombre de votes pour chaque niveau de satisfaction -->
+                        <td>{{ votes[0] }}</td>
+                        <td>{{ votes[1] }}</td>
+                        <td>{{ votes[2] }}</td>
+                        <td>{{ votes[3] }}</td>
+                        <td>{{ votes[4] }}</td>
+                    </tr>
+                    {% endfor %}
+                
             </tbody>
         </table>
         </div>
@@ -258,8 +275,9 @@
         <div id="printableArea" style="display:none; border:1px solid gray;">
             <h3>
                 Les statistiques du questionnaire
+                Les statistiques du questionnaire
                 {% if startDate and endDate %}
-                    du {{ startDate }} au {{ endDate }}
+                    du {{ startDate|date('Y-m-d') }} au {{ endDate|date('Y-m-d') }}
                 {% endif %}
                 {% if selectedServiceId %}
                     {% set selectedService = serviceetablissement|filter(service => service.id == selectedServiceId)|first %}
@@ -275,13 +293,13 @@
                 {% endif %}
             </h3>
             <table>
-                <caption class="title"><h6>statistiques de satisfaction par nombre de vote</h6></caption>
+                <caption class="title"><h6>Statistiques de satisfaction par nombre de vote</h6></caption>
                 <thead>
                     <<tr>
                     <th style="text-align:left;">Questions</th>
                     <th data-title="Extrêmement satisfait"><img src="{{ asset('images/0.png') }}" alt="Extrêmement satisfait" title="Extrêmement satisfait"></th>
                     <th  data-title="Très satisfait"><img src="{{ asset('images/1.png') }}" alt="Très satisfait" title="Très satisfait"></th>
-                    <th  data-title="satisfait"><img src="{{ asset('images/2.png') }}" alt="Satisfait" title="Satisfait"></th>
+                    <th  data-title="Satisfait"><img src="{{ asset('images/2.png') }}" alt="Satisfait" title="Satisfait"></th>
                     <th  data-title="Mécontent"><img src="{{ asset('images/3.png') }}" alt="Mécontent" title="Mécontent"></th>
                     <th  data-title="Très Mécontent"><img src="{{ asset('images/4.png') }}" alt="Très mécontent" title="Très mécontent"></th>
 
@@ -291,7 +309,7 @@
                 {% for questionnaire in questionnaires %}
                 <tr class="questionnaire-row" data-service="{{ questionnaire.service.id }}">
                 <!-- Afficher la question en français -->
-                <td>{{ questionnaire.fr }}</td>
+                <td style="text-align:left;">{{ questionnaire.fr }}</td>
                 <!-- Récupérer les votes pour le questionnaire actuel -->
                 {% set votes = voteCounts[questionnaire.id] ?? [0, 0, 0, 0, 0] %}
                 <!-- Afficher le nombre de votes pour chaque niveau de satisfaction -->
@@ -304,160 +322,155 @@
                 {% endfor %}
                 </tbody>
             </table>
-        </div>
-<div class="div">
-{# partie de diagramme #}
-  <table class="table">
-    <caption class="title"><h6>statistiques de satisfaction par pourcentages</h6></caption>
-    <tr>
-        <td id="choix">Veuillez sélectionner les diagrammes selon vos préférences</td>
-    </tr>
-    <tr  id="buttons">
-        <td>
-            <button id="pieChartBtn" class="btn btn-sm btn-primary">Diagramme en secteur</button>
-            <button id="barChartBtn" class="btn btn-sm btn-secondary">Diagramme en barres</button>
-            <button id="lineChartBtn" class="btn btn-sm btn-success">Diagramme en lignes</button>
-            <button id="columnChartBtn" class="btn btn-sm btn-danger">Diagramme en colonnes</button>
-            <button id="areaChartBtn" class="btn btn-sm btn-warning">Diagramme en aires</button>
-        </td> 
-    </tr>
-    <tr>
-        <td> <div id="chart_div" style="width: 900px; height: 500px;"></div> </td>
-    </tr>
+        </div>                
+        <div class="div">
+        {# partie de diagramme #}
+        <table class="table">
+            <caption class="title"><h6>Statistiques de satisfaction par pourcentages</h6></caption>
+            <tr>
+                <td id="choix">Veuillez sélectionner les diagrammes selon vos préférences</td>
+            </tr>
+            <tr  id="buttons">
+                <td>
+                    <button id="pieChartBtn" class="btn btn-sm btn-primary">Diagramme en secteur</button>
+                    <button id="barChartBtn" class="btn btn-sm btn-secondary">Diagramme en barres</button>
+                    <button id="lineChartBtn" class="btn btn-sm btn-success">Diagramme en lignes</button>
+                    <button id="columnChartBtn" class="btn btn-sm btn-danger">Diagramme en colonnes</button>
+                    <button id="areaChartBtn" class="btn btn-sm btn-warning">Diagramme en aires</button>
+                </td> 
+            </tr>
+            <tr>
+                <td> <div id="chart_div" style="width: 900px; height: 500px;"></div> </td>
+            </tr>
 </table>
 
 {# script de diagramme #}
 <script src="{{ asset('javascript/jquery.min.js') }}"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-<script type="text/javascript">
-    {# Charger la bibliothèque de Google Charts #}
-    google.charts.load("current", {packages:["corechart"]});
-    {# Définir la fonction de rappel qui sera exécutée une fois la bibliothèque chargée #}
-    google.charts.setOnLoadCallback(drawPieChart);
+    <script type="text/javascript">
+        {# Charger la bibliothèque de Google Charts #}
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawPieChart);
 
-    {# Fonction pour obtenir les données sous forme de tableau #}
-    function getDataArray() {
-        {# Récupérer les données des votes au format JSON depuis la variable Twig #}
-        var voteCountsJson = '{{ voteCountsJson | e('js') }}';
+        function getDataArray() {
+            var voteCountsJson = '{{ voteCountsJson | e('js') }}';
+            var voteData = JSON.parse(voteCountsJson);
+            var dataArray = [['Satisfaction', 'Nombre de votes']];
+            var totalVotes = [0, 0, 0, 0, 0];
 
-        {# Convertir la chaîne JSON en objet JavaScript #}
-        var voteData = JSON.parse(voteCountsJson);
-
-        {# Initialiser le tableau de données avec les en-têtes des colonnes #}
-        var dataArray = [['Satisfaction', 'Nombre de votes']];
-
-        {# Initialiser un tableau pour compter les votes pour chaque niveau de satisfaction #}
-        var totalVotes = [0, 0, 0, 0, 0];
-
-        {# Boucler à travers chaque question pour additionner les votes #}
-        for (var questionId in voteData) {
-            if (voteData.hasOwnProperty(questionId)) {
-                var votes = voteData[questionId] || [0, 0, 0, 0, 0];
-                // Additionner les votes pour chaque niveau de satisfaction
-                for (var i = 0; i < 5; i++) {
-                    totalVotes[i] += votes[i];
+            for (var questionId in voteData) {
+                if (voteData.hasOwnProperty(questionId)) {
+                    var votes = voteData[questionId] || [0, 0, 0, 0, 0];
+                    for (var i = 0; i < 5; i++) {
+                        totalVotes[i] += votes[i];
+                    }
                 }
             }
+
+            dataArray.push(['Extrêmement satisfait', totalVotes[0]]);
+            dataArray.push(['Très satisfait', totalVotes[1]]);
+            dataArray.push(['Satisfait', totalVotes[2]]);
+            dataArray.push(['Mécontent', totalVotes[3]]);
+            dataArray.push(['Très mécontent', totalVotes[4]]);
+
+            return dataArray;
         }
 
-        {# Ajouter les totaux des votes pour chaque niveau de satisfaction au tableau de données #}
-        dataArray.push(['Extrêmement satisfait', totalVotes[0]]);
-        dataArray.push(['Très satisfait', totalVotes[1]]);
-        dataArray.push(['Satisfait', totalVotes[2]]);
-        dataArray.push(['Mécontent', totalVotes[3]]);
-        dataArray.push(['Très mécontent', totalVotes[4]]);
-
-        {# Retourner le tableau de données #}
-        return dataArray;
-    }
-
-    {# Fonction pour dessiner le diagramme en secteurs (camembert) #}
-    function drawPieChart() {
-        // Convertir les données en tableau de données Google Charts
+        function drawPieChart() {
         var data = google.visualization.arrayToDataTable(getDataArray());
+        var totalVotes = 0;
 
-        {# Calculer le pourcentage pour chaque segment #}
-        var totalVotes = data.getDistinctValues(1).reduce((a, b) => a + b, 0);
+        for (var i = 0; i < data.getNumberOfRows(); i++) {
+            totalVotes += data.getValue(i, 1);
+        }
+
         for (var i = 0; i < data.getNumberOfRows(); i++) {
             var percentage = ((data.getValue(i, 1) / totalVotes) * 100).toFixed(2);
-            data.setValue(i, 0, data.getValue(i, 0) + ' (' + percentage + '%)');
+            var labelText = data.getValue(i, 0).split(' (')[0];  // Supprime l'ancien pourcentage si présent
+            data.setValue(i, 0, labelText + ' (' + percentage + '%)'); // Ajoute le pourcentage au texte du label
         }
 
-        {# Définir les options de configuration du diagramme #}
         var options = {
             title: 'Les statistiques des résultats du questionnaire',
-            pieHole: 0.4, // Créer un diagramme en anneau (donut)
-            pieSliceText: 'label', // Afficher les labels sur les segments
-            tooltip: { text: 'percentage' } // Afficher le pourcentage dans l'infobulle
+            pieHole: 0.4,
+            is3D:true,
+            pieSliceText: 'percentage', // Affiche uniquement le pourcentage dans le diagramme
+            tooltip: { text: 'percentage' }, // Le tooltip affiche aussi les pourcentages
+            chartArea: {
+                left: 80,
+                width: '200%',
+            },
+            sliceVisibilityThreshold: 0,
+            pieSliceTextStyle: {
+                fontSize: 14, // Taille du texte pour les pourcentages
+                color: 'white', // Couleur noire pour le texte des pourcentages
+            },
+            legend: { 
+                position: 'right', // Position de la légende
+                textStyle: { 
+                    fontSize: 16 // Taille du texte dans la légende
+                }
+            }
         };
 
-        {# Créer le diagramme en secteurs et le dessiner dans l'élément avec l'ID 'chart_div' #}
         var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
         chart.draw(data, options);
     }
 
-    {# Fonction pour dessiner le diagramme en barres #}
     function drawBarChart() {
         var data = google.visualization.arrayToDataTable(getDataArray());
         var options = {
             title: 'Les statistiques des résultats du questionnaire',
             chartArea: {width: '50%'},
-            hAxis: {title: 'Nombre de votes'},
-            vAxis: {title: 'Satisfaction'}
         };
 
         var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
         chart.draw(data, options);
     }
 
-    {# Fonction pour dessiner le diagramme en lignes #}
     function drawLineChart() {
         var data = google.visualization.arrayToDataTable(getDataArray());
         var options = {
             title: 'Les statistiques des résultats du questionnaire',
-            hAxis: {title: 'Satisfaction'},
-            vAxis: {title: 'Nombre de votes'}
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
         chart.draw(data, options);
     }
 
-    {# Fonction pour dessiner le diagramme en colonnes #}
     function drawColumnChart() {
         var data = google.visualization.arrayToDataTable(getDataArray());
         var options = {
             title: 'Les statistiques des résultats du questionnaire',
             chartArea: {width: '50%'},
-            hAxis: {title: 'Satisfaction'},
-            vAxis: {title: 'Nombre de votes'}
-        };
+            hAxis: {
+                slantedText: true, // Incline le texte des labels pour éviter le chevauchement
+                slantedTextAngle: 20 // Angle d'inclinaison des labels
+            },}
+          
 
         var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
         chart.draw(data, options);
     }
 
-    {# Fonction pour dessiner le diagramme en aires #}
     function drawAreaChart() {
         var data = google.visualization.arrayToDataTable(getDataArray());
         var options = {
             title: 'Les statistiques des résultats du questionnaire',
-            hAxis: {title: 'Satisfaction'},
-            vAxis: {title: 'Nombre de votes'}
         };
 
         var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
         chart.draw(data, options);
     }
 
-    {# Ajouter des écouteurs d'événements pour les boutons de sélection de diagrammes #}
     document.getElementById('pieChartBtn').addEventListener('click', drawPieChart);
     document.getElementById('barChartBtn').addEventListener('click', drawBarChart);
     document.getElementById('lineChartBtn').addEventListener('click', drawLineChart);
     document.getElementById('columnChartBtn').addEventListener('click', drawColumnChart);
     document.getElementById('areaChartBtn').addEventListener('click', drawAreaChart);
 </script>
+
 
 
 {# importer les liens de script pour PDF et EXCEL #}
@@ -467,87 +480,130 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
 
+
 {# script pour exporter un pdf et Excel  #}
 <script>
-    {# PDF export function #}
-    document.getElementById('exportPdfBtn').addEventListener('click', function () {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
+{# PDF export function #}
+document.getElementById('exportPdfBtn').addEventListener('click', function () {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
-        {# Récupérer les valeurs des filtres #}
-        const startDate = document.getElementById('start_date').value;
-        const endDate = document.getElementById('end_date').value;
-        const chambreSelect = document.getElementById('chambre_id');
-        const chambreName = chambreSelect.options[chambreSelect.selectedIndex].text;
-        const serviceSelect = document.getElementById('service_id');
-        const serviceName = serviceSelect.options[serviceSelect.selectedIndex].text;
+    // Récupérer les valeurs des filtres
+    const startDate = document.getElementById('start_date').value;
+    const endDate = document.getElementById('end_date').value;
+    const chambreSelect = document.getElementById('chambre_id');
+    const chambreName = chambreSelect.options[chambreSelect.selectedIndex].text;
+    const serviceSelect = document.getElementById('service_id');
+    const serviceName = serviceSelect.options[serviceSelect.selectedIndex].text;
 
-        {# Construire le titre en utilisant les filtres #}
-        let title = `Les statistiques du questionnaire du ${startDate} au ${endDate}`;
-        if (serviceName && serviceName !== 'Tous les services') {
-            title += ` pour le service ${serviceName}`;
-        } else {
-            title += ' pour tous les services';
-        }
-        if (chambreName && chambreName !== 'Tous les chambres') {
-            title += ` et le support ${chambreName}`;
-        } else {
-            title += ' et tous les supports';
-        }
+    // Construire le titre en utilisant les filtres
+    let title = `Les statistiques du questionnaire du ${startDate} au ${endDate}`;
+    if (serviceName && serviceName !== 'Tous les services') {
+        title += ` pour le service ${serviceName}`;
+    } else {
+        title += ' pour tous les services';
+    }
+    if (chambreName && chambreName !== 'Tous les chambres') {
+        title += ` et le support ${chambreName}`;
+    } else {
+        title += ' et tous les supports';
+    }
 
-        {# Réduire la taille de la police du titre #}
-        doc.setFontSize(12);  // Ajustez cette valeur selon vos besoins
+    // Réduire la taille de la police du titre
+    doc.setFontSize(14);
 
-        {# Diviser le titre en lignes adaptées à la largeur de la page #}
-        const pageWidth = doc.internal.pageSize.getWidth();
-        const margin = 10;
-        const textWidth = pageWidth - margin * 2;
-        const splitTitle = doc.splitTextToSize(title, textWidth);
+    // Diviser le titre en lignes adaptées à la largeur de la page
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const margin = 35;
+    const textWidth = pageWidth - margin * 2;
+    const splitTitle = doc.splitTextToSize(title, textWidth);
 
-        {# Ajouter le titre au document PDF, ligne par ligne, et centré #}
-        let y = 10;  // Position verticale de départ
-        splitTitle.forEach(line => {
-            const textWidth = doc.getTextWidth(line);
-            const x = (pageWidth - textWidth) / 2;  // Calculer la position horizontale pour centrer le texte
-            doc.text(line, x, y);
-            y += 10;  // Déplacer la position verticale pour la ligne suivante
-        });
-
-        {# Capturez le graphique sous forme d'image à l'aide de html2canvas #}
-        html2canvas(document.getElementById('chart_div')).then(canvas => {
-            const imgData = canvas.toDataURL('image/png');
-            doc.addImage(imgData, 'PNG', 10, y + 10, 180, 100);  // Ajuster la position de l'image
-
-            {# Ajouter le tableau au PDF #}
-            const table = document.getElementById('example');
-            const tableData = [];
-
-            const headers = table.querySelectorAll('thead th');
-            const headerRow = [];
-            headers.forEach(header => {
-                headerRow.push(header.dataset.title || header.textContent.trim());
-            });
-            tableData.push(headerRow);
-
-            const rows = table.querySelectorAll('tbody tr');
-            rows.forEach(row => {
-                const rowData = [];
-                const cells = row.querySelectorAll('td');
-                cells.forEach(cell => {
-                    rowData.push(cell.textContent.trim());
-                });
-                tableData.push(rowData);
-            });
-
-            doc.autoTable({
-                head: [tableData[0]],
-                body: tableData.slice(1),
-                startY: y + 120  // Ajuster la position de début du tableau
-            });
-
-            doc.save('statistiques.pdf');
-        });
+    // Ajouter le titre principal avec fond noir et texte blanc
+    const titleHeight = splitTitle.length * 10 + 10;
+    doc.setTextColor(255, 255, 255);
+    doc.setFillColor(0, 0, 0);
+    doc.rect(10, 10, pageWidth - 20, titleHeight, 'F');
+    let y = 20;
+    splitTitle.forEach(line => {
+        const textWidth = doc.getTextWidth(line);
+        const x = (pageWidth - textWidth) / 2;
+        doc.text(line, x, y);
+        y += 10;
     });
+
+    // Réinitialiser les couleurs pour le reste du document
+    doc.setTextColor(0, 0, 0);
+
+    // Ajouter le titre du diagramme avec un carré noir et texte blanc
+    doc.setFontSize(14);
+    doc.setTextColor(255, 255, 255);
+    doc.setFillColor(0, 0, 0);
+    doc.rect(10, y + 10, pageWidth - 20, 15, 'F');
+    doc.text('I Représentation graphique', 25, y + 20);
+
+    y += 30;
+
+    // Capturez le graphique sous forme d'image à l'aide de html2canvas
+    html2canvas(document.getElementById('chart_div')).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        doc.addImage(imgData, 'PNG', 10, y, 180, 100);
+
+        // Ajouter le titre du tableau avec fond noir et texte blanc
+        doc.setFontSize(14);
+        doc.setTextColor(255, 255, 255);
+        doc.setFillColor(0, 0, 0);
+        doc.rect(10, y + 110, pageWidth - 20, 15, 'F');
+        doc.text('II Représentation statistique', 25, y + 120);
+
+        y += 140;
+
+        // Ajouter le tableau au PDF avec pagination
+        const table = document.getElementById('example');
+        const tableData = [];
+
+        const headers = table.querySelectorAll('thead th');
+        const headerRow = [];
+        headers.forEach(header => {
+            headerRow.push(header.dataset.title || header.textContent.trim());
+        });
+        tableData.push(headerRow);
+
+        const rows = table.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            const rowData = [];
+            const cells = row.querySelectorAll('td');
+            cells.forEach(cell => {
+                rowData.push(cell.textContent.trim());
+            });
+            tableData.push(rowData);
+        });
+
+        doc.autoTable({
+            head: [tableData[0]],
+            body: tableData.slice(1),
+            startY: y,
+            theme: 'striped',
+            styles: {
+                halign: 'center' // Centre le texte dans les cellules
+            },
+            columnStyles: {
+                0: { halign: 'left', cellWidth: 'auto' }, // Aligne le texte de la première colonne à gauche
+                1: { cellWidth: 'auto' } // Autres colonnes, alignement centré par défaut
+            },
+            margin: { bottom: 30 }, // Ajouter une marge en bas pour la pagination
+            didDrawPage: function (data) {
+                // Ajouter la pagination
+                const pageCount = doc.internal.getNumberOfPages();
+                doc.setFontSize(10);
+                doc.text(`Page ${data.pageNumber} sur ${pageCount}`, data.settings.margin.left, doc.internal.pageSize.height - 10);
+            }
+        });
+
+        doc.save('statistiques.pdf');
+    });
+});
+
+
 
 {# Excel export function #}
     document.getElementById('exportExcelBtn').addEventListener('click', async function () {
@@ -608,7 +664,7 @@
     });
 </script>
 <script>
-  {# Fonction pour vérifier si le tableau est vide #}
+    {# Fonction pour vérifier si le tableau est vide #}
     function checkTableEmpty() {
         const tableBody = document.querySelector('#example tbody');
         

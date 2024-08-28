@@ -1,6 +1,6 @@
 {% extends 'home/index.html.twig' %}
 {% block body %}
-<h1>Liste<strong id="cat">QUESTIONNAIRE</strong></h1>
+<h1>Liste <strong id="cat"> QUESTIONNAIRE</strong></h1>
 <hr>
 
 <script src="{{ asset('javascript/jquery.min.js') }}"></script>
@@ -88,16 +88,16 @@
         <form method="post" action="{{ path('update_active') }}">
             <table>
                 <tr>
-                    <td>
+                     <td>
                         <a href="{{ path('app_ajouter_question') }}" class="btn btn-info btn-sm" name="add" id="add">
                             <i class="glyphicon glyphicon-plus"></i> Ajouter des questions
                         </a>
                     </td>
-                    <td>
-                        <button style="margin-left:-30%;" class="btn btn-success btn-sm " type="submit" name="save-button" id="save-button">
-                            <i class="glyphicon glyphicon-inbox"></i> Sauvegarder
-                        </button>
-                    </td>
+                     <td>
+                            <button style="margin-left:-30%;" class="btn btn-success btn-sm" type="submit" name="save-button" id="save-button">
+                                <i class="glyphicon glyphicon-inbox"></i> Sauvegarder
+                            </button>
+                        </td>
                 </tr>
                 <tr>
                     <td>
@@ -129,19 +129,23 @@
                         </tr>
                     </thead>
                     <tbody id="questionnaireTableBody">
-                        {% for questionnaire in questionnaire %}
-                            <tr class="questionnaire-row" data-service="{{ questionnaire.service.id }}">
+                     {% for questionnaire in questionnaire %}
+                    <tr class="questionnaire-row" data-service="{{ questionnaire.service.id }}">
                                 <td style="text-align:left;">{{ questionnaire.fr }}</td>
                                 <td>{{ questionnaire.position }}</td>
                                 <td>{{ questionnaire.service.nom }}</td>
                                 <td>
                                     <input name='list[{{ questionnaire.id }}]' type="checkbox" class="btncheckbox" {% if questionnaire.active %}checked{% endif %}>
                                 </td>
+                  
+
                                 <td style="text-align:right;">
-                                    <a data-toggle="tooltip" data-placement="top" title="Modifier la question" href="{{ path('app_modifier_question', {'id': questionnaire.id}) }}" class="btn btn-warning btn-xs">
+                                
+                                    <a data-toggle="tooltip" data-placement="top" title="Modifier la question" href="{{ path('app_modifier_question', {'id': questionnaire.id}) }}" class="btn btn-warning btn-xs btn-modifier">
                                         <i class="glyphicon glyphicon-pencil"></i>
                                     </a>
-                                    <a data-toggle="tooltip" data-placement="top" title="Supprimer la question" href="{{ path('app_supprimer_question', {'id': questionnaire.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer cette question : {{ questionnaire.fr }} ?')" class="btn btn-danger btn-xs">
+                                
+                                    <a data-toggle="tooltip" data-placement="top" title="Supprimer la question" href="{{ path('app_supprimer_question', {'id': questionnaire.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer cette question : {{ questionnaire.fr }} ?')" class="btn btn-danger btn-xs btn-supprimer">
                                         <i class="glyphicon glyphicon-trash"></i>
                                     </a>
                                 </td>
@@ -153,6 +157,30 @@
         </form>
     </div>
 </div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const rows = document.querySelectorAll('#myTab tbody tr');
+        let actionsVisible = false;
+
+        rows.forEach(row => {
+            const modifierButton = row.querySelector('.btn-modifier');
+            const supprimerButton = row.querySelector('.btn-supprimer');
+
+            if (modifierButton || supprimerButton) {
+                actionsVisible = true;
+            }
+        });
+
+        if (!actionsVisible) {
+            document.querySelector('#myTab thead th:last-child').style.display = 'none';
+            rows.forEach(row => {
+                row.querySelector('td:last-child').style.display = 'none';
+            });
+        }
+    });
+</script>
 
 <script>
     document.getElementById('myselect').addEventListener('change', function() {

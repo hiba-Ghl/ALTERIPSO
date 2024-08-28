@@ -9,6 +9,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Questionnaire;
 use App\Entity\ServiceEtablissement;
+use App\Entity\User;
+
 class QuestionnaireController extends AbstractController
 {
      // Déclaration de la propriété privée $entityManager
@@ -22,20 +24,46 @@ class QuestionnaireController extends AbstractController
          $this->entityManager = $entityManager;
          $this->request = Request::createFromGlobals();
      }
+     #[Route('/questionnaire', name: 'app_questionnaire')]
+     public function index(EntityManagerInterface $entityManager): Response
+     {
+         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+     
+         // Récupération de l'établissement de l'utilisateur connecté
+         $etablissement = $this->getUser()->getEtablissement();
+         $user = $this->getUser();
+         $userRoles = $user->getRoles(); // Récupère les rôles de l'utilisateur connecté
+         $userId = $user->getId();
 
-    #[Route('/questionnaire', name: 'app_questionnaire')]
-    public function index(): Response
-    {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-        $etablissement = $this->getUser()->getEtablissement();
-        $serviceetablissement  = $this->entityManager->getRepository(ServiceEtablissement::class)->findBy(['etablissement' => $etablissement], ['nom' => 'ASC']);
-        $questionnaire = $this->entityManager->getRepository(Questionnaire::class)->findBy(['etablissement' => $etablissement], ['position' => 'ASC']);
-        $servicegeneral = $this->entityManager->getRepository(ServiceEtablissement::class)->findBy(array('nom' => 'Géneral', 'etablissement' => $etablissement));
-        $idgeneral = $servicegeneral[0]->getId();
-        return $this->render('questionnaire/index.html.twig', [
-            'etablissement' => $etablissement,'serviceetablissement' => $serviceetablissement,'questionnaire' => $questionnaire,'idgeneral' =>$idgeneral
-        ]);
-    }
+     
+         if (!$etablissement) {
+             throw $this->createAccessDeniedException('Vous n\'êtes associé à aucun établissement.');
+         }
+     
+         // Récupération des services et des questionnaires de l'établissement
+         $serviceEtablissementRepo = $entityManager->getRepository(ServiceEtablissement::class);
+         $questionnaireRepo = $entityManager->getRepository(Questionnaire::class);
+     
+         $servicesEtablissement = $serviceEtablissementRepo->findBy(['etablissement' => $etablissement], ['nom' => 'ASC']);
+         $questionnaires = $questionnaireRepo->findByEtablissement($etablissement);
+     
+         // Récupération du service général
+         $serviceGeneral = $serviceEtablissementRepo->findOneBy(['nom' => 'Géneral', 'etablissement' => $etablissement]);
+         $idGeneral = $serviceGeneral ? $serviceGeneral->getId() : null;
+
+        
+
+     
+         return $this->render('questionnaire/index.html.twig', [
+             'etablissement' => $etablissement,
+             'serviceetablissement' => $servicesEtablissement,
+             'questionnaire' => $questionnaires,
+             'idgeneral' => $idGeneral,
+             
+         ]);
+     }
+     
+     
     //--------------------Ajouter une question---------------------------------------
     #[Route('/questionnaire/ajouter', name: 'app_ajouter_question')]
     public function ajouterquestion(Request $request): Response

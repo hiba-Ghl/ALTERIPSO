@@ -20,6 +20,18 @@ class QuestionnaireRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Questionnaire::class);
     }
+    // src/Repository/QuestionnaireRepository.php
+
+    public function findByEtablissement($etablissement)
+    {
+        return $this->createQueryBuilder('q')
+            ->join('q.service', 's')
+            ->where('s.etablissement = :etablissement')
+            ->setParameter('etablissement', $etablissement)
+            ->orderBy('q.position', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 
 //    /**
 //     * @return Questionnaire[] Returns an array of Questionnaire objects
