@@ -17,6 +17,10 @@ parameters:
     charte_patient_directory: '%kernel.project_dir%/public/pdf/charte_patient'
     service_payant_directory: '%kernel.project_dir%/public/pdf/service_payant'
     service_in_room_directory: '%kernel.project_dir%/public/serviceinroom'
+    annonce_directory: '%kernel.project_dir%/public/annonce'
+    vod_directory: '%kernel.project_dir%/public/images/vod'
+    categorie_vod_directory: '%kernel.project_dir%/public/images/categorie_vod'
+    
 
 
 services:

@@ -1,0 +1,177 @@
+{% extends 'home/index.html.twig' %}
+
+{% block body %}
+<style>
+    #div2 {
+            border-radius: 25px;
+			border: 2px solid #3087ce;
+            height: auto;
+            display: flex;
+            background-color:white;
+            margin-right:-30px;
+            margin-left:-30px;
+            margin-top: 10px;
+		}
+
+        .error-message {
+        color: white;
+        font-weight: bold;
+        display: none; 
+        background-color:red;
+    }
+
+</style>
+
+<div style="border-radius: 8px;text-align: left;margin-left: -30px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 'auto';padding-left: 10px; padding-right: 10px; display: inline-block;">
+    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+    Modifier VOD : {{vods.nom}}
+</div>
+
+<div id="div2">
+    <form name="" method="post" action="{{ path('app_modifier_vod',{'id': vods.getId()}) }}" class="form-horizontal" enctype="multipart/form-data" onsubmit="return validateForm()">
+
+        <div class="container">
+            <div class="row">
+                <!-- Logo preview on the left -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <img id="logo-preview" src="{{ asset(vods.getLogo()) }}" style="width:350px;height:335px;margin-top:20px; margin-left:20px;" />
+                    </div>
+                </div>
+
+
+                
+                <div class="col-md-8">
+
+                    <!-- titre-->
+                    <div class="form-group">
+                        <label class="control-label">Titre</label>
+                        <input type="text" id="nom" name="nom" class="form-control" value="{{vods.nom}}"/>
+                    </div>
+
+                    <!-- File upload input on the right -->
+                    <div class="form-group">
+                        <label>Logo :</label>
+                        <p style="font-weight: bold; color: red; font-size:15px;">
+                        Choisissez un icon (format PNG - max size 50Ko)
+                        </p>
+                        <input type="file" class="form-control-file" id="logo" name="logo" accept=".png ,.jpg ,.jpeg" onchange="previewLogo(event)" >
+                        <p class="error-message" id="file-error">La taille maximale du fichier est de 50 Ko.</p>
+                    </div>
+
+
+                    
+
+                    <!-- nom dans le serveur vod aka url-->
+                    <div class="form-group">
+                        <p style="font-weight: bold; color: red;font-size:15px;">
+                        Merci de saisir dans la case ci-dessous le nom de votre fichier (en minuscule) suivi de l extension du fichier, que vous avez déposer sur le serveur VOD <br>
+                        Exemple : cinema.mpg4 ou piscine.mpg2<br>
+                        Attention, le lecteur ne lit que ce type de format de fichier : mpg2 / mp4 / m2t / 3gp 
+                        </p>
+                        <input type="text" id="url" name="url" class="form-control" value="{{vods.url}}" required/>
+                        <p class="error-message" id="url-error">Le format n'est pas valide. Utilisez mpg2, mp4, m2t ou 3gp.</p>
+                    </div>
+            
+                <!-- categorie -->
+                    <div class="form-group">
+                        <label class="control-label">Categorie</label>
+                        <select id="categorie" name="categorie" class="form-control" value="{{vods.categorie.nom}}">
+                                {% for categorie in categories %}
+                                    <option value="{{ categorie.id }}">{{ categorie.nom }}</option>
+                                {% endfor %}
+                        </select>
+                    </div>
+                
+
+                <!-- description-->
+                    <div class="form-group">
+                        <label class="control-label">Description</label>
+                        <textarea id="description" name="description" class="form-control" style="margin-bottom:20px;">{{ vods.description}}</textarea>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!--les boutons du formulaire-->
+        <div class="form-group">
+            <span style="margin-left: 950px;">
+                <button type="submit" name="valider" class="button btn btn-primary btn-sm" style="solid; padding: 8px">
+                    <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
+                </button>
+                <a href="{{ path('app_vod') }}" class="btn btn-danger" style="solid; margin-left: 13px; padding: 8px">
+                    <i class="glyphicon glyphicon-remove"></i> Annuler
+                </a>
+            </span>
+        </div>
+
+
+    </form>
+</div>
+
+
+<!-- ce petit script est pour l'affichage du logo apres l'upload sans enregistrement-->
+<script>
+    function previewLogo(event) {
+        var reader = new FileReader();
+        reader.onload = function(){
+            var output = document.getElementById('logo-preview');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+    
+</script>
+
+
+<!--le controle de la taille et de l'extension du logo-->
+<script>
+
+    function validateForm() {
+        // Initialize a flag to track validation status
+        let isFormValid = true;
+
+        // File size validation
+        var fileInput = document.getElementById('logo');
+        var sizeErrorMessage = document.getElementById('file-error');
+        sizeErrorMessage.style.display = 'none'; // Reset error display
+
+        if (fileInput.files.length > 0) {
+            var file = fileInput.files[0];
+            var maxSize = 50 * 1024; // 50 KB
+
+            if (file.size > maxSize) {
+                sizeErrorMessage.style.display = 'block';
+                isFormValid = false;
+            }
+        }
+
+        // URL extension validation
+        var urlInput = document.getElementById('url');
+        var urlValue = urlInput.value.trim().toLowerCase();
+        var urlError = document.getElementById('url-error');
+        urlError.style.display = 'none'; // Reset error display
+
+        // Allowed extensions
+        var validExtensions = ['mpg2', 'mp4', 'm2t', '3gp'];
+
+        // Check if the URL ends with a valid extension
+        var isValidExtension = validExtensions.some(function(ext) {
+            return urlValue.endsWith(ext);
+        });
+
+        if (!isValidExtension) {
+            urlError.style.display = 'block';
+            isFormValid = false;
+        }
+
+        // Prevent form submission if any validation fails
+        return isFormValid;
+    }
+
+
+</script>
+
+
+
+{% endblock %}

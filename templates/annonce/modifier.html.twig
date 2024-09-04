@@ -1,0 +1,565 @@
+{% extends 'home/index.html.twig' %}
+{% block body %}
+
+<style>
+    #div2 {
+        border-radius: 25px;
+        border: 2px solid #3087ce;
+        padding: 20px;
+        height: auto;
+        display: flex;
+        justify-content: center;
+        background-color: white;
+        margin: 10px;
+    }
+    .accordion-toggle {
+        cursor: pointer;
+    }
+    .error-message {
+        color: white;
+        font-weight: bold;
+        display: none; 
+        background-color: red;
+        border-radius: 4px;
+    }
+
+    
+</style>
+
+<!-- le header de la page-->
+<div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 300px;padding-left: 10px;">
+    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+    Modifier l'annonce : {{ann.nom}}
+</div>
+
+
+
+<div id="div2">
+
+    <!-- leformulaire contenant les informations -->
+    <form id="annonceForm"  name="" method="post" action="{{ path('app_modifier_annonce',{'id': ann.getId()}) }}" class="form-horizontal"  enctype="multipart/form-data">
+        
+        
+        
+        <div class="form-group row">
+            <label for="nom" class="col-lg-2 col-form-label">Nom:</label>
+            <div class="col-lg-10">
+                <input type="text" id="nom" name="nom" class="form-control" value="{{ann.nom}}" required/>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="type" class="col-lg-2 col-form-label">Type:</label>
+            <div class="col-lg-10">
+                <select id="type" name="type" class="form-control" onchange="handleTypeChange()">
+                    <option value="{{ann.type}}">{{ann.type}}</option>
+                    <option value="">Choisir un type</option>
+                    <option value="Image">Image</option>
+                    <option value="Video">Video</option>
+                    <option value="PDF">PDF</option>
+                    <option value="Message">Message</option>
+                    <option value="Localtv">Localtv</option>
+                </select>
+
+                <!-- localtv ip adress section -->
+                <div id="ipAddress" style="display: none;">
+                    <label for="text" class="control-label">Entrer une adresse IP :</label>
+                    <input type="text" class="form-control" name="ip" id="ip" value="{{ann.url}}" 
+                        pattern="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+                        title="Veuillez entrer une adresse IP valide (par exemple, 192.168.1.1)" >
+                </div>
+
+
+                <!-- File upload section -->
+                <div id="fileUpload" style="display: none;">
+                    <label for="file" class="control-label here">Télécharger un fichier:</label>
+                    <span id="annUrl">{{ann.url}}</span>
+                </div>
+
+                <div id="error-message" style="color: red;"></div>
+
+                <!-- Text input section -->
+                <div id="textInput" style="display: none;">
+                    <label for="text" class="control-label">Entrer un texte:</label>
+                    <textarea class="form-control" name="text" id="text" rows="3" style="margin-bottom: 5px;margin-top: 5px;">{{ann.url}}</textarea>
+                      
+                                <!-- Font selection -->
+                                <div id="fontSelection" style="display: none;" class="form-row">
+                                    <!-- la police -->
+                                    <div class="form-group col-md-4">
+                                        <label for="font">Choisir une police:</label>
+                                        <select id="font" name="font" class="form-control"  style="width:100%;" >
+                                            <option value="{{ann.police}}">{{ann.police}}</option>
+                                            <option value="">Sélectionner une police</option>
+                                            <option value="Arial">Arial</option>
+                                            <option value="Helvetica">Helvetica</option>
+                                            <option value="Times New Roman">Times New Roman</option>
+                                            <option value="Courier New">Courier New</option>
+                                            <option value="Verdana">Verdana</option>
+                                        </select>
+                                    </div>
+                                    <!-- la taille -->
+                                    <div class="form-group col-md-4" style="margin-left:30px">
+                                        <label for="fontSize">Choisir une taille:</label>
+                                        <select id="fontSize" name="fontSize" class="form-control"  style="width:100%;" >
+                                            <option value="{{ann.taille}}">{{ann.taille}}</option>
+                                            <option value="">Sélectionner une taille (px)</option>
+                                            <option value="12">12</option>
+                                            <option value="14">14</option>
+                                            <option value="16">16</option>
+                                            <option value="18">18</option>
+                                            <option value="20">20</option>
+                                            <option value="22">22</option>
+                                        </select>
+                                    </div>
+                                    <!-- le style -->
+                                    <div class="form-group col-md-4" style="margin-left:30px"> 
+                                            <label for="style">Choisir un style:</label>
+                                            <select id="style" name="style" class="form-control" style="width:100%; ">
+                                                    <option value="{{ann.style}}">{{ann.style}}</option>
+                                                    <option value="">Sélectionner un style</option>
+                                                    <option value="Gras">Gras</option>
+                                                    <option value="Italique">Italique</option>
+                                                    <option value="Souligné">Souligné</option>
+                                                    <option value="Barré">Barré</option>
+                                            </select>
+                                    </div>
+                                </div>
+                </div>
+      
+            </div>
+        </div>
+            
+             
+
+        <div class="form-group row">
+            <label for="theme" class="col-lg-2 col-form-label">Thème proposé:</label>
+            <div class="col-lg-10">
+                <select class="form-control" name="themee" id="themee" > 
+                <option value ='{{ann.theme}}'>{{ann.theme}}</option>
+                {% for t in themes %}    
+                 <option value ='{{t}}'>{{t}}</option>
+                {% endfor %} 
+                <option value ='autre'>Autre (renseignez dans le champ thème)</option>
+                </select> 
+                <div class="e" >
+                <label class=" control-label">Thème: </label>
+                <input type="text" name="theme"  class="form-control" >
+                </div>
+
+            </div>
+        </div>
+
+        <div class="form-group row">
+        <div style="margin-bottom: 5px;margin-left: 200px; color: red">
+            <p style="margin-bottom: 0;">Veuillez cliquer sur le bouton en bas "Photo Dimensions" pour visualiser les positions possibles</p>
+        </div>
+            <label for="position" class="col-lg-2 col-form-label">Position:</label>
+            <div class="col-lg-10">
+                <select id="position" name="position" class="form-control" >
+                <option value="{{ann.position}}" class="current">{{ann.position}}</option>
+                <option value="Haut" class="pos">Haut</option>
+                <option value="Bas" class="pos">Bas</option>
+                <option value="Gauche" class="pos">Gauche</option>
+                <option value="Droite" class="pos">Droite</option>
+                <option value="Milieu" class="pos">Milieu</option>
+                <option value="Fullscreen" class="pos">Fullscreen</option>          
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="datedebut" class="col-lg-2 col-form-label">Date de Début:</label>
+            <div class="col-lg-10">
+                <input type="date" id="datedebut" name="datedebut" class="form-control" value="{{ann.datedebut}}"/>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="datefin" class="col-lg-2 col-form-label">Date de Fin:</label>
+            <div class="col-lg-10">
+                <input type="date" id="datefin" name="datefin" class="form-control" value="{{ann.datefin}}"/>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="duree" class="col-lg-2 col-form-label">Durée (en secondes):</label>
+            <div class="col-lg-10">
+                <input type="number" id="duree" name="duree" class="form-control" min="1" step="1" required value="{{ann.duree}}"/>
+            </div>
+        </div>
+
+        <!-- languages part -->
+        <div id="languagesPart" style="width:1005px;margin-left:32px;margin-bottom:15px;margin-top:20px">
+
+            <!--le bouton langues-->
+            <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                <span><i class="glyphicon glyphicon-plus"></i></span>
+            </a>
+            <label style="margin-left: 5px;" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Langues</label>
+            
+            <br>
+            <!--le bouton de traduction-->
+            <button type="button" id="translateBtn" class="btn btn-info btn-sm">
+                <i class="glyphicon glyphicon-globe"></i> Traduire le texte
+            </button>
+            <!--les champs des langues-->
+            <div id="collapseTwo" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div id="inputGroup1">
+                        <div class="form-row" style="margin-left:27px">
+                            <div class="form-group col-md-6">
+                                <img style="width: 30px" src="{{ asset('images/eng.png') }}">
+                                <label for="EN">English</label>
+                                <textarea type="text" class="form-control" id="EN" name="EN" >{{ann.en}}</textarea>
+                            </div>
+                            <div class="form-group col-md-6" style="margin-left:27px">
+                                <img style="width: 30px" src="{{ asset('images/es.png') }}">
+                                <label for="ES">Espagnol</label>
+                                <textarea type="text" class="form-control" id="ES" name="ES" >{{ann.es}}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-row" style="margin-left:27px">
+                            <div class="form-group col-md-6">
+                                <img style="width: 30px" src="{{ asset('images/pt.png') }}">
+                                <label for="PT">Portugues</label>
+                                <textarea type="text" class="form-control" id="PT" name="PT" >{{ann.pt}}</textarea>
+                            </div>
+                            <div class="form-group col-md-6" style="margin-left:27px">
+                                <img style="width: 30px" src="{{ asset('images/ita.png') }}">
+                                <label for="IT">Italiano</label>
+                                <textarea type="text" class="form-control" id="IT" name="IT" >{{ann.it}}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-row" style="margin-left:27px">
+                            <div class="form-group col-md-6">
+                                <img style="width: 30px" src="{{ asset('images/rus.png') }}">
+                                <label for="RU">Russian</label>
+                                <textarea type="text" class="form-control" id="RU" name="RU" >{{ann.ru}}</textarea>
+                            </div>
+                            <div class="form-group col-md-6" style="margin-left:27px">
+                                <img style="width: 30px" src="{{ asset('images/deu.png') }}">
+                                <label for="DE">Deutsch</label>
+                                <textarea type="text" class="form-control" id="DE" name="DE" >{{ann.de}}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-row" style="margin-left:27px">
+                            <div class="form-group col-md-6">
+                                <img style="width: 30px" src="{{ asset('images/ch.png') }}">
+                                <label for="ZH">China</label>
+                                <textarea type="text" class="form-control" id="ZH" name="ZH" >{{ann.zh}}</textarea>
+                            </div>
+                            <div class="form-group col-md-6" style="margin-left:27px">
+                                <img style="width: 30px" src="{{ asset('images/ma.png') }}">
+                                <label for="AR">العربية</label>
+                                <textarea type="text" class="form-control" id="AR" name="AR" >{{ann.ar}}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <!-- les boutons du formulaire -->
+        <span style="margin-left: 700px;">
+            <a type="button" class="btn-primary btn" id="dim" style=" solid;border: none; padding: 8px;background-color:  #ED7F10;">
+                <i class="glyphicon glyphicon-resize-full"></i> Photo Dimensions 
+            </a>
+            <button type="submit" name="valider" class="button btn btn-primary btn-sm" style=" solid; padding: 8px;margin-left: 13px; ">
+                <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
+            </button>
+            <a href="{{ path('app_annonce') }}" class="btn btn-danger" style=" solid; margin-left: 13px; padding: 8px">
+                <i class="glyphicon glyphicon-remove"></i> Annuler
+            </a>
+        </span>
+
+
+    </form>
+    
+</div>
+
+
+<!-- Dimensions modal -->
+<div class="modal fade" id="dimmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+   <div class="modal-dialog  modal-md" style="width:600px" role="document">
+      <div class="modal-content">
+    
+ 
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <div class="col-md-4">
+            <h4 style="line-height: 3;" class="modal-title" id="myModalLabel">Dimensions  </h4>
+            </div>
+                  
+        </div>
+      <div class="modal-body">
+
+  
+
+      <div class="form-group text-center">
+           
+  
+          <img src="{{ asset('images/dimensions.png') }}" style="width: 100%; max-width: 500px; height: auto; margin: 0 auto;">
+      </div>
+
+    </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Fermer</button>
+      </div>
+     
+    </div>
+  </div>
+</div>
+
+<!--for translation part in the form -->
+<script>
+    document.getElementById('translateBtn').addEventListener('click', function() {
+        const Fr = document.getElementById('text').value.trim();
+        if (Fr === '') {
+            alert('Veuillez entrer le message de votre annonce.');
+            return;
+        }
+
+        const baseUrl = 'https://translate.google.com/?sl=fr&tl=';
+        const languages = {
+            'EN': 'en', 'ES': 'es', 'PT': 'pt',
+            'IT': 'it', 'RU': 'ru', 'DE': 'de',
+            'ZH': 'zh-CN', 'AR': 'ar'
+        };
+
+        for (const [key, lang] of Object.entries(languages)) {
+            const translationUrl = `${baseUrl}${lang}&text=${encodeURIComponent(Fr)}`;
+            window.open(translationUrl, '_blank');
+        }
+    });
+</script>
+
+<!--for photo dimensions modal-->
+<script>
+    $(document).ready(function(){
+    $("#dim").click(function(){
+        $("#dimmodal").modal();
+       
+    });
+    });
+</script>
+
+<!--pour le theme-->
+<script>
+    $(document).ready(function(){
+        
+        $(".e").hide();
+        $("#themee").click(function(){
+         azz=this.value;
+               if(azz=='autre'){ $(".e").show();}
+               else{ $(".e").hide(); }
+      });
+      });
+</script>
+
+<!-- le control de la validite de l'adresse ip-->
+<script>
+        document.getElementById('ip').addEventListener('input', function() {
+    var ipPattern = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+    var ipAddress = this.value;
+
+    if (!ipPattern.test(ipAddress)) {
+        this.setCustomValidity("Veuillez entrer une adresse IP valide (par exemple, 192.168.1.1)");
+    } else {
+        this.setCustomValidity("");
+    }
+    });
+
+</script>
+
+<!-- l'affichage les champs et positions associees au type des le telechagement de la page-->
+<script>
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        var type = '{{ ann.type }}';
+
+        //les champs a afficher selon chaque type
+        var fileUpload = document.getElementById('fileUpload');
+        var textInput = document.getElementById('textInput');
+        var fontSelection = document.getElementById('fontSelection');
+        var languagesPart = document.getElementById('languagesPart');
+
+        if (type === 'Message' ) {
+            fileUpload.style.display = 'none';
+            textInput.style.display = 'block';
+            fontSelection.style.display = 'block';
+            languagesPart.style.display = 'block';
+            ipAddress.style.display = 'none';
+        } else if (type === 'Image' || type === 'Video' || type === 'PDF') {
+            fileUpload.style.display = 'block';
+            textInput.style.display = 'none';
+            fontSelection.style.display = 'none';
+            languagesPart.style.display = 'none';
+            ipAddress.style.display = 'none';
+        } else if (type === 'Localtv'){
+            fileUpload.style.display = 'none';
+            textInput.style.display = 'none';
+            fontSelection.style.display = 'none';            
+            ipAddress.style.display = 'block';
+            languagesPart.style.display = 'none';
+        }
+
+        //les positions a afficher selon chaque type
+        const positionSelect = document.getElementById('position');
+        const positions = type === 'Video' || type === 'Localtv' || type === 'PDF'
+            ? ['Fullscreen']
+            : ['Haut', 'Bas', 'Gauche', 'Droite', 'Milieu', 'Fullscreen'];
+
+        // Clear les options precedentes
+        positionSelect.innerHTML = '';
+
+        positions.forEach(function(pos) {
+            const option = document.createElement('option');
+            option.value = pos;
+            option.textContent = pos.charAt(0).toUpperCase() + pos.slice(1);
+            positionSelect.appendChild(option);
+        });
+
+
+    });
+
+
+    
+        
+    
+</script>
+
+
+<!--le control de la taille du fichier a telecharger selon le type-->
+<script>
+    document.getElementById('annonceForm').addEventListener('submit', function(event) {
+        const type = document.getElementById('type').value;
+        const fileInput = document.getElementById('file');
+        const errorMessage = document.getElementById('error-message');
+
+        // Clear previous error messages
+        errorMessage.textContent = '';
+    
+
+        const file = fileInput.files[0];
+        const fileSize = file.size;
+
+        let valid = true;
+
+        if (type === 'Image') {
+            const maxSize = 400 * 1024; // 400 KB            
+            if (  fileSize > maxSize) {
+                valid = false;
+                errorMessage.textContent = 'La taille de l\'image est invalide. Max 400KB (PNG, JPEG, JPG).';
+            }
+        } else if (type === 'Video') {
+            const maxSize = 60 * 1024 * 1024; // 60 MB
+
+            if (  fileSize > maxSize) {
+                valid = false;
+                errorMessage.textContent = 'La taille de la video est invalide. Max 60MB (MP4, MPG2, M2T, 3GP).';
+            }
+        } else if (type === 'PDF') {
+            const maxSize = 100 * 1024 * 1024; // 100 MB
+
+            if ( fileSize > maxSize) {
+                valid = false;
+                errorMessage.textContent = 'La taille du PDF est invalide. Max 200MB.';
+            }
+        }
+
+        if (!valid) {
+            event.preventDefault(); // pas de submission si la validation echoue
+        }
+    });
+</script>
+
+<!-- extension du fichier a telecharger controllee in html  -->
+<script>
+    document.getElementById('type').addEventListener('change', function() {
+        const type = this.value;
+        const fileInput = document.getElementById('file');
+        const container = document.querySelector('.here');
+
+       
+
+        if (type === 'Video') {
+            container.innerHTML = '<input type="file" id="file" accept=".mp4,  .mpg2, .m2t, .3gp" name="file">';
+        } else if (type === 'Image') {
+            container.innerHTML = '<input type="file" id="file" accept=".jpg, .jpeg, .png" name="file">';
+        } else {
+            container.innerHTML = '<input type="file" id="file" accept=".pdf" name="file">';
+        }
+    });
+</script>
+ 
+<!------------------------------ le control des champs et position apres le changement de type ------------------------------------------------>
+
+<!--files or texts to appear in case type was changed -->
+<script>
+    document.getElementById('type').addEventListener('change', function() {
+        var type = this.value;
+        var fileUpload = document.getElementById('fileUpload');
+        var textInput = document.getElementById('textInput');
+        var fontSelection = document.getElementById('fontSelection');
+        var ipAddress = document.getElementById('ipAddress');
+        var languagesPart = document.getElementById('languagesPart');
+        var annUrl = document.getElementById('annUrl');
+        
+        // Hide the file path
+        fileUpload.style.display = 'none'; 
+        textInput.style.display = 'none'; 
+        fontSelection.style.display = 'none'; 
+        ipAddress.style.display = 'none'; 
+        languagesPart.style.display = 'none'; 
+        annUrl.style.display = 'none'; 
+
+        // Clear input values
+        document.getElementById('ip').value = '';
+        document.getElementById('file').value = '';
+        document.getElementById('text').value = '';
+
+        if (type === 'Message') {
+            textInput.style.display = 'block';
+            fontSelection.style.display = 'block';
+            languagesPart.style.display = 'block';
+        } else if (type === 'Image' || type === 'Video' || type === 'PDF') {
+            fileUpload.style.display = 'block';
+        } else if (type === 'Localtv'){
+            ipAddress.style.display = 'block';
+        }
+    });
+</script>
+
+<!--le control des positions selon le type apres avoir choisi un autre type-->
+<script>
+    document.getElementById('type').addEventListener('change', function() {
+        const type = this.value;
+        const positionSelect = document.getElementById('position');
+        const positions = type === 'Video' || type === 'Localtv' || type === 'PDF'
+            ? ['Fullscreen']
+            : ['Haut', 'Bas', 'Gauche', 'Droite', 'Milieu', 'Fullscreen'];
+
+        // Clear previous options
+        positionSelect.innerHTML = '';
+
+        positions.forEach(function(pos) {
+            const option = document.createElement('option');
+            option.value = pos;
+            option.textContent = pos.charAt(0).toUpperCase() + pos.slice(1);
+            positionSelect.appendChild(option);
+        });
+    });
+
+
+
+</script>
+
+
+
+
+
+{% endblock %}

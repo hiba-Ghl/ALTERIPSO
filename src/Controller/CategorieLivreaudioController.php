@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\CategorieLivreaudio;
+use app\Entity\Livreaudio;
 use Doctrine\DBAL\Exception\IntegrityConstraintViolationException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException; // Importez également cette classe si nécessaire
 
@@ -25,23 +26,26 @@ class CategorieLivreaudioController extends AbstractController
 
         if (!$CategorieLivreaudio) {
             throw $this->createNotFoundException(
-                'No product found for id '.$id
+                'La catégorie de livre audio avec l\'ID '.$id.' n\'a pas été trouvée.'
             );
         }
+
+
+         // Check si la actegorie est une cle etrangere dans la table des livres audios
+         $livresAudio = $entityManager->getRepository(LivreAudio::class)->findBy(['categorie' => $CategorieLivreaudio]);
+
+         if (count($livresAudio) > 0) {
+             $this->addFlash('error', 'Suppression Non Autorisée: La suppression de cette catégorie n\'est pas possible car elle est actuellement associée à des livres audio dans notre système.');
+             return $this->redirectToRoute('app_categorie_livreaudio');
+         }
 
         $entityManager->remove($CategorieLivreaudio);
         $entityManager->flush();
 
         return $this->redirectToRoute('app_categorie_livreaudio');
-        } 
-        catch (IntegrityConstraintViolationException $e) {
-            // Gérer l'exception ici
-            $errorMessage = "Erreur : Impossible de supprimer ou de mettre à jour une ligne parente en raison d'une contrainte de clé étrangère.";
-            return $this->redirectToRoute('app_categorie_livreaudio');
         } catch (\PDOException $e) {
-            // Gérer l'exception parente ici (PDOException)
-            $errorMessage = $e->getMessage(); // Obtenez le message d'erreur PDO
-            // Faites quelque chose avec l'erreur, par exemple, journalisez-la
+            // Gérer toute autre exception
+            $this->addFlash('error', 'Une erreur est survenue : '.$e->getMessage());
             return $this->redirectToRoute('app_categorie_livreaudio');
         }
     }
@@ -72,6 +76,26 @@ class CategorieLivreaudioController extends AbstractController
             $etablissement = $this->getUser()->getEtablissement();
         
             $request = Request::createFromGlobals();
+
+
+
+
+            //recuperation des positions valables
+            $usedPositions = $entityManager->createQueryBuilder()->select('c.position')
+            ->from(CategorieLivreaudio::class, 'c')
+            ->getQuery()
+            ->getArrayResult();
+
+            // Extraire les positions
+            $usedPositions = array_column($usedPositions, 'position');
+
+            // Générer les positions disponibles
+             $availablePositions = [];
+            for ($i = 1; $i <= 20; $i++) {
+                if (!in_array($i, $usedPositions)) {
+                    $availablePositions[] = $i;
+                }
+            }
 
             $valider = $request->get("valider");
             $nom = $request->get("nom");
@@ -132,7 +156,9 @@ class CategorieLivreaudioController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('app_categorie_livreaudio');
         }
-      return $this->render('categorie_livreaudio/ajouter.html.twig');
+      return $this->render('categorie_livreaudio/ajouter.html.twig',[
+        'availablePositions' => $availablePositions,
+      ]);
         
     }
 
@@ -143,6 +169,28 @@ class CategorieLivreaudioController extends AbstractController
             $etablissement = $this->getUser()->getEtablissement();
             $categories = $entityManager->getRepository(CategorieLivreaudio::class)->findById($id)[0];
             $request = Request::createFromGlobals();
+
+
+
+
+            //recuperation des positions valables
+            $usedPositions = $entityManager->createQueryBuilder()->select('c.position')
+            ->from(CategorieLivreaudio::class, 'c')
+            ->getQuery()
+            ->getArrayResult();
+
+            // Extraire les positions
+            $usedPositions = array_column($usedPositions, 'position');
+
+            // Générer les positions disponibles
+             $availablePositions = [];
+            for ($i = 1; $i <= 20; $i++) {
+                if (!in_array($i, $usedPositions)) {
+                    $availablePositions[] = $i;
+                }
+            }  
+
+
 
             $valider = $request->get("valider");
             $nom = $request->get("nom");
@@ -205,11 +253,45 @@ class CategorieLivreaudioController extends AbstractController
         }
       
       return $this->render('categorie_livreaudio/modifier.html.twig', [
-        'categorielivreaudio' => $categories]);
+        'categorielivreaudio' => $categories,
+        'availablePositions' => $availablePositions,
+    ]);
 
         
     }
 
+
+
+     //methode du status active *********************************************************************************************************************************************
+
+     #[Route('/categorielivreaudio/updateactive', name: 'app_update_active_categorie_livreaudio')]
+     public function updateActiveStatus(EntityManagerInterface $entityManager): Response
+     {
+         $repository = $entityManager->getRepository(CategorieLivreaudio::class);
+         $user = $this->getUser();
+         $etablissement = $this->getUser()->getEtablissement();
+         $categories = $repository->findBy(['etablissement' => $etablissement]);
+        //setting all active status of categories to 0
+         foreach ($categories as $cat) {
+             $cat->setActive('0');   
+             $entityManager->persist($cat);
+             $entityManager->flush();
+           }
+ 
+         $request = Request::createFromGlobals();
+         $active = $request->get("listeactive");
+         if (isset($active) and !empty($active)) {
+             foreach ($active as $key => $k) {
+                 $active_categories  = $repository->findById($key);
+                 $active_categories[0]->setActive("1");
+                 $entityManager->persist($active_categories[0]);
+                 $entityManager->flush();
+             }
+         }
+ 
+         return $this->redirectToRoute('app_categorie_livreaudio'); 
+     }
+ 
    
 
 }

@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use App\Entity\Etablissement;
 
 
 use App\Entity\Livreaudio;
@@ -39,10 +38,6 @@ class LivreaudioController extends AbstractController
 
         $nom = $request->get("nom");
         $ip = $request->get("ip");
-       // $port = $request->get("port");
-        //$numero = $request->get("numero");
-       // $pays = $request->get("pays");
-        //$protocole = $request->get("protocole");
         $active = $request->get("active");
         $catlivreaudio = $request->get("catlivreaudio");
         $categorielivreaudio =  $entityManager->getRepository(CategorieLivreaudio::class)->findById($catlivreaudio)[0];
@@ -61,8 +56,6 @@ class LivreaudioController extends AbstractController
            $file1->move($this->getParameter('livreaudio_directory'), $fileName1);
           
 
-           // Répondre avec un message de succès ou rediriger vers une autre page
-         //  return new Response('Fichiers téléchargés avec succès !');
          $fileName = 'images/livreaudio/' . $fileName1;
        }
        else 
@@ -77,11 +70,7 @@ class LivreaudioController extends AbstractController
         $livreaudio->setEtablissement($etablissement);
         $livreaudio->setNom($nom);
         $livreaudio->setIp($ip);
-        //$livreaudio->setPort($port);
        $livreaudio->setCategorie($categorielivreaudio);
-      // $livreaudio->setPays($pays);
-      // $livreaudio->setPays($pays);
-       //$livreaudio->setProtocole($protocole);
        $livreaudio->setLogo($fileName);
         if (isset($active) and !empty($active)) 
            $livreaudio->setActive(1);
@@ -148,15 +137,7 @@ class LivreaudioController extends AbstractController
                     $entityManager->flush();
                 }
             }
-       /* $port = $request->get("listeport");
-            if (isset($port) and !empty($port)) {
-                foreach ($port as $key => $k) {
-                    $port_television  = $repository->findById($key);
-                    $port_television[0]->setPort($k);
-                    $entityManager->persist($port_television[0]);
-                    $entityManager->flush();
-                }
-            }*/
+      
         $catlivreaudio = $request->get("listcatlivreaudio");
             if (isset($catlivreaudio) and !empty($catlivreaudio)) {
                 foreach ($catlivreaudio as $key => $k) {
@@ -167,24 +148,7 @@ class LivreaudioController extends AbstractController
                     $entityManager->flush();
                 }
             }
-      /*  $pays = $request->get("listepays");
-            if (isset($pays) and !empty($pays)) {
-                foreach ($pays as $key => $k) {
-                    $pays_television  = $repository->findById($key);
-                    $pays_television[0]->setPays($k);
-                    $entityManager->persist($pays_television[0]);
-                    $entityManager->flush();
-                }
-            }
-        $protocole = $request->get("listeprotocole");
-            if (isset($protocole) and !empty($protocole)) {
-                foreach ($protocole as $key => $k) {
-                    $protocole_television  = $repository->findById($key);
-                    $protocole_television[0]->setProtocole($k);
-                    $entityManager->persist($protocole_television[0]);
-                    $entityManager->flush();
-                }
-            }*/
+      
         $active = $request->get("listeactive");
             if (isset($active) and !empty($active)) {
                 foreach ($active as $key => $k) {

@@ -1,0 +1,255 @@
+{% extends 'home/index.html.twig' %}
+{% block body %}
+
+
+<style>
+		#div2 {
+            border-radius: 25px;
+			border: 2px solid #3087ce;
+			padding: 20px;
+            height: auto;
+            display: flex;
+            justify-content: center;
+            background-color:white;
+            margin: 10px;
+
+		}
+        .accordion-toggle {
+            cursor: pointer;
+        }
+
+         .error-message {
+        color: white;
+        font-weight: bold;
+        display: none; 
+        background-color:red;
+        border-radius: 4px;
+    }
+	</style>
+
+    <div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 390px;padding-left: 10px;">
+    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+    Ajouter une catégorie VOD
+    </div>
+ 
+<div id="div2">
+
+    
+
+    <form name="" method="post" action="{{path('app_ajouter_categorievod')}}" class="form-horizontal" enctype="multipart/form-data"  onsubmit="return validateForm()">
+
+
+    <div class="row">
+
+        <!-- Colonne pour le logo -->
+        <div class="col-md-4 text-center">
+                <div class="form-group">
+                        <img id="logo-preview" style="width:250px;height:235px; margin-left:10px;" />
+            </div>
+        </div>
+
+        <!-- Colonne pour les autres champs -->
+        <div class="col-md-8">
+            <div class="form-group row">
+                <label for="nom" class="col-lg-2 col-form-label">Nom</label>
+                <div class="col-lg-10">
+                    <input type="text" id="nom" name="nom" class="form-control"/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="active" class="col-lg-2 col-form-label">Active</label>
+                <div class="col-lg-10">
+                    <select id="active" name="active" class="form-control">
+                        <option value="0">Non Active</option>
+                        <option value="1">Active</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="position" class="col-lg-2 col-form-label">Position</label>
+                <div class="col-lg-10">
+                    <select id="position" name="position" class="form-control">
+                        {% for position in availablePositions %}
+                            <option value="{{ position }}">{{ position }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="nom" class="col-lg-2 col-form-label">Logo</label>
+                <div class="col-lg-10">
+                    <input type="file" class="form-control-file" id="logo" name="logo" accept=".jpg, .jpeg, .png" onchange="previewLogo(event)">
+                    <p class="error-message" id="file-error">La taille maximale du fichier est de 400 Ko.</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        <!-- languages part -->
+
+        <div  style="width:1005px;margin-left:32px;margin-bottom:15px;margin-top:20px">
+                    <!-- le bouton des langues-->
+                  <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" >
+                  <span > <i class="glyphicon glyphicon-plus"></i></span>
+                  </a>
+                  <label style="margin-left: 5px;"; class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Langues</label>
+                   <br>
+                   <!-- le bouton de traduction-->
+                    <button type="button" id="translateBtn" class="btn btn-info btn-sm">
+                    <i class="glyphicon glyphicon-globe"></i>  Traduire le texte</button>
+              
+              <!-- le champ des langues-->
+              <div id="collapseTwo" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <div id="inputGroup1" >
+                    <div class="form-row" style="margin-left:27px">
+                        <div class="form-group col-md-6">
+                            <img style="width: 30px" src=" {{asset('images/eng.png')}}">
+                        <label for="EN">English</label>
+                        <input type="text" class="form-control" id="EN" name="EN">
+                        </div>
+                        <div class="form-group col-md-6" style="margin-left:27px">
+                            <img style="width: 30px" src="{{asset('images/es.png')}}">
+                        <label for="ES">Espagnol</label>
+                        <input type="text" class="form-control" id="ES" name="ES">
+                        </div>
+                    </div>
+              
+                    <div class="form-row" style="margin-left:27px">
+                        <div class="form-group col-md-6">
+                            <img style="width: 30px" src=" {{asset('images/pt.png')}}">
+                        <label for="PT">Portugues</label>
+                        <input type="text" class="form-control" id="PT" name="PT">
+                        </div>
+                        <div class="form-group col-md-6" style="margin-left:27px">
+                            <img style="width: 30px" src=" {{asset('images/ita.png')}}">
+                        <label for="IT">Italiano</label>
+                        <input type="text" class="form-control" id="IT" name="IT">
+                        </div>
+                    </div>
+                    <div class="form-row" style="margin-left:27px">
+                        <div class="form-group col-md-6">
+                            <img style="width: 30px" src=" {{asset('images/rus.png')}}">
+                        <label for="RU">Russian</label>
+                        <input type="text" class="form-control" id="RU" name="RU">
+                        </div>
+                        <div class="form-group col-md-6" style="margin-left:27px">
+                          <img style="width: 30px" src=" {{asset('images/deu.png')}}">
+                        <label for="DE">Deutsch</label>
+                        <input type="text" class="form-control" id="DE" name="DE">
+                        </div>
+                    </div>
+                    <div class="form-row" style="margin-left:27px">
+                        <div class="form-group col-md-6">
+                            <img style="width: 30px" src=" {{asset('images/ch.png')}}">
+                        <label for="ZH">China</label>
+                        <input type="text" class="form-control" id="ZH" name="ZH">
+                        </div>
+                        <div class="form-group col-md-6" style="margin-left:27px">
+                            <img style="width: 30px" src=" {{asset('images/ma.png')}}">
+                        <label for="AR">العربية</label>
+                        <input type="text" class="form-control" id="AR" name="AR">
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        <br>
+         <!-- les boutons du formulaire-->
+        <span style="margin-left: 800px;">
+        <button type="submit" name="valider" class="button btn btn-primary btn-sm" style=" solid; padding: 8px">
+        <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer</button>
+        <a href="{{ path('app_categorie_vod') }}" class="btn btn-danger" style=" solid; margin-left: 13px; padding: 8px" >
+        <i class="glyphicon glyphicon-remove"></i>  Annuler</a>
+        </span>
+        
+        </form>
+
+
+</div>
+<br> <br> <br> <br>
+
+
+
+
+
+
+<script>
+
+    //l'affichage du file sur la page
+    function previewLogo(event) {
+        var reader = new FileReader();
+        reader.onload = function(){
+            var output = document.getElementById('logo-preview');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    //le control de la taille du fichier 
+    function validateForm() {
+        //la partie de la taille du logo
+        var fileInput = document.getElementById('logo');
+        var file = fileInput.files[0];
+        var maxSize = 400 * 1024; // 400 KB
+
+        if (file.size > maxSize) {
+            var sizeerrorMessage = document.getElementById('file-error');
+            sizeerrorMessage.style.display = 'block';
+            return false; // Empêche la soumission du formulaire
+        }
+ }
+
+</script>
+
+
+<!--le champ de tracudtion-->
+<script>
+    document.getElementById('translateBtn').addEventListener('click', function() {
+        // Récupérer la valeur du champ 'nom'
+        const Fr = document.getElementById('nom').value.trim();
+        
+        // Vérifier que le champ 'nom' n'est pas vide
+        if (Fr === '') {
+            alert('Veuillez entrer le nom de votre catégorie VOD.');
+            return;
+        }
+
+        // URL de base pour le service de traduction (ici un exemple avec Google Translate)
+        const baseUrl = 'https://translate.google.com/?sl=fr&tl=';
+
+        // Langues pour la traduction
+        const languages = {
+            'EN': 'en', // Anglais
+            'ES': 'es', // Espagnol
+            'PT': 'pt', // Portugais
+            'IT': 'it', // Italien
+            'RU': 'ru', // Russe
+            'DE': 'de', // Allemand
+            'ZH': 'zh-CN', // Chinois
+            'AR': 'ar' // Arabe
+        };
+
+        // Ouvrir un nouvel onglet pour chaque langue avec le texte à traduire
+        for (const [key, lang] of Object.entries(languages)) {
+            const translationUrl = `${baseUrl}${lang}&text=${encodeURIComponent(Fr)}`;
+            window.open(translationUrl, '_blank');
+        }
+    });
+</script>
+
+
+{% endblock %}
+
+
+
+

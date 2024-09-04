@@ -1,0 +1,229 @@
+{% extends 'home/index.html.twig' %}
+
+{% block body %}
+
+<style>
+    #div2 {
+        border-radius: 25px;
+        border: 2px solid #3087ce;
+        padding: 20px;
+        display: flex;
+        background-color: white;
+        margin: 10px -30px;
+        flex-direction: column;
+    }
+
+    .table-container {
+        max-height: 400px;
+        margin-top: 10px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    thead, th {
+        background-color: #f2f2f2;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+    }
+    
+        
+
+    .scrollable {
+        max-height: 80px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        display: block;
+    }
+
+      tbody {
+        display: block;
+        max-height: 360px; 
+        overflow-y: auto;
+    }
+
+    tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    thead tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+</style>
+
+<div style="border-radius: 8px; text-align: left; margin-bottom: 10px; margin-left: -30px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 180px; padding-left: 10px;">
+    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+    Liste VOD
+</div>
+
+<form name="form" action="{{ path('app_active_vod')}}" method="post" enctype="multipart/form-data">
+
+    <!--les boutons en haut du formulaire-->
+    <a href="{{ path('app_ajouter_vod') }}" class="btn btn-info btn-sm" name="add" id="add" style="margin-right: 5px;">
+        <i class="glyphicon glyphicon-plus"></i> Ajouter VOD
+    </a>
+    <button type="submit" name="valider" class="btn btn-primary btn-sm" style="margin-right: 5px;">
+        <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
+    </button>
+    <a name="annuler" href="{{ path('app_vod') }}" class="btn btn-danger btn-sm" style="margin-right: 5px;">
+        <i class="glyphicon glyphicon-remove"></i> Annuler
+    </a>
+    <!--la barre de recherche-->
+    <input id="myInput" type="text" placeholder="Search.." style="float: right; padding: 6px; border-radius: 5px;">
+
+    <div id="div2">
+        <div class="table-container">
+            <table class="table table-striped table-bordered table-hover table-checkable order-column" id="sample_1">
+                
+                
+                <thead>
+                    <tr>
+                        <th >Logo</th>
+                        <th >Titre</th>
+                        <th>Description</th>
+                        <th >
+                            <input type="checkbox" id="checklist" style="margin-right: 10px;">Active
+                        </th>
+                        <th >Répertoire Vidéo</th>
+                        <th >Type</th>
+                        <th style="width:180px">Action</th>
+                    </tr>
+                </thead>
+
+
+
+                <tbody id="myTable">
+                    {% for video in videos %}
+                        <tr>
+                            <td>
+                                <img style="width:50px;height:50px;text-align:center" src="{{ asset(video.logo) }}" alt="..." class="img-rounded img-responsive center-block">
+                            </td>
+                            <td>{{ video.nom|capitalize }}</td>
+                            <td class="scrollable">{{ video.description }}</td>
+                            {% set ch = video.active == 1 ? 'checked' : '' %}
+                            <td>
+                                <label><input name="listeactive[{{ video.id }}]" type="checkbox" {{ ch }} class="jpCheckbox"></label>
+                            </td>
+                            <td>{{ video.url }}</td>
+                            <td>{{ video.categorie.nom }}</td>
+                            <td>
+                                <span data-toggle="tooltip" data-placement="top" title="Lire la VOD" >
+                                <a  title="Lire la VOD" class="btn btn-success btn-xs play-video" data-toggle="modal" data-target="#videoModal" data-video-url="{{ asset(video.url) }}" data-video-title="{{ video.nom|capitalize }}">
+                                    <i class="glyphicon glyphicon-play"></i>
+                                </a>
+                                </span>
+
+                                <a  data-toggle="tooltip" data-placement="top" title="Modifier la VOD" href="{{ path('app_modifier_vod', { 'id': video.id }) }}" class="btn btn-warning btn-xs">
+                                    <i class="glyphicon glyphicon-pencil"></i>
+                                </a>
+                                <a data-toggle="tooltip" data-placement="top" title="Supprimer la VOD" href="{{ path('app_supprimer_vod', { 'id': video.id }) }}" class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer la VOD : {{ video.nom }} ?')">
+                                    <i class="glyphicon glyphicon-trash"></i>
+                                </a>
+                                <a data-toggle="tooltip" data-placement="top" title="Lancer la VOD" name="send" class="btn btn-info btn-xs">
+                                    <i class="glyphicon glyphicon-play-circle"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="7">No records found</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+
+                
+            </table>
+        </div>
+    </div>
+</form>
+
+<!-- Modal Structure -->
+<div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="videoModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="embed-responsive embed-responsive-16by9">
+                    <video class="embed-responsive-item" controls id="modalVideo">
+                        <source src="" type="video/mp4">  <!-- MP4 format -->
+                        <source src="" type="video/mpeg"> <!-- MPEG format -->
+                        <source src="" type="video/x-m2t"> <!-- M2T format -->
+                        <source src="" type="video/3gpp"> <!-- 3GP format -->
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- la selection de tous les boxes dans le checkbox champ-->
+<script>
+    document.getElementById('checklist').addEventListener('click', function() {
+        var checkboxes = document.querySelectorAll('input.jpCheckbox');
+        for (var checkbox of checkboxes) {
+            checkbox.checked = this.checked;
+        }
+    });
+</script>
+
+
+
+<!-- script pour la recherche-->
+<script>
+    $(document).ready(function() {
+        $("#myInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+
+
+
+<!--parametrage de la video dans la modale-->
+<script>
+    $(document).ready(function(){
+        // Initialize tooltips for all buttons
+        $('[data-toggle="tooltip"]').tooltip();
+
+        // Handle the button click for playing video
+        $('.play-video').on('click', function() {
+            var videoUrl = $(this).data('video-url');
+            var videoTitle = $(this).data('video-title');
+
+            // Set the video URL
+            $('#modalVideo').attr('src', videoUrl);
+
+            // Set the modal title
+            $('#videoModalLabel').text(videoTitle);
+        });
+
+        // Clear video source when modal is closed
+        $('#videoModal').on('hidden.bs.modal', function () {
+            $('#modalVideo').attr('src', '');
+        });
+
+    });
+</script>
+
+
+
+{% endblock %}

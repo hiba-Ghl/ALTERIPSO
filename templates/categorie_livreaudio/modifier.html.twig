@@ -2,166 +2,238 @@
 {% block body %}
 
 <style>
-		#div1 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 20px;
-			width: 1091px;
-			height: 300px;
-			margin-left: 10px;
-			margin-top: 10px;
-			
-			padding: 43px;
+    #div2 {
+        border-radius: 25px;
+        border: 2px solid #3087ce;
+        padding: 20px;
+        height: auto;
+        display: flex;
+        justify-content: center;
+        background-color:white;
+        margin: 10px;
+    }
 
-		}
-		#div2 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 20px;
-			width: 1091px;
-			height: 750px;
-			margin-left: 10px;
-			margin-top: 10px;
-		}
-	</style>
-<!-- ajouter categories                                                      -->
+    .accordion-toggle {
+        cursor: pointer;
+    }
 
-<div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 390px;padding-left: 10px;">
-    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
-    Modifier la  catégorie livreaudio : {{categorielivreaudio.nom}}
+    .error-message {
+        color: white;
+        font-weight: bold;
+        display: none;
+        background-color: red;
+        border-radius: 4px;
+    }
+</style>
+
+<div style="border-radius: 8px; text-align: left; margin-left: 10px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 500px; padding-left: 10px;">
+    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+    Modifier la catégorie Livre Audio : {{categorielivreaudio.nom}}
 </div>
 
 <div id="div2">
+     <!-- le formulaire de modification --> 
+    <form name="" method="post" action="" class="form-horizontal" enctype="multipart/form-data" onsubmit="return validateForm()">
 
-    <form name="" method="post" action="" class="form-horizontal" enctype="multipart/form-data">
+        <div class="row">
+            <!-- Colonne pour le logo -->
+            <div class="col-md-4 text-center">
+                <div class="form-group">
+                    <img src="{{ asset(categorielivreaudio.getLogo()) }}" id="logo-preview" style="width:250px; height:235px; margin-left:10px;" />
+                </div>
+            </div>
 
-
-        <strong>Infos
-        </strong>
-
-
-
-        <div class="form-group">
-            <label  class="col-lg-2 control-label">Nom
-            </label>
-            <div class="col-lg-10">
-
-                <input type="text" id="nom" name="nom" class="form-control" value="{{categorielivreaudio.nom}}"/>
-
+            <!-- Colonne pour les autres champs -->
+            <div class="col-md-8">
+                <!-- nom -->
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">Nom</label>
+                    <div class="col-lg-10">
+                        <input type="text" id="nom" name="nom" class="form-control" value="{{categorielivreaudio.nom}}" required/>
+                    </div>
+                </div>
+                <!-- status active -->
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">Active</label>
+                    <div class="col-lg-10">
+                        <select id="active" name="active" class="form-control">
+                            {% if categorielivreaudio.active == 0 %}
+                            <option value="0">Non Active</option>
+                            <option value="1">Active</option>
+                            {% else %}
+                            <option value="1">Active</option>
+                            <option value="0">Non Active</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                </div>
+                <!-- position -->
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">Position</label>
+                    <div class="col-lg-10">
+                        <select id="position" name="position" class="form-control">
+                            <option value="{{ categorielivreaudio.position }}">{{ categorielivreaudio.position }}</option>
+                            {% for position in availablePositions %}
+                            <option value="{{ position }}">{{ position }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <!-- logo upload -->
+                <div class="form-group">
+                    <label for="logo" class="col-lg-2 control-label">Logo </label>
+                    <div class="col-lg-10">
+                        <input type="file" class="form-control-file" id="logo" name="logo" accept=".jpg, .jpeg, .png" onchange="previewLogo(event)">
+                        <p class="error-message" id="file-error">La taille maximale du fichier est de 400 Ko.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- les langues --> 
+        <div style="width: 1005px; margin-left: 32px; margin-bottom: 15px; margin-top: 20px">
+            <!-- le boutons des langues --> 
+            <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                <span><i class="glyphicon glyphicon-plus"></i></span>
+            </a>
+            <label style="margin-left: 5px;" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Langues</label>
+            <br>
+            <!-- le bouton de traduction -->
+            <button type="button" id="translateBtn" class="btn btn-info btn-sm">
+                <i class="glyphicon glyphicon-globe"></i> Traduire le texte
+            </button>
+            <!-- les champs des langues -->
+            <div id="collapseTwo" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div id="inputGroup1">
+                        <div class="form-row" style="margin-left:27px">
+                            <div class="form-group col-md-6">
+                                <img style="width: 30px" src="{{ asset('images/eng.png') }}">
+                                <label for="EN">English</label>
+                                <input type="text" class="form-control" id="EN" name="EN" value="{{categorielivreaudio.en}}">
+                            </div>
+                            <div class="form-group col-md-6" style="margin-left:27px">
+                                <img style="width: 30px" src="{{ asset('images/es.png') }}">
+                                <label for="ES">Espagnol</label>
+                                <input type="text" class="form-control" id="ES" name="ES" value="{{categorielivreaudio.es}}">
+                            </div>
+                        </div>
+                        <!-- Repeat for all other languages -->
+                        <div class="form-row" style="margin-left:27px">
+                            <div class="form-group col-md-6">
+                                <img style="width: 30px" src="{{ asset('images/pt.png') }}">
+                                <label for="PT">Portugues</label>
+                                <input type="text" class="form-control" id="PT" name="PT" value="{{categorielivreaudio.pt}}">
+                            </div>
+                            <div class="form-group col-md-6" style="margin-left:27px">
+                                <img style="width: 30px" src="{{ asset('images/ita.png') }}">
+                                <label for="IT">Italiano</label>
+                                <input type="text" class="form-control" id="IT" name="IT" value="{{categorielivreaudio.it}}">
+                            </div>
+                        </div>
+                        <div class="form-row" style="margin-left:27px">
+                            <div class="form-group col-md-6">
+                                <img style="width: 30px" src="{{ asset('images/rus.png') }}">
+                                <label for="RU">Russian</label>
+                                <input type="text" class="form-control" id="RU" name="RU" value="{{categorielivreaudio.ru}}">
+                            </div>
+                            <div class="form-group col-md-6" style="margin-left:27px">
+                                <img style="width: 30px" src="{{ asset('images/deu.png') }}">
+                                <label for="DE">Deutsch</label>
+                                <input type="text" class="form-control" id="DE" name="DE" value="{{categorielivreaudio.de}}">
+                            </div>
+                        </div>
+                        <div class="form-row" style="margin-left:27px">
+                            <div class="form-group col-md-6">
+                                <img style="width: 30px" src="{{ asset('images/ch.png') }}">
+                                <label for="ZH">China</label>
+                                <input type="text" class="form-control" id="ZH" name="ZH" value="{{categorielivreaudio.zh}}">
+                            </div>
+                            <div class="form-group col-md-6" style="margin-left:27px">
+                                <img style="width: 30px" src="{{ asset('images/ma.png') }}">
+                                <label for="AR">العربية</label>
+                                <input type="text" class="form-control" id="AR" name="AR" value="{{categorielivreaudio.ar}}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-       
-		<div class="form-group">
-				<label  class="col-lg-2 control-label">Active</label>
-				<div class="col-lg-10">
-
-					<select id="active" name="active" class="form-control">
-                        {% if categorielivreaudio.active == 0 %}
-						<option value="0">0</option>
-						<option value="1">1</option>
-                        {% else %}
-                        <option value="1">1</option>
-                        <option value="0">0</option>
-                        {% endif %}
-						
-					</select>
-
-				</div>
-			</div>
-
-        <div class="form-group">
-            <label  class="col-lg-2 control-label">Position</label>
-            <div class="col-lg-10">
-
-                <input type="number" id="position" name="position" class="form-control" value="{{categorielivreaudio.position}}"/>
-
-            </div>
-        </div>
-
-
         <br>
-     
+        <!-- les boutons du formulaire--> 
+        <span style="margin-left: 800px;">
+            <button type="submit" name="valider" class="button btn btn-primary btn-sm" style="solid; padding: 8px">
+                <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
+            </button>
+            <a href="{{ path('app_categorie_livreaudio') }}" class="btn btn-danger" style="solid; margin-left: 13px; padding: 8px">
+                <i class="glyphicon glyphicon-remove"></i> Annuler
+            </a>
+        </span>
 
-
-
-
-        <div class="form-group">
-            <label >logo :</label>
-           <center><input type="file" class="form-control-file" id="logo" name="logo"></center> 
-        </div>
- 
-
-        <br>
-        <strong>langues
-        </strong>
-
-      <table cellspacing="10" style="width: 100%;">
-            <tr>
-                <td>
-                    <img style="width: 30px" src=" {{asset('images/eng.png')}}">
-                    <label class="control-label required" for="EN">English</label>
-                    <input style="margin-right: 10px;" type="text" id="EN" name="EN" class="form-control" value="{{categorielivreaudio.en}}">
-                </td>
-                <td>
-                    <img style="width: 30px" src="{{asset('images/es.png')}}">
-                    <label class="control-label required" for="ES">Espagnol</label>
-                    <input style="margin-right: 10px;" type="text" id="ES" name="ES" class="form-control" value="{{categorielivreaudio.es}}">
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <img style="width: 30px" src=" {{asset('images/pt.png')}}">
-                    <label class="control-label required" for="PT">Portugues</label>
-                    <input type="text" id="PT" name="PT" class="form-control" value="{{categorielivreaudio.pt}}">
-                </td>
-                <td>
-                    <img style="width: 30px" src=" {{asset('images/ita.png')}}">
-                    <label class="control-label required" for="IT">Italiano</label>
-                    <input type="text" id="IT" name="IT" class="form-control" value="{{categorielivreaudio.it}}">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <img style="width: 30px" src=" {{asset('images/rus.png')}}">
-                    <label class="control-label required" for="RU">Russian</label>
-                    <input type="text" id="RU" name="RU" class="form-control" value="{{categorielivreaudio.ru}}">
-                </td>
-                <td>
-                    <img style="width: 30px" src=" {{asset('images/deu.png')}}">
-                    <label class="control-label required" for="DE">Deutsch</label>
-                    <input type="text" id="DE" name="DE" class="form-control" value="{{categorielivreaudio.de}}">
-                </td>
-
-            </tr>
-
-            <tr>
-                <td>
-                    <img style="width: 30px" src=" {{asset('images/ch.png')}}">
-                    <label class="control-label required" for="ZH">China</label>
-                    <input type="text" id="ZH" name="ZH" class="form-control" value="{{categorielivreaudio.zh}}">
-                </td>
-                <td>
-                    <img style="width: 30px" src=" {{asset('images/ma.png')}}">
-                    <label class="control-label required" for="AR">العربية</label>
-                    <input type="text" id="AR" name="AR" class="form-control" value="{{categorielivreaudio.ar}}">
-                </td>
-            </tr>
-
-        </table>
-
-
-
-      
-
-        <br>
-   
-        <button type="submit" name="valider" class="btn btn-success" style="margin-left: 920px;position: absolute;background-color: #3087ce; border: 2px solid #3087ce;"><i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer</button>
-
-        </form>
-
+    </form>
 
 </div>
-<br> <br> <br> <br>
+
+<br><br><br><br>
+
+<script>
+    //l'affichage du logo justement apres l'upload
+    function previewLogo(event) {
+        var reader = new FileReader();
+        reader.onload = function() {
+            var output = document.getElementById('logo-preview');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+    //lecontrol dela taille du fichier 
+    function validateForm() {
+        var fileInput = document.getElementById('logo');
+        var file = fileInput.files[0];
+        var maxSize = 400 * 1024; // 400KB
+
+        if (file && file.size > maxSize) {
+            document.getElementById('file-error').style.display = 'block';
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
+<!--implementation de la fonctionalite de traduction-->
+<script>
+    document.getElementById('translateBtn').addEventListener('click', function() {
+        // Récupérer la valeur du champ 'nom'
+        const Fr = document.getElementById('nom').value.trim();
+        
+        // Vérifier que le champ 'nom' n'est pas vide
+        if (Fr === '') {
+            alert('Veuillez entrer le nom de votre catégorie LivreAudio.');
+            return;
+        }
+
+        // URL de base pour le service de traduction (ici un exemple avec Google Translate)
+        const baseUrl = 'https://translate.google.com/?sl=fr&tl=';
+
+        // Langues pour la traduction
+        const languages = {
+            'EN': 'en', // Anglais
+            'ES': 'es', // Espagnol
+            'PT': 'pt', // Portugais
+            'IT': 'it', // Italien
+            'RU': 'ru', // Russe
+            'DE': 'de', // Allemand
+            'ZH': 'zh-CN', // Chinois
+            'AR': 'ar' // Arabe
+        };
+
+        // Ouvrir un nouvel onglet pour chaque langue avec le texte à traduire
+        for (const [key, lang] of Object.entries(languages)) {
+            const translationUrl = `${baseUrl}${lang}&text=${encodeURIComponent(Fr)}`;
+            window.open(translationUrl, '_blank');
+        }
+    });
+</script>
+
 {% endblock %}

@@ -1,0 +1,260 @@
+{% extends 'home/index.html.twig' %}
+{% block body %}
+
+<style>
+    #div2 {
+        border-radius: 25px;
+        border: 2px solid #3087ce;
+        padding: 20px;
+        height: auto;
+        display: flex;
+        justify-content: center;
+        background-color: white;
+        margin: 10px;
+        font-size: 18px;
+    }
+    
+    .file-display-container {
+        padding: 10px;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1); 
+    }
+
+.form-group {
+    position: relative;
+    display: inline-block;
+    height: auto;
+}
+
+.frame {
+    width: 100%;
+    max-width: 1000px;
+    height: auto;
+}
+
+.background-image {
+    position: absolute;
+    top: 47%; /* Centrer l'image verticallement */
+    left: 50%; /* Centrer l'image horizontallement */
+    transform: translate(-50%, -50%); /* Offset the image to center */
+    width:95%;
+    height: auto; /* Maintain aspect ratio */
+    z-index: 1; /* Ensure it appears above the frame */
+}
+
+    
+</style>
+
+<!--le title header-->
+<p id='p'></p>
+<div style="border-radius: 8px;text-align: left;margin-bottom: 15px;margin-left: -30px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 400px;padding-left: 10px;">
+    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+    Details de l'annonce : {{annonce.nom}}
+</div>
+
+<!--le bouton de retour-->
+<a href="{{ path('app_annonce') }}" class="button btn btn-danger" name="add" id="add" style="margin-bottom: 10px; margin-right: 5px;">
+            <i class="glyphicon glyphicon-arrow-left"></i>
+            Retour
+</a>
+<a class="btn btn-info" name="visualisation" id="visualisation" style="margin-bottom: 10px; margin-left: 5px;">
+            <i class="glyphicon glyphicon-blackboard"></i>
+            Pré-visualiser votre annonce 
+</a>
+
+
+<!--les details de l'annonce -->
+<div id="div2">
+<div class="container">
+           <br>
+        <div class="row">
+            <div class="col-md-6">
+                <label><strong style="color: #3087ce;">Nom: </strong>&nbsp;{{ annonce.nom|capitalize}}</label>
+            </div>
+            <div class="col-md-6">
+                <label><strong style="color: #3087ce;">Thème: </strong>&nbsp;{{ annonce.theme|capitalize}}</label>
+            </div>
+            
+        </div>
+        <br>
+        
+        <div class="row">   
+            <div class="col-md-6">
+                <label><strong style="color: #3087ce;">Type: </strong>&nbsp;{{ annonce.type|capitalize }}</label>
+            </div>
+            <div class="col-md-6">
+                <label><strong style="color: #3087ce;">Position: </strong>&nbsp;{{ annonce.position|capitalize}}</label>
+            </div>
+            
+        </div>
+        <br>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <label><strong style="color: #3087ce;">Date de début: </strong>&nbsp;{{ annonce.datedebut }}</label>
+            </div>
+            <div class="col-md-6">
+                <label><strong style="color: #3087ce;">Date de fin: </strong>&nbsp;{{ annonce.datefin}}</label>
+            </div>
+            
+        </div>
+        <br>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label><strong style="color: #3087ce;">Durée (en secondes): </strong>&nbsp;{{ annonce.duree }}</label>
+            </div>
+            <div id="font-info" class="col-md-6">
+                <label><strong style="color: #3087ce;">Police: </strong>&nbsp;{{ annonce.police }}</label>
+            </div>
+        </div>
+        <br>
+
+        <div id="size-style" class="row" >
+            <div class="col-md-6">
+                <label><strong style="color: #3087ce;">Taille: </strong>&nbsp;{{ annonce.taille }}</label>
+            </div>
+            <div class="col-md-6">
+                <label><strong style="color: #3087ce;">Style: </strong>&nbsp;{{ annonce.style }}</label>
+            </div>
+        </div>
+
+        <div class="row" style="margin-left:2px">
+                {% if annonce.type == 'Message' %}
+                    <br>
+                    <label><strong style="color: #3087ce;"> Votre message: </strong>&nbsp;{{ annonce.url }}</label>
+                {% elseif annonce.type == 'Localtv' %}
+                    <label><strong style="color: #3087ce;">Adresse IP: </strong>&nbsp;{{ annonce.url }}</label>
+                {% else  %}
+                    <label><strong style="color: #3087ce;">Fichier : </strong>&nbsp;{{ annonce.url }}</label>
+                {% endif %}
+        </div>
+
+        <!--l'affichage du message en differentes langues-->
+        <div id="translation" >
+        <br>
+                <div class="row" style="margin-left:2px">
+                        <label><strong style="color: #3087ce;">Your message: </strong>&nbsp;{{ annonce.en }}</label>
+                </div>
+                <br>
+                <div class="row" style="margin-left:2px">
+                        <label><strong style="color: #3087ce;">Vuestro mensaje: </strong>&nbsp;{{ annonce.es }}</label>
+                </div>
+                <br>
+                <div class="row" style="margin-left:2px">
+                        <label><strong style="color: #3087ce;">Sua mensagem: </strong>&nbsp;{{ annonce.pt }}</label>
+                </div>
+                <br>
+                <div class="row" style="margin-left:2px">
+                        <label><strong style="color: #3087ce;">Il tuo messaggio: </strong>&nbsp;{{ annonce.it }}</label>
+                </div>
+                <br>
+                <div class="row" style="margin-left:2px">
+                        <label><strong style="color: #3087ce;">ваше сообщение: </strong>&nbsp;{{ annonce.ru }}</label>
+                </div>
+                <br>
+                <div class="row" style="margin-left:2px">
+                        <label><strong style="color: #3087ce;">Deine Nachricht: </strong>&nbsp;{{ annonce.de }}</label>
+                </div>
+                <br>
+                <div class="row" style="margin-left:2px">
+                        <label><strong style="color: #3087ce;">你的信息: </strong>&nbsp;{{ annonce.zh }}</label>
+                </div>
+                <br>
+                <div class="row" style="margin-left:2px">
+                        <label><strong style="color: #3087ce;">: رسالتك  </strong>&nbsp;{{ annonce.ar }}</label>
+                </div>
+        </div>
+    </div>
+
+    <!--l'affichage du fichier selon le type-->
+    {% if annonce.type == 'Image' or annonce.type == 'Video' or annonce.type == 'PDF' %}
+    <div class="file-display-container">
+    {% if annonce.type == 'Image' %}
+                        <img src="{{ asset(annonce.url) }}" alt="Image" style="width:350px;height:350px;">
+                    {% elseif annonce.type == 'Video' %}
+                        <video controls style="width:350px;height:300px;">
+                            <source src="{{ asset(annonce.url) }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    {% elseif annonce.type == 'PDF' %}
+                        <embed src="{{ asset(annonce.url) }}" type="application/pdf" width="350px" height="350px" />
+                    {% else %}
+                        <a href="{{ asset(annonce.url) }}" target="_blank">Télécharger le fichier</a>
+                    {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Dimensions modal -->
+<div class="modal fade" id="visualisationmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+   <div class="modal-dialog  modal-md" style="width:600px" role="document">
+      <div class="modal-content">
+    
+ 
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <div class="col-md-4">
+            <h4 style="line-height: 3;" class="modal-title" id="myModalLabel">Pré-visualisation   </h4>
+            </div>
+                  
+        </div>
+      <div class="modal-body">
+
+      <div class="form-group ">
+
+            <img src="{{ asset('images/aaa.png') }}"  class="frame">
+            <img src="{{ asset('images/etablissement/34b2a7bc7d0b876bf0352e96319ca088.jpg') }}" 
+                class="background-image">
+    </div>
+
+
+    </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Fermer</button>
+      </div>
+     
+    </div>
+  </div>
+</div>
+
+
+
+
+</div>
+
+
+
+<!--script pour laffichage des champs de taille, police et style du message-->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var annonceType = "{{ annonce.type }}";
+        
+        if (annonceType === 'Message') {
+            document.getElementById('font-info').style.display = 'block';
+            document.getElementById('size-style').style.display = 'block';
+            document.getElementById('translation').style.display = 'block';
+        } else {
+            document.getElementById('font-info').style.display = 'none';
+            document.getElementById('size-style').style.display = 'none';
+            document.getElementById('translation').style.display = 'none';
+
+        }
+    });
+</script>
+
+
+
+<!--for visualisation modal-->
+<script>
+    $(document).ready(function(){
+    $("#visualisation").click(function(){
+        $("#visualisationmodal").modal();
+       
+    });
+    });
+</script>
+
+
+
+
+{% endblock %}

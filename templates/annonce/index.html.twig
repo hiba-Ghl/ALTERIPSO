@@ -1,0 +1,140 @@
+{% extends 'home/index.html.twig' %}
+
+{% block body %}
+
+<style>
+    #div2 {
+        border-radius: 25px;
+        border: 2px solid #3087ce;
+        padding: 20px;
+        display: flex;
+        background-color: white;
+        margin: 10px -30px;
+        flex-direction: column;
+    }
+    table {
+    width: 100%;
+    border-collapse: collapse;
+    }
+    tbody {
+        display: block;
+        max-height: 350px; 
+        overflow-y: auto;
+    }
+    thead {
+    background-color: #f2f2f2;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    }
+    tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+
+    
+</style>
+
+
+<!--le title header-->
+<p id='p'></p>
+<div style="border-radius: 8px;text-align: left;margin-bottom: 10px;margin-left: -30px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
+    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+    Gestion des Annonces
+</div>
+
+<!--le bouton d'ajout-->
+<a href="{{ path('app_ajouter_annonce') }}" class="btn btn-info btn-sm" name="add" id="add" style="margin-bottom: 10px; margin-right: 5px;">
+            <i class="glyphicon glyphicon-plus"></i>
+            Ajouter Annonce
+        </a>
+<!--la barre de recherche-->
+<input id="myInput" type="text" placeholder="Search.." style="float: right; padding: 6px; border-radius: 5px;">
+
+<!--le tableau-->
+<div id="div2">
+ <table class="table table-striped table-bordered table-hover">
+    <thead> 
+
+        <tr>
+
+        <th >Nom</th>
+        <th >Type</th>
+        <th >Thème</th>
+        <th >Position</th>
+        <th >Date début</th>
+        <th >Date fin</th>
+        <th >Durée (secondes)</th>
+        <th style="width:217px">Actions</th>
+
+        </tr>
+    </thead> 
+    <tbody id="myTable">
+        {% for annonce in annonces %}
+
+            <tr class="odd gradeX" >
+
+                <td >{{annonce.nom|capitalize}}</td>
+                <td >{{annonce.type}}</td>
+                
+                <td >{{annonce.theme|capitalize}}</td>
+                <td >{{annonce.position|capitalize}}</td>
+                <td >{{annonce.datedebut}}</td>
+                <td >{{annonce.datefin}}</td>
+                <td >{{annonce.duree}}</td>
+
+                <td style="width:200px">
+                <a   data-toggle="tooltip" data-placement="top" title="Détails de l'annonce" href="{{ path('app_details_annonce', { 'id': annonce.id }) }}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-list-alt"></i></a>
+                <a   data-toggle="tooltip" data-placement="top" title="Modifier l'annonce " href="{{ path('app_modifier_annonce', { 'id': annonce.id }) }}" class="btn btn-warning btn-xs"><i class="glyphicon glyphicon-edit"></i></a>									
+                <a   data-toggle="tooltip" data-placement="top" title="Supprimer l'annonce" href="{{ path('app_supprimer_annonce', { 'id': annonce.id }) }}" class="ida btn btn-danger btn-xs" onClick="return(confirm('voullez vous vraiment supprimer cette annonce ?'));"><i class="glyphicon glyphicon-trash"></i></a>
+                <a   data-toggle="tooltip" data-placement="top" title="Journal"  href="" class=" ida btn btn-success btn-xs" ><i class="glyphicon glyphicon-list"></i></a>
+
+
+                <a   data-toggle="tooltip" data-placement="top" title="Envoyer l'annonce" id="" href="" class="ida btn btn-primary btn-xs" ><i class="glyphicon glyphicon-send"></i></a>
+
+
+
+                </td>
+            </tr>
+        {% else %}
+                <tr>
+                    <td colspan="8">No records found</td>
+                </tr>
+
+        {% endfor %}
+
+
+
+
+    </tbody>
+
+</table>
+</div>
+
+
+
+<!--Initialize tooltips for all buttons-->
+<script>
+ $(document).ready(function(){
+        
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+
+<!--pour la recherche-->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#myInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+
+    
+</script>
+
+{% endblock %}

@@ -1,32 +1,20 @@
 {% extends 'home/index.html.twig' %}
 {% block body %}
-	<style>
-		#div1 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 43px;
-			width: 1091px;
-			height: 300px;
-			margin-left: 10px;
-			margin-top: 10px;
-
-		}
-		#div2 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 20px;
-			width: 1050px;
-			height: auto;
-			margin-left: 10px;
-			margin-top: 10px;
-			background-color: white;
-		}
+<style>
+	 #div2 {
+        border-radius: 25px;
+        border: 2px solid #3087ce;
+        padding: 20px;
+        display: flex;
+        background-color: white;
+        margin: 10px -30px;
+        flex-direction: column;
+    }
 
 
 		.fileUpload {
 			position: relative;
 			overflow: hidden;
-			/* margin: 10px;*/
 		}
 		.fileUpload input.upload {
 			position: absolute;
@@ -53,7 +41,7 @@
 		.header-fixed > tbody > tr > td {
 			display: block;
 		}
-
+	
 		.header-fixed > tbody > tr:after,
 		.header-fixed > thead > tr:after {
 			content: ' ';
@@ -64,359 +52,327 @@
 
 		.header-fixed > tbody {
 			overflow-y: auto;
-			height: 400px;
+			height: 300px;
 		}
 
 		.header-fixed > tbody > tr > td,
 		.header-fixed > thead > tr > th {
-			/*width: 20%;*/
 			float: left;
+			
 		}
-	</style>
 
-
-	<div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
-		Liste  livreaudio
-	</div>
-
-	<div id="div2">
+		.table-container {
+        max-height: 400px; 
+        overflow-y: auto;
+        margin-top: 10px;
+       }
+	   
+	    thead, th {
+        background-color: #f2f2f2;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+		
+    }
 	
 
-		<input id="myInput3" type="text" placeholder="Search.." style="position: absolute;height: 35px;margin-top: -86px;border-color: #3087ce;margin-left: 777px;width: 130px;border: 2px solid;border-radius: 5px;">
-		<form
-			action="{{ path('modifier_livreaudio')}}" name="form" method="post" enctype="multipart/form-data">
+</style>
 
-			<!--<table id="" class="table table-striped header-fixed table-bordered table-hover table-checkable order-column">-->
-			<table id="liste-chaines" class="table table-striped header-fixed table-bordered table-hover table-checkable order-column">
 
+<div style="border-radius: 8px; text-align: left; margin-bottom: 10px; margin-left: -30px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 200px; padding-left: 10px;display: inline-block;">
+    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+    Liste Livre Audio
+</div>
+
+<!--le formulaire de modification d'un LivreAudio-->	
+<form action="{{ path('modifier_livreaudio')}}" name="form" method="post" enctype="multipart/form-data" onsubmit="return validateListeIpForm();">
+			<!--les boutons en haut du tableau-->
+			<button type="submit" name="valider" class="btn btn-success btn-sm" style="margin-right: 5px;" href="{{path('modifier_chaine')}}">
+				<i class="glyphicon glyphicon-floppy-disk"></i> Sauvegarder
+			</button>
+			<a name="annuler" href="{{ path('app_livreaudio') }}" class="btn btn-danger btn-sm" style="margin-right: 5px;">
+				<i class="glyphicon glyphicon-remove"></i> Annuler
+			</a>
+			<!--la barre de recherche-->
+			<input id="myInput" type="text" placeholder="Search.." style="float: right; padding: 6px; border-radius: 5px;" >
+
+		<div id="div2">
+
+		<div class="table-container">
+			<table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column">
 
 				<thead>
 
 					<tr>
-						<th style="width:150px;height: 50px;">Nom Livreaudio</th>
-						<th style="height: 50px;width:250px">Url</th>
-						<!--<th style="height: 50px;width:100px">Port</th>-->
-						<th style="height: 50px;width:200px">Catégorie </th>
-						<th style="height: 50px;width:70px">Icons</th>
-						<!--<th style="height: 50px;width:100px">Pays</th>
-						<th style="height: 50px;width:100px">Protocole</th>-->
-						<th style="height: 50px;width:70px">Actif<input type="checkbox" id="checklist"></th>
-						<th style="height: 50px;width:100px">Actions</th>
+						<th style="height: 35px;width:250px;">Nom Livre Audio</th>
+						<th style="height: 35px;width:250px">Fichier Livre Audio</th>
+						<th style="height: 35px;width:250px">Catégorie </th>
+						<th style="height: 35px;width:125px">Icons</th>
+						<th style="height: 35px;width:125px"><input type="checkbox" id="checklist" style="margin-right:10px; vertical-align: middle;" >Active</th>
+						<th style="height: 35px;width:125px">Action</th>
 
 
 					</tr>
 				</thead>
 
-				<tbody id="myTable3">
+				<tbody id="myTable"> 
 
 					{% for tele in livreaudio %}
 
 
-						<tr class="odd gradeX">
-							<td style="width:150px">
-								<label><input name='listenom[{{tele.Id}}]' type="text" value="{{tele.nom}}" class="form-control" style="font-size: 11px;"></label>
-								<label style="visibility: hidden;">{{tele.nom}}</label>
+						<tr >
+							<!--le nom-->
+							<td  style="width:250px">
+								<label><input name='listenom[{{tele.Id}}]' type="text" value="{{tele.nom|capitalize}}" class="form-control" style="font-size: 11px;width: 230px;"></label>
 							</td>
-
+							<!--le nom du fichier-->
+							<td  style="width:250px">
+								<label>
+									<input name='listeip[{{tele.Id}}]' class="form-control" value="{{tele.Ip}}" style="width: 230px;font-size: 11px;"></input>
+								</label>
+							</td>
+							<!--la categorie-->
 							<td style="width:250px">
 								<label>
-									<textarea name='listeip[{{tele.Id}}]' class="form-control" style="margin: 0px -320px 0px 0px;width: 230px;height: 45px;font-size: 11px;">{{tele.Ip}}</textarea>
-								</label>
-							</td>
-
-
-							<!--<td style="width:100px">
-								<label><input name='listeport[{{tele.Id}}]' type="text" value="{{tele.port}}" class="form-control" style="font-size: 11px;"></label>
-
-							</td>-->
-
-
-							<td style="width:200px">
-								<label>
-									<select class="form-control" name='listcatlivreaudio[{{tele.Id}}]'  style="width: 180px; font-size: 11px;" > 
-										<option selected=selected value ='{{tele.categorie.Id}}'>{{tele.categorie.nom}}</option>
-										
+									<select class="form-control" name='listcatlivreaudio[{{tele.Id}}]'  style="width: 230px; font-size: 11px;" > 
+										<option selected=selected value ='{{tele.categorie.Id}}'>{{tele.categorie.nom|capitalize }}</option>
 										 {% for a in categorielivreaudio %}      
-									  {% if a.nom == tele.categorie.nom %}
-									  
-									  {% else %}
-									  <option value ='{{a.id}}'>{{a.nom}}</option>
-									  {% endif %}
-									  {% endfor %} 
-					  
-					  
-										
+									  	{% if a.nom == tele.categorie.nom %}
+									  	{% else %}
+										<option value ='{{a.id}}'>{{a.nom|capitalize }}</option>
+										{% endif %}
+										{% endfor %} 
 									</select>
-									
-								
 								</label>
 							</td>
-
-							<td style="width:70px">
-
-
+							<!--l'icone-->
+							<td style="width:125px">
 								<div class="fileUpload " id="mainform">
 									<img id="preview-{{tele.Id}}" style="width:50px;height:50px;text-align:center" src="{{asset(tele.logo)}}" alt="..." class="img-rounded img-responsive center-block">
-									<input id="{{tele.Id}}" type="file" class="upload" name="listelogo[{{tele.Id}}]" accept=".jpg, .jpeg, .png" style="width:50px;height:50px;text-align:center"/>
-
-
+									<input id="{{tele.Id}}" type="file" class="upload" name="listelogo[{{tele.Id}}]" accept=".jpg, .jpeg, .png" style="width:50px;text-align:center"/>
 								</div>
-
-
 							</td>
 
-						
+							<!--le status active-->
 							{% set ch = ' ' %}
 							{% set chg = ' ' %}
 							{% if (tele.active) == 1 %}
 								{% set ch = 'checked' %}
 							{% endif %}
 							
-							<td style="width:70px">
-								<label><input name='listeactive[{{tele.Id}}]' type="checkbox" {{ch}} class="jpCheckbox"></label>
+							<td style="width:125px; text-align: center; vertical-align: middle;">
+								<label><input name='listeactive[{{tele.Id}}]' type="checkbox" {{ch}} class="jpCheckbox" style="height: 36.5px;"></label>
 							</td>
-
-
-							
-
-							<td style="width:120px">
-							<!--	<a data-toggle="modal" data-target="#myModal5" name="send" class="btn btn-info btn-xs">
-									<i data-toggle="tooltip" data-placement="top" title="lancer la chaîne" class="glyphicon glyphicon-play-circle"></i>
-								</a>-->
-
-								<a data-toggle="tooltip" data-placement="top" title="supprimer la chaîne" id="ida" href="{{path('supprimer_livreaudio',{'id':tele.id})}}" class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer la livreaudio : {{tele.nom}} ?')">
+							<!--l'action-->
+							<td style="width:125px; height: 68px; text-align: center; vertical-align: middle;">
+								<a data-toggle="tooltip" data-placement="top" title="supprimer la chaîne"  href="{{path('supprimer_livreaudio',{'id':tele.id})}}"  class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer le Livre Audio : {{tele.nom}} ?')">
 									<i class="glyphicon glyphicon-trash"></i>
 								</a>
-								
-
 							</td>
 						</tr>
 
 					{% endfor %}
 
 
+
+				
+
 				</tbody>
-
-
 			</table>
-			<!-- button enregistrer et annuler  -->
+		</div>
+</form>
 
-			<button type="submit" class="btn btn-success btn-sm" href="{{path('modifier_chaine')}}" style="margin-left: 495px;margin-top: -1103px;width: 130px; /*position: absolute; */background-color: #3087ce;border: 2px solid #3087ce;">
-				<i class="glyphicon glyphicon-floppy-disk"></i>Enregistrer</button>
-			<button type="button" class="btn btn-danger btn-sm" style="margin-left: 635px;margin-top: -1139px;width: 130px; /*position: absolute;*/background-color: red;border: 2px solid red;">
-				<i class="glyphicon glyphicon-remove"></i>Annuler</button>
-
-
-		</form>
-		<form action="{{ path('ajouter_livreaudio')}}" name="form" method="post" enctype="multipart/form-data" style="height: 70px;">
+<!--le formulaire d'ajout d'un LivreAudio-->
+<form action="{{ path('ajouter_livreaudio')}}" name="form" method="post" enctype="multipart/form-data" onsubmit="return validateIpForm();" style="height: 70px;">
 			<table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column">
 				<tbody style="height: auto !important;">
-					<tr class="odd gradeX" style="background-color:white;">
-						<td style="width:150px">
-							<label><input name='nom' type="text" value="" class="form-control" style="font-size: 11px;"></label>
-
+					<tr  style="background-color:white;">
+					<!--le nom-->
+						<td style="width:250px">
+							<label><input name='nom' type="text" value="" class="form-control" style="font-size: 11px;width: 230px;"></label>
 						</td>
 
-
+					<!--le nom du fichier -->
 						<td style="width:250px">
 							<label>
-								<textarea name='ip' class="form-control" style="margin: 0px -320px 0px 0px;width: 230px;height: 45px;font-size: 11px;"></textarea>
+								<input name='ip' class="form-control" style="margin: 0px -320px 0px 0px;width: 230px;height: 45px;font-size: 11px;"></input>
 							</label>
 						</td>
 
-
-						<!--<td style="width:100px">
-							<label><input name='port' type="text" value="" class="form-control" style="font-size: 11px;"></label>
-
-						</td>-->
-
-
-						<td style="width:200px">
+					<!--la categorie-->
+						<td style="width:250px">
 							<label>
-								<select class="form-control" name='catlivreaudio'  style="width: 180px; font-size: 11px;" > 
-																	
-									 {% for a in categorielivreaudio %}      
-									  <option value ='{{a.id}}'>{{a.nom}}</option>
-								  
-								  {% endfor %} 
-				  
-				  
-									
+								<select class="form-control" name='catlivreaudio'  style="width: 230px; font-size: 11px;" > 								
+									{% for a in categorielivreaudio %}      
+									  <option value ='{{a.id}}'>{{a.nom|capitalize }}</option>
+								  	{% endfor %} 
 								</select>
 							</label>
 						</td>
 
-						<td style="width:70px">
+						<!--l'icone-->
 
-
+						<td style="width:125px">
 							<div class="fileUpload " id="mainform0">
 								<img id="preview-0" style="width:50px;height:50px;text-align:center" src="{{ asset('images/no_image.png') }}" alt="..." class="img-rounded img-responsive center-block">
 								<input id="0" type="file" class="upload" name="logo" accept=".jpg, .jpeg, .png" style="width:50px;height:50px;text-align:center"/>
-
-
 							</div>
-
 
 						</td>
 
 				
-
-						<td style="width:70px">
-							<label><input name='active' type="checkbox"></label>
+						<!--le status active-->
+						<td style="width:125px; text-align: center; vertical-align: middle;">
+							<label><input name='active' type="checkbox" style="height: 36.5px;"></label>
 						</td>
 
-
-						
-
-
-						<td style="width:150px">
-
-
-							<button type="submit" data-toggle="tooltip" data-placement="top" title="Ajouter une chaîne" id="" href="{{path('ajouter_chaine')}}" class="btn btn-info btn-xs">
+						<!--l'action -->
+						<td style="width:154px; height: 68px; text-align: center; vertical-align: middle;">
+						<button type="submit" id="" href="{{path('ajouter_chaine')}}" class="btn btn-info btn-xs">
 								<i data-toggle="tooltip" data-placement="top" title="Ajouter un livre audio" class="glyphicon glyphicon-plus"></i>
 							</button>
 						</td>
 					</tr>
 				</tbody>
 			</table>
-		</form>
-	</div>
-	<br>
-	<!-- Modals -->
-	
+</form>
+
+</div>
 
 
-		<script>
-			function readURL(input) {
-if (input.files && input.files[0]) {
-var reader = new FileReader();
+<!--script de la recherche-->
+<script >
 
-reader.onload = function (e) {
-imgId = '#preview-' + $(input).attr('id');
-$(imgId).attr('src', e.target.result);
-}
-
-reader.readAsDataURL(input.files[0]);
-}
-}
-
-
-$("div#mainform input[type='file']").change(function () {
-readURL(this);
-});
-$("div#mainform0 input[type='file']").change(function () {
-readURL(this);
-});
-		</script>
-
-		<script>
-			$(document).ready(function () {
-$("#myInput3").on("keyup", function () {
-var value = $(this).val().toLowerCase();
-$("#myTable3 tr").filter(function () {
-$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-});
-});
-});
-		</script>
-		<script>
-			$(document).ready(function () {
-$('input:livreaudio').change(function () {
-if ($(this).val() === 'r_defini') {
-$(".d_defini").show();
-$("#d_fin").attr("required", "true");
-$("#d_debut").attr("required", "true");
-} else {
-$(".d_defini").hide();
-}
-});
-});
-		</script>
-		<script>
-
-			$('#checklist').click(function () { // on cherche les checkbox à l'intérieur de l'id  'magazine'
-var magazines = $("label").find(':checkbox.jpCheckbox');
-if (this.checked) { // si 'checkAll' est coché
-magazines.prop('checked', true);
-} else { // si on décoche 'checkAll'
-magazines.prop('checked', false);
-}
-});
-
-
-$('#checklistgratuite').click(function () { // on cherche les checkbox à l'intérieur de l'id  'magazine'
-var magazines = $("label").find(':checkbox.jpCheckbox2');
-if (this.checked) { // si 'checkAll' est coché
-magazines.prop('checked', true);
-} else { // si on décoche 'checkAll'
-magazines.prop('checked', false);
-}
-});
-		</script>
-
-
-	
-<script>
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                imgId = '#preview-' + $(input).attr('id');
-                $(imgId).attr('src', e.target.result);
-            }
-
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    $("div#mainform input[type='file']").change(function () {
-        readURL(this);
-    });
-    $("div#mainform0 input[type='file']").change(function () {
-        readURL(this);
-    });
-
+		
     $(document).ready(function () {
-        $("#myInput3").on("keyup", function () {
-            var value = $(this).val().toLowerCase();
-            $("#myTable3 tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        // Fonction de recherche pour filtrer les lignes du tableau
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase(); // Récupère la valeur entrée et la convertit en minuscules
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1); // Affiche uniquement les lignes qui contiennent le texte recherché
             });
         });
     });
+</script>
 
-    $(document).ready(function () {
-        $('input:livreaudio').change(function () {
-            if ($(this).val() === 'r_defini') {
-                $(".d_defini").show();
-                $("#d_fin").attr("required", "true");
-                $("#d_debut").attr("required", "true");
-            } else {
-                $(".d_defini").hide();
-            }
+
+<!--l'affichage de l'icone dès le telechargement-->
+<script>
+	function readURL(input) {
+		if (input.files && input.files[0]) {
+		var reader = new FileReader();
+
+		reader.onload = function (e) {
+		imgId = '#preview-' + $(input).attr('id');
+		$(imgId).attr('src', e.target.result);
+		}
+
+		reader.readAsDataURL(input.files[0]);
+		}
+	}
+
+
+			$("div#mainform input[type='file']").change(function () {
+			readURL(this);
+			});
+			$("div#mainform0 input[type='file']").change(function () {
+			readURL(this);
+			});
+</script>
+
+
+<!--checking les checkboxes -->
+<script>
+
+		$('#checklist').click(function () { // on cherche les checkbox à l'intérieur de l'id  'magazine'
+		var magazines = $("label").find(':checkbox.jpCheckbox');
+		if (this.checked) { // si 'checkAll' est coché
+		magazines.prop('checked', true);
+		} else { // si on décoche 'checkAll'
+		magazines.prop('checked', false);
+		}
+		});
+
+</script>
+
+<!--le control de l'extension du fichier durant l'ajout -->
+<script>
+	function validateIpForm() {
+		// Sélectionner le champ textarea avec le nom 'ip'
+		var urlInput = document.querySelector("input[name='ip']");
+		var url = urlInput.value.toLowerCase(); // Convertir l'URL en minuscules
+
+		// Liste des extensions audio autorisées
+		var audioExtensions = [".mp3", ".aac", ".wav", ".flac", ".m4a", ".ogg"];
+
+		// Vérifier si l'URL se termine par l'une des extensions autorisées
+		var isValidExtension = audioExtensions.some(function(extension) {
+			return url.endsWith(extension);
+		});
+
+		// Si l'extension n'est pas valide, afficher un message d'alerte
+		if (!isValidExtension) {
+			alert("Le fichier Livre Audio doit avoir l'une des extensions suivantes : .mp3, .aac, .wav, .flac, .m4a, .ogg");
+			return false;
+		}
+
+		// Si l'extension est valide, retourner true
+		return true;
+	}
+</script>
+
+<!--le control de l'extension du fichier durant la modification -->
+<script>
+	function validateListeIpForm() {
+    var urlInputs = document.querySelectorAll("input[name^='listeip']");
+    
+    // List of allowed audio extensions
+    var audioExtensions = [".mp3", ".aac", ".wav", ".flac", ".m4a", ".ogg"];
+    
+    for (var i = 0; i < urlInputs.length; i++) {
+        var url = urlInputs[i].value.toLowerCase(); // Convert to lowercase to avoid case sensitivity issues
+
+        // Check if the URL ends with one of the allowed extensions
+        var isValidExtension = audioExtensions.some(function(extension) {
+            return url.endsWith(extension);
         });
-    });
 
-    $('#checklist').click(function () {
-        var magazines = $("label").find(':checkbox.jpCheckbox');
-        if (this.checked) {
-            magazines.prop('checked', true);
-        } else {
-            magazines.prop('checked', false);
+        if (!isValidExtension) {
+            alert("Le Fichier Livre Audio doit avoir l'une des extensions suivantes : .mp3, .aac, .wav, .flac, .m4a, .ogg");
+            return false;
+        }
+    }
+    return true;
+	}
+</script>
+
+
+<!-- le control de la taille du fichier-->
+<script>
+  	document.querySelectorAll('input[type="file"]').forEach(function(input) {
+    input.addEventListener('change', function(event) {
+        var file = event.target.files[0];
+
+        if (file && file.size > 400 * 1024) { // 400KB = 400 * 1024 bytes
+            alert('La taille maximale du fichier est de 400 Ko. Veuillez choisir un fichier de taille plus petite');
+            event.target.value = ''; // Clear the file input
         }
     });
+	});
+</script>
 
-    $('#checklistgratuite').click(function () {
-        var magazines = $("label").find(':checkbox.jpCheckbox2');
-        if (this.checked) {
-            magazines.prop('checked', true);
-        } else {
-            magazines.prop('checked', false);
-        }
+<!-- l'initialisation des tooltips-->
+<script>
+    $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+
+    // Re-initialize tooltips after any form submit or dynamic content change
+    $("form").on("submit", function() {
+        $('[data-toggle="tooltip"]').tooltip('dispose').tooltip();
     });
+ });
 
 </script>
 
 
-	{% endblock %}
+{% endblock %}
