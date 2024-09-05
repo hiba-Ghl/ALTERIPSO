@@ -372,6 +372,37 @@ class ChambreController extends AbstractController
 
             return $this->render('chambre/message.html.twig', array('boxs' => $chambres,'ar'=>$ar));
     }
+
+
+    #[Route('/chambre/update', name: 'app_update_chambre')]
+    public function updatechambre(EntityManagerInterface $entityManager): Response
+   {
+        $request = Request::createFromGlobals();
+        $repository = $entityManager->getRepository(Chambre::class);
+        $idetablissement = $this->getUser()->getEtablissement()->getId();
+        $box = $request->get('box');
+        $queues = array();
+
+        
+       if (isset($box) and !empty($box)) {
+
+           foreach ($box as $key => $k) {
+
+               $boxs  = $repository->findById($key);
+               $chambre= $boxs[0]->getNom();
+               $queue = $idetablissement . '.' . $chambre . '.service';
+               array_push($queues,$queue);          
+                   }
+                 
+                $message = 'update_categories';  
+                $Manager = new PushRabbit();
+                $Manager->MakeRabbitCall($queues, $message);         
+                 
+           
+       }
+
+       return $this->redirectToRoute('home');
+   }
    
 
   

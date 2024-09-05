@@ -8,6 +8,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Etablissement;
 use App\Entity\Categories;
+use App\Entity\ServiceEtablissement;
+use App\Entity\Chambre;
 
 class HomeController extends AbstractController
 {
@@ -23,11 +25,16 @@ class HomeController extends AbstractController
             ['etablissement' => $etablissement],
             ['position' => 'ASC']
         );
+        $repositorys = $entityManager->getRepository(ServiceEtablissement::class);
+        $serviceetablissement  = $repositorys->findBy(['etablissement' => $etablissement]);
+        $chambres  =  $entityManager->getRepository(Chambre::class)->findBy(['etablissement' => $etablissement]);
         //var_dump($categories);die();
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
             'etablissement' => $etablissement,
             'categories' => $categories,
+            'servicebox' => $serviceetablissement,
+            'boxs' => $chambres,
         ]);
     }
 
