@@ -28,6 +28,10 @@ class HomeController extends AbstractController
         $repositorys = $entityManager->getRepository(ServiceEtablissement::class);
         $serviceetablissement  = $repositorys->findBy(['etablissement' => $etablissement]);
         $chambres  =  $entityManager->getRepository(Chambre::class)->findBy(['etablissement' => $etablissement]);
+        $serviceEtablissementRepo = $entityManager->getRepository(ServiceEtablissement::class);
+        $services = $serviceEtablissementRepo->findBy(['etablissement' => $etablissement], ['nom' => 'ASC']);
+
+        
         //var_dump($categories);die();
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
@@ -35,6 +39,8 @@ class HomeController extends AbstractController
             'categories' => $categories,
             'servicebox' => $serviceetablissement,
             'boxs' => $chambres,
+            'services' => $services,
+
         ]);
     }
 

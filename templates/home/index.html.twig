@@ -641,8 +641,14 @@ submenu.style.display = 'none';
 
 				<br><br>
 				<div class="col-md-10 backp " style="height: 650px;padding:25px">
+				{% if etablissement.type == 'video'  %}
+				{% set background='images/video2.jpg' %}
+				{% else %}
+				{% set background=asset(etablissement.background) %}
+									{# {% set background = asset('images/background.jpg') %} #}
+				{% endif %}
 
-					{% set background=asset(etablissement.background) %}
+					{# {% set background=asset(etablissement.background) %} #}
 
 					<div class="col-md-12" style="background:url('{{background}}');height: 555px;background-size: cover!important;">
 
@@ -776,10 +782,10 @@ submenu.style.display = 'none';
           </div>
         </div>     
         <div class="modal-footer">
-          <button id='btn6' data-modal-id="mcontenu" type="button" class="btn btn-primary conf "  name="contenu" <a   data-toggle="tooltip" data-placement="top" title=" Mise à jour générale"></a> Mise à jour contenu</button> 
-          <button id='btn7' data-modal-id="mtheme" type="button" class="btn btn-success conf" name="theme"  <a   data-toggle="tooltip" data-placement="top" title=" Mettre à jour les positions des catégories"></a> Mise à jour thème</button> 
+          <button id='btn6' data-modal-id="mcontenu" type="button" class="btn btn-primary conf "  name="contenu" <a   data-toggle="tooltip" data-placement="top" title=" Mise à jour générale"></a> <i class="glyphicon glyphicon-floppy-disk"></i> Mise à jour contenu</button> 
+         <!-- <button id='btn7' data-modal-id="mtheme" type="button" class="btn btn-success conf" name="theme"  <a   data-toggle="tooltip" data-placement="top" title=" Mettre à jour les positions des catégories"></a> Mise à jour thème</button> 
           <button id='btn8' data-modal-id="mservice" type="button" class="btn btn-danger conf" name="servi"  <a   data-toggle="tooltip" data-placement="top" title=" Mettre à jour tous les icones Services"></a> Mise à jour service</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+         --> <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Annuler</button>
         </div>
       </div>
     </form>
@@ -1019,7 +1025,7 @@ submenu.style.display = 'none';
 									<select class="form-control" id="backkk" name="typa">
 										<option value="images">Image Unique</option>
 										<option value="imagesmultiple">Image Multiple</option>
-										<option value="videos">Vidéo</option>
+										<option value="video">Vidéo</option>
 									</select>
 								</div>
 							</div>
@@ -1030,6 +1036,7 @@ submenu.style.display = 'none';
 									Format image : 1920 × 1080 - Type fichier : *.png ou *.jpg - Max-size : 400 Ko
 								</p>
 								<p class="alerta" style='color:red'></p>
+								
 
 								<input type="file" class="form-control-file" id="backgound" name="backgound">
 							</br>
@@ -1044,6 +1051,38 @@ submenu.style.display = 'none';
 								<input type="radio" id="service" name="type" value="service" class="typeradio">
 								<label for="service">Service</label><br>
 								{#{ render(controller('EPSOBundle:Default:boxlist5')) }#}
+								<!-- Liste des TV (initialement cachée) -->
+								<div id="tvList" style="display:none;">
+									<table class="table" border="1">
+										<thead>
+											<tr>
+												<th>Sélectionner</th>
+												<th>Chambre</th>
+												<th>IP</th>
+												<th>Service</th>
+											</tr>
+										</thead>
+										<hr>
+										<tbody>
+											{% for chambre in boxs %}
+												<tr>
+													<td><input type="checkbox" name="select_tv[]" value="{{ chambre.id }}"></td>
+													<td>{{ chambre.nom }}</td>
+													<td>{{ chambre.ip }}</td>
+													<td>{{ chambre.service.nom }}</td>
+												</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+								<!-- Liste des services (initialement cachée) -->
+								<div id="serviceList" style="display:none;">
+								 <select id="myselect" class="form-control" name="selectservices">
+									{% for s in services %}
+										<option value="{{ s.id }}">{{ s.nom|upper }}</option>
+									{% endfor %}
+								</select> 
+								</div>
 							</div>
 
 						</div>
@@ -1197,6 +1236,63 @@ $(this).prop("checked", true);
 });
 }
 });
+</script>
+<script type="text/javascript">
+
+	$(".multiple").hide();
+	$(".support").hide();
+	$(".service").hide();
+	$('#backkk').on('change', function () {
+	tt = this.value;
+	if (tt == 'video') {
+	$(".backk2").text('Format vidéo : 1920 × 1080 - Type fichier : *.Mp4 - Max-size : 60 Mo . ');
+	$(".multiple").hide();
+	} else if (tt == 'images') {
+	$(".backk2").text('Cette fonction affiche uniquement un seul fond d\'écran sur les télévisions Format image : 1920 × 1080 - Type fichier : .png ou .jpg - Max-size : 400 Ko ');
+	$(".multiple").hide();
+	} else {
+
+	$(".backk2").text(' Cette fonction permet d\'avoir differents fond d\'écran sur les télévisions  Format image : 1920 × 1080 - Type fichier : .png ou .jpg - Max-size : 400 Ko ');
+	$(".multiple").show();
+
+
+	}
+	});
+	$(document).ready(function () {
+	$('input:radio').change(function () {
+	if ($(this).val() === 'service') {
+	console.log("service");
+	$(".support").hide();
+	$(".service").show();
+	} else if ($(this).val() === 'box') {
+	console.log("box");
+	$(".support").show();
+	$(".service").hide();
+	}
+	});
+	});
+</script>
+{# pour afficher les liste caché soit de Tv ou bien de service #}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const boxRadio = document.getElementById('box');
+        const serviceRadio = document.getElementById('service');
+        const tvList = document.getElementById('tvList');
+        const serviceList = document.getElementById('serviceList');
+
+        boxRadio.addEventListener('change', function () {
+            if (boxRadio.checked) {
+                tvList.style.display = 'block';
+                serviceList.style.display = 'none';
+            }
+        });
+		  serviceRadio.addEventListener('change', function () {
+            if (serviceRadio.checked) {
+                tvList.style.display = 'none';
+                serviceList.style.display = 'block';
+            }
+        });
+    });
 </script>
 
 {% endblock %}

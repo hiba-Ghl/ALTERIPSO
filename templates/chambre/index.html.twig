@@ -223,7 +223,9 @@
 								{% elseif ( '.mp4' in box.background ) %}
 									Vidéo
 								{% else %}
-									<img style="width:50px;height:50px;text-align:center" src="{{ asset('images/'~box.background) }}" alt="..." class="img-rounded img-responsive center-block">
+																	<img style="width:50px;height:50px;text-align:center" src="{{ asset(box.background) }}"alt="..." class="img-rounded img-responsive center-block">
+
+									{# <img style="width:50px;height:50px;text-align:center" src="{{ asset('images/'~box.background) }}" alt="..." class="img-rounded img-responsive center-block"> #}
 								{% endif %}
 							</td>
 
