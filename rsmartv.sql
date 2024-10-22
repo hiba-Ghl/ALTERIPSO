@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `de` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `zh` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `backgound` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `background` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_3AF34668FF631228` (`etablissement_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
 -- Déchargement des données de la table `categories`
 --
 
-INSERT INTO `categories` (`id`, `etablissement_id`, `nom`, `titre`, `active`, `position`, `html`, `logo`, `package`, `fr`, `en`, `es`, `pt`, `it`, `ru`, `de`, `zh`, `ar`, `backgound`) VALUES
+INSERT INTO `categories` (`id`, `etablissement_id`, `nom`, `titre`, `active`, `position`, `html`, `logo`, `package`, `fr`, `en`, `es`, `pt`, `it`, `ru`, `de`, `zh`, `ar`, `background`) VALUES
 (1, 87371, 'Télevision', 'television', 0, 1, 'television.html', 'categories/4911b25f8d41d47e9ce86aceeb277bc3.png', 'television', 'Télevision', 'Television', 'Televisión', 'Televisã', 'Televisione', 'Телевидение', 'Fernsehen', '电视', 'تلفاز', 'categories/83e99b700cffed9e465d4cf3c8a361eb.png'),
 (2, 87371, 'Radio', 'Radio', 1, 2, 'Radio.html', 'categories/a546f7929cd4bc6d72407b2a479b2672.png', 'Radio', 'Radio', 'Radio', 'Radio', 'Radio', 'Radio', 'Radio', 'Radio', 'Radio', 'Radio', 'categories/77d00fa6b241792aea74c74aa3f98693.png'),
 (3, 87371, 'Service', 'Service', 0, 3, 'Service.html', 'categories/6d5ff4037194f589972103e2ad3b8d46.png', 'Service', 'Service', 'Service', 'Service', 'Service', 'Service', 'Service', 'Service', 'Service', 'Service', 'categories/467a466a5b07a0f30e152b4eda393c49.png'),

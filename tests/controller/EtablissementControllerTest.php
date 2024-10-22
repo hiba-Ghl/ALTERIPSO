@@ -47,7 +47,7 @@ class EtablissementControllerTest extends WebTestCase
 
     //     // Simuler la requête avec un fichier et les paramètres de type et d'affectation
     //     $client->request('POST', '/modifierbackground', [], [
-    //         'backgound' => $file,
+    //         'background' => $file,
     //     ], [
     //         'type' => 'images',
     //         'typa' => 'images',
@@ -89,7 +89,7 @@ class EtablissementControllerTest extends WebTestCase
          ->willReturn($etablissement);
 
     // Injection dans la requête
-    $client->request('POST', '/modifierbackground', [], ['backgound' => $file], [
+    $client->request('POST', '/modifierbackground', [], ['background' => $file], [
         'CONTENT_TYPE' => 'multipart/form-data',
     ]);
 

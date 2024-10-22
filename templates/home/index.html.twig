@@ -642,7 +642,7 @@ submenu.style.display = 'none';
 				<br><br>
 				<div class="col-md-10 backp " style="height: 650px;padding:25px">
 				{% if etablissement.type == 'video'  %}
-				{% set background='images/video2.jpg' %}
+				{% set background='images/videoBAckground.png' %}
 				{% else %}
 				{% set background=asset(etablissement.background) %}
 									{# {% set background = asset('images/background.jpg') %} #}
@@ -700,12 +700,15 @@ submenu.style.display = 'none';
 						<div class="col-sm-12">
 
 							<div class="row">
+								<div style="border-radius: 4px;text-align: left;color: white;font-style: oblique;font-size: 20px;background-color: #3e9fb591;width: 250px;padding-left: 10px;">
+										Menu fixe Centré :
+								</div>
 								{% for categorie in categories %}
 									{% set ch = ' ' %}
 									{% if (categorie.active == 1) %}
 										{% set ch = 'checked' %}
 									{% endif %}
-
+									{% if (categorie.typemenu == 'centre') %}
 									<div class="col-sm-1" style="margin-right: 10px;">
 										<div style="margin-top: 5px; width: 80px; height: 80px; margin-left: 5px; position: relative;">
 											<div class="cog" style="position: absolute; padding: 3px;">
@@ -715,6 +718,8 @@ submenu.style.display = 'none';
 
 												<input name="cat[{{categorie.Id}}]" class="caf" style="width: 100%;" type="checkbox" {{ch}}>
 											</div>
+											
+
 											<img src="{{asset(categorie.logo)}}" style="width: 80px; height: 80px; border-radius: 9px;">
 											<div class="caption">
 												<a href="categories/{{categorie.Id}}">
@@ -723,6 +728,38 @@ submenu.style.display = 'none';
 											</div>
 										</div>
 									</div>
+									{% endif %}
+								{% endfor %}
+
+								<div style="border-radius: 4px;text-align: left;color: white;font-style: oblique;font-size: 20px;background-color: #3e9fb591;width: 250px;padding-left: 10px;">
+										Menu déroulant à gauche :
+									</div>
+								{% for categorie in categories %}
+									{% set ch = ' ' %}
+									{% if (categorie.active == 1) %}
+										{% set ch = 'checked' %}
+									{% endif %}
+									{% if (categorie.typemenu == 'gauche') %}
+									<div class="col-sm-1" style="margin-right: 10px;">
+										<div style="margin-top: 5px; width: 80px; height: 80px; margin-left: 5px; position: relative;">
+											<div class="cog" style="position: absolute; padding: 3px;">
+												<button data-toggle="modal" data-target="#changeposition{{categorie.id}}" style="background-color: #f9f9f9; color: #333; border-width: 0px;" type="button" class="btn btn-default btn-xs">
+													<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+												</button>
+
+												<input name="cat[{{categorie.Id}}]" class="caf" style="width: 100%;" type="checkbox" {{ch}}>
+											</div>
+											
+
+											<img src="{{asset(categorie.logo)}}" style="width: 80px; height: 80px; border-radius: 9px;">
+											<div class="caption">
+												<a href="categories/{{categorie.Id}}">
+													<label name="titre" class="center-block" style="margin-top: -34px; font-size: 11px; color: white; text-align: center;">{{  categorie.titre|capitalize  }}</label>
+												</a>
+											</div>
+										</div>
+									</div>
+									{% endif %}
 								{% endfor %}
 							</div>
 
@@ -911,6 +948,16 @@ submenu.style.display = 'none';
 									</div>
 								</div>
 
+								<div class="form-group">
+									<label for="package" class="col-lg-2 control-label">Type menu</label>
+									<div class="col-lg-10">
+										<select id="typemenu" name="typemenu" class="form-control">
+											<option value="centre">Centre</option>
+											<option value="gauche">Gauche</option>
+										</select>
+									</div>
+								</div>
+
 								<br>
 								<strong>Média
 								</strong>
@@ -923,9 +970,9 @@ submenu.style.display = 'none';
 									</div>
 								</div>
 								<div class="form-group">
-									<label for="backgound" class="col-lg-2 control-label">backgound</label>
+									<label for="background" class="col-lg-2 control-label">background</label>
 									<div class="col-lg-10">
-										<input type="file" class="form-control" id="backgound" name="backgound">
+										<input type="file" class="form-control" id="background" name="background">
 									</div>
 								</div>
 
@@ -1038,7 +1085,7 @@ submenu.style.display = 'none';
 								<p class="alerta" style='color:red'></p>
 								
 
-								<input type="file" class="form-control-file" id="backgound" name="backgound">
+								<input type="file" class="form-control-file" id="background" name="background">
 							</br>
 
 							<div class="multiple">

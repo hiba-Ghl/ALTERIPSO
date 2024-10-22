@@ -114,6 +114,23 @@
     
                 </div>
             </div>
+
+             <div class="form-group">
+                    <label for="typemenu" class="col-lg-2 control-label">Active</label>
+                    <div class="col-lg-10">
+    
+                        <select id="typemenu" name="typemenu" class="form-control">
+                            {% if (categorie.typemenu == 'gauche')  %}
+                            <option value="gauche">Gauche</option>
+                            <option value="centre">Centre</option>
+                            {% else  %}
+                            <option value="centre">Centre</option>
+                            <option value="gauche">Gauche</option>
+                            {% endif %}
+                        </select>
+    
+                    </div>
+                </div>
     
             <br>
             <strong>Média

@@ -50,10 +50,14 @@ class CategoriesController extends AbstractController
         $active = $request->get("active");
         $position = $request->get("position");
         $html = $request->get("html");
+        $typemenu = $request->get("typemenu");
         $categories = new Categories();
     
         $file1 = $request->files->get('logo');
         $file2 = $request->files->get('background');
+        
+//dump($file2);die();
+
     
         // Vérifiez si les fichiers ont été téléchargés
         if ($file1 && $file2) {
@@ -62,8 +66,16 @@ class CategoriesController extends AbstractController
                 $fileName2 = md5(uniqid()) . '.' . $file2->guessExtension();
     
                 // Déplacez les fichiers téléchargés vers le dossier de destination
-                $file1->move($this->getParameter('categories_directory'), $fileName1);
-                $file2->move($this->getParameter('categories_directory'), $fileName2);
+            /*    $file1->move($this->getParameter('categories_directory'), $fileName1);
+                $file2->move($this->getParameter('categories_directory'), $fileName2);*/
+                try {
+                    $file1->move($this->getParameter('categories_directory'), $fileName1);
+                    $file2->move($this->getParameter('categories_directory'), $fileName2);
+                } catch (\Exception $e) {
+                    dump($e->getMessage());
+                    die();
+                }
+                
     
                 $fileName = 'images/categories/' . $fileName1;
                 $fileNamebackground = 'images/categories/' . $fileName2;
@@ -93,6 +105,7 @@ class CategoriesController extends AbstractController
         $categories->setActive($active);
         $categories->setPosition($position);
         $categories->setHtml($html);
+        $categories->setTypemenu($typemenu);
         $categories->setPackage($package);
         $categories->setFR($FR);
         $categories->setEN($EN);
@@ -129,6 +142,7 @@ class CategoriesController extends AbstractController
         $active = $request->get("active");
         $position = $request->get("position");
         $html = $request->get("html");
+        $typemenu = $request->get("typemenu");
     
 
        $file1 = $request->files->get('logo');
@@ -176,6 +190,7 @@ class CategoriesController extends AbstractController
         $categories->setActive($active);
         $categories->setPosition($position);
         $categories->setHtml($html);
+        $categories->setTypemenu($typemenu);
         
         $categories->setPackage($package);
         $categories->setFR($FR);

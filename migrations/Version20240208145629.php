@@ -20,8 +20,8 @@ final class Version20240208145629 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        if (!$schema->getTable('categories')->hasColumn('backgound')) {
-            $this->addSql('ALTER TABLE categories ADD backgound VARCHAR(255) DEFAULT NULL');
+        if (!$schema->getTable('categories')->hasColumn('background')) {
+            $this->addSql('ALTER TABLE categories ADD background VARCHAR(255) DEFAULT NULL');
         }
         
         $this->addSql('ALTER TABLE categories 
@@ -39,6 +39,6 @@ final class Version20240208145629 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
        // $this->addSql('ALTER TABLE etablissement CHANGE id id INT AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE categories DROP backgound, CHANGE nom nom VARCHAR(255) NOT NULL, CHANGE titre titre VARCHAR(255) NOT NULL, CHANGE active active INT NOT NULL, CHANGE position position INT NOT NULL');
+        $this->addSql('ALTER TABLE categories DROP background, CHANGE nom nom VARCHAR(255) NOT NULL, CHANGE titre titre VARCHAR(255) NOT NULL, CHANGE active active INT NOT NULL, CHANGE position position INT NOT NULL');
     }
 }

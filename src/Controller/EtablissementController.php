@@ -36,7 +36,7 @@ class EtablissementController extends AbstractController
 
 
 
-    //    $file = $request->files->get('backgound');
+    //    $file = $request->files->get('background');
     //var_dump($file);die();
 
     // Vérifiez si les fichiers ont été téléchargés
@@ -66,7 +66,7 @@ class EtablissementController extends AbstractController
     public function modifierBackgroundAction(EntityManagerInterface $entityManager, Request $request)
     {
         // Récupérer les données du formulaire
-        $file = $request->files->get('backgound');
+        $file = $request->files->get('background');
         $typeAffectation = $request->get('type');
         $typeFichier = $request->get('typa');
 
