@@ -106,8 +106,11 @@ class Etablissement
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Questionnaire::class)]
     private Collection $questionnaires;
 
-    #[ORM\ManyToOne(inversedBy: 'etablissement')]
-    private ?Services $services = null;
+    
+
+    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Services::class)]
+    private Collection $services;
+
 
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: ResultatQuestionnaire::class)]
     private Collection $resultatQuestionnaires;

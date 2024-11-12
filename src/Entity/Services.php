@@ -13,8 +13,11 @@ class Services
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne]
+    
+
+    #[ORM\ManyToOne(targetEntity: Etablissement::class, inversedBy: 'services')]
     private ?Etablissement $etablissement = null;
+
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $nom = null;

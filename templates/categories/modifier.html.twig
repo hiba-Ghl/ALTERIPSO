@@ -149,7 +149,7 @@
             <td>
                 <div class="form-group"  style="margin-left: 30px;">
                     <label for="background" class="col-lg-2 control-label" >background</label>
-                    <img src="{{asset(categorie.background)}}" class="img"/>
+                    <img src="{{ categorie.background ? asset(categorie.background) : asset('images/no_image.png') }}" class="img"/>
                     <input type="file" class="form-control-file" id="background" name="background">
                 </div>
             </td>
@@ -164,7 +164,7 @@
             <strong>langues
             </strong>
     
-            <table cellspacing="10" style="width: 100%;display: flex;justify-content: space-evenly;flex-direction: row;border-spacing: 30px;"  >
+         <!--   <table cellspacing="10" style="width: 100%;display: flex;justify-content: space-evenly;flex-direction: row;border-spacing: 30px;"  >
                 <tr>
                     <td>
                         <img style="width: 30px" src=" {{asset('images/eng.png')}}">
@@ -217,7 +217,81 @@
                     </td>
                 </tr>
 
-            </table>
+            </table>-->
+
+            <div>
+            <button type="button" id="translateBtn" class="btn btn-info">Traduire la categorie</button>
+            &nbsp;&nbsp;&nbsp;
+            <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                <span><i class="glyphicon glyphicon-plus"></i></span>
+            </a>
+            <label style="margin-left: 5px;">Langues</label>
+        </div>
+        <script>
+            $(document).ready(function(){
+                $('.accordion-toggle').click(function(){
+                    $(this).find('i').toggleClass('glyphicon-plus glyphicon-minus');
+                });
+            });
+        </script>
+        <div id="collapseTwo" class="panel-collapse collapse">
+            <div class="panel-body">
+                <table class="lang-table" style="width: 100%; border-spacing: 20px;">
+                <tr>
+                    <td>
+                        <img style="width: 30px" src=" {{asset('images/eng.png')}}">
+                        <label class="control-label required" for="EN">English</label>
+                        <input style="margin-right: 150px;" type="text" id="EN" name="EN" class="form-control" value="{{categorie.en}}">
+                    </td>
+                    <td>
+                        <img style="width: 30px" src="{{asset('images/es.png')}}">
+                        <label class="control-label required" for="ES">Espagnol</label>
+                        <input style="margin-right: 150px;" type="text" id="ES" name="ES" class="form-control" value="{{categorie.es}}">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <img style="width: 30px" src=" {{asset('images/pt.png')}}">
+                        <label class="control-label required" for="PT">Portugues</label>
+                        <input type="text" id="PT" name="PT" class="form-control" value="{{categorie.pt}}">
+                    </td>
+                    <td>
+                        <img style="width: 30px" src=" {{asset('images/ita.png')}}">
+                        <label class="control-label required" for="IT">Italiano</label>
+                        <input type="text" id="IT" name="IT" class="form-control" value="{{categorie.it}}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img style="width: 30px" src=" {{asset('images/rus.png')}}">
+                        <label class="control-label required" for="RU">Russian</label>
+                        <input type="text" id="RU" name="RU" class="form-control" value="{{categorie.ru}}">
+                    </td>
+                    <td>
+                        <img style="width: 30px" src=" {{asset('images/deu.png')}}">
+                        <label class="control-label required" for="DE">Deutsch</label>
+                        <input type="text" id="DE" name="DE" class="form-control" value="{{categorie.de}}">
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td>
+                        <img style="width: 30px" src=" {{asset('images/ch.png')}}">
+                        <label class="control-label required" for="ZH">China</label>
+                        <input type="text" id="ZH" name="ZH" class="form-control" value="{{categorie.zh}}">
+                    </td>
+                    <td>
+                        <img style="width: 30px" src=" {{asset('images/ma.png')}}">
+                        <label class="control-label required" for="AR">العربية</label>
+                        <input type="text" id="AR" name="AR" class="form-control" value="{{categorie.ar}}">
+                    </td>
+                </tr>
+                </table>
+            </div>
+        </div>
+    
 
   
 
@@ -230,4 +304,38 @@
 
 </div>
 <br> <br> <br> <br>
+
+    
+    <script>
+        document.getElementById('translateBtn').addEventListener('click', function() {
+        // Récupérer la question en français
+        const questionFr = document.getElementById('nom').value;
+        
+        // Vérifier que la question n'est pas vide
+        if (questionFr.trim() === '') {
+            alert('Veuillez entrer un nom de categorie avant de le traduire.');
+            return;
+        }
+
+        // URL du service de traduction (ici Google Translate)
+        const baseUrl = 'https://translate.google.com/?sl=fr&tl=';
+        
+        // Langues pour la traduction
+        const languages = {
+            'EN': 'en', // Anglais
+            'ES': 'es', // Espagnol
+            'PT': 'pt', // Portugais
+            'IT': 'it', // Italien
+            'RU': 'ru', // Russe
+            'DE': 'de', // Allemand
+            'ZH': 'zh-CN', // Chinois
+            'AR': 'ar' // Arabe
+        };
+
+        // Ouvrir un nouvel onglet pour chaque langue
+        for (const [key, lang] of Object.entries(languages)) {
+            window.open(`${baseUrl}${lang}&text=${encodeURIComponent(questionFr)}`, '_blank');
+        }
+        });
+    </script>
 {% endblock %}

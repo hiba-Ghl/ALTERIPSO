@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Etablissement;
 use App\Entity\Categories;
+
 class CategoriesController extends AbstractController
 {
     #[Route('/categories', name: 'app_categories')]
@@ -27,15 +28,15 @@ class CategoriesController extends AbstractController
 
         if (!$categories) {
             throw $this->createNotFoundException(
-                'Aucune categorie trouvé pour id '.$id
+                'Aucune categorie trouvé pour id ' . $id
             );
         }
 
-       // return new Response('Check out this great product: '.$product->getName());
+        // return new Response('Check out this great product: '.$product->getName());
 
         // or render a template
         // in the template, print things with {{ product.name }}
-         return $this->render('categories/modifier.html.twig', ['categorie' => $categories]);
+        return $this->render('categories/modifier.html.twig', ['categorie' => $categories]);
     }
 
     #[Route('/ajoutercategories', name: 'ajoutercategories')]
@@ -43,7 +44,7 @@ class CategoriesController extends AbstractController
     {
         $user = $this->getUser();
         $etablissement = $this->getUser()->getEtablissement();
-    
+
         $request = Request::createFromGlobals();
         $nom = $request->get("nom");
         $titre = $request->get("titre");
@@ -52,42 +53,56 @@ class CategoriesController extends AbstractController
         $html = $request->get("html");
         $typemenu = $request->get("typemenu");
         $categories = new Categories();
-    
+
         $file1 = $request->files->get('logo');
         $file2 = $request->files->get('background');
-        
-//dump($file2);die();
 
-    
-        // Vérifiez si les fichiers ont été téléchargés
-        if ($file1 && $file2) {
+        //dump($file2);die();
+
+
+        // Vérifiez si au moins un des fichiers a été téléchargé
+        if ($file1 || $file2) {
             try {
-                $fileName1 = md5(uniqid()) . '.' . $file1->guessExtension();
-                $fileName2 = md5(uniqid()) . '.' . $file2->guessExtension();
-    
-                // Déplacez les fichiers téléchargés vers le dossier de destination
-            /*    $file1->move($this->getParameter('categories_directory'), $fileName1);
-                $file2->move($this->getParameter('categories_directory'), $fileName2);*/
-                try {
-                    $file1->move($this->getParameter('categories_directory'), $fileName1);
-                    $file2->move($this->getParameter('categories_directory'), $fileName2);
-                } catch (\Exception $e) {
-                    dump($e->getMessage());
-                    die();
+                if ($file1) {
+                    // Générer un nom unique pour le fichier logo
+                    $fileName1 = md5(uniqid()) . '.' . $file1->guessExtension();
+
+                    // Déplacer le fichier téléchargé vers le dossier de destination
+                    try {
+                        $file1->move($this->getParameter('categories_directory'), $fileName1);
+                        $fileName = 'images/categories/' . $fileName1;
+
+                        // Mettre à jour le logo uniquement si un fichier a été téléchargé
+                        $categories->setLogo($fileName);
+                    } catch (\Exception $e) {
+                        dump('Erreur lors du déplacement du fichier logo : ' . $e->getMessage());
+                        die();
+                    }
                 }
-                
-    
-                $fileName = 'images/categories/' . $fileName1;
-                $fileNamebackground = 'images/categories/' . $fileName2;
-    
-                $categories->setLogo($fileName);
-                $categories->setBackground($fileNamebackground);
+
+                if ($file2) {
+                    // Générer un nom unique pour le fichier background
+                    $fileName2 = md5(uniqid()) . '.' . $file2->guessExtension();
+
+                    // Déplacer le fichier téléchargé vers le dossier de destination
+                    try {
+                        $file2->move($this->getParameter('categories_directory'), $fileName2);
+                        $fileNamebackground = 'images/categories/' . $fileName2;
+
+                        // Mettre à jour le background uniquement si un fichier a été téléchargé
+                        $categories->setBackground($fileNamebackground);
+                    } catch (\Exception $e) {
+                        dump('Erreur lors du déplacement du fichier background : ' . $e->getMessage());
+                        die();
+                    }
+                }
             } catch (\Exception $e) {
                 // Gérer les erreurs de téléchargement de fichiers
                 return new Response('Erreur lors du téléchargement des fichiers : ' . $e->getMessage());
             }
         }
-    
+
+
         $package = $request->get("package");
         $FR = $nom;
         $EN = $request->get("EN");
@@ -98,7 +113,7 @@ class CategoriesController extends AbstractController
         $DE = $request->get("DE");
         $ZH = $request->get("ZH");
         $AR = $request->get("AR");
-    
+
         $categories->setEtablissement($etablissement);
         $categories->setNom($nom);
         $categories->setTitre($titre);
@@ -116,27 +131,27 @@ class CategoriesController extends AbstractController
         $categories->setDE($DE);
         $categories->setZH($ZH);
         $categories->setAR($AR);
-    
+
         $entityManager->persist($categories);
         $entityManager->flush();
-    
+
         return $this->redirectToRoute('app_home');
     }
-    
+
 
     #[Route('/categories/modifier/{id}', name: 'modifiercategories')]
     public function modifiercategories(EntityManagerInterface $entityManager, int $id): Response
     {
-        $categories = $entityManager->getRepository(categories::class)->find($id);
-
+        $categories = $entityManager->getRepository(Categories::class)->find($id);
+    
         if (!$categories) {
             throw $this->createNotFoundException(
-                'Aucune categorie trouvé pour id '.$id
+                'Aucune catégorie trouvée pour id ' . $id
             );
         }
-         
+    
         $request = Request::createFromGlobals();
-
+    
         $nom = $request->get("nom");
         $titre = $request->get("titre");
         $active = $request->get("active");
@@ -144,33 +159,41 @@ class CategoriesController extends AbstractController
         $html = $request->get("html");
         $typemenu = $request->get("typemenu");
     
-
-       $file1 = $request->files->get('logo');
-       $file2 = $request->files->get('background');
-
-       // Vérifiez si les fichiers ont été téléchargés
-       if ($file1 && $file2) {
-           // Traitez les fichiers comme vous le souhaitez
-           $fileName1 = md5(uniqid()) . '.' . $file1->guessExtension();
-           $fileName2 = md5(uniqid()) . '.' . $file2->guessExtension();
-
-           // Déplacez les fichiers téléchargés vers le dossier de destination
-           $file1->move($this->getParameter('categories_directory'), $fileName1);
-           $file2->move($this->getParameter('categories_directory'), $fileName2);
-
-           // Répondre avec un message de succès ou rediriger vers une autre page
-         //  return new Response('Fichiers téléchargés avec succès !');
-         $fileName = 'images/categories/' . $fileName1;
-         $fileNamebackground = 'images/categories/' . $fileName2;
-
-         $categories->setLogo($fileName);
-        $categories->setBackground($fileNamebackground);
-       }
-      
-
-     //  var_dump($fileName1.'    '.$fileName2);
-       // var_dump($request);
-       // die();
+        $file1 = $request->files->get('logo');
+        $file2 = $request->files->get('background');
+    
+        // Vérifiez si au moins un des fichiers a été téléchargé
+        if ($file1 || $file2) {
+            try {
+                if ($file1) {
+                    // Générer un nom unique pour le fichier logo
+                    $fileName1 = md5(uniqid()) . '.' . $file1->guessExtension();
+                    
+                    // Déplacer le fichier téléchargé vers le dossier de destination
+                    $file1->move($this->getParameter('categories_directory'), $fileName1);
+                    $fileName = 'images/categories/' . $fileName1;
+                    
+                    // Mettre à jour le logo dans la base de données
+                    $categories->setLogo($fileName);
+                }
+    
+                if ($file2) {
+                    // Générer un nom unique pour le fichier background
+                    $fileName2 = md5(uniqid()) . '.' . $file2->guessExtension();
+                    
+                    // Déplacer le fichier téléchargé vers le dossier de destination
+                    $file2->move($this->getParameter('categories_directory'), $fileName2);
+                    $fileNamebackground = 'images/categories/' . $fileName2;
+                    
+                    // Mettre à jour le background dans la base de données
+                    $categories->setBackground($fileNamebackground);
+                }
+            } catch (\Exception $e) {
+                return new Response('Erreur lors du téléchargement des fichiers : ' . $e->getMessage());
+            }
+        }
+    
+        // Mise à jour des autres champs
         $package = $request->get("package");
         $FR = $nom;
         $EN = $request->get("EN");
@@ -181,17 +204,13 @@ class CategoriesController extends AbstractController
         $DE = $request->get("DE");
         $ZH = $request->get("ZH");
         $AR = $request->get("AR");
-       
-        
-        
-        
+    
         $categories->setNom($nom);
         $categories->setTitre($titre);
         $categories->setActive($active);
         $categories->setPosition($position);
         $categories->setHtml($html);
         $categories->setTypemenu($typemenu);
-        
         $categories->setPackage($package);
         $categories->setFR($FR);
         $categories->setEN($EN);
@@ -202,15 +221,33 @@ class CategoriesController extends AbstractController
         $categories->setDE($DE);
         $categories->setZH($ZH);
         $categories->setAR($AR);
-
+    
+        // Persistance et mise à jour en base de données
         $entityManager->persist($categories);
         $entityManager->flush();
-        
-
+    
+        // Redirection après la mise à jour
         return $this->redirectToRoute('categories', [
             'id' => $categories->getId()
         ]);
     }
+    
 
 
+    #[Route('/categories/supprimer/{id}', name: 'app_supprimer_categories')]
+    public function supprimercategories(EntityManagerInterface $entityManager, int $id): Response
+    {
+        $chambre = $entityManager->getRepository(Categories::class)->find($id);
+
+        if (!$chambre) {
+            throw $this->createNotFoundException(
+                'No room found for id ' . $id
+            );
+        }
+
+        $entityManager->remove($chambre);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('home');
+    }
 }

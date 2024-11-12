@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 
-
-<html lang="en">
+<html	lang="en">
 	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="icon" type="image/x-icon" href="{{ asset('images/ler.png') }}">
-		<title>ALTER
+		<meta	charset="utf-8">
+		<meta	http-equiv="X-UA-Compatible"	content="IE=edge">
+		<meta	name="viewport"	content="width=device-width, initial-scale=1">
+		<link	rel="icon"	type="image/x-icon"	href="{{ asset('images/ler.png') }}">
+		<title>
+			ALTER
 		</title>
-		<link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
-		<link href="{{ asset('css/style.css') }}" rel="stylesheet">
-		<link href="{{ asset('css/jquery.m.toast.css') }}" rel="stylesheet">
-		<link href="{{ asset('css/ui.fancytree.min.css') }}" rel="stylesheet">
-		<link href="{{ asset('css/jsgrid-theme.min.css') }}" rel="stylesheet">
-		<link href="{{ asset('css/jsgrid.min.css') }}" rel="stylesheet">
-		
-		<script src="{{asset('javascript/jquery.min.js')}}"></script>
-		<script src="{{asset('javascript/jquery1.min.js')}}"></script>
-		<script src="{{asset('javascript/jquery-ui.min.js')}}"></script>
-		<script src="{{asset('javascript/jsgrid.min.js')}}"></script>
+		<link	href="{{ asset('css/bootstrap.css') }}"	rel="stylesheet">
+		<link	href="{{ asset('css/style.css') }}"	rel="stylesheet">
+		<link	href="{{ asset('css/jquery.m.toast.css') }}"	rel="stylesheet">
+		<link	href="{{ asset('css/ui.fancytree.min.css') }}"	rel="stylesheet">
+		<link	href="{{ asset('css/jsgrid-theme.min.css') }}"	rel="stylesheet">
+		<link	href="{{ asset('css/jsgrid.min.css') }}"	rel="stylesheet">
+
+		<script src="{{ asset('javascript/jquery.min.js') }}"></script>
+		<script src="{{ asset('javascript/jquery1.min.js') }}"></script>
+		<script src="{{ asset('javascript/jquery-ui.min.js') }}"></script>
+		<script src="{{ asset('javascript/jsgrid.min.js') }}"></script>
 		<script src="{{ asset('javascript/bootstrap.min.js') }}"></script>
 		<script src="{{ asset('javascript/metisMenu.min.js') }}"></script>
 		<script src="{{ asset('javascript/jquery.dataTables.min.js') }}"></script>
@@ -28,31 +28,33 @@
 	</head>
 	<body>
 
+		<nav	class="navbar navbar-default navbar-fixed-top">
+			<div	class="container-fluid">
 
-		<nav class="navbar navbar-default navbar-fixed-top">
-			<div class="container-fluid">
-
-				<div class="navbar-header" style="line-height: 4; margin-right: 15px;">
-					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-						<span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
+				<div	class="navbar-header"	style="line-height: 4; margin-right: 15px;">
+					<button	type="button"	class="navbar-toggle collapsed"	data-toggle="collapse"	data-target="#bs-example-navbar-collapse-1"	aria-expanded="false">
+						<span	class="sr-only">
+							Toggle navigation
+						</span>
+						<span	class="icon-bar"></span>
+						<span	class="icon-bar"></span>
+						<span	class="icon-bar"></span>
 					</button>
-					<img src="{{ asset('images/logo.png') }}" style="width: 130px;">
+					<img	src="{{ asset('images/logo.png') }}"	style="width: 130px;">
 				</div>
 
 				<!-- debut du changement -->
 
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav">
+				<div	class="collapse navbar-collapse"	id="bs-example-navbar-collapse-1">
+					<ul	class="nav navbar-nav">
 						<li>
-							<a href="{{ path('home')}}">
-								<i class="glyphicon glyphicon-home "></i>
-								ACCUEIL</a>
+							<a	href="{{ path('home') }}">
+								<i	class="glyphicon glyphicon-home "></i>
+								ACCUEIL
+							</a>
 						</li>
 
-<script>
+						<script>
 document.addEventListener("DOMContentLoaded", function() {
     var dropdowns = document.querySelectorAll('.dropdown');
 
@@ -133,423 +135,407 @@ submenu.style.display = 'none';
 							}
 						</style>
 
-						 <!-- changements -->
-		<li class="dropdown Categories">
-			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-				<i class="glyphicon glyphicon-list"></i>
-				CATEGORIES
-				<span class="caret"></span>
-			</a>
-			<ul class="dropdown-menu">
-			<!-- Application-->
-				<li class="dropdown APPLICATION">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-						
-						<i class="glyphicon glyphicon-phone"  style="margin-right: 10px;"></i>
-						APPLICATION
-						<svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-						<path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-						</svg>    
-					</a>
-					<ul class="dropdown-menu">
-						<li>
-							<a href="{{ path('app_application') }}">
-								<i class="glyphicon glyphicon-file" style="margin-right: 10px;"></i>
-								liste APPLICATION
+						<!-- changements -->
+						<li	class="dropdown Categories">
+							<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+								<i	class="glyphicon glyphicon-list"></i>
+								CATEGORIES
+								<span	class="caret"></span>
 							</a>
-						</li>
-						
-					</ul>
-				</li>
-			<!-- Charte Patient-->
-				<li class="dropdown CHARTEPATIENT">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-						<i class="glyphicon glyphicon-file" style="margin-right: 10px;"></i>
-						 CHARTE PATIENT
-					   <!-- <span class="caret"></span>-->
-					   <svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-		  <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-		</svg>    
-					</a>
-					<ul class="dropdown-menu">
-						<li>
-							<a href="{{ path('app_charte_patient') }}">
-								<i class="glyphicon glyphicon-file" style="margin-right: 10px;"></i>
-								Modifier PDF
-							</a>
-						</li>
-					<!--	<li  >
-							<a href="{{ path('home') }}">
-								<i class="glyphicon glyphicon-phone" style="margin-right: 10px;"></i>
-								Charte Patient
-							</a>
-						</li>-->
-					</ul>
-				</li>
-				<!--JEUX -->
-				<li class="dropdown JEUX">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-						<i class="glyphicon glyphicon-knight" style="margin-right: 10px;"></i>
-						JEUX
-						 <svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-		  <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-		</svg>    
-					</a>
-					<ul class="dropdown-menu">
-						<li>
-							<a href="{{ path('app_jeux') }}">
-								<i class="glyphicon glyphicon-knight" style="margin-right: 10px;"></i>
-								Liste JEUX
-							</a>
-						</li>
-					</ul>
-				</li>
-				
-						<!-- LIVRE AUDIO -->
-				<li class="dropdown LIVREAUDIO">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-						<i class="glyphicon glyphicon-equalizer" style="margin-right: 10px;"></i>
-							LIVRE AUDIO
-						<svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-						  <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-						</svg>    
-					</a>
-					<ul class="dropdown-menu">
-						<li>
-							<a href="{{ path('app_categorie_livreaudio') }}">
-								<i class="glyphicon glyphicon-folder-open" style="margin-right: 10px;"></i>
-								Catégorie LIVRE AUDIO
-							</a>
-						</li>
-						<li  >
-							<a href="{{ path('app_livreaudio') }}">
-								<i class="glyphicon glyphicon-list" style="margin-right: 10px;"></i>
-								Liste Livre audio
-							</a>
-						</li>
-					</ul>
-				</li>
-				<!-- MUSIQUE -->
-			<!--	<li class="dropdown MUSIQUE">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-						<i class="glyphicon glyphicon-music"  style="margin-right: 10px;"></i>
-						MUSIQUE
-						 <svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-		  <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-		</svg>    
-					</a>
-					<ul class="dropdown-menu">
-						<li>
-							<a href="{{ path('home') }}">
-								<i class="glyphicon glyphicon-music" style="margin-right: 10px;"></i>
-								Liste MUSIQUE
-							</a>
-						</li>
-					</ul>
-				</li>-->
-				<!-- QUESTIONNAIRE-->
-				<li class="dropdown QUESTIONNAIRE">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-						<i class="glyphicon glyphicon-pencil" style="margin-right: 10px;"></i>
-						QUESTIONNAIRE
-						 <svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-		  <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-		</svg>    
-					</a>
-					<ul class="dropdown-menu">
-					
-							<li>
-							<a href="{{ path('app_questionnaire')}}">
-								<i class="glyphicon glyphicon-pencil " style="margin-right: 10px;"></i>
-								Liste QUESTIONNAIRE
-							</a>
-						</li>
-		
-		
-						<li>
-							<a href=" {{ path('app_resultat_questionnaire')}}">
-								<i class="glyphicon glyphicon-list " style="margin-right: 10px;"></i>
-								 Resultat QUESTIONNAIRE
-							</a>
-						</li>
-					</ul>
-				</li>
-				<!-- radio-->
-				<li class="dropdown RADIO">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-						<i class="glyphicon glyphicon-equalizer" style="margin-right: 10px;"></i>
-						RADIO
-						 <svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-		  <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-		</svg>    
-					</a>
-					<ul class="dropdown-menu ">
-						<li>
-							<a href="{{ path('app_categorie_radio') }}">
-								<i class="glyphicon glyphicon-list" style="margin-right: 10px;"></i>
-								Catégories radio
-							</a>
-						</li>
-						<li >
-							<a href="{{ path('app_radio') }}">
-								<i class="glyphicon glyphicon-stats" style="margin-right: 10px;"></i>
-								Liste radio
-							</a>
-						</li>
-					</ul>
-				</li>
-				<!-- SERVICE -->
-				<li class="dropdown SERVICE">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-						<i class="glyphicon glyphicon-bell" style="margin-right: 10px;"></i>
-						SERVICE
-						 <svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-		  <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-		</svg>    
-					</a>
-					<ul class="dropdown-menu">
-						<li>
-							<a href="{{ path('app_services') }}">
-								<i class="glyphicon glyphicon-list" style="margin-right: 10px;"></i>
-								Liste Services
-							</a>
-						</li>
-						<li>
-							<a href="{{ path('service_en_chambre') }}">
-								<i class="glyphicon glyphicon-home" style="margin-right: 10px;"></i>
-								Service en chambre
-							</a>
-						</li>
-						
-					</ul>
-				</li>
-				<!-- SERVICES PAYANTS-->
-				<li class="dropdown SERVICESPAYANTS">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-						<i class="glyphicon glyphicon-euro" style="margin-right: 10px;"></i>
-						SERVICES PAYANTS 
-						 <svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-		  <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-		</svg>    
-					</a>
-					<ul class="dropdown-menu">
-						<!--<li>
-							<a href="{{ path('home') }}">
-								<i class="glyphicon glyphicon-knight" style="margin-right: 10px;"></i>
-								Services Payants
-							</a>
-						</li>-->
-						<li  >
-							<a href="{{ path('app_service_payant') }}">
-								<i class="glyphicon glyphicon-phone" style="margin-right: 10px;"></i>
-								Modifier PDF
-							</a>
-						</li>
-					</ul>
-				</li>
-				<!-- television -->
-				<li class="dropdown TELEVISION"  >   
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-				<i class="glyphicon glyphicon-blackboard" style="margin-right: 10px;"></i>
-						TÉLÉVISION
-						<svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-						<path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-						</svg>    
-					</a>
-					 <ul class="dropdown-menu">
-						<li>
-							<a href="{{ path('app_television') }}">
-								<i class="glyphicon glyphicon-list" style="margin-right: 10px;"></i>
-								Liste TÉLÉVISION
-							</a>
-						</li>
-						<li >
-							<a href="{{ path('home') }}">
-								<i class="glyphicon glyphicon-stats" style="margin-right: 10px;"></i>
-								STATISTIQUE UTILISATION CHAINE TV
-							</a>
-						</li>
-					</ul>
-					
-				</li>
-				
-				<!-- VIDEO -->
-				<li class="dropdown VIDEO">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-						<i class="glyphicon glyphicon-facetime-video" style="margin-right: 10px;"></i>
-						VIDEO
-						 <svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-		  <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-		</svg>    
-					</a>
-					<ul class="dropdown-menu">
-						<li>
-							<a href="{{ path('home') }}">
-								<i class="glyphicon glyphicon-equalizer" style="margin-right: 10px;"></i>
-								Liste video
-							</a>
-						</li>        
-					</ul>
-				</li>
-		
-				
-				
-				
-				
-				
-				<!-- VOD -->
-				<li class="dropdown VOD">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-						<i class="glyphicon glyphicon-facetime-video" style="margin-right: 10px;"></i>
-						VOD
-						 <svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-		  <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-		</svg>    
-					</a>
-					<ul class="dropdown-menu">
-						<li>
-							<a href="{{ path('app_categorie_vod') }}">
-								<i class="glyphicon glyphicon-folder-open" style="margin-right: 10px;"></i>
-								Catégorie VOD
-							</a>
-						</li>
-						<li>
-							<a href="{{ path('app_vod') }}">
-								<i class=" glyphicon glyphicon-list" style="margin-right: 10px;"></i>
-								Liste VOD
-							</a>
-						</li>
-						
-					</ul>
-				</li>
-				
-		
-		
-			</ul>
-		</li>
-		
-		
-				
+							<ul	class="dropdown-menu">
+								<!-- Application-->
+								<li	class="dropdown APPLICATION">
+									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
 
-						<li class="dropdown ENREGISTREMENT">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-								<i class="glyphicon glyphicon-inbox "></i>
-								ENREGISTREMENT
-								<span class="caret"></span>
-							</a>
-							<ul class="dropdown-menu">
+										<i	class="glyphicon glyphicon-phone"	style="margin-right: 10px;"></i>
+										APPLICATION
+										<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
+											<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+										</svg>
+									</a>
+									<ul	class="dropdown-menu">
+										<li>
+											<a	href="{{ path('app_application') }}">
+												<i	class="glyphicon glyphicon-file"	style="margin-right: 10px;"></i>
+												liste APPLICATION
+											</a>
+										</li>
 
-
-								<li>
-									<a href="{{path('app_chambre')}}">
-										<i class="glyphicon glyphicon-inbox "></i>
-										Support connecté</a>
+									</ul>
+								</li>
+								<!-- Charte Patient-->
+								<li	class="dropdown CHARTEPATIENT">
+									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+										<i	class="glyphicon glyphicon-file"	style="margin-right: 10px;"></i>
+										CHARTE PATIENT
+										<!-- <span class="caret"></span>-->
+										<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
+											<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+										</svg>
+									</a>
+									<ul	class="dropdown-menu">
+										<li>
+											<a	href="{{ path('app_charte_patient') }}">
+												<i	class="glyphicon glyphicon-file"	style="margin-right: 10px;"></i>
+												Modifier PDF
+											</a>
+										</li>
+									<!--	<li  >
+										<a href="{{ path('home') }}">
+										<i class="glyphicon glyphicon-phone" style="margin-right: 10px;"></i>
+										Charte Patient
+										</a>
+									</li>-->
+									</ul>
+								</li>
+								<!--JEUX -->
+								<li	class="dropdown JEUX">
+									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+										<i	class="glyphicon glyphicon-knight"	style="margin-right: 10px;"></i>
+										JEUX
+										<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
+											<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+										</svg>
+									</a>
+									<ul	class="dropdown-menu">
+										<li>
+											<a	href="{{ path('app_jeux') }}">
+												<i	class="glyphicon glyphicon-knight"	style="margin-right: 10px;"></i>
+												Liste JEUX
+											</a>
+										</li>
+									</ul>
 								</li>
 
+								<!-- LIVRE AUDIO -->
+								<li	class="dropdown LIVREAUDIO">
+									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+										<i	class="glyphicon glyphicon-equalizer"	style="margin-right: 10px;"></i>
+										LIVRE AUDIO
+										<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
+											<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+										</svg>
+									</a>
+									<ul	class="dropdown-menu">
+										<li>
+											<a	href="{{ path('app_categorie_livreaudio') }}">
+												<i	class="glyphicon glyphicon-folder-open"	style="margin-right: 10px;"></i>
+												Catégorie LIVRE AUDIO
+											</a>
+										</li>
+										<li>
+											<a	href="{{ path('app_livreaudio') }}">
+												<i	class="glyphicon glyphicon-list"	style="margin-right: 10px;"></i>
+												Liste Livre audio
+											</a>
+										</li>
+									</ul>
+								</li>
+								<!-- MUSIQUE -->
+								<!--	<li class="dropdown MUSIQUE">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+									<i class="glyphicon glyphicon-music"  style="margin-right: 10px;"></i>
+									MUSIQUE
+									<svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+									<path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+									</svg>
+									</a>
+									<ul class="dropdown-menu">
+									<li>
+									<a href="{{ path('home') }}">
+									<i class="glyphicon glyphicon-music" style="margin-right: 10px;"></i>
+									Liste MUSIQUE
+									</a>
+									</li>
+									</ul>
+								</li>-->
+								<!-- QUESTIONNAIRE-->
+									<li	class="dropdown QUESTIONNAIRE">	<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+										<i	class="glyphicon glyphicon-pencil"	style="margin-right: 10px;"></i>
+										QUESTIONNAIRE
+										<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
+											<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+										</svg>
+									</a>
+									<ul	class="dropdown-menu">
 
-								<li>
-									<a href=" {{path('app_envoyer_message_chambre')}}">
-										<i class="glyphicon glyphicon-comment "></i>
-										Messages personnels</a>
+										<li>
+											<a	href="{{ path('app_questionnaire') }}">
+												<i	class="glyphicon glyphicon-pencil "	style="margin-right: 10px;"></i>
+												Liste QUESTIONNAIRE
+											</a>
+										</li>
+
+										<li>
+											<a	href=" {{ path('app_resultat_questionnaire') }}">
+												<i	class="glyphicon glyphicon-list "	style="margin-right: 10px;"></i>
+												Resultat QUESTIONNAIRE
+											</a>
+										</li>
+									</ul>
+								</li>
+								<!-- radio-->
+								<li	class="dropdown RADIO">
+									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+										<i	class="glyphicon glyphicon-equalizer"	style="margin-right: 10px;"></i>
+										RADIO
+										<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
+											<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+										</svg>
+									</a>
+									<ul	class="dropdown-menu ">
+										<li>
+											<a	href="{{ path('app_categorie_radio') }}">
+												<i	class="glyphicon glyphicon-list"	style="margin-right: 10px;"></i>
+												Catégories radio
+											</a>
+										</li>
+										<li>
+											<a	href="{{ path('app_radio') }}">
+												<i	class="glyphicon glyphicon-stats"	style="margin-right: 10px;"></i>
+												Liste radio
+											</a>
+										</li>
+									</ul>
+								</li>
+								<!-- SERVICE -->
+								<li	class="dropdown SERVICE">
+									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+										<i	class="glyphicon glyphicon-bell"	style="margin-right: 10px;"></i>
+										SERVICE
+										<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
+											<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+										</svg>
+									</a>
+									<ul	class="dropdown-menu">
+										<li>
+											<a	href="{{ path('app_services') }}">
+												<i	class="glyphicon glyphicon-list"	style="margin-right: 10px;"></i>
+												Liste Services
+											</a>
+										</li>
+										<li>
+											<a	href="{{ path('service_en_chambre') }}">
+												<i	class="glyphicon glyphicon-home"	style="margin-right: 10px;"></i>
+												Service en chambre
+											</a>
+										</li>
+
+									</ul>
+								</li>
+								<!-- SERVICES PAYANTS-->
+								<li	class="dropdown SERVICESPAYANTS">
+									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+										<i	class="glyphicon glyphicon-euro"	style="margin-right: 10px;"></i>
+										SERVICES PAYANTS
+										<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
+											<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+										</svg>
+									</a>
+									<ul	class="dropdown-menu">
+										<!--<li>
+											<a href="{{ path('home') }}">
+											<i class="glyphicon glyphicon-knight" style="margin-right: 10px;"></i>
+											Services Payants
+											</a>
+										</li>-->
+										<li>
+											<a	href="{{ path('app_service_payant') }}">
+												<i	class="glyphicon glyphicon-phone"	style="margin-right: 10px;"></i>
+												Modifier PDF
+											</a>
+										</li>
+									</ul>
+								</li>
+								<!-- television -->
+								<li	class="dropdown TELEVISION">
+									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+										<i	class="glyphicon glyphicon-blackboard"	style="margin-right: 10px;"></i>
+										TÉLÉVISION
+										<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
+											<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+										</svg>
+									</a>
+									<ul	class="dropdown-menu">
+										<li>
+											<a	href="{{ path('app_television') }}">
+												<i	class="glyphicon glyphicon-list"	style="margin-right: 10px;"></i>
+												Liste TÉLÉVISION
+											</a>
+										</li>
+										<li>
+											<a	href="{{ path('home') }}">
+												<i	class="glyphicon glyphicon-stats"	style="margin-right: 10px;"></i>
+												STATISTIQUE UTILISATION CHAINE TV
+											</a>
+										</li>
+									</ul>
+
 								</li>
 
+								<!-- VIDEO -->
+								<li	class="dropdown VIDEO">
+									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+										<i	class="glyphicon glyphicon-facetime-video"	style="margin-right: 10px;"></i>
+										VIDEO
+										<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
+											<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+										</svg>
+									</a>
+									<ul	class="dropdown-menu">
+										<li>
+											<a	href="{{ path('home') }}">
+												<i	class="glyphicon glyphicon-equalizer"	style="margin-right: 10px;"></i>
+												Liste video
+											</a>
+										</li>
+									</ul>
+								</li>
+
+								<!-- VOD -->
+								<li	class="dropdown VOD">
+									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+										<i	class="glyphicon glyphicon-facetime-video"	style="margin-right: 10px;"></i>
+										VOD
+										<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
+											<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+										</svg>
+									</a>
+									<ul	class="dropdown-menu">
+										<li>
+											<a	href="{{ path('app_categorie_vod') }}">
+												<i	class="glyphicon glyphicon-folder-open"	style="margin-right: 10px;"></i>
+												Catégorie VOD
+											</a>
+										</li>
+										<li>
+											<a	href="{{ path('app_vod') }}">
+												<i	class=" glyphicon glyphicon-list"	style="margin-right: 10px;"></i>
+												Liste VOD
+											</a>
+										</li>
+
+									</ul>
+								</li>
 
 							</ul>
 						</li>
 
-
-						<li class="ANNONCES">
-							<a href="{{ path('app_annonce')}}">
-								<i class="glyphicon glyphicon-certificate"></i>
-								ANNONCES</a>
-						</li>
-
-
-						<li class="dropdown APPLICATION">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-								<i class="glyphicon glyphicon-phone "></i>
-								R-APPLICATION
-								<span class="caret"></span>
+						<li	class="dropdown ENREGISTREMENT">
+							<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+								<i	class="glyphicon glyphicon-inbox "></i>
+								ENREGISTREMENT
+								<span	class="caret"></span>
 							</a>
-							<ul class="dropdown-menu">
+							<ul	class="dropdown-menu">
 
 								<li>
-									<a href="{{path('app_config_mobile')}} ">
-										<i class="glyphicon glyphicon-phone "></i>
-										R-MOBILE</a>
+									<a	href="{{ path('app_chambre') }}">
+										<i	class="glyphicon glyphicon-inbox "></i>
+										Support connecté
+									</a>
 								</li>
 
+								<li>
+									<a	href=" {{ path('app_envoyer_message_chambre') }}">
+										<i	class="glyphicon glyphicon-comment "></i>
+										Messages personnels
+									</a>
+								</li>
+
+							</ul>
+						</li>
+
+						<li	class="ANNONCES">
+							<a	href="{{ path('app_annonce') }}">
+								<i	class="glyphicon glyphicon-certificate"></i>
+								ANNONCES
+							</a>
+						</li>
+
+						<li	class="dropdown APPLICATION">
+							<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+								<i	class="glyphicon glyphicon-phone "></i>
+								R-APPLICATION
+								<span	class="caret"></span>
+							</a>
+							<ul	class="dropdown-menu">
 
 								<li>
-									<a href="{{path('home')}}">
-										<i class="glyphicon glyphicon-phone "></i>
+									<a	href="{{ path('app_config_mobile') }} ">
+										<i	class="glyphicon glyphicon-phone "></i>
+										R-MOBILE
+									</a>
+								</li>
+
+								<li>
+									<a	href="{{ path('home') }}">
+										<i	class="glyphicon glyphicon-phone "></i>
 										R-REMOTE
 									</a>
 								</li>
 
-
 							</ul>
 						</li>
 
 					</ul>
 
+					<ul	class="nav navbar-nav navbar-right">
 
-					<ul class="nav navbar-nav navbar-right">
-
-
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-								<i class="glyphicon glyphicon-user "></i>
+						<li	class="dropdown">
+							<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+								<i	class="glyphicon glyphicon-user "></i>
 								{{ app.user.username }}
 								(
-								{{app.user.etablissement.id}}
+								{{ app.user.etablissement.id }}
 								)
-								<span class="caret"></span>
+								<span	class="caret"></span>
 							</a>
-							<ul class="dropdown-menu">
+							<ul	class="dropdown-menu">
 								<li>
-									<a href="{{path('app_profil')}}">
-										<i class="glyphicon glyphicon-user "></i>
-										Profil</a>
+									<a	href="{{ path('app_profil') }}">
+										<i	class="glyphicon glyphicon-user "></i>
+										Profil
+									</a>
 								</li>
 
 								<li>
-									<a href="{{path('home')}}">
-										<i class="glyphicon glyphicon-modal-window "></i>
-										Gestion des Profils</a>
+									<a	href="{{ path('home') }}">
+										<i	class="glyphicon glyphicon-modal-window "></i>
+										Gestion des Profils
+									</a>
 								</li>
 
-
 								<li>
-									<a href="{{path('app_etablissement')}}">
-										<i class="glyphicon glyphicon-flag "></i>
-										Infos établissement</a>
+									<a	href="{{ path('app_etablissement') }}">
+										<i	class="glyphicon glyphicon-flag "></i>
+										Infos établissement
+									</a>
 								</li>
 								<li>
-									<a href="http://localhost:1111/r-import/Page_accueil.php?etab={{app.user.etablissement.id}}" target="_blank">
-										<i class="glyphicon glyphicon-import "></i>
-										Import données</a>
+									<a	href="http://localhost:1111/r-import/Page_accueil.php?etab={{ app.user.etablissement.id }}"	target="_blank">
+										<i	class="glyphicon glyphicon-import "></i>
+										Import données
+									</a>
 								</li>
-								<li role="separator" class="divider"></li>
+								<li	role="separator"	class="divider"></li>
 								<li>
-									<a href="{{path('app_logout')}}">
-										<i class="glyphicon glyphicon-log-out "></i>
-										Deconnexion</a>
+									<a	href="{{ path('app_logout') }}">
+										<i	class="glyphicon glyphicon-log-out "></i>
+										Deconnexion
+									</a>
 								</li>
-
 
 							</ul>
 						</li>
 						<li>
-							<a href="{{ path('app_logout') }}" data-toggle="tooltip" data-placement="top" title="Déconnexion">
-								<i class="glyphicon glyphicon-off"></i>
-								<!-- Il n'y a pas besoin du caractère ">" ici -->
+							<a	href="{{ path('app_logout') }}"	data-toggle="tooltip"	data-placement="top"	title="Déconnexion">
+								<i	class="glyphicon glyphicon-off"></i>
+							<!-- Il n'y a pas besoin du caractère ">" ici -->
 							</a>
 						</li>
 
-
 					</ul>
-
 
 				</div>
 
@@ -559,149 +545,141 @@ submenu.style.display = 'none';
 	</body>
 
 </html>
-<br><br>
-<div class="container" style="margin-top:70px">
+<br>
+<br>
+<div	class="container"	style="margin-top:70px">
 
 	{% block body %}
-	
-		<div class="row">
-			<form action="{{ path('modifierhome')}}" name="form" method="post" enctype="multipart/form-data">
 
+		<div	class="row">
+			<form	action="{{ path('modifierhome') }}"	name="form"	method="post"	enctype="multipart/form-data">
 
-				<div class="col-md-2 xith">
+				<div	class="col-md-2 xith">
 
+					<div	class="form-group">
 
-					<div class="form-group">
-
-
-						<button type="submit" id="form_save" name="form[save]" class="btn-primary btn">
-							<i class="glyphicon glyphicon-floppy-disk"></i>
-							Enregistrer</button>
+						<button	type="submit"	id="form_save"	name="form[save]"	class="btn-primary btn">
+							<i	class="glyphicon glyphicon-floppy-disk"></i>
+							Enregistrer
+						</button>
 					</div>
 
-					<div class="form-group ">
+					<div	class="form-group ">
 
-						<a style="width: 100%" href="" id="" name="send" class="btn-danger btn  " data-toggle="modal" data-target="#update_categories">
-							<i class="glyphicon glyphicon-send"></i>
+						<a	style="width: 100%"	href=""	id=""	name="send"	class="btn-danger btn  "	data-toggle="modal"	data-target="#update_categories">
+							<i	class="glyphicon glyphicon-send"></i>
 							Mise à jour
 						</a>
 
-						
 					</div>
 
 					<!--<div class="form-group">
-															
-																	<button type="button" id="clre" class="btn-warning btn">
-																		<i class="glyphicon glyphicon-repeat"></i>
-																		Décocher tout
-																	</button>
-																</div>
-															
-																<div class="form-group">
-															
-																	<button type="button" id="alla" class="btn-success btn">
-																		<i class="glyphicon glyphicon-check"></i>
-																		Cocher tout
-																	</button>
-																</div>-->
-					<div class="form-group">
+						
+						<button type="button" id="clre" class="btn-warning btn">
+						<i class="glyphicon glyphicon-repeat"></i>
+						Décocher tout
+						</button>
+						</div>
+						
+						<div class="form-group">
+						
+						<button type="button" id="alla" class="btn-success btn">
+						<i class="glyphicon glyphicon-check"></i>
+						Cocher tout
+						</button>
+					</div>-->
+					<div	class="form-group">
 
-
-						<a style="width: 100%" href="" id="" name="send" class="btn-info btn  " data-toggle="modal" data-target="#backa">
-							<i class="glyphicon glyphicon-picture"></i>
+						<a	style="width: 100%"	href=""	id=""	name="send"	class="btn-info btn  "	data-toggle="modal"	data-target="#backa">
+							<i	class="glyphicon glyphicon-picture"></i>
 							Fond d'écran
 						</a>
 
-
 					</div>
 					<!--<div class="form-group ">
-															
-																	<button type="button" class="btn-default btn V1" id="myBtnTheme" style="width: 100%;background-color: #046380;border: none;">
-																		<i class="glyphicon glyphicon-leaf"></i>
-																		Mise en page
-																	</button>
-															
-															
-																</div>
-																<div class="form-group ">
-															
-																	<button type="button" class="btn-default btn" id="myBtn1" style="width: 100%">
-																		<i class="glyphicon glyphicon-wrench"></i>
-																		Maintenance</button>
-																</div>-->
+						
+						<button type="button" class="btn-default btn V1" id="myBtnTheme" style="width: 100%;background-color: #046380;border: none;">
+						<i class="glyphicon glyphicon-leaf"></i>
+						Mise en page
+						</button>
+						
+						
+						</div>
+						<div class="form-group ">
+						
+						<button type="button" class="btn-default btn" id="myBtn1" style="width: 100%">
+						<i class="glyphicon glyphicon-wrench"></i>
+						Maintenance</button>
+					</div>-->
 
-					<div class="form-group ">
+					<div	class="form-group ">
 
-						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-							<i class="glyphicon glyphicon-wrench"></i>
-							Ajouter catégorie</button>
+						<button	type="button"	class="btn btn-primary"	data-toggle="modal"	data-target="#exampleModal">
+							<i	class="glyphicon glyphicon-wrench"></i>
+							Ajouter catégorie
+						</button>
 					</div>
 
 				</div>
 
-				<br><br>
-				<div class="col-md-10 backp " style="height: 650px;padding:25px">
-				{% if etablissement.type == 'video'  %}
-				{% set background='images/videoBAckground.png' %}
-				{% else %}
-				{% set background=asset(etablissement.background) %}
-									{# {% set background = asset('images/background.jpg') %} #}
-				{% endif %}
+				<br>
+				<br>
+				<div	class="col-md-10 backp "	style="height: 650px;padding:25px">
+					{% if etablissement.type == 'video' %}
+						{% set background='images/videoBAckground.png' %}
+					{% else %}
+						{% set background=asset(etablissement.background) %}
+					{# {% set background = asset('images/background.jpg') %} #}
+					{% endif %}
 
 					{# {% set background=asset(etablissement.background) %} #}
 
-					<div class="col-md-12" style="background:url('{{background}}');height: 555px;background-size: cover!important;">
+					<div	class="col-md-12"	style="background:url('{{ background }}');height: 555px;background-size: cover!important;">
 
-
-						<div class="col-md-12" style="background-color: rgba(160, 160, 160, 0.25);height: 80px;margin-bottom: 15px">
+						<div	class="col-md-12"	style="background-color: rgba(160, 160, 160, 0.25);height: 80px;margin-bottom: 15px">
 
 							{% set ch=' ' %}
 							{% if (etablissement.logoactive == 1 ) %}
 								{% set ch='checked' %}
 							{% endif %}
 
-
-							<div class="col-sm-5" style="padding: 0px ; margin-top: 10px;">
-								<a href="{{ path('home')}}">
-									<h4 style="color: #fff;text-shadow: 2px 2px #000000;"><input
-										name="logoactive" class="" type="checkbox" {{ch}}>
+							<div	class="col-sm-5"	style="padding: 0px ; margin-top: 10px;">
+								<a	href="{{ path('home') }}">
+									<h4	style="color: #fff;text-shadow: 2px 2px #000000;">
+										<input	name="logoactive"	class=""	type="checkbox"	{{ ch }}>
 									<!--Logo de votre société-->
 									</h4>
-									<img alt="" src="{{asset(etablissement.logo)}}" style="width: 150px;margin-top: -41px;    height: 60px;float: left;margin-right: 8px">
-
+									<img	alt=""	src="{{ asset(etablissement.logo) }}"	style="width: 150px;margin-top: -41px;    height: 60px;float: left;margin-right: 8px">
 
 								</a>
 							</div>
 
+							<div	id="meteo"	class="col-sm-6 pull-right">
+								{% set ch=' ' %}
+								{% if (etablissement.meteoactive == 1 ) %}
+									{% set ch='checked' %}
+								{% endif %}
 
-							<div id="meteo" class="col-sm-6 pull-right">
-							{% set ch=' ' %}
-							{% if (etablissement.meteoactive == 1 ) %}
-								{% set ch='checked' %}
-							{% endif %}
+								<a	href="{{ path('home') }}">
 
+									<div	id="meteo2"	class="col-sm-6 pull-right"></div>
 
-								<a href="{{ path('home')}}">
-
-									<div id="meteo2" class="col-sm-6 pull-right"></div>
-
-									<div id="meteo3" class="col-sm-12 pull-right"></div>
+									<div	id="meteo3"	class="col-sm-12 pull-right"></div>
 
 								</a>
-								<h4 style="color: #fff;text-shadow: 2px 2px #000000;"><input
-									name="meteoactive" class="" type="checkbox" {{ch}} style="margin-left: 255px;position: absolute !important;">
+								<h4	style="color: #fff;text-shadow: 2px 2px #000000;">
+									<input	name="meteoactive"	class=""	type="checkbox"	{{ ch }}	style="margin-left: 255px;position: absolute !important;">
 								<!--Logo de votre société-->
 								</h4>
 							</div>
 
-
 						</div>
 
-						<div class="col-sm-12">
+						<div	class="col-sm-12">
 
-							<div class="row">
-								<div style="border-radius: 4px;text-align: left;color: white;font-style: oblique;font-size: 20px;background-color: #3e9fb591;width: 250px;padding-left: 10px;">
-										Menu fixe Centré :
+							<div	class="row">
+								<div	style="border-radius: 4px;text-align: left;color: #191554;font-style: oblique;font-size: 20px;width: 250px;padding-left: 10px;">
+									Menu fixe Centré :
 								</div>
 								{% for categorie in categories %}
 									{% set ch = ' ' %}
@@ -709,203 +687,265 @@ submenu.style.display = 'none';
 										{% set ch = 'checked' %}
 									{% endif %}
 									{% if (categorie.typemenu == 'centre') %}
-									<div class="col-sm-1" style="margin-right: 10px;">
-										<div style="margin-top: 5px; width: 80px; height: 80px; margin-left: 5px; position: relative;">
-											<div class="cog" style="position: absolute; padding: 3px;">
-												<button data-toggle="modal" data-target="#changeposition{{categorie.id}}" style="background-color: #f9f9f9; color: #333; border-width: 0px;" type="button" class="btn btn-default btn-xs">
-													<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-												</button>
+										<div	class="col-sm-1"	style="margin-right: 10px;">
+											<div	style="margin-top: 5px; width: 80px; height: 80px; margin-left: 5px; position: relative;">
+												<div	class="cog"	style="position: absolute; padding: 3px;">
+													<button	data-toggle="modal"	data-target="#changeposition{{ categorie.id }}"	style="background-color: #f9f9f9; color: #333; border-width: 0px;"	type="button"	class="btn btn-default btn-xs">
+														<span	class="glyphicon glyphicon-cog"	aria-hidden="true"></span>
+													</button>
 
-												<input name="cat[{{categorie.Id}}]" class="caf" style="width: 100%;" type="checkbox" {{ch}}>
-											</div>
-											
+													<input	name="cat[{{ categorie.Id }}]"	class="caf"	style="width: 100%;"	type="checkbox"	{{ ch }}>
+												</div>
 
-											<img src="{{asset(categorie.logo)}}" style="width: 80px; height: 80px; border-radius: 9px;">
-											<div class="caption">
-												<a href="categories/{{categorie.Id}}">
-													<label name="titre" class="center-block" style="margin-top: -34px; font-size: 11px; color: white; text-align: center;">{{  categorie.titre|capitalize  }}</label>
-												</a>
+												<!--<img	src="{#{ asset(categorie.logo) }#}"	style="width: 80px; height: 80px; border-radius: 9px;">-->
+												<img src="{{ categorie.logo ? asset(categorie.logo) : asset('images/no_image.png') }}" style="width: 80px; height: 80px; border-radius: 9px;">
+
+												<div	class="caption">
+													<a	href="categories/{{ categorie.Id }}">
+														<label	name="titre"	class="center-block"	style="margin-top: -34px; font-size: 11px; color: white; text-align: center;">
+															{{ categorie.titre|capitalize }}
+														</label>
+													</a>
+												</div>
 											</div>
 										</div>
-									</div>
 									{% endif %}
 								{% endfor %}
 
-								<div style="border-radius: 4px;text-align: left;color: white;font-style: oblique;font-size: 20px;background-color: #3e9fb591;width: 250px;padding-left: 10px;">
-										Menu déroulant à gauche :
-									</div>
+								<div	style="border-radius: 4px;text-align: left;color: #191554;font-style: oblique;font-size: 20px;width: 250px;padding-left: 10px;position: relative;margin-top: 185px;">
+									Menu déroulant à gauche :
+								</div>
 								{% for categorie in categories %}
 									{% set ch = ' ' %}
 									{% if (categorie.active == 1) %}
 										{% set ch = 'checked' %}
 									{% endif %}
 									{% if (categorie.typemenu == 'gauche') %}
-									<div class="col-sm-1" style="margin-right: 10px;">
-										<div style="margin-top: 5px; width: 80px; height: 80px; margin-left: 5px; position: relative;">
-											<div class="cog" style="position: absolute; padding: 3px;">
-												<button data-toggle="modal" data-target="#changeposition{{categorie.id}}" style="background-color: #f9f9f9; color: #333; border-width: 0px;" type="button" class="btn btn-default btn-xs">
-													<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-												</button>
+										<div	class="col-sm-1"	style="margin-right: 10px;">
+											<div	style="margin-top: 5px; width: 80px; height: 80px; margin-left: 5px; position: relative;">
+												<div	class="cog"	style="position: absolute; padding: 3px;">
+													<button	data-toggle="modal"	data-target="#changeposition{{ categorie.id }}"	style="background-color: #f9f9f9; color: #333; border-width: 0px;"	type="button"	class="btn btn-default btn-xs">
+														<span	class="glyphicon glyphicon-cog"	aria-hidden="true"></span>
+													</button>
 
-												<input name="cat[{{categorie.Id}}]" class="caf" style="width: 100%;" type="checkbox" {{ch}}>
-											</div>
-											
+													<input	name="cat[{{ categorie.Id }}]"	class="caf"	style="width: 100%;"	type="checkbox"	{{ ch }}>
+												</div>
 
-											<img src="{{asset(categorie.logo)}}" style="width: 80px; height: 80px; border-radius: 9px;">
-											<div class="caption">
-												<a href="categories/{{categorie.Id}}">
-													<label name="titre" class="center-block" style="margin-top: -34px; font-size: 11px; color: white; text-align: center;">{{  categorie.titre|capitalize  }}</label>
-												</a>
+												<img	src="{{ asset(categorie.logo) }}"	style="width: 80px; height: 80px; border-radius: 9px;">
+												<div	class="caption">
+													<a	href="categories/{{ categorie.Id }}">
+														<label	name="titre"	class="center-block"	style="margin-top: -34px; font-size: 11px; color: white; text-align: center;">
+															{{ categorie.titre|capitalize }}
+														</label>
+													</a>
+												</div>
 											</div>
 										</div>
-									</div>
 									{% endif %}
 								{% endfor %}
 							</div>
 
-
 						</div>
-
 
 					</div>
 				</div>
 			</form>
+			<div	style="margin-top: 532px;position: absolute;margin-left: 1105px;font-size: large;">
+				V3.0.0
+			</div>
 			<!-- Modals -->
-				<!-- modal mise a jour tv -->
-			<div class="modal fade" id="update_categories" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<!-- modal mise a jour tv -->
+			<div	class="modal fade"	id="update_categories"	tabindex="-1"	role="dialog"	aria-labelledby="exampleModalLabel"	aria-hidden="true">
 				<!-- premier modal-->
 
-  <div class="modal-dialog modal-sm" role="document">
-    <form enctype="multipart/form-data">
-      <div class="modal-content" style="width: 660px;">
-        <div class="modal-header" >
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel">Liste Support connecté à choisir</h4>
-          <br><br>
-              <label style="color: blue;font-size: 15px;"> Recherche par service : &nbsp;&nbsp;&nbsp; </label>
-              <select style="width: 400px;margin-top: -39px;margin-left: 175px;" onchange="getval(this);"  name="selectservices" class="form-control">
-                  <option  selected value="">Tous les services</option>
-                  {% for s in servicebox %}
-                  <option   value="{{s.nom}}">{{s.nom|upper}}</option>
-                  {% endfor %}
-              </select>
-              <br>
-              <label style="color: blue;font-size: 15px;"> Recherche du support : &nbsp;&nbsp;&nbsp; </label>
-              <input id="myInput" type="text" placeholder="Search.." style="width: 400px;margin-top: -39px;margin-left: 175px;" class="form-control">
-                
-          <div style="height:500px;overflow-y: scroll;">
-          <br><br>
-            <!--<table class="table table-striped table-bordered table-hover" id="dataTables-example">-->
-              <table id="example20" class="table table-striped table-bordered table-hover">
-              <thead>
-                <tr>
-                  <th> <input  type="checkbox"  id="checkAllboxn" >   Sélectionner</th>
-                  <th>   Chambre</th>
-                  <th>   IP</th>
-                  <th>   Service</th>
-                </tr>
-              </thead>
-              <tbody id="myTable">
-              {% for box in boxs %}
-              <tr>
-                <td> <label class="labelbox" ><input data-BoxId='{{box.etage}}' class='boxcheck' name='box[{{box.Id}}]' type="checkbox"> {{box.nom}}</label></td>
-                <td>  {{box.etage}}</td>
-                <td>  {{box.ip}}</td>
-                <td>{{box.service.nom|capitalize}}</td>
-              <tr>
-              {% endfor%}
-              </tbody>
-            </table>
-          </div>
-        </div>     
-        <div class="modal-footer">
-          <button id='btn6' data-modal-id="mcontenu" type="button" class="btn btn-primary conf "  name="contenu" <a   data-toggle="tooltip" data-placement="top" title=" Mise à jour générale"></a> <i class="glyphicon glyphicon-floppy-disk"></i> Mise à jour contenu</button> 
-         <!-- <button id='btn7' data-modal-id="mtheme" type="button" class="btn btn-success conf" name="theme"  <a   data-toggle="tooltip" data-placement="top" title=" Mettre à jour les positions des catégories"></a> Mise à jour thème</button> 
-          <button id='btn8' data-modal-id="mservice" type="button" class="btn btn-danger conf" name="servi"  <a   data-toggle="tooltip" data-placement="top" title=" Mettre à jour tous les icones Services"></a> Mise à jour service</button>
-         --> <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Annuler</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
+				<div	class="modal-dialog modal-sm"	role="document">
+					<form	enctype="multipart/form-data">
+						<div	class="modal-content"	style="width: 660px;">
+							<div	class="modal-header">
+								<button	type="button"	class="close"	data-dismiss="modal"	aria-label="Close">
+									<span	aria-hidden="true">
+										&times;
+									</span>
+								</button>
+								<h4	class="modal-title"	id="myModalLabel">
+									Liste Support connecté à choisir
+								</h4>
+								<br>
+								<br>
+								<label	style="color: blue;font-size: 15px;">
+									Recherche par service : &nbsp;&nbsp;&nbsp;
+								</label>
+								<select	style="width: 400px;margin-top: -39px;margin-left: 175px;"	onchange="getval(this);"	name="selectservices"	class="form-control">
+									<option	selected	value="">
+										Tous les services
+									</option>
+									{% for s in servicebox %}
+										<option	value="{{ s.nom }}">
+											{{ s.nom|upper }}
+										</option>
+									{% endfor %}
+								</select>
+								<br>
+								<label	style="color: blue;font-size: 15px;">
+									Recherche du support : &nbsp;&nbsp;&nbsp;
+								</label>
+								<input	id="myInput"	type="text"	placeholder="Search.."	style="width: 400px;margin-top: -39px;margin-left: 175px;"	class="form-control">
 
-
-<!-- Modal d'envoie -->
-<div id="ConfirmModal" class="modal fade" role="dialog" style="padding-right: 25px;margin-left: 343px;margin-top: 32px;">
-  <div class="modal-dialog" >
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <form action="{{ path('app_update_chambre')}}" name="form" method="post">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">×</button>
-        <h4 class="modal-title">Confirmation </h4>
-      </div>
-   
-         <div id="checkedmodal" style="height:500px;overflow-y: scroll;" class="modal-body">
-           
-          </div>
-      <div class="modal-footer">
-        <button id="mcontenu" type="submit" name="contenu" class="confmodal btn btn-primary"> Confirmer</button>
-       <!-- <button id="mtheme"  type="submit" name="theme" class="confmodal btn btn-primary"> Confirmer</button>
-        <button id="mservice"  type="submit" name="servi" class="confmodal btn btn-primary"> Confirmer</button>   -->
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
-      </div>
-      </form>
-    </div>
-
-  </div>
-</div>
-
-
-
-			
-
-			<!-- modal ajouter categories -->
-			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<form name="" method="post" action="{{path('ajoutercategories')}}" class="form-horizontal" enctype="multipart/form-data">
-							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLabel">Ajouter une catégorie</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
+								<div	style="height:500px;overflow-y: scroll;">
+									<br>
+									<br>
+									<!--<table class="table table-striped table-bordered table-hover" id="dataTables-example">-->
+									<table	id="example20"	class="table table-striped table-bordered table-hover">
+										<thead>
+											<tr>
+												<th>
+													<input	type="checkbox"	id="checkAllboxn">
+													Sélectionner
+												</th>
+												<th>
+													Chambre
+												</th>
+												<th>
+													IP
+												</th>
+												<th>
+													Service
+												</th>
+											</tr>
+										</thead>
+										<tbody	id="myTable">
+											{% for box in boxs %}
+												<tr>
+													<td>
+														<label	class="labelbox">
+															<input	data-BoxId='{{ box.etage }}'	class='boxcheck'	name='box[{{ box.Id }}]'	type="checkbox">
+															{{ box.nom }}
+														</label>
+													</td>
+													<td>
+														{{ box.etage }}
+													</td>
+													<td>
+														{{ box.ip }}
+													</td>
+													<td>
+														{{ box.service.nom|capitalize }}
+													</td>
+												</tr>
+												<tr>
+												{% endfor %}
+											</tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div	class="modal-footer">
+								<button 	id='btn6'	data-modal-id="mcontenu"	type="button"	class="btn btn-primary conf "	name="contenu"	<a data-toggle="tooltip" data-placement="top" title=" Mise à jour générale">
+									<i	class="glyphicon glyphicon-floppy-disk"></i>
+									Mise à jour contenu
+								</button>
+								<!-- <button id='btn7' data-modal-id="mtheme" type="button" class="btn btn-success conf" name="theme"  <a   data-toggle="tooltip" data-placement="top" title=" Mettre à jour les positions des catégories"></a> Mise à jour thème</button>
+									<button id='btn8' data-modal-id="mservice" type="button" class="btn btn-danger conf" name="servi"  <a   data-toggle="tooltip" data-placement="top" title=" Mettre à jour tous les icones Services"></a> Mise à jour service</button>
+								-->
+								<button	type="button"	class="btn btn-danger"	data-dismiss="modal">
+									<i	class="glyphicon glyphicon-remove"></i>
+									Annuler
 								</button>
 							</div>
-							<div class="modal-body">
+						</div>
+					</form>
+				</div>
+			</div>
 
+			<!-- Modal d'envoie -->
+			<div	id="ConfirmModal"	class="modal fade"	role="dialog"	style="padding-right: 25px;margin-left: 343px;margin-top: 32px;">
+				<div	class="modal-dialog">
 
-								<strong>Infos
+					<!-- Modal content-->
+					<div	class="modal-content">
+						<form	action="{{ path('app_update_chambre') }}"	name="form"	method="post">
+							<div	class="modal-header">
+								<button	type="button"	class="close"	data-dismiss="modal">
+									×
+								</button>
+								<h4	class="modal-title">
+									Confirmation
+								</h4>
+							</div>
+
+							<div	id="checkedmodal"	style="height:500px;overflow-y: scroll;"	class="modal-body"></div>
+							<div	class="modal-footer">
+								<button	id="mcontenu"	type="submit"	name="contenu"	class="confmodal btn btn-primary">
+									Confirmer
+								</button>
+								<!-- <button id="mtheme"  type="submit" name="theme" class="confmodal btn btn-primary"> Confirmer</button>
+								<button id="mservice"  type="submit" name="servi" class="confmodal btn btn-primary"> Confirmer</button>   -->
+								<button	type="button"	class="btn btn-danger"	data-dismiss="modal">
+									Annuler
+								</button>
+							</div>
+						</form>
+					</div>
+
+				</div>
+			</div>
+
+			<!-- modal ajouter categories -->
+			<div	class="modal fade"	id="exampleModal"	tabindex="-1"	role="dialog"	aria-labelledby="exampleModalLabel"	aria-hidden="true">
+				<div	class="modal-dialog"	role="document">
+					<div	class="modal-content">
+						<form	name=""	method="post"	action="{{ path('ajoutercategories') }}"	class="form-horizontal"	enctype="multipart/form-data">
+							<div	class="modal-header">
+								<h5	class="modal-title"	id="exampleModalLabel">
+									Ajouter une catégorie
+								</h5>
+								<button	type="button"	class="close"	data-dismiss="modal"	aria-label="Close">
+									<span	aria-hidden="true">
+										&times;
+									</span>
+								</button>
+							</div>
+							<div	class="modal-body">
+
+								<strong>
+									Infos
 								</strong>
 
-
-								<div class="form-group">
-									<label for="nom" class="col-lg-2 control-label">Nom
+								<div	class="form-group">
+									<label	for="nom"	class="col-lg-2 control-label">
+										Nom
 									</label>
-									<div class="col-lg-10">
+									<div	class="col-lg-10">
 
-										<input type="text" id="nom" name="nom" class="form-control"/>
-
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label for="titre" class="col-lg-2 control-label">Titre</label>
-									<div class="col-lg-10">
-
-										<input type="text" id="titre" name="titre" class="form-control"/>
+										<input	type="text"	id="nom"	name="nom"	class="form-control" />
 
 									</div>
 								</div>
 
+								<div	class="form-group">
+									<label	for="titre"	class="col-lg-2 control-label">
+										Titre
+									</label>
+									<div	class="col-lg-10">
 
-								<div class="form-group">
-									<label for="active" class="col-lg-2 control-label">Active</label>
-									<div class="col-lg-10">
+										<input	type="text"	id="titre"	name="titre"	class="form-control" />
 
-										<select id="active" name="active" class="form-control">
-											<option value="0">0</option>
-											<option value="1">1</option>
+									</div>
+								</div>
+
+								<div	class="form-group">
+									<label	for="active"	class="col-lg-2 control-label">
+										Active
+									</label>
+									<div	class="col-lg-10">
+
+										<select	id="active"	name="active"	class="form-control">
+											<option	value="0">
+												0
+											</option>
+											<option	value="1">
+												1
+											</option>
 										</select>
 
 									</div>
@@ -915,138 +955,191 @@ submenu.style.display = 'none';
 									{% set usedPositions = usedPositions|merge([category.position]) %}
 								{% endfor %}
 
-								<div class="form-group">
-									<label for="position" class="col-lg-2 control-label">Position</label>
-									<div class="col-lg-10">
-										<select id="position" name="position" class="form-control">
+								<div	class="form-group">
+									<label	for="position"	class="col-lg-2 control-label">
+										Position
+									</label>
+									<div	class="col-lg-10">
+										<select	id="position"	name="position"	class="form-control">
 
 											{% for i in 1..40 %}
 												{% if i not in usedPositions %}
-													<option value="{{ i }}">{{ i }}</option>
+													<option	value="{{ i }}">
+														{{ i }}
+													</option>
 												{% endif %}
 											{% endfor %}
 										</select>
 									</div>
 								</div>
 
+								<div	class="form-group">
+									<label	for="html"	class="col-lg-2 control-label">
+										Html
+									</label>
+									<div	class="col-lg-10">
 
-								<div class="form-group">
-									<label for="html" class="col-lg-2 control-label">Html</label>
-									<div class="col-lg-10">
-
-										<input type="text" id="html" name="html" class="form-control"/>
-
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label for="package" class="col-lg-2 control-label">Package</label>
-									<div class="col-lg-10">
-
-										<input type="text" id="package" name="package" class="form-control"/>
+										<input	type="text"	id="html"	name="html"	class="form-control" />
 
 									</div>
 								</div>
 
-								<div class="form-group">
-									<label for="package" class="col-lg-2 control-label">Type menu</label>
-									<div class="col-lg-10">
-										<select id="typemenu" name="typemenu" class="form-control">
-											<option value="centre">Centre</option>
-											<option value="gauche">Gauche</option>
+								<div	class="form-group">
+									<label	for="package"	class="col-lg-2 control-label">
+										Package
+									</label>
+									<div	class="col-lg-10">
+
+										<input	type="text"	id="package"	name="package"	class="form-control" />
+
+									</div>
+								</div>
+
+								<div	class="form-group">
+									<label	for="package"	class="col-lg-2 control-label">
+										Type menu
+									</label>
+									<div	class="col-lg-10">
+										<select	id="typemenu"	name="typemenu"	class="form-control">
+											<option	value="centre">
+												Centre
+											</option>
+											<option	value="gauche">
+												Gauche
+											</option>
 										</select>
 									</div>
 								</div>
 
 								<br>
-								<strong>Média
+								<strong>
+									Média
 								</strong>
 
-
-								<div class="form-group">
-									<label for="logo" class="col-lg-2 control-label">logo</label>
-									<div class="col-lg-10">
-										<input type="file" class="form-control" id="logo" name="logo">
+								<div	class="form-group">
+									<label	for="logo"	class="col-lg-2 control-label">
+										logo
+									</label>
+									<div	class="col-lg-10">
+										<input	type="file"	class="form-control"	id="logo"	name="logo">
 									</div>
 								</div>
-								<div class="form-group">
-									<label for="background" class="col-lg-2 control-label">background</label>
-									<div class="col-lg-10">
-										<input type="file" class="form-control" id="background" name="background">
+								<div	class="form-group">
+									<label	for="background"	class="col-lg-2 control-label">
+										background
+									</label>
+									<div	class="col-lg-10">
+										<input	type="file"	class="form-control"	id="background"	name="background">
 									</div>
 								</div>
-
 
 								<br>
-								<strong>langues
+								<strong>
+									langues
 								</strong>
 
-
 								<br>
 
+								<div>
+									<button	type="button"	id="translateBtn"	class="btn btn-info">
+										Traduire la question
+									</button>
+									&nbsp;&nbsp;&nbsp;
+									<a	type="button"	class="accordion-toggle"	data-toggle="collapse"	data-parent="#accordion"	href="#collapseTwo">
+										<span>
+											<i	class="glyphicon glyphicon-plus"></i>
+										</span>
+									</a>
+									<label	style="margin-left: 5px;">
+										Langues
+									</label>
+								</div>
 
-								<table cellspacing="10" style="width: 100%;">
-									<tr>
-										<td>
-											<img style="width: 30px" src=" {{asset('images/eng.png')}}">
-											<label class="control-label required" for="EN">English</label>
-											<input style="margin-right: 10px;" type="text" id="EN" name="EN" class="form-control">
-										</td>
-										<td>
-											<img style="width: 30px" src="{{asset('images/es.png')}}">
-											<label class="control-label required" for="ES">Espagnol</label>
-											<input style="margin-right: 10px;" type="text" id="ES" name="ES" class="form-control">
-										</td>
-									</tr>
+								<div	id="collapseTwo"	class="panel-collapse collapse">
+									<div	class="panel-body">
+										<table	class="lang-table"	style="width:100%">
+											<tr>
+												<td>
+													<img	style="width: 30px"	src=" {{ asset('images/eng.png') }}">
+													<label	class="control-label required"	for="EN">
+														English
+													</label>
+													<input	style="margin-right: 10px;"	type="text"	id="EN"	name="EN"	class="form-control">
+												</td>
+												<td>
+													<img	style="width: 30px"	src="{{ asset('images/es.png') }}">
+													<label	class="control-label required"	for="ES">
+														Espagnol
+													</label>
+													<input	style="margin-right: 10px;"	type="text"	id="ES"	name="ES"	class="form-control">
+												</td>
+											</tr>
 
-									<tr>
-										<td>
-											<img style="width: 30px" src=" {{asset('images/pt.png')}}">
-											<label class="control-label required" for="PT">Portugues</label>
-											<input type="text" id="PT" name="PT" class="form-control">
-										</td>
-										<td>
-											<img style="width: 30px" src=" {{asset('images/ita.png')}}">
-											<label class="control-label required" for="IT">Italiano</label>
-											<input type="text" id="IT" name="IT" class="form-control">
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<img style="width: 30px" src=" {{asset('images/rus.png')}}">
-											<label class="control-label required" for="RU">Russian</label>
-											<input type="text" id="RU" name="RU" class="form-control">
-										</td>
-										<td>
-											<img style="width: 30px" src=" {{asset('images/deu.png')}}">
-											<label class="control-label required" for="DE">Deutsch</label>
-											<input type="text" id="DE" name="DE" class="form-control">
-										</td>
+											<tr>
+												<td>
+													<img	style="width: 30px"	src=" {{ asset('images/pt.png') }}">
+													<label	class="control-label required"	for="PT">
+														Portugues
+													</label>
+													<input	type="text"	id="PT"	name="PT"	class="form-control">
+												</td>
+												<td>
+													<img	style="width: 30px"	src=" {{ asset('images/ita.png') }}">
+													<label	class="control-label required"	for="IT">
+														Italiano
+													</label>
+													<input	type="text"	id="IT"	name="IT"	class="form-control">
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<img	style="width: 30px"	src=" {{ asset('images/rus.png') }}">
+													<label	class="control-label required"	for="RU">
+														Russian
+													</label>
+													<input	type="text"	id="RU"	name="RU"	class="form-control">
+												</td>
+												<td>
+													<img	style="width: 30px"	src=" {{ asset('images/deu.png') }}">
+													<label	class="control-label required"	for="DE">
+														Deutsch
+													</label>
+													<input	type="text"	id="DE"	name="DE"	class="form-control">
+												</td>
 
-									</tr>
+											</tr>
 
-									<tr>
-										<td>
-											<img style="width: 30px" src=" {{asset('images/ch.png')}}">
-											<label class="control-label required" for="ZH">China</label>
-											<input type="text" id="ZH" name="ZH" class="form-control">
-										</td>
-										<td>
-											<img style="width: 30px" src=" {{asset('images/ma.png')}}">
-											<label class="control-label required" for="AR">العربية</label>
-											<input type="text" id="AR" name="AR" class="form-control">
-										</td>
-									</tr>
+											<tr>
+												<td>
+													<img	style="width: 30px"	src=" {{ asset('images/ch.png') }}">
+													<label	class="control-label required"	for="ZH">
+														China
+													</label>
+													<input	type="text"	id="ZH"	name="ZH"	class="form-control">
+												</td>
+												<td>
+													<img	style="width: 30px"	src=" {{ asset('images/ma.png') }}">
+													<label	class="control-label required"	for="AR">
+														العربية
+													</label>
+													<input	type="text"	id="AR"	name="AR"	class="form-control">
+												</td>
+											</tr>
+										</table>
+									</div>
+								</div>
 
-								</table>
 							</div>
-							<div class="modal-footer">
+							<div	class="modal-footer">
 
-								<button type="submit" class="btn btn-success" style="background-color: #3087ce; border: 2px solid #3087ce;">
-									<i class="glyphicon glyphicon-floppy-disk"></i>
-									Enregistrer</button>
+								<button	type="submit"	class="btn btn-success"	style="background-color: #3087ce; border: 2px solid #3087ce;">
+									<i	class="glyphicon glyphicon-floppy-disk"></i>
+									Enregistrer
+								</button>
 
-								<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+								<button	type="button"	class="btn btn-secondary"	data-dismiss="modal">
+									Fermer
+								</button>
 							</div>
 						</form>
 					</div>
@@ -1054,132 +1147,176 @@ submenu.style.display = 'none';
 			</div>
 
 			<!-- Modal  fond d'ecran -->
-			<div class="modal fade" id="backa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-				<div class="modal-dialog  modal-md" style="width:460px" role="document">
-					<div class="modal-content">
-						<form action="{{ path('modifierbackground')}}" id="myforma" name="form" method="post" enctype="multipart/form-data">
+			<div	class="modal fade"	id="backa"	tabindex="-1"	role="dialog"	aria-labelledby="myModalLabel">
+				<div	class="modal-dialog  modal-md"	style="width:460px"	role="document">
+					<div	class="modal-content">
+						<form	action="{{ path('modifierbackground') }}"	id="myforma"	name="form"	method="post"	enctype="multipart/form-data">
 
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
+							<div	class="modal-header">
+								<button	type="button"	class="close"	data-dismiss="modal"	aria-label="Close">
+									<span	aria-hidden="true">
+										&times;
+									</span>
 								</button>
-								<div class="col-md-4">
-									<h4 style="line-height: 3;" class="modal-title" id="myModalLabel">Fond d'écran
+								<div	class="col-md-4">
+									<h4	style="line-height: 3;"	class="modal-title"	id="myModalLabel">
+										Fond d'écran
 									</h4>
 								</div>
-								<div class="col-md-6">
+								<div	class="col-md-6">
 
-									<select class="form-control" id="backkk" name="typa">
-										<option value="images">Image Unique</option>
-										<option value="imagesmultiple">Image Multiple</option>
-										<option value="video">Vidéo</option>
+									<select	class="form-control"	id="backkk"	name="typa">
+										<option	value="images">
+											Image Unique
+										</option>
+										<option	value="imagesmultiple">
+											Image Multiple
+										</option>
+										<option	value="video">
+											Vidéo
+										</option>
 									</select>
 								</div>
 							</div>
-							<div class="modal-body">
-								<p class="backk2" style='color:red'>
+							<div	class="modal-body">
+								<p	class="backk2"	style='color:red'>
 									Cette fonction affiche uniquement un seul fond d'écran sur les télévisions
 									<br>
 									Format image : 1920 × 1080 - Type fichier : *.png ou *.jpg - Max-size : 400 Ko
 								</p>
-								<p class="alerta" style='color:red'></p>
-								
+								<p	class="alerta"	style='color:red'></p>
 
-								<input type="file" class="form-control-file" id="background" name="background">
+								<input	type="file"	class="form-control-file"	id="background"	name="background">
 							</br>
 
-							<div class="multiple">
-								<p style='color:red'>
+							<div	class="multiple">
+								<p	style='color:red'>
 									Affectation par :
 								</p>
-								<input type="radio" id="box" name="type" value="box" class="typeradio">
-								<label for="box">TV</label>
+								<input	type="radio"	id="box"	name="type"	value="box"	class="typeradio">
+								<label	for="box">
+									TV
+								</label>
 								&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-								<input type="radio" id="service" name="type" value="service" class="typeradio">
-								<label for="service">Service</label><br>
+								<input	type="radio"	id="service"	name="type"	value="service"	class="typeradio">
+								<label	for="service">
+									Service
+								</label>
+								<br>
 								{#{ render(controller('EPSOBundle:Default:boxlist5')) }#}
 								<!-- Liste des TV (initialement cachée) -->
-								<div id="tvList" style="display:none;">
-									<table class="table" border="1">
+									<div	id="tvList"	style="display:none;">	<table	class="table"	border="1">
 										<thead>
 											<tr>
-												<th>Sélectionner</th>
-												<th>Chambre</th>
-												<th>IP</th>
-												<th>Service</th>
+												<th>
+													Sélectionner
+												</th>
+												<th>
+													Chambre
+												</th>
+												<th>
+													IP
+												</th>
+												<th>
+													Service
+												</th>
 											</tr>
 										</thead>
 										<hr>
 										<tbody>
 											{% for chambre in boxs %}
 												<tr>
-													<td><input type="checkbox" name="select_tv[]" value="{{ chambre.id }}"></td>
-													<td>{{ chambre.nom }}</td>
-													<td>{{ chambre.ip }}</td>
-													<td>{{ chambre.service.nom }}</td>
+													<td>
+														<input	type="checkbox"	name="select_tv[]"	value="{{ chambre.id }}">
+													</td>
+													<td>
+														{{ chambre.nom }}
+													</td>
+													<td>
+														{{ chambre.ip }}
+													</td>
+													<td>
+														{{ chambre.service.nom }}
+													</td>
 												</tr>
 											{% endfor %}
 										</tbody>
 									</table>
 								</div>
 								<!-- Liste des services (initialement cachée) -->
-								<div id="serviceList" style="display:none;">
-								 <select id="myselect" class="form-control" name="selectservices">
-									{% for s in services %}
-										<option value="{{ s.id }}">{{ s.nom|upper }}</option>
-									{% endfor %}
-								</select> 
+								<div	id="serviceList"	style="display:none;">
+									<select	id="myselect"	class="form-control"	name="selectservices">
+										{% for s in services %}
+											<option	value="{{ s.id }}">
+												{{ s.nom|upper }}
+											</option>
+										{% endfor %}
+									</select>
 								</div>
 							</div>
 
 						</div>
-						<div class="modal-footer">
-							<button type="submit" class="button btn btn-primary btn-sm">
-								<i class="glyphicon glyphicon-floppy-disk"></i>
+						<div	class="modal-footer">
+							<button	type="submit"	class="button btn btn-primary btn-sm">
+								<i	class="glyphicon glyphicon-floppy-disk"></i>
 								Enregistrer
 							</button>
 
-
-							<a data-toggle="tooltip" data-placement="top" href="{{path('home')}}" class="btn btn-danger btn-sm" onclick="return(confirm('voulez vous vraiment supprimer cette image ?'));">
-								<i class="glyphicon glyphicon-trash"></i>Supprimer image
+							<a	data-toggle="tooltip"	data-placement="top"	href="{{ path('home') }}"	class="btn btn-danger btn-sm"	onclick="return(confirm('voulez vous vraiment supprimer cette image ?'));">
+								<i	class="glyphicon glyphicon-trash"></i>
+								Supprimer image
 							</a>
 
-
-							<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
-								<i class="glyphicon glyphicon-remove"></i>Fermer</button>
+							<button	type="button"	class="btn btn-default btn-sm"	data-dismiss="modal">
+								<i	class="glyphicon glyphicon-remove"></i>
+								Fermer
+							</button>
 
 						</div>
 					</form>
 				</div>
-				</div>
 			</div>
-
+		</div>
 
 		<!-- Modal changement position categories -->
 		{% for categorie in categories %}
-			<div class="modal fade" id="changeposition{{categorie.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog" role="document" style="width:300px">
-					<div class="modal-content">
-						<form action="{{ path('modifierposition', {'id': categorie.id}) }}" id="modifierposition{{categorie.id}}" name="modifierposition{{categorie.id}}" method="post" enctype="multipart/form-data">
-							<div class="modal-header">
-								<h5 class="modal-title" id="changepositionlabel">
-									{{categorie.nom}}</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
+			<div	class="modal fade"	id="changeposition{{ categorie.id }}"	tabindex="-1"	role="dialog"	aria-labelledby="exampleModalLabel"	aria-hidden="true">
+				<div	class="modal-dialog"	role="document"	style="width:300px">
+					<div	class="modal-content">
+						<form	action="{{ path('modifierposition', {'id': categorie.id}) }}"	id="modifierposition{{ categorie.id }}"	name="modifierposition{{ categorie.id }}"	method="post"	enctype="multipart/form-data">
+							<div	class="modal-header">
+								<h5	class="modal-title"	id="changepositionlabel">
+									{{ categorie.nom }}
+								</h5>
+								<button	type="button"	class="close"	data-dismiss="modal"	aria-label="Close">
+									<span	aria-hidden="true">
+										&times;
+									</span>
 								</button>
 							</div>
-							<div class="modal-body">
-								<select class="form-control" name="selectedcat">
+							<div	class="modal-body">
+								<select	class="form-control"	name="selectedcat">
 									{% for categorie in categories %}
 
-										<option value={{categorie.id}}>{{categorie.nom|lower}}</option>
+										<option	value={{ categorie.id}} >
+											{{ categorie.nom|lower }}
+										</option>
 
 									{% endfor %}
 								</select>
 							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-								<button type="submit" class="btn btn-primary">Enregistrer</button>
+							<div	class="modal-footer">
+								
+								<button	type="submit"	class="btn btn-primary btn-sm">
+									Enregistrer
+								</button>
+								<a	data-toggle="tooltip"	data-placement="top"	href="{{ path('app_supprimer_categories', {'id': categorie.id}) }}"	class="btn btn-danger btn-sm"	onclick="return(confirm('voulez vous vraiment supprimer cette categorie ?'));">
+									
+									Supprimer
+								</a>
+								<button	type="button"	class="btn btn-secondary btn-sm"	data-dismiss="modal">
+									Fermer
+								</button>
 							</div>
 						</form>
 					</div>
@@ -1188,7 +1325,6 @@ submenu.style.display = 'none';
 			</div>
 		{% endfor %}
 	</div>
-
 
 	<!--  Scripts -->
 	<script type="text/javascript">
@@ -1216,7 +1352,7 @@ document.getElementById("meteo3").innerHTML = '<p class="pull-right" id="met" >'
 
 	</script>
 
-<script>
+	<script>
 $(document).ready(function(){
   //recherche 
   $("#myInput").bind("input propertychange", function() {
@@ -1258,7 +1394,7 @@ $(document).ready(function(){
 
 </script>
 
-<script type="text/javascript">
+	<script type="text/javascript">
   // recherhe par service
 function getval(sel)
 {
@@ -1284,7 +1420,7 @@ $(this).prop("checked", true);
 }
 });
 </script>
-<script type="text/javascript">
+	<script type="text/javascript">
 
 	$(".multiple").hide();
 	$(".support").hide();
@@ -1340,6 +1476,45 @@ $(this).prop("checked", true);
             }
         });
     });
+</script>
+<script>
+                        $(document).ready(function(){
+                            $('.accordion-toggle').click(function(){
+                                $(this).find('i').toggleClass('glyphicon-plus glyphicon-minus');
+                            });
+                        });
+                    </script>
+					<script>
+    document.getElementById('translateBtn').addEventListener('click', function() {
+    // Récupérer la question en français
+    const questionFr = document.getElementById('nom').value;
+    
+    // Vérifier que la question n'est pas vide
+    if (questionFr.trim() === '') {
+        alert('Veuillez entrer une categorie avant de la traduire.');
+        return;
+    }
+
+    // URL du service de traduction (ici Google Translate)
+    const baseUrl = 'https://translate.google.com/?sl=fr&tl=';
+    
+    // Langues pour la traduction
+    const languages = {
+        'EN': 'en', // Anglais
+        'ES': 'es', // Espagnol
+        'PT': 'pt', // Portugais
+        'IT': 'it', // Italien
+        'RU': 'ru', // Russe
+        'DE': 'de', // Allemand
+        'ZH': 'zh-CN', // Chinois
+        'AR': 'ar' // Arabe
+    };
+
+    // Ouvrir un nouvel onglet pour chaque langue
+    for (const [key, lang] of Object.entries(languages)) {
+        window.open(`${baseUrl}${lang}&text=${encodeURIComponent(questionFr)}`, '_blank');
+    }
+});
 </script>
 
 {% endblock %}
