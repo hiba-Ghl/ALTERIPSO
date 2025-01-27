@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CategoriesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
@@ -72,6 +74,17 @@ class Categories
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $typemenu = null;
+
+    /**
+     * @var Collection<int, Services>
+     */
+    #[ORM\OneToMany(mappedBy: 'service', targetEntity: Services::class)]
+    private Collection $services;
+
+    public function __construct()
+    {
+        $this->services = new ArrayCollection();
+    }
 
     
 
@@ -312,6 +325,36 @@ class Categories
     public function setTypemenu(?string $typemenu): static
     {
         $this->typemenu = $typemenu;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Services>
+     */
+    public function getServices(): Collection
+    {
+        return $this->services;
+    }
+
+    public function addService(Services $service): static
+    {
+        if (!$this->services->contains($service)) {
+            $this->services->add($service);
+            $service->setCategorie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeService(Services $service): static
+    {
+        if ($this->services->removeElement($service)) {
+            // set the owning side to null (unless already changed)
+            if ($service->getCategorie() === $this) {
+                $service->setCategorie(null);
+            }
+        }
 
         return $this;
     }

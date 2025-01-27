@@ -1,173 +1,877 @@
 {% extends 'home/index.html.twig' %}
 {% block body %}
-	<style>
-		#div1 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 43px;
-			width: 1091px;
-			height: 300px;
-			margin-left: -70px;
-			margin-top: 10px;
+{# ce fichier contenent l'affichage de liste des services #}
+	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-		}
-		#div2 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 20px;
-			width: 1300px;
-			height: 900px;
-			margin-left: -70px;
-			margin-top: 10px;
-			background-color: white;
-		}
+{# Cette section concerne la conception de modèles pour l'affichage liste des services.#}
+<div style="border-radius: 8px;  margin-top:10px;text-align: left; margin-bottom: 10px; margin-left: -130px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 200px; padding-left: 10px; display: inline-block;">
+    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+   Liste des services
+</div>
+<form id="form" method="post" enctype="multipart/form-data" onsubmit="return validateUpdate(`{{path('update_services',{'id': id})}}`)">
+<div id="div2">
+    <div style="display: flex;gap:2px">
+        <a  class="btn btn-info btn-sm" style="width:130px" id="add">
+            <i class="glyphicon glyphicon-plus"></i>
+            Ajouter service
+        </a>
+                <button type="submit" class="btn btn-success btn-sm" style="width:130px">
+                    <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
+                </button>
+                <a class="btn btn-danger btn-sm" id = "annulerButton" style="width:130px">
+                    <i class="glyphicon glyphicon-remove"></i> Annuler
+                </a>
+    </div>
+       
+    <p style="margin-top:10px">Sélectionner le service que vous souhaitez renseigner :</p>
+    <div id="categorie">
+    </div>
+    <div style="color: red; font-size: 14px; margin-left:16px">Choisissez le modèle d'extraction de données :</div>
+    <br>
+  <div id="myDiv" class="col-md-12">
+    <table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column" id="dataTables-example" role="none" style="height: 200px;margin-left:70px;">
+           <thead>
+                    <tr>
+                        <th style="text-align: center; width: 140px;height:30px;">Icone</th>
+                        <th style="text-align: center; width: 100px;height:30px">Nom du Service</th>
+                        <th style="text-align: center; width: 70px;height:30px;">Position</th>
+                        <th style="text-align: center; width: 70px;height:30px">Active</th>
+                        <th style="text-align: center; width: 140px;height:30px;">Type</th>
+                        <th style="text-align: center; width: 172px;height:30px;">Source</th>
+                        <th style="text-align: center; width: 200px;height:30px;">Actions</th>
+                    </tr>
+                </thead>
+        <tbody id="service_active">
+        </tbody>
+    </table>
+</div>
+{# la creation de table avec bootstrap (DataTable),et aussi afficher liste de service selon leur categorie dinamiquement #}
+<script>
+const interval = '';
+   $(document).ready(function () {
+    var table = $('#dataTables-example').DataTable({
+       language: {
+        emptyTable: "Aucun service disponible."
+    },
+       oLanguage: {
+   "sSearch": "Recherche:"
+ },
+  columnDefs: [
+    {
+      orderable: false,
+      targets: [0, 6] 
+    },
+          { targets: [3], orderDataType: 'dom-checkbox' },
+    {
+      orderable: true,
+      targets: [2], 
+      render: function (data, type, row) {
+        if (type === 'sort' || type === 'type') {
+          const select = $('<div>').html(data).find('select');
+          return select.val(); 
+        }
+        return data || ' '; 
+      } 
+    }
+  ],
+   aLengthMenu: [[-1, 10, 100, 200],["All", 10, 100, 200]],
+           "aaSorting": [[ 2, "asc" ]],
+                responsive: true,
+                dom: 'Bfrtip',
+                info: false,
+                paging: false,
+  buttons: [
+    {
+        extend: 'copy',
+        className: 'btn-info w',
+        title: 'Liste du services',
+        exportOptions: {
+                columns: [0,1,2,3,4,5]
+        },
+     action: function (e, dt, node, config) {
+            const table = document.getElementById('dataTables-example');
+        if (!table) {
+            console.error('Table with ID "dataTables-example" not found.');
+            return;
+        }
+        const rows = table.querySelectorAll('tbody tr');
+        const extractedData = [];
+        rows.forEach(row => {
+            const serviceData = {
+                logo: row.querySelector('td:nth-child(1) img')?.src || '', 
+                nom: row.querySelector('td:nth-child(2)')?.textContent.trim() || '', 
+                position: row.querySelector('td:nth-child(3) input[type="number"]')?.value || '', 
+                active: row.querySelector('td:nth-child(4) input[type="checkbox"]')?.checked || false, 
+                type: row.querySelector('td:nth-child(5)')?.textContent.trim() || '', 
+                source: row.querySelector('td:nth-child(7) a')?.textContent.trim() || '',
+            };
 
-
-		.fileUpload {
-			position: relative;
-			overflow: hidden;
-			/* margin: 10px;*/
-		}
-		.fileUpload input.upload {
-			position: absolute;
-			top: 0;
-			right: 0;
-			margin: 0;
-			padding: 0;
-			font-size: 20px;
-			cursor: pointer;
-			opacity: 0;
-			filter: alpha(opacity=0);
-
-		}
-
-		.w {
-			width: 70px;
-		}
-		.header-fixed {
-			width: 1200px;
-		}
-
-		.header-fixed > thead,
-		.header-fixed > tbody,
-		.header-fixed > thead > tr,
-		.header-fixed > tbody > tr,
-		.header-fixed > thead > tr > th,
-		.header-fixed > tbody > tr > td {
-			display: block;
-		}
-
-		.header-fixed > tbody > tr:after,
-		.header-fixed > thead > tr:after {
-			content: ' ';
-			display: block;
-			visibility: hidden;
-			clear: both;
-		}
-
-		.header-fixed > tbody {
-			overflow-y: auto;
-			height: 500px;
-		}
-
-		.header-fixed > tbody > tr > td,
-		.header-fixed > thead > tr > th {
-			/*width: 20%;*/
-			float: left;
-		}
-		.paginate_button {
-			margin-left: 2px;
-		}
-	</style>
-
-	<p id='p'></p>
-	<div style="margin-top: -40px;position: absolute;border-radius: 8px;text-align: left;margin-left: -68px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: -27px;">
-		Liste Services
-	</div>
-
-	<div id="div2">
-	
-
-			<a href="{{path('app_ajouter_services')}}" class="btn btn-info btn-sm" name="add" id="add">
-				<i class="glyphicon glyphicon-plus"></i>
-				Ajouter service</a>
-			<br>
-		
-
-
-		
-
-
-
-		<hr>
-		
-
-
-		<div style="color: red;font-size: 14px;">Choisissez le modèle d'extraction de données:</div>
-		<br>
-		<div class="modnt"></div>
+            extractedData.push(serviceData);
+        });
+          var clipboard = new ClipboardJS('.buttons-copy', {
+            text: function() {
+              return JSON.stringify(extractedData, null, 2);
+            }
+          });
+          clipboard.on('success', function(e) {
+            {# console.log('Text copied to clipboard:', e.text); #}
+            {# alert('Data copied'); #}
+            clipboard.destroy();
+          });
+          clipboard.on('error', function(e) {
+            console.error('Failed to copy text:', e);
+            clipboard.destroy();
+          });
+        }
+     },
+    { extend: 'excel',
+     className: 'btn-danger w',
+      title: 'Liste du services',
+    exportOptions: {
+                columns: [0,1,2,3,4,5],
+        },
+         action: function (e, dt, button, config) {
+                        exportCustomExcel()  
+                    }
         
-        {{dump(services)}}
-		<div  id="myDiv" class="col-md-12" margin-buttom:25px>
+     },
+    { 
+        extend: 'csv', 
+        className: 'btn-warning w',
+        title: 'Liste du services',
+        exportOptions: {
+                columns: [0,1,2,3,4,5],
+          
+        },
+        action: function (e, dt, button, config) {
+                extractTableDataCsv()  
+        }
+    
+    },
+    {
+      extend: 'pdf',
+      className: 'btn-primary w',
+      title: 'Liste du services',
+      action: function (e, dt, button, config) {
+            extractTableData()  
+      },
+      id:'exportSelected',
+        exportOptions: {
+                columns: [0,1,2,3,4,5],
+        },
+      orientation: 'landscape',
+      customize: function (doc) {
+        const o_date = new Intl.DateTimeFormat();
+        const formattedDate = o_date.format(new Date());
+        doc.footer = function (page, pages) {
+          return {
+            columns: [
+              {
+                alignment: 'center',
+                text: [
+                  { text: page.toString(), italics: true },
+                  ' / ',
+                  { text: pages.toString(), italics: true },
+                  { text: '   | ' + formattedDate }
+                ]
+              }
+            ],
+            margin: [10]
+          };
+        };
+      }
+    }
+  ]
+});
+$.fn.dataTable.ext.order['dom-checkbox'] = function (settings, colIndex) {
+  return table
+    .column(colIndex, { order: 'index' })
+    .nodes()
+    .map(td => {
+      const checkbox = $(td).find('input[type="checkbox"]');
+      return checkbox.prop('checked') ? 0 : 1; 
+    });
+};
+{# fetch les services a partir de ID de categorie et afficher les dans le tableau #}
 
+    async function fetchData(id) {
+        const response = await fetch(`/services/getService/${id}`);
+        const data = await response.json();
+        table.clear().draw();
+        const serviceActive = document.getElementById('service_active');
+        const form = document.getElementById('form');
+        form.setAttribute('action', `/update/${id}`);
+        data.services.forEach(async (service,index) => {
+          let URL = ''
+          if(service.type === 'URL')
+            URL = service.src;
+          else if(service.type === 'DIAPO')
+            URL =   service.src;
+          else
+          URL = '/' + service.src;
+            const rowData =  [
+                ` <td >
+                <div class="td1">
+                <div style="width:100px;height: 70px;border-radius:5px;">
+        <img src="{{ asset('${service.logo}') }}" style="width:60px;height:60px;text-align:center;border-radius:5px;" />
+                </div>
+                </div>
+      </td>`,  
+      `<td >
+        <div style="display:flex;align-items:center;justify-content:center;width: 122px;height:60px;">
+        ${service.nom}
+        </div>
+      </td>`,
+      `
+      <td >
+        <div style=" width: 92px;height:60px; display:flex;justify-content:center;align-items:center;">
+         <select id="position_service" class="form-control" name="position_service[${service.Id}]" value="${service.position}" style="width:60px;font-size:14px;padding:4px;text-align:center;">
+          <option style="display:none">${service.position}</option>
+        </select>
+        </div>
+      </td>`,
+      `
+      <td >
+      <div style="text-align: center; width: 92px;height:60px;display:flex;align-items:center;justify-content:center;">
+        <input id="active-${service.Id}" name="active[${service.Id}]" type="checkbox" ${service.active === '1' || service.active === 'on' ? 'checked' : ''}>
+        </div>
+      </td>`,
+      `
+      <td >
+      <div style="text-align: center;width: 162px;height:60px;display:flex;align-items:center;justify-content:center;">
+      ${service.type}
+      </div>
+      </td>`,
+      `
+      <td >
+      <div style="text-align: center;width: 194px; cursor: pointer;height:60px;display:flex;align-items:center;justify-content:center;">
+      <a data-toggle="modal" data-target="#modal-${index}" class="source-link" 
+           data-type="${service.type}" 
+           data-id="${service.Id}" 
+           data-value="${service.src}"
+           style="text-decoration: none; color:#3087ce;font-size:15px;display: inline-block;width:200px; word-wrap:break-word;" id="displayButton">${service.src}</a>
+      <div class="modal fade" id="modal-${index}" tabindex="-1" role="dialog" aria-labelledby="modalLabel-${index}" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header" style="margin-top:30px;">
+                <button id="close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 200px; padding: 5px 10px;">
+                    <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+                    Aperçu du service
+                </div>
+            </div>
+            <div class="modal-body" id="modal-body-${index}" >
+              <object data="${URL}" type="application/pdf" width="100%" height="680px">
+                Votre navigateur ne supporte pas l'affichage du fichier.
+              </object>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </td>`,
+    `
+    <td >
+      <div style="width: 240px;height:60px;display:flex;justify-content:centre;gap:5px;align-items:center">
+      <a data-toggle="tooltip" data-placement="top" title="Modifier le service" href="/services/find_service/${service.Id}" class="btn btn-warning btn-xs">
+        <i class="glyphicon glyphicon-pencil"></i>
+      </a>
+      <a data-toggle="tooltip" data-placement="top" title="Supprimer le service" href="/services/delete/${id}/${service.Id}" class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer le service : ${service.nom} ?')">
+        <i class="glyphicon glyphicon-trash"></i>
+      </a>
+      <div data-toggle="modal" data-target="#modal1-${index}" data-id =${service.Id}  data-name=${service.nom} class="lancer-button">
+      <a  title="Lancer le service directement sur la TV" class="btn btn-info btn-xs">
+        <i class="glyphicon glyphicon-play-circle"></i>
+      </a>
+      </div>
+      <div data-toggle="modal" data-target="#modal2-${index}" data-id =${service.Id} data-name=${service.nom} class="arreter-button">
+  <a  title="Arrêter le service en cours"  class="btn btn-primary btn-xs ">
+        <i class="glyphicon glyphicon-minus-sign"></i>
+      </a>
+      </div>
+      </div>
+    </td>   
+    
+    `,         
+            ];
+    const row = await table.row.add(rowData).draw(false);
+        });
+{# la fonction pour afficher les images de Diapo sur PopUp sous forme slides #}
+const formatTime = (seconds) => {
+  const hrs = Math.floor(seconds / 3600).toString().padStart(2, '0');
+  const mins = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+  const secs = (seconds % 60).toString().padStart(2, '0');
+  return `${hrs}:${mins}:${secs}`;
+};
+document.addEventListener('click', async (event) => {
+  if (event.target && event.target.classList.contains('source-link')) {
+    event.preventDefault();
+    const type = event.target.dataset.type;
+    const id = event.target.dataset.id;
+    const index = event.target.dataset.target.split('-')[1];
+    const value = event.target.dataset.value;
+  const modalBody = document.querySelector(`#modal-body-${index}`);
+ if (type === 'DIAPO') {
+  const images = await getImages(id);
+  const imageArray = Object.values(images);
 
-			<!--<table class="table table-striped table-bordered table-hover" id="dataTables-example">-->
-			<table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column" id="dataTables-example">
-				<thead>
+  if (modalBody) {
+    modalBody.innerHTML = '';
+    const carousel = document.createElement('div');
+    carousel.setAttribute('class', 'carousel');
 
-					<tr>
-						<th style="text-align: center;  height: 50px;width: 100px;"></th>
-						<th style="text-align: center;height: 50px;width: 150px;">Nom Service</th>
-						<th style="text-align: center;height: 50px;width: 50px;">Position</th>
-						<th style="text-align: center;height: 50px;width: 50px;">Active</th>
-						<th style="text-align: center;height: 50px;width: 100px;">Type</th>
-						<th style="text-align: center;height: 50px;width: 350px;">Source</th>
-						<th style="text-align: center;height: 50px;width: 100px;">Actions</th>
+    const carouselInner = document.createElement('div');
+    carouselInner.setAttribute('class', 'carousel-inner');
+    carouselInner.style.position = 'relative';
+    carouselInner.style.width = '100%';
+    carouselInner.style.overflow = 'hidden';
 
+    let totalDuration = 0;
+    const slideDurations = imageArray.map((image) => {
+      const durationValue = image.split('_')[1]?.split('.')[0] || '1';
+      const duration = parseInt(durationValue, 10);
+      totalDuration += duration;
+      return duration;
+    });
 
-					</tr>
-				</thead>
+    imageArray.sort((a, b) => {
+      const orderA = parseInt(a.split('_')[0], 10) || 0;
+      const orderB = parseInt(b.split('_')[0], 10) || 0;
+      return orderA - orderB;
+    });
+    imageArray.forEach((image, index) => {
+      const slideItem = document.createElement('div');
+      slideItem.setAttribute('class', `carousel-item ${index === 0 ? 'active' : ''}`);
+      slideItem.style.width = '100%';
+      slideItem.style.display = index === 0 ? 'block' : 'none';
+      slideItem.innerHTML = `<img src="{{ asset('${value}/${image}') }}" style="width: 100%; height: 540px; object-fit:cover" />`;
+      carouselInner.appendChild(slideItem);
+    });
 
-				<tbody>
-					{% set i=0 %}
+    carousel.appendChild(carouselInner);
+    const progressBarContainer = document.createElement('div');
+    progressBarContainer.setAttribute('class', 'divCrono');
 
-					{% for service in services %}
+    const progressBar = document.createElement('div');
+    progressBar.setAttribute('class', 'crono');
 
+    const progress = document.createElement('div');
+    progress.setAttribute('class', 'progress');
+    progress.style.height = '100%';
+    progress.style.backgroundColor = '#3087ce';
+    progress.style.width = '0%';
 
-						<tr class="odd gradeX">
-							<td style="text-align: center;  height: 50px;width: 122px;">{{service.logo}}</td>
-							<td style="text-align: center;  height: 50px;width: 172px;">{{service.nom}}</td>
-                            <td style="text-align: center; height: 50px;width: 72px;">{{service.position}}</td>
-							<td style="text-align: center; height: 50px;width: 72px;">{{service.active}}</td>
-							<td style="text-align: center; height: 50px;width: 122px;">{{service.type}}</td>
-							<td style="text-align: center; height: 50px;width: 372px;">{{service.src}}</td>
-							<td style="text-align: center; height: 50px;width: 122px;">
-								<a data-toggle="tooltip" data-placement="top" title="redémarrer le support" href="{{path('app_redemarrer',{'id':service.id})}}"   class="reboot btn btn-info btn-xs">
-									<i class="glyphicon glyphicon-refresh"></i>
-								</a>
-								<a data-toggle="tooltip" data-placement="top" title="supprimer le support" id="" href="{{path('app_supprimer_chambre',{'id':service.id})}}" class="ida btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer la chambre : {{service.nom}} ?')">
-									<i class="glyphicon glyphicon-trash"></i>
-								</a>
-								<a data-toggle="tooltip" data-placement="top" title="Modifier le support" id="ida" href="{{path('app_modifier_chambre',{'id':service.id})}}" class="btn btn-warning btn-xs">
-									<i class="glyphicon glyphicon-edit"></i>
-								</a>
-							</td>
-						</tr>
-						{% endfor %}
-					</tbody>
-				</tbody>
-			</table>
-		</div>
-		<!-- fin div2-->
+    const progressLabel = document.createElement('span');
+    progressLabel.setAttribute('class', 'spanC');
+    progressLabel.textContent = `${formatTime(0)}`;
+    progress.appendChild(progressLabel);
 
+    progressBar.appendChild(progress);
+    progressBarContainer.appendChild(progressBar);
 
-	</div>
+    const totalTimeDisplay = document.createElement('p');
+    totalTimeDisplay.setAttribute('class', 'timeTotal');
+    totalTimeDisplay.textContent = `${formatTime(0)}`;
+
+    modalBody.appendChild(carousel);
+    modalBody.appendChild(progressBarContainer);
+    modalBody.appendChild(totalTimeDisplay);
+
+let currentIndex = 0;
+let elapsedTime = 0;
+let totalElapsedTime = 0;
+
+const updateSlides = () => {
+  const slides = carouselInner.querySelectorAll('.carousel-item');
+  slides.forEach((slide, index) => {
+    slide.style.display = index === currentIndex ? 'block' : 'none';
+  });
+};
+const startSlideshow = () => {
+  updateSlides(); 
+  const interval = setInterval(() => {
+    elapsedTime++;
+    totalElapsedTime++;
+    const progressPercentage = (totalElapsedTime / totalDuration) * 100;
+    progress.style.width = `${progressPercentage}%`;
+    totalTimeDisplay.textContent = `${formatTime(totalElapsedTime)}`;
+    progressLabel.textContent = `${formatTime(totalElapsedTime)}`;
+    if (elapsedTime >= slideDurations[currentIndex]) {
+      elapsedTime = 0; 
+      currentIndex = (currentIndex + 1) % imageArray.length;
+      updateSlides(); 
+    }
+    if (totalElapsedTime >= totalDuration) {
+      totalElapsedTime = 0;
+      elapsedTime = 0;
+    }
+  }, 1000); 
+};
+
+startSlideshow();
+  }
+}
+ else if( type === 'VIDEO' && modalBody){
+    modalBody.innerHTML = ` <video width="100%" height="680px" controls>
+        <source src="{{ asset('${value}')}}" type="video/mp4">
+        Votre navigateur ne supporte pas la lecture de la vidéo.
+      </video>`;
+    
+  }
+   else if( type === 'IMAGE' && modalBody){
+    modalBody.innerHTML = ` <img width="100%" height="600px" src="{{ asset('${value}')}}">
+      </img>`;
+    
+  }
+  }
+});
+
+   get_AllPosition();
+}
+document.addEventListener('click', (event) => {
+  const closeModalButton = event.target.closest('.close[data-dismiss="modal"]');
+  if (closeModalButton) {
+    const modal = closeModalButton.closest('.modal');
+    if (modal) {
+      const modalBody = modal.querySelector('.modal-body');
+      const video = modalBody.querySelector('video');
+      if (video) {
+        video.pause();
+        video.currentTime = 0; 
+      }
+      modal.style.display = 'none';
+    }
+  }
+});
+{# fonction pour afficher la liste de service dinamiquement selon leur categorie #}
+    const id_slected = {{ id_slected | raw }};
+    const categories = {{ categorie | raw }};
+    const categorieElement = document.getElementById('categorie');
+    if (categorieElement && Array.isArray(categories)) {
+        categories.forEach(category => {
+            const a = document.createElement('a');
+            var text =category.nom;
+            var firstLetter = text.slice(0,1);
+            text =firstLetter.toUpperCase() + text.substring(1);
+            a.textContent = text;
+            a.dataset.id = category.id;
+            a.classList.add('click-service');
+            a.setAttribute('href', '#service_active');
+            categorieElement.appendChild(a);
+            let id;
+            if (id_slected) {
+              id = id_slected.id ;
+                if (id == a.dataset.id) {
+                    document.querySelectorAll('.click-service').forEach(link => {
+                    link.classList.remove('clicked');
+                    link.removeAttribute('id');
+                    });
+                    a.classList.add('clicked');
+                    a.setAttribute('id', 'clicked');
+
+                }
+                fetchData(id);
+            }
+            a.addEventListener('click', async (event) => {
+                event.preventDefault();
+                id = a.dataset.id;
+                await fetchData(id);
+                document.querySelectorAll('.click-service').forEach(link => {
+                    link.classList.remove('clicked');
+                      link.removeAttribute('id');
+                });
+                a.classList.add('clicked');
+                a.setAttribute('id', 'clicked');
+
+            });
+        });
+    } else {
+        console.error('Categorie element not found or categories is not an array.');
+    }
+});
+const ajouteService = document.getElementById("add");
+ajouteService.addEventListener('click',(event) => {
+    const a = document.getElementById('clicked');
+    event.preventDefault();
+    const id_categorie = a.getAttribute('data-id');
+    location.href = `/services/create_Service/${id_categorie}`
+})
+
+const annulerButton = document.getElementById("annulerButton");
+annulerButton.addEventListener('click',async (event) => {
+    event.preventDefault();
+    const a = document.getElementById('clicked');
+    const id_categorie = a.getAttribute('data-id');
+    location.href = `/services/categorie/${id_categorie}`;
+})
+</script>
+</div>
+</form>
 	<br>
 	<!-- Modals -->
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-	
+<!-- Include Bootstrap JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
 
-	<!-- Scripts -->
+<script>
+  const chambre = {{chembre | raw }};
+  document.addEventListener('DOMContentLoaded', function () {
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+  });
+
+function createModal(index,Id,name) {
+      const a = document.getElementById('clicked');
+    const id_categorie = a.getAttribute('data-id');
+    const popUP = document.createElement('div');
+    popUP.setAttribute("class", "modal fade");
+    popUP.setAttribute("tabindex", "-1");
+    popUP.style.marginLeft="-200px";
+    popUP.setAttribute("role", "dialog");
+    popUP.setAttribute("id", `modal1-${index}`);
+    popUP.setAttribute("aria-labelledby", "modalLabel1");
+    popUP.setAttribute("aria-hidden", "true");
+    popUP.innerHTML = `
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="margin:auto;width:800px;height:800px">
+                <div class="modal-header" style="margin-top:30px;">
+                <button id="close" type="button" class="close close2" data-dismiss="modal-${index}" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 220px; padding: 5px 10px;">
+                    <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+                        Lancer le service ${name}
+                    </div>
+                </div>
+                <form id="form" method="post" enctype="multipart/form-data" action="/services/lancerService/${Id}">
+                      <div class="modal-body" id="modal-body1-${index}" >
+                <div style="font-size:16px;color:black;margin-bottom:-30px">Liste Support connecté à choisir</div>
+                </div>
+                <div class="modal-footer">
+                  <button id="envoyervod" type="submit" class="btn btn-primary conf" name="envoyervod"> <i class="glyphicon glyphicon-send"></i> Lancer le service</button>
+                  <a class="button btn btn-danger " style="width: 139px;" href="/services/categorie/${id_categorie}" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a>                </div>
+            </div>
+            </form>
+        </div>    
+    `;
+    return popUP;
+}
+
+document.addEventListener('click', function (event) {
+    const lancerButton = event.target.closest('.lancer-button');
+    if(!lancerButton)
+      return ;
+    const Id = lancerButton.getAttribute('data-id');
+    const name = lancerButton.getAttribute('data-name');
+    const active = document.getElementById(`active-${Id}`);
+    let index = -1;
+    if (lancerButton.getAttribute("data-target")) {
+      index = lancerButton.getAttribute("data-target").split('-')[1];
+      if(index >= 0)
+      {
+         if (active && !active.checked) {
+        confirm("Attention, le service n'est pas actif, donc non présent sur la box. Merci de le cocher.Faites dans un premier temps la mise à jour sur la BOX.Enfin, vous pouvez lancer le service avec l'icône bleue.");
+        event.preventDefault(); 
+        return false;
+      }
+      else{
+        const body = document.getElementById('div2');
+        const modal = createModal(index,Id,name);
+        body.appendChild(modal);
+    const modalBody1 = document.querySelector(`#modal-body1-${index}`);
+    if (modalBody1 && Array.isArray(chambre)) {
+      const existeTable = document.getElementById(`table-${index}`);
+      if(!existeTable)
+      {
+      const table = document.createElement('table');
+      table.style.width = "100%";
+      table.setAttribute("class","table table-striped header-fixed table-bordered table-hover table-checkable order-column dataTable no-footer");
+      table.id = `table-${index}`;
+      const thead = document.createElement('thead');
+      thead.style.width = "100%";
+      thead.innerHTML = `
+        <tr style="width:100%;display:flex;justify-content:space-between">
+          <th style="width:120px;height:60px;display:flex;align-items: center;gap:5px"><input type="checkbox" id="checkAllboxn"/><p style="color:red">selectionner / deselectionner</p></th>
+          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Chambre</th>
+          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Adresse IP</th>
+          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Adresse MAC</th> 
+        </tr>`;
+      table.appendChild(thead);
+      const tbody = document.createElement('tbody');
+      tbody.style.width = "100%";
+      let i = 0;
+      chambre.forEach(chbr => {
+    const tr1 = document.createElement('tr');
+    tr1.style.width = "100%";
+    tr1.style.height = "50px";
+    tr1.style.display = "flex";
+    tr1.style.justifyContent = 'space-between';
+    tr1.innerHTML = `
+        <td style="width:120px;height:40px;"><input type="checkbox" value=${chbr.id} name="checked[${i}]" class="boxcheck"/><input style="display:none" type="text" value=${chbr.id} name="chambre[${i}]"></td>
+        <td style="width:120px;height:40px;text-align:center;">${chbr.nom}</td>
+        <td style="width:120px;height:40px;text-align:center;">${chbr.ip}</td>
+        <td style="width:120px;height:40px;text-align:center;">${chbr.Mac}</td>`;
+    tbody.appendChild(tr1);
+    i++;
+});
+      table.appendChild(tbody);
+      modalBody1.appendChild(table);
+      const modal = document.getElementById(`modal1-${index}`);
+      modal.classList.remove('fade');
+      modal.classList.add('show'); 
+      modal.style.display = 'block';
+      if (!$.fn.dataTable.isDataTable(`#table-${index}`)) {
+      $(`#table-${index}`).DataTable({
+        oLanguage: {"sSearch": "Recherche du support :"},
+        paging: false,
+        searching: true,
+        ordering: false,
+        info: false,
+        columnDefs: [{ orderable: false, targets: 0 }]
+      });
+    }
+    }
+      }
+      }
+      }
+    }
+  const checkAll = document.getElementById('checkAllboxn');
+const checkboxes = document.querySelectorAll('.boxcheck');
+
+if (checkAll) {
+    checkAll.addEventListener('change', () => {
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = checkAll.checked;
+        });
+    });
+}
+
+if (checkboxes) {
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            if (!checkbox.checked) {
+                checkAll.checked = false;
+            } else if (Array.from(checkboxes).every(cb => cb.checked)) {
+                checkAll.checked = true;
+            }
+        });
+    });
+}
+})
+
+document.addEventListener('click', function (event) {
+    const CloseButton = event.target.closest('.close2');
+    if(!CloseButton)
+        return;
+  const dataDismiss = CloseButton.getAttribute("data-dismiss");
+   if (dataDismiss) {
+    const index = dataDismiss.split('-')[1]; 
+    const modal = document.getElementById(`modal1-${index}`); 
+    const modalBackdrop = document.getElementsByClassName("modal-backdrop");
+    if (modal) {
+      modal.classList.remove('show');
+      modal.classList.add('fade');
+      modal.style.display = 'none';
+      modal.remove();
+    }
+    if (modalBackdrop[0]) {
+      modalBackdrop[0].remove();
+      if(modalBackdrop[0]);
+      modalBackdrop[0].remove();
+    }
+  }
+
+})
+
+
+</script>
+
+{# la fonction pour arreter un service #}
+
+<script>
+
+  function createModal1(index,Id,name) {
+    const a = document.getElementById('clicked');
+    const id_categorie = a.getAttribute('data-id');
+    const popUP = document.createElement('div');
+    popUP.setAttribute("class", "modal fade");
+    popUP.setAttribute("tabindex", "-1");
+    popUP.style.marginLeft="-200px";
+    popUP.setAttribute("role", "dialog");
+    popUP.setAttribute("id", `modal2-${index}`);
+    popUP.setAttribute("aria-labelledby", "modalLabel2");
+    popUP.setAttribute("aria-hidden", "true");
+    popUP.innerHTML = `
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="width:800px;height:800px">
+                <div class="modal-header" style="margin-top:30px;">
+                <button id="close" type="button" class="close close1" data-dismiss="modal-${index}" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 220px; padding: 5px 10px;">
+                    <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+                        Arrêter le service ${name}
+                    </div>
+                </div>
+            <form id="form" method="post" enctype="multipart/form-data" action="/services/RemoveService/${Id}">
+                <div class="modal-body" id="modal-body2-${index}" >
+                <div style="font-size:16px;color:black;margin-bottom:-30px">Liste Support connecté à choisir</div>
+                </div>
+                <div class="modal-footer">
+                  <button id="envoyervod" type="submit" class="btn btn-primary conf"name="envoyervod"> <i class="glyphicon glyphicon-send" style="margin-right:3px"></i>Arrêt service en cours</button>
+                  <a class="button btn btn-danger " style="width: 139px;" href="/services/categorie/${id_categorie}" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a>                </div>
+            </div>
+            </form>
+        </div>    
+    `;
+    return popUP;
+}
+
+document.addEventListener('click', async function (event) {
+    const arreterbutton = event.target.closest('.arreter-button');
+    if(!arreterbutton)
+      return ;
+    const Id = arreterbutton.getAttribute('data-id');
+    const name = arreterbutton.getAttribute('data-name');
+    const response = await fetch(`/service/GetAllchambreLancerService/${Id}`);
+if (!response.ok) {
+    console.error(`HTTP error! Status: ${response.status}`);
+    return;
+}
+    const data = await response.json();
+    const active = document.getElementById(`active-${Id}`);
+    let index = -1;
+   if (arreterbutton.getAttribute("data-target")) {
+      index = arreterbutton.getAttribute("data-target").split('-')[1];
+      if(index >= 0)
+      {
+         if (active && !active.checked) {
+        confirm("Attention, le service n'est pas actif, Donc, aucune vidéo à arrêter. Merci de le cocher.Faites dans un premier temps la mise à jour sur la BOX.Enfin, vous pouvez lancer le service avec l'icône bleue.");
+        event.preventDefault(); 
+        return false;
+      }
+      else{
+        const body = document.getElementById('div2');
+        const modal = createModal1(index,Id,name);
+        body.appendChild(modal);
+    const modalBody1 = document.querySelector(`#modal-body2-${index}`);
+    if (modalBody1 && Array.isArray(chambre)) {
+      const existeTable = document.getElementById(`table1-${index}`);
+      if(!existeTable)
+      {
+      const table = document.createElement('table');
+      table.style.width = "100%";
+      table.setAttribute("class","table table-striped header-fixed table-bordered table-hover table-checkable order-column dataTable no-footer");
+      table.id = `table1-${index}`;
+      const thead = document.createElement('thead');
+      thead.style.width = "100%";
+      thead.innerHTML = `
+        <tr style="width:100%;display:flex;justify-content:space-between">
+          <th style="width:120px;height:60px;display:flex;align-items: center;gap:5px"><input type="checkbox" id="checkAllboxn1" checked/> <p style="color:red">selectionner / deselectionner</p></th>
+          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Chambre</th>
+          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Adresse IP</th>
+          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Adresse MAC</th> 
+        </tr>`;
+      table.appendChild(thead);
+      const tbody = document.createElement('tbody');
+      tbody.style.width = "100%";
+      let i = 0;
+      data.ServiceLancer.forEach(chbr => {
+    const tr1 = document.createElement('tr');
+    tr1.style.width = "100%";
+    tr1.style.height = "50px";
+    tr1.style.display = "flex";
+    tr1.style.justifyContent = 'space-between';
+    tr1.innerHTML = `
+        <td style="width:120px;height:40px;"><input type="checkbox" value=${chbr.id} name="checked[${i}]" class="boxcheck1" checked/><input style="display:none" type="text" value=${chbr.id} name="chambre[${i}]"></td>
+        <td style="width:120px;height:40px;text-align:center;">${chbr.nom}</td>
+        <td style="width:120px;height:40px;text-align:center;">${chbr.ip}</td>
+        <td style="width:120px;height:40px;text-align:center;">${chbr.Mac}</td>`;
+    tbody.appendChild(tr1);
+    i++;
+});
+      table.appendChild(tbody);
+      modalBody1.appendChild(table);
+      const modal = document.getElementById(`modal2-${index}`);
+      modal.classList.remove('fade');
+      modal.classList.add('show'); 
+      modal.style.display = 'block';
+      if (!$.fn.dataTable.isDataTable(`#table1-${index}`)) {
+      $(`#table1-${index}`).DataTable({
+          language: {
+        emptyTable: "Ce service ne pas lancer dans aucune chambre."
+    },
+        oLanguage: {
+   "sSearch": "Recherche du support :"
+ },
+        paging: false,
+        searching: true,
+        ordering: false,
+        info: false,
+        columnDefs: [{ orderable: false, targets: 0 }]
+      });
+    }
+    }
+      }
+      }
+      }
+    }
+     const checkAll = document.getElementById('checkAllboxn1');
+const checkboxes = document.querySelectorAll('.boxcheck1');
+
+if (checkAll) {
+    checkAll.addEventListener('change', () => {
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = checkAll.checked;
+        });
+    });
+}
+if (checkboxes) {
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            if (!checkbox.checked) {
+                checkAll.checked = false;
+            } else if (Array.from(checkboxes).every(cb => cb.checked)) {
+                checkAll.checked = true;
+            }
+        });
+    });
+}
+})
+
+document.addEventListener('click', function (event) {
+  const closeButton = event.target.closest('.close1');
+  if (!closeButton) return; 
+  const dataDismiss = closeButton.getAttribute("data-dismiss");
+  if (dataDismiss) {
+    const index = dataDismiss.split('-')[1]; 
+    const modal = document.getElementById(`modal2-${index}`); 
+    const modalBackdrop = document.getElementsByClassName("modal-backdrop");
+    if (modal) {
+      modal.classList.remove('show');
+      modal.classList.add('fade');
+      modal.style.display = 'none';
+      modal.remove();
+    }
+    if (modalBackdrop[0]) {
+      modalBackdrop[0].remove();
+      if(modalBackdrop[0]);
+      modalBackdrop[0].remove();
+    }
+  }
+});
+
+</script>
+
+</script>
+
     <!-- online -->
 	<!--<script src="https://code.jquery.com/jquery-3.5.1.js"></script>-->
     <script src="{{asset('javascript/jquery.min.js')}}"> </script>
@@ -176,6 +880,13 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 	<style type="text/css" src="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css"></style>
 	<style type="text/css" src="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css"></style>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- DataTables CSS -->
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
 
 	<!-- offline -->
@@ -188,124 +899,18 @@
 				-->
 
   <script src="{{ asset('javascript/datatables2.min.js') }}"></script>
-
-    <script>
-    
-
-        var maintable = $('#dataTables-example').DataTable({
-           aLengthMenu: [[-1, 10, 100, 200],["All", 10, 100, 200]],
-           "aaSorting": [[ 1, "dsc" ]],
-                responsive: true,
-                 dom: 'Bfrtip',
-                 info: false, // Masquer les informations sur le tableau
-                paging: false, // Masquer la pagination
-        buttons: [
-            { extend: 'copy', className: 'btn-info w' ,title: 'Liste Support Connecté'},
-            { extend: 'excel', className: 'btn-danger w' ,title: 'Liste Support Connecté'},
-            { extend: 'csv', className: 'btn-warning w' ,title: 'Liste Support Connecté'},
-            { extend: 'pdf', className: 'btn-primary w' ,title: 'Liste Support Connecté',orientation:'landscape',
-             customize: function(doc) {
-              const o_date = new Intl.DateTimeFormat;
-              const f_date = (m_ca, m_it) => Object({...m_ca, [m_it.type]: m_it.value});
-              const m_date = o_date.formatToParts().reduce(f_date, {});
-              //console.log(m_date.day + '-' + m_date.month + '-' + m_date.year);
-                                doc['footer'] = (function(page, pages) {
-                    return {
-                      columns: [
-                        {
-                          alignment: 'center',
-                          text: [
-                          
-                            { text: page.toString(), italics: true },
-                  ' / ',
-                            { text: pages.toString(), italics: true },
-
-                            { text: '   |'+ m_date.day + '-' + m_date.month + '-' + m_date.year },
-
-                            
-                  ]
-                      }],
-                      margin: [10, 0]
-                    }
-                  });
-              }
-
-          },   
-
-      // { extend: 'print', className: 'btn-default w' ,title: 'Liste Support Connecté'},
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script> <!-- Include SheetJS library -->
 
 
+<!-- Include DataTables Buttons JS -->
+<script src="https://cdn.datatables.net/buttons/2.3.3/js/dataTables.buttons.min.js"></script>
 
+<!-- Include Clipboard JS (for copying to clipboard) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 
-        ]
-        });
-        </script>
-	<script type="text/javascript">
-
-
-		$(function () {
-$('#envoyerr').click(function () {
-$.toast('<i class="glyphicon glyphicon-fire"></i> envoie en cours ...', {
-'align': 'top',
-'type': 'success'
-});
-});
-});
-	</script>
-
-
-	<script>
-
-
-		$(document).ready(function () {
-$('#checkAllboxnx').click(function () {
-
-$(".boxchecke").prop("checked", false);
-if (this.checked) {
-
-$(".boxchecke:visible").each(function () {
-$(this).prop("checked", true);
-});
-}
-});
-
-});
-	</script>
-	<script>
-		function Check() {
-
-
-var msg = "";
-if (nb > etablissement.licence) {
-msg += "vous avez atteint le nb de licence";
-}
-if (msg != "") {
-alert(msg);
-return false;
-}
-
-
-return true;
-}
-	</script>
-	<script>
-		function getval2(sel) { // alert(sel.value);
-$('input').val(sel.value);
-// $(this).toggle($(this).text().toLowerCase().indexOf(sel.value.toLowerCase()) > -1)
-maintable.search(sel.value).draw();
-
-}
-	</script>
-    
-<script type="text/javascript">
-  // recherhe par service
-function getval(sel)
-{
-   
-     $('#myInput').val(sel.value);
-     $("#myTable tr").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(sel.value.toLowerCase()) > -1)
-    });
-}
+<script>
+    const data1 = {{ service1 | raw }};
 </script>
+
 {% endblock %}
+

@@ -20,7 +20,7 @@ use App\Entity\CategorieLivreAudio;
 use App\Entity\LivreAudio;
 use App\Entity\Television;
 use App\Entity\Categories;
-
+use App\Entity\ConfigApp;
 
 class UserController extends AbstractController
 {
@@ -171,19 +171,19 @@ class UserController extends AbstractController
             CategorieLivreAudio::class,
             LivreAudio::class,
             Television::class,
-            Categories::class
+            Categories::class,
+            ConfigApp::class,
         ];
     
         foreach ($tables as $entityClass) {
             $repository = $entityManager->getRepository($entityClass);
             $sourceItems = $repository->findBy(['etablissement' => 87371]);
-    
             foreach ($sourceItems as $sourceItem) {
-                // Créer un nouvel élément pour le nouvel établissement
                 $newItem = clone $sourceItem;
                 $newItem->setEtablissement($etablissement);
                 $entityManager->persist($newItem);
             }
+
         }
     
         // Importer les champs spécifiques

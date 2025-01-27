@@ -11,11 +11,14 @@
 		</title>
 		<link	href="{{ asset('css/bootstrap.css') }}"	rel="stylesheet">
 		<link	href="{{ asset('css/style.css') }}"	rel="stylesheet">
+		<link rel="stylesheet" href="{{ asset('css/mycss.css') }}" />
+
 		<link	href="{{ asset('css/jquery.m.toast.css') }}"	rel="stylesheet">
 		<link	href="{{ asset('css/ui.fancytree.min.css') }}"	rel="stylesheet">
 		<link	href="{{ asset('css/jsgrid-theme.min.css') }}"	rel="stylesheet">
 		<link	href="{{ asset('css/jsgrid.min.css') }}"	rel="stylesheet">
-
+		<script src="{{ asset('javascript/service.js') }}"></script>
+	<script src="{{ asset('javascript/serviceIndex.js') }}"></script>
 		<script src="{{ asset('javascript/jquery.min.js') }}"></script>
 		<script src="{{ asset('javascript/jquery1.min.js') }}"></script>
 		<script src="{{ asset('javascript/jquery-ui.min.js') }}"></script>
@@ -1042,7 +1045,7 @@ submenu.style.display = 'none';
 
 								<div>
 									<button	type="button"	id="translateBtn"	class="btn btn-info">
-										Traduire la question
+										Traduire
 									</button>
 									&nbsp;&nbsp;&nbsp;
 									<a	type="button"	class="accordion-toggle"	data-toggle="collapse"	data-parent="#accordion"	href="#collapseTwo">
@@ -1484,7 +1487,7 @@ $(this).prop("checked", true);
                             });
                         });
                     </script>
-					<script>
+					{# <script>
     document.getElementById('translateBtn').addEventListener('click', function() {
     // Récupérer la question en français
     const questionFr = document.getElementById('nom').value;
@@ -1515,6 +1518,57 @@ $(this).prop("checked", true);
         window.open(`${baseUrl}${lang}&text=${encodeURIComponent(questionFr)}`, '_blank');
     }
 });
+</script> #}
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+	const traduireButton = document.getElementById('translateBtn');
+	 const languageInputs = {
+            en: document.getElementById("EN"),
+            es: document.getElementById("ES"),
+            pt: document.getElementById("PT"),
+            it: document.getElementById("IT"),
+            ru: document.getElementById("RU"),
+            de: document.getElementById("DE"),
+            zh: document.getElementById("ZH"),
+            ar: document.getElementById("AR"),
+        };
+        let translations = {};
+		let online = 1;
+        async function translateAll(text) {
+            const languages = Object.keys(languageInputs);
+            let results = [];
+             while(1)
+             {
+                results = await translate(text, languages, 'fr');
+                if(results)
+                    break;
+             }
+            languages.forEach((lang, index) => {
+                translations[lang] = results[index];
+            });
+        }
+        if (traduireButton) {
+            traduireButton.addEventListener('click', async(event) => {
+                const text = textInput.value.trim() ;
+                if (text === '') {
+                    alert("Veuillez entrer un texte à traduire.");
+                    return;
+                }
+                if(online === 0)
+                {
+                    alert("Aucun internet disponible : vous pouvez faire la traduction manuellement");
+                    return ;
+                }
+                await translateAll(text);
+                Object.keys(languageInputs).forEach(lang => {
+                    if (translations[lang]) {
+                        languageInputs[lang].value = translations[lang];
+                    }
+                });
+            });
+        }
+
 </script>
 
 {% endblock %}

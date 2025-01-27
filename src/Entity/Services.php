@@ -3,7 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\ServicesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: ServicesRepository::class)]
 class Services
@@ -19,6 +23,7 @@ class Services
     private ?Etablissement $etablissement = null;
 
 
+    #[Assert\Length(min: 3)]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $nom = null;
 
@@ -32,14 +37,16 @@ class Services
     private ?string $type = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+
     private ?string $src = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $logo = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $service = null;
+    #[ORM\ManyToOne(inversedBy: 'services')]
+    private ?Categories $service = null;
 
+    #[Assert\Length(min: 3)]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
@@ -70,6 +77,9 @@ class Services
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $ar = null;
 
+  
+
+ 
     public function getId(): ?int
     {
         return $this->id;
@@ -159,17 +169,6 @@ class Services
         return $this;
     }
 
-    public function getService(): ?int
-    {
-        return $this->service;
-    }
-
-    public function setService(?int $service): static
-    {
-        $this->service = $service;
-
-        return $this;
-    }
 
     public function getDescription(): ?string
     {
@@ -287,6 +286,18 @@ class Services
     public function setAr(?string $ar): static
     {
         $this->ar = $ar;
+
+        return $this;
+    }
+
+    public function getCategorie(): ?Categories
+    {
+        return $this->service;
+    }
+
+    public function setCategorie(?Categories $service): static
+    {
+        $this->service = $service;
 
         return $this;
     }

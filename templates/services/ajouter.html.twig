@@ -1,100 +1,593 @@
+{# cette page pour ajouter un service #}
 {% extends 'home/index.html.twig' %}
+{# Cette section concerne la conception de modèles pour l'ajout d'un service.#}
 {% block body %}
-<style>
-    #div2 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 20px;
-			width: 1300px;
-			height: 500px;
-			margin-left: -70px;
-			margin-top: 10px;
-			background-color: white;
-		}
-</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+<div style="border-radius: 8px;  margin-top:10px;text-align: left; margin-bottom: 10px; margin-left: -130px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 200px; padding-left: 10px; display: inline-block;">
+    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+    Ajouter un service
+</div>
+<div class="div2">
+    <form id="form" class="form" action="{{ path('app_ajouter_services') }}" onsubmit="return validateForm(true)" method="post" enctype="multipart/form-data">
+        <div class="div1">
+             <div class="col-md-4">
+                <img src="{{ asset('images/no_image.png') }}" class="img image-thumbnail"  alt="Aucune image disponible" id="img"/>
+            </div>
+            <div class="col-md-4 div">
+                <div id="divNom">
+                    <label class="control-label">Nom de Service</label>
+                    <input type="text" id="nom_service" class="form-control test" name="nom" onchange=""/>
+                </div>
+                <div class="form-group" style="margin-bottom:18px;">
+                    <button type="button" class="btn btn-success btn btn-sm" data-toggle="modal" id="ajoute">
+                     Choisissez un icone
+                </button>
+                </div>
+                    <div>
+                    <label class="control-label">Position</label>
+                    <select id="service_position" class="form-control test" name="service_position" >
+                    </select>
+                    </div>
+                    <div>
+                    <label class="control-label">Active</label>
+                    <select id="service_active" class="form-control test" name="active" value="on">
+                        <option value="on">Oui</option>
+                        <option value="0">Non</option>
+                    </select>
+                    </div>
+                     <div style="display: flex; align-items: center; gap: 5px; margin-top: 8px; height: 48px; padding-top: 5px">
+                 <div class="form-group">
+                    <button type="button" class="btn btn-info"  id ="test" >
+                        Traduire le service
+                    </button>
+                </div>
+                 <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                        <span><i class="glyphicon glyphicon-plus"></i></span>
+                </a>
+                </div>
+                    <div id="collapseTwo" class="panel-collapse collapse">
+                        <div class="panel-body" style="width:410px;padding:0px">
+                            <table class="table" style="width: 400px; ">
+                                <tr style="width:400px">
+                                    <td>
+                                        <img style="width: 30px" src="{{ asset('images/eng.png') }}">
+                                        <label class="control-label required" for="EN">English</label>
+                                        <input  type="text" id="EN" name="EN" class="form-control" >
+                                    </td>
+                                    <td>
+                                        <img style="width: 30px" src="{{ asset('images/es.png') }}">
+                                        <label class="control-label required" for="ES">Espagnol</label>
+                                        <input  type="text" id="ES" name="ES" class="form-control">
+                                    </td>
+                                </tr>
 
+                                <tr>
+                                    <td>
+                                        <img style="width: 30px" src="{{ asset('images/pt.png') }}">
+                                        <label class="control-label required" for="PT">Portugues</label>
+                                        <input  type="text" id="PT" name="PT" class="form-control">
+                                    </td>
+                                    <td>
+                                        <img style="width: 30px" src="{{ asset('images/ita.png') }}">
+                                        <label class="control-label required" for="IT">Italiano</label>
+                                            <input  type="text" id="IT" name="IT" class="form-control">
+                                    </td>
+                                </tr>
 
-<div style="margin-top: -40px;position: absolute;border-radius: 8px;text-align: left;margin-left: -68px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: -27px;">
-    Ajouter service 
+                                <tr>
+                                    <td>
+                                        <img style="width: 30px" src="{{ asset('images/rus.png') }}">
+                                        <label class="control-label required" for="RU">Russian</label>
+                                        <input  type="text" id="RU" name="RU" class="form-control">
+                                    </td>
+                                    <td>
+                                        <img style="width: 30px" src="{{ asset('images/deu.png') }}">
+                                        <label class="control-label required" for="DE">Deutsch</label>
+                                        <input  type="text" id="DE" name="DE" class="form-control">
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <img style="width: 30px" src="{{ asset('images/ch.png') }}">
+                                        <label class="control-label required" for="ZH">China</label>
+                                        <input  type="text" id="ZH" name="ZH" class="form-control">
+                                    </td>
+                                    <td>
+                                        <img style="width: 30px" src="{{ asset('images/ma.png') }}">
+                                        <label class="control-label required" for="AR">العربية</label>
+                                        <input  type="text" id="AR" name="AR"  class="form-control">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-md-4 div" id="diapo">
+                    <div>
+                    
+                        <label class="control-label">Type:</label>
+                        <select id="service_type" name="service_type" class="form-control test">
+                            <option value="DIAPO" selected>DIAPO</option>
+                            <option value="IMAGE" >IMAGE</option>
+                            <option value="PDF">PDF</option>
+                            <option value="URL" >URL</option>
+                            <option value="VIDEO">VIDEO</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom:-6px" id="divFile">
+                        <input type="file" id="service_src" accept=".jpg, .jpeg, .png" multiple="multiple" class="form-control test">
+                        <p id="Perror"></p>
+                    </div>
+                    <div style="">
+                        <label class="control-label">Description</label>
+                        <textarea id="service_description" class="form-control test" style="height:50px" placholder="description" name="Description"></textarea>
+                    </div>
+                 <div >
+                    <label class="control-label">Service</label>
+                    <select id="service_service" class="form-control test" name="service_service">
+                    </select>
+                </div>               
+            </div>
+        </div>
+
+        <div class="button">
+            <button type="button" class="btn btn-danger mt-3"  style="width:130px" id="annulerAjout">
+                <i class="glyphicon glyphicon-remove"></i> Annuler
+            </button>
+            <button id="submit" type="submit" class="btn btn-primary mt-3" style="width:130px">
+                <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
+            </button>
+        </div> 
+        </form>
+</div>
+{# ################################################################################################## #}
+{# pop-up affichant les images internes pour sélectionner une icône afin d'ajouter le logo du service. #}
+<div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document" style="width:1000px" >
+        <div class="modal-content">
+            <div class="modal-header" style="margin-top:30px">
+                <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 200px; padding: 5px 10px; display: inline-block;">
+                    <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+                    Ajouter un icone
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+  <div class="modal-body">
+  <div style="display: flex; height:400px;overflow:scroll;justify-content:center;flex-wrap: wrap; gap: 15px;">
+      {% for image in images %}
+          <div class="image-container1" onclick="selectImage('{{ image }}')" style="cursor: pointer;">
+              <img src="{{ asset(image) }}" alt="Image" class="image-thumbnail" style="width: 100px; object-fit: cover; border: 3px solid #ddd; border-radius: 5px;">
+          </div>
+      {% endfor %}
+  </div>
+</div>
+  <input type="hidden" id="selectedImage" name="selectedImage"/>
+            <div class="modal-footer">
+                <div class="form-group" style="width: 100%; text-align: left;">
+                    <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg">
+                </div>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div id="div2">
+{# ################################################################################################## #}
+{# La fonction pour changer La première lettre du nom du service #}
+<script>
+const nom = document.getElementById("nom_service");
+nom.addEventListener('change',(e)=>{
+    var text = e.target.value;
+    var firstLetter = text.slice(0,1);
+    text =firstLetter.toUpperCase() + text.substring(1);
+    nom.value = text;
+})
+</script>
+{# ################################################################################################# #}
+{#  La fonction destinée à éliminer l'erreur une fois le nom du service et le fichier source renseignés #}
+<script>
+    selectImage('/images/no_image.png');
+    const name = document.getElementById('nom_service');
+    const url = document.getElementById('service_src');
+    name.addEventListener('change',(e)=>{
+        if(e.target.value.trim() != '')
+        {
+            const errorName = document.getElementById('name');
+            if(errorName)
+            {
+                errorName.remove();
+                name.style.border = "";
+            }
+        }
+    })
+    url.addEventListener('change',(e)=>{
+        if(e.target.value.trim() != '')
+        {
+            const errorUrl = document.getElementById('url');
+            if(errorUrl)
+            {
+                errorUrl.remove();
+                url.style.border = "";
+            }
+        }
+    })
+</script>
 
 
-	
-		<form action="{{path('app_ajouter_services')}}" method="post" enctype="multipart/form-data">
+{# ################################################################################################## #}
+{# la fonction pour afficher les categorie de services dinamiquement et aussi quand je selectionne une categorie les positions sont modifier selon la categorie #}
+<script>
+    let categorie = {{ categorie|raw }};
+    let categorie_id = {{id_categorie | raw}}
+    const select1 = document.getElementById('service_service');
+    if (select1 && Array.isArray(categorie)) {
+        categorie.forEach((optionData, index) => {
+            const option = document.createElement('option');
+               var text = optionData.nom;
+            var firstLetter = text.slice(0,1);
+            text =firstLetter.toUpperCase() + text.substring(1);
+            option.value = optionData.id;
+            option.textContent = text;
+            if (optionData.id === categorie_id) {
+                option.setAttribute('selected', true);
+                addPositions(optionData.id,false);
+            }
+            select1.appendChild(option);
+        });
+        select1.addEventListener('change', async (event) => {
+            const selectedId = await select1.value;
+            categorie_id = selectedId ;
+            addPositions(selectedId,false);
+        });
+    } else {
+        console.error('Select element not found or categorie is not an array.');
+    }
+
+const annulerAjout = document.getElementById("annulerAjout");
+annulerAjout.addEventListener('click',async (event) => {
+    event.preventDefault();
+    location.href = `/services/categorie/${categorie_id}`;
+})
+</script>
+
+{# ################################################################################################## #}
+
+{# Cette fonction pour ajouter une image à partir d’un dossier externe #}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const fileInput = document.getElementById('avatar');
+    const ajout_logo = document.getElementById('ajout_logo');
+        const dataTransfer = new DataTransfer();
+    fileInput.addEventListener('change', function (event) {
+        const selectedFile = event.target.files[0];
+        if (selectedFile) {
+                dataTransfer.items.add(selectedFile);
+                const inputTransferData1 = document.getElementById("inputTransferData1");
+                if (inputTransferData1) inputTransferData1.remove();
+                const input = document.createElement("input");
+                input.type = "file";
+                input.name = "ajout_logo1";
+                input.style.display = "none";
+                input.setAttribute("id", "inputTransferData1");
+                input.files = dataTransfer.files;
+                form.appendChild(input);
+            const previewImage = document.getElementById('img');
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewImage.src = e.target.result; 
+            };
+            reader.readAsDataURL(selectedFile);
+            $('#exampleModal').modal('hide');
+            
+        } else {
+            console.log('No file selected');
+        }
+    });
+});
+</script>
+{# ################################################################################################## #}
+{# cette fonction pour afficher Pop-Up d'ajoute logo #}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const submitButton = document.getElementById('ajoute'); 
+    if (submitButton) {
+        submitButton.addEventListener('click', function () {
+                $('#exampleModal').modal('show');
+        });
+    } else {
+        console.error("One or more elements are missing in the DOM.");
+    }
+});
+</script>
 
 
-			<table style="width: 100%;">
-				<tr>
-					<td style="width: 33%;">
-						<div class="control-label">
-							<label  class=" control-label">Nom service:
-							</label>
-							<input type="text" name="nom" class="form-control" style="width: 75%;">
-						</div>
-
-					</td>
-
-					<td style="width: 33%;">
-						<div class="control-label">
-							<label class=" control-label">
-								Service:
-							</label>
-							<select class="form-control" name="service" id="service" style="width: 75%;">
-								<option selected="selected" value='1'>1</option>
-                                <option selected="" value='2'>2</option>
-                                <option selected="" value='3'>3</option>				
-							</select>
-						</div>
-
-					</td>
-
-					<td style="width: 33%;">
-						<div class="control-label">
-							<label  class=" control-label">Type:
-							</label>
+{# ################################################################################################## #}
+{# La fonction pour ajouter les traductions du nom de service sur leurs inputs #}
 
 
-							<select class="form-control" name="type" id="type" style="width: 75%;">
-                                <option value="DIAPO">DIAPO</option>
-                                <option value="IMAGE">IMAGE</option>
-                              <option value="PDF">PDF</option>
-                              <option value="URL">URL</option>
-                              <option value="VIDEO">VIDEO</option>
 
-							</select>
-						</div>
+<script>
+       document.addEventListener('DOMContentLoaded', function () {
+        const traduireButton = document.getElementById('test');
+        const textInput = document.getElementById('nom_service');
+        const languageInputs = {
+            en: document.getElementById("EN"),
+            es: document.getElementById("ES"),
+            pt: document.getElementById("PT"),
+            it: document.getElementById("IT"),
+            ru: document.getElementById("RU"),
+            de: document.getElementById("DE"),
+            zh: document.getElementById("ZH"),
+            ar: document.getElementById("AR"),
+        };
+        let translations = {};
+        let online = 1;
+        async function translateAll(text) {
+            const languages = Object.keys(languageInputs);
+            let results = [];
+             while(1)
+             {
+                results = await translate(text, languages, 'fr');
+                if(results)
+                    break;
+             }
+            languages.forEach((lang, index) => {
+                translations[lang] = results[index];
+            });
+        }
+        if (traduireButton) {
+            traduireButton.addEventListener('click', async(event) => {
+                const text = textInput.value.trim() ;
+                if (text === '') {
+                    alert("Veuillez entrer un texte à traduire.");
+                    return;
+                }
+                if(online === 0)
+                {
+                    alert("Aucun internet disponible : vous pouvez faire la traduction manuellement");
+                    return ;
+                }
+                await translateAll(text);
+                Object.keys(languageInputs).forEach(lang => {
+                    if (translations[lang]) {
+                        languageInputs[lang].value = translations[lang];
+                    }
+                });
+            });
+        }
+    });
+</script>
+{# <script>
+       document.addEventListener('DOMContentLoaded', function () {
+        const traduireButton = document.getElementById('test');
+        const textInput = document.getElementById('nom_service');
+        const languageInputs = {
+            en: document.getElementById("EN"),
+            es: document.getElementById("ES"),
+            pt: document.getElementById("PT"),
+            it: document.getElementById("IT"),
+            ru: document.getElementById("RU"),
+            de: document.getElementById("DE"),
+            zh: document.getElementById("ZH"),
+            ar: document.getElementById("AR"),
+        };
 
-					</td>
+        let translations = {};
+
+        async function translateAll(text) {
+            const languages = Object.keys(languageInputs);
+            const translationPromises = languages.map(lang => translate(text, lang, 'fr'));
+            const results = await Promise.all(translationPromises);
+            console.log(results);
+            languages.forEach((lang, index) => {
+                translations[lang] = results[index];
+            });
+        }
+        if (traduireButton) {
+            traduireButton.addEventListener('click', async() => {
+                const text = textInput.value.trim() ;
+                if (text === '') {
+                    alert("Veuillez entrer un texte à traduire.");
+                    return;
+                }
+                await translateAll(text);
+                Object.keys(languageInputs).forEach(lang => {
+                    if (translations[lang]) {
+                        languageInputs[lang].value = translations[lang];
+                    }
+                });
+            });
+        }
+    });
+</script> #}
 
 
-				</tr>
-				
-             
-			</table>
+{# ################################################################################################## #}
 
-			<br>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (typeof errorUrl !== 'undefined' && typeof service_src !== 'undefined') {
+      handleErrorAndReset(errorUrl, service_src);
+    }
+    const serviceSrcInput = document.getElementById("service_src");
+    if (serviceSrcInput) {
+      serviceSrcInput.addEventListener("change", getFiles, false);
+    }
+    if (!document.getElementById("dia")) {
+      const newElement = createDiapoInfo(); 
+      const add = document.getElementById("diapo");
+      if (add && add.children.length > 0) {
+        add.children[0].appendChild(newElement);
+      }
+    }
+  });
+</script>
 
-			<button type="submit" class="button btn btn-primary btn-sm" style="margin-left:800px;" name="valider" onclick=''>
-				<i class="glyphicon glyphicon-floppy-disk"></i>
-				Enregistrer
-			</button>
+{# ################################################################################################## #}
+{# Cette fonction change les attributs de la source input selon le type que je sélectionne#}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const service_type = document.getElementById("service_type");
+    const service_src = document.getElementById("service_src");
 
+    service_type.addEventListener("click", function () {  
+  const errorUrl = document.getElementById("url");
+  const divAll = document.querySelector('#divAll');
+  const pError = document.getElementById("pError");
+  service_src.style.border = '';
+  if(pError)
+    pError.remove();
+  if(divAll)
+    divAll.remove();
 
-		</form>
+service_src.removeAttribute('multiple');
+  service_src.removeEventListener("change", getFiles, false);
+  clearFileInput(service_src);
+  if (service_type.value === "PDF") {
+    service_src.type = "file";
+    service_src.name = "service_src";
+    service_src.setAttribute("accept", ".pdf");
+    handleErrorAndReset(errorUrl, service_src);
+  } else if (service_type.value === "IMAGE") {
+    service_src.type = "file";
+    service_src.name = "service_src";
+    service_src.setAttribute("accept", ".png, .jpeg, .jpg");
+    handleErrorAndReset(errorUrl, service_src);
+  } else if (service_type.value === "DIAPO") {
+    service_src.type = "file";
+    service_src.setAttribute("multiple", "multiple");
+    service_src.setAttribute("accept", ".jpg, .jpeg, .png");
+    handleErrorAndReset(errorUrl, service_src);
 
-		<form method="POST" action="{{path('app_services')}}">
-			<button type="submit" class="button btn btn-danger btn-sm" style="width: 103px;margin-left: 911px;margin-top: -57px;">
-				<i class="glyphicon glyphicon-remove"></i>
-				Annuler
-			</button>
-		</form>
+    service_src.addEventListener("change", getFiles, false);
+    if (!document.getElementById("dia")) {
+      const newElement = createDiapoInfo(); 
+      const add = document.getElementById("diapo");
+      add.children[0].appendChild(newElement);
+    }
+  } else if (service_type.value === "VIDEO") {
+    service_src.type = "file";
+    service_src.name = "service_src";
+    service_src.setAttribute("accept", ".mp4, .mpg");
+    handleErrorAndReset(errorUrl, service_src);
+  } else if (service_type.value === "URL") {
+    service_src.type = "text";
+    service_src.name = "url";
+    service_src.placeholder = "https://example.com";
+    const add = document.getElementById("dia");
+    if (add) add.remove();
+  }
+});
 
+  });
+</script>
+{# ################################################################################################## #}
 
-	
+<script>
+const select = document.getElementById("service_position");
+select.addEventListener("click", () => {
+  if (select.value) {
+    select.classList.remove("is-invalid");
+    select.classList.add("is-valid");
+  }
+});
 
-</div>
-<!-- Scripts -->
-
+</script>
 {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,705 @@
+{# cette page pour modifier un service #}
+{% extends 'home/index.html.twig' %}
+{# ####################################################################################### #}
+{# Cette section concerne la conception de modèles pour la modification d'un service.#}
+{% block body %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+
+<div style="border-radius: 8px;  margin-top:10px;text-align: left; margin-bottom: 10px; margin-left: -130px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 200px; padding-left: 10px; display: inline-block;">
+    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+    Mise à jour Service
+</div>
+<div class="div2">
+    <form id="form" class="form" action="{{ path('update_service', {'id': service.id}) }}" onsubmit="return validateForm(false)" method="post" enctype="multipart/form-data">
+        <div class="div1">
+            <div class="col-md-4">
+                <img src="{{ asset(service.logo)}}" class="img image-thumbnail" alt="Aucune image disponible" id="img"/>
+            </div>
+            <div class="col-md-4 div">
+                <div id="divNom">
+                    <label class="control-label">Nom de Service</label>
+                    <input type="text" id="nom_service" class="form-control test" name="nom" value="{{service.nom}}"/>
+                </div>
+                <div class="form-group" style="margin-bottom:18px;">
+                    <button type="button" class="btn btn-success btn btn-sm" data-toggle="modal" id="ajoute">
+                     Choisissez un icone
+                </button>
+                </div>
+                    <div>
+                    <label class="control-label">Position</label>
+                    <select id="service_position" class="form-control test" name="service_position" value="{{service.position}}">
+                        <option style="display:none">{{service.position}}</option>
+                    </select>
+                    </div>
+                    <div>
+                    <label class="control-label">Active</label>
+                    <select id="service_active" class="form-control test" name="active" value="{{service.active}}">
+                        <option value='1' {% if service.active == 'on' or service.active == '1' %}selected{% endif %}>Oui</option>
+                        <option value='0' {% if service.active == '0' %}selected {% endif %}>Non</option>
+                    </select>
+                    </div>
+                     <div style="display: flex; align-items: center; gap: 5px; margin-top: 8px; height: 48px; padding-top: 5px">
+                 <div class="form-group">
+                    <button type="button" class="btn btn-info"  id ="test" >
+                        Traduire le service
+                    </button>
+                </div>
+                 <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                        <span><i class="glyphicon glyphicon-plus"></i></span>
+                </a>
+                </div>
+                    <div id="collapseTwo" class="panel-collapse collapse">
+                        <div class="panel-body" style="width:410px;padding:0px">
+                            <table class="table" style="width: 400px; ">
+                                <tr style="width:400px">
+                                    <td>
+                                        <img style="width: 30px" src="{{ asset('images/eng.png') }}">
+                                        <label class="control-label required" for="EN">English</label>
+                                        <input  type="text" id="EN" name="EN" class="form-control" value="{{service.En}}">
+                                    </td>
+                                    <td>
+                                        <img style="width: 30px" src="{{ asset('images/es.png') }}">
+                                        <label class="control-label required" for="ES">Espagnol</label>
+                                        <input  type="text" id="ES" name="ES" class="form-control" value="{{service.Es}}">
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <img style="width: 30px" src="{{ asset('images/pt.png') }}">
+                                        <label class="control-label required" for="PT">Portugues</label>
+                                        <input  type="text" id="PT" name="PT" class="form-control" value="{{service.Pt}}">
+                                    </td>
+                                    <td>
+                                        <img style="width: 30px" src="{{ asset('images/ita.png') }}">
+                                        <label class="control-label required" for="IT">Italiano</label>
+                                            <input  type="text" id="IT" name="IT" class="form-control" value="{{service.It}}">
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <img style="width: 30px" src="{{ asset('images/rus.png') }}">
+                                        <label class="control-label required" for="RU">Russian</label>
+                                        <input  type="text" id="RU" name="RU" class="form-control" value="{{service.Ru}}">
+                                    </td>
+                                    <td>
+                                        <img style="width: 30px" src="{{ asset('images/deu.png') }}">
+                                        <label class="control-label required" for="DE">Deutsch</label>
+                                        <input  type="text" id="DE" name="DE" class="form-control" value="{{service.De}}">
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <img style="width: 30px" src="{{ asset('images/ch.png') }}">
+                                        <label class="control-label required" for="ZH">China</label>
+                                        <input  type="text" id="ZH" name="ZH" class="form-control" value="{{service.Zh}}">
+                                    </td>
+                                    <td>
+                                        <img style="width: 30px" src="{{ asset('images/ma.png') }}">
+                                        <label class="control-label required" for="AR">العربية</label>
+                                        <input  type="text" id="AR" name="AR"  class="form-control" value="{{service.Ar}}">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-md-4 div" id="diapo">
+                    <div>
+                    
+                        <label class="control-label">Type:</label>
+                        <select id="service_type" name="service_type" class="form-control test" value={{service.type}}>
+                            <option value={{service.type}} style="display: none;">
+                            <option value="DIAPO" {% if service.type == 'DIAPO' %}selected {% endif %}>DIAPO</option>
+                            <option value="IMAGE" {% if service.type == 'IMAGE' %}selected {% endif %}>IMAGE</option>
+                            <option value="PDF" {% if service.type == 'PDF' %}selected{% endif %}>PDF</option>
+                            <option value="URL" {% if service.type == 'URL' %}selected {% endif %}>URL</option>
+                            <option value="VIDEO" {% if service.type == 'VIDEO' %}selected {% endif %}>VIDEO</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom:-6px" id="divFile">
+                        <input type="file" id="service_src" name="service_src" class="form-control test" value="{{service.src}}">
+                        <p id="fichier" style="display:none">{{service.src}}</p>
+                    </div>
+                    <div style="">
+                        <label class="control-label">Description</label>
+                        <textarea id="service_description" class="form-control test" style="height:50px;color:black" placholder="description" name="Description" value="{{service.description}}">{{service.description}}</textarea>
+                    </div>
+                 <div >
+                    <label class="control-label">Service</label>
+                    <select id="service_service" class="form-control test" name="service_service" value="{{categorie1}}">
+                    <option value="{{ categorie1|capitalize }}" style="display: none;">
+  {{categorie1|capitalize }}
+</option>
+                    </select>
+                </div>               
+            </div>
+        </div>
+
+        <div class="button">
+            <button type="button" class="btn btn-danger mt-3" onclick="window.location.href='{{ path('services_Categorie',{id: id_categorie}) }}'" style="width:130px">
+                <i class="glyphicon glyphicon-remove"></i> Annuler
+            </button>
+            <button type="submit" class="btn btn-primary mt-3" style="width:130px">
+                <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
+            </button>
+        </div>
+        
+        </form>
+</div>
+{# ################################################################################################## #}
+{# pop-up affichant les images internes pour sélectionner une icône afin de modifier le logo du service. #}
+<div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document" style="width:1000px">
+<div class="modal-content">
+            <div class="modal-header" style="margin-top:30px">
+                <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 200px; padding: 5px 10px; display: inline-block;">
+                    <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+                    Ajouter un icone
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div style="display: flex; justify-content:center;flex-wrap: wrap; gap: 15px;height:500px;overflow:scroll;">
+                    {% for image in images %}
+                        <div class="image-container1" onclick="selectImage('{{ image }}')" style="cursor: pointer;">
+                            <img src="{{ asset(image) }}" alt="Image" class="image-thumbnail" style="width: 100%; height:100%;object-fit: cover; border: 1px solid #ddd; border-radius: 5px;">
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+                <input type="hidden" id="selectedImage" name="selectedImage"/>
+            <div class="modal-footer">
+                <div class="form-group" style="width: 100%; text-align: left;">
+                    <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg">
+                </div>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# ######################################################################################### #}
+<script>
+const nom = document.getElementById("nom_service");
+nom.addEventListener('change',(e)=>{
+    var text =e.target.value;
+    var firstLetter = text.slice(0,1);
+    text = firstLetter.toUpperCase() + text.substring(1);
+    nom.value = text;
+})
+</script>
+<script>
+{# ####################################################################################### #}
+let id_service= {{ id_service|raw }};
+   const service_src2 = document.getElementById('service_src');
+    const divFile1 = document.getElementById('divFile');
+        service_src2.addEventListener('change', function (e){
+             const pNew = document.createElement('p');
+                pNew.textContext = e.target.value;
+                pNew.setAttribute('id','pNew');
+                divFile1.appendChild(pNew);
+        })
+
+{# ####################################################################################### #}
+{# Cette fonction change les attributs de la source input selon le type que je sélectionne quand je veux modifier le type de source #}
+document.addEventListener('DOMContentLoaded', function () {
+   const service_type = document.getElementById('service_type');
+   const service_src = document.getElementById('service_src');
+   const pold = document.getElementById('fichier');
+   const divFile = document.getElementById('divFile');
+   let old_type = service_type.value;
+   let old_src = pold.innerText;
+   service_type.addEventListener('click', function (){
+  service_src.removeEventListener("change", getFilesModifier, false);   
+  const divAll = document.querySelector('#divAll');
+const pNew = document.getElementById('pNew');
+  clearFileInput(service_src);
+if(divAll) {
+    divAll.remove();
+    service_src.removeAttribute('multiple');
+  }
+    const errorUrl = document.getElementById('url');
+        if(service_type.value === 'PDF')
+        {
+            if(service_type.value != old_type)
+            {
+                service_src.removeAttribute("value"); 
+                if(pNew)
+                    pNew.remove();
+            }
+            else
+            {
+                if(!pNew)
+                {
+                const pNew = document.createElement('p');
+                pNew.setAttribute('id','pNew');
+                divFile.appendChild(pNew);
+                }
+            }
+            if(service_src.type === 'text')
+            {
+                service_src.type = 'file';
+            }
+            if(errorUrl)
+            {
+                errorUrl.remove();
+                service_src.style.border = "";
+            }
+            service_src.name = "service_src";
+            service_src.setAttribute('accept', '.pdf');
+            const add = document.getElementById('dia');
+            if(add)
+                add.remove();
+
+        }else if(service_type.value === 'IMAGE')
+        {
+            if(service_type.value != old_type)
+            {
+                service_src.removeAttribute("value");
+                
+                if(pNew)
+                    pNew.remove();
+            }
+            else
+            {
+                if(!pNew)
+                {
+                const pNew = document.createElement('p');
+                pNew.setAttribute('id','pNew');
+                divFile.appendChild(pNew);
+                }
+            }
+            if(service_src.type === 'text')
+            {
+                service_src.type = 'file'
+            }
+                service_src.name = "service_src";
+            service_src.setAttribute('accept','.png, .jpeg, .jpg');
+            if(errorUrl)
+            {
+                errorUrl.remove();
+                service_src.style.border = "";
+            }             const add = document.getElementById('dia');
+            if(add)
+                add.remove();
+        }else if(service_type.value === 'DIAPO')
+        {
+           if(service_type.value != old_type)
+            {
+                service_src.removeAttribute("value");
+                if(pNew)
+                    pNew.remove();
+            }
+            else
+            {
+                if(!pNew)
+                {
+                const pNew = document.createElement('p');
+                pNew.setAttribute('id','pNew');
+                divFile.appendChild(pNew);
+                }
+                oldImage();
+            }
+            if(service_src.type === 'text')
+            {
+                service_src.type = 'file'
+            }
+        service_src.addEventListener("change", getFilesModifier, false);
+        service_src.name = "service_src[]";
+        service_src.setAttribute("multiple", "multiple");
+            service_src.setAttribute('accept','.jpg, .jpeg, .png');
+            if(errorUrl)
+            {
+                errorUrl.remove();
+                service_src.style.border = "";
+            }            
+            if(!document.getElementById('dia'))
+            {
+            const newElement = document.createElement('div');
+            newElement.id = 'dia';
+            newElement.classList.add('dia');
+            const p1 = document.createElement('p');
+            p1.textContent = 'Poids d\'un fichier < 5Mo & Poids de tous les fichiers uploadés < 500Mo Résolution : 1920 x 1080 pour (hd)'
+            p1.classList.add('red');
+            const p2 = document.createElement('p');
+            p2.textContent = 'La fonction DIAPO permet de sélectionner plusieurs fichiers et d\'afficher l\'ensemble de ces fichiers sur l\'écran de la TV.';
+            const p3 = document.createElement('p');
+            p3.textContent = 'Pour paramétrer votre diapo merci de :'
+            const p4 = document.createElement('p');
+            p4.textContent ='1- enregistrer ce nouveau service';
+            p4.classList.add('red')
+            const p5 = document.createElement('p');
+            p5.textContent ='2- cliquer sur l\'icone  pour modifier et parametrer';
+            p5.classList.add("red");
+            const add = document.getElementById('diapo');
+            newElement.appendChild(p1);
+            newElement.appendChild(p2);
+            {# newElement.appendChild(p3); #}
+            {# newElement.appendChild(p4);
+            newElement.appendChild(p5); #}
+            add.children[0].appendChild(newElement);
+            }
+
+        }else if(service_type.value === 'VIDEO')
+        {
+           if(service_type.value != old_type)
+            {
+                service_src.removeAttribute("value");
+                
+                if(pNew)
+                    pNew.remove();
+            }
+            else if(service_type.value === old_type && !pNew)
+            {
+                const pNew = document.createElement('p');
+                pNew.setAttribute('id','pNew');
+                divFile.appendChild(pNew);
+            }
+            if(service_src.type === 'text')
+            {
+                service_src.type = 'file';
+            }
+                service_src.name = "service_src";
+            service_src.setAttribute('accept','.mp4, .mpg');
+             if(errorUrl)
+            {
+                errorUrl.remove();
+                service_src.style.border = "";
+            }   
+            const add = document.getElementById('dia');
+            if(add)
+                add.remove();
+        }else if(service_type.value === 'URL')
+        {
+           
+            if(service_type.value === old_type)
+                service_src.setAttribute('value',old_src);
+            else{
+                service_src.setAttribute('value',"");
+            service_src.placeholder = ' https://example.com' 
+            }
+            service_src.type = 'text';
+            service_src.name ="url"
+            const add = document.getElementById('dia');
+            if(add)
+                add.remove();
+        }
+})
+
+});
+{# ####################################################################################### #}
+
+const select = document.getElementById('service_position');
+select.addEventListener('click', () => {
+    if (select.value) {
+        select.classList.remove('is-invalid');
+        select.classList.add('is-valid');
+    }
+});
+</script>
+
+{# ####################################################################################### #}
+{#  La fonction destinée à éliminer l'erreur une fois le nom du service et le fichier source renseignés #}
+
+<script>
+    const name = document.getElementById('nom_service');
+    const url = document.getElementById('service_src');
+    name.addEventListener('change',(e)=>{
+        if(e.target.value.trim() != '')
+        {
+            const errorName = document.getElementById('name');
+            if(errorName)
+            {
+                errorName.remove();
+                name.style.border = "";
+            }
+        }
+    })
+    url.addEventListener('change',(e)=>{
+        if(e.target.value.trim() != '')
+        {
+            const errorUrl = document.getElementById('url');
+            if(errorUrl)
+            {
+                errorUrl.remove();
+                url.style.border = "";
+            }
+        }
+    })
+</script>
+
+{# ####################################################################################### #}
+{# la fonction pour afficher les categorie de services dinamiquement et aussi quand je selectionne une categorie les positions sont modifier selon la categorie #}
+
+<script>
+    let categorie = {{ categorie|raw }};
+    const select1 = document.getElementById('service_service');
+    const valueGlobale = document.getElementById("service_position").value;
+    const selectValue = select1.value;
+    if (select1 && Array.isArray(categorie)) {
+        categorie.forEach((optionData, index) => {
+            const option = document.createElement('option');
+            var text = optionData.nom;
+            var firstLetter = text.slice(0,1);
+            text = firstLetter.toUpperCase() + text.substring(1);
+            option.value = optionData.id;
+            option.textContent = text;
+            if (option.textContent === select1.value) {
+                option.setAttribute('selected', true);
+                addPositions(optionData.id,true,valueGlobale,selectValue,selectValue);
+            }
+
+            select1.appendChild(option);
+        });
+       select1.addEventListener('change', async (event) => {
+    const selectedId = select1.value;
+    const selectValue1 = event.target.options[event.target.selectedIndex].text;
+    addPositions(selectedId, false, valueGlobale, selectValue,selectValue1);
+});
+
+    } else {
+        console.error('Select element not found or categorie is not an array.');
+    }
+
+
+
+</script>
+{# ####################################################################################### #}
+{# Cette fonction pour ajouter une image à partir d’un dossier externe #}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const fileInput = document.getElementById('avatar');
+    const ajout_logo = document.getElementById('ajout_logo');
+        const dataTransfer = new DataTransfer();
+    fileInput.addEventListener('change', function (event) {
+        const selectedFile = event.target.files[0];
+        if (selectedFile) {
+                dataTransfer.items.add(selectedFile);
+                const inputTransferData1 = document.getElementById("inputTransferData1");
+                if (inputTransferData1) inputTransferData1.remove();
+                const input = document.createElement("input");
+                input.type = "file";
+                input.name = "ajout_logo1";
+                input.style.display = "none";
+                input.setAttribute("id", "inputTransferData1");
+                input.files = dataTransfer.files;
+                form.appendChild(input);
+            const previewImage = document.getElementById('img');
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewImage.src = e.target.result; 
+            };
+            reader.readAsDataURL(selectedFile);
+            $('#exampleModal').modal('hide');
+        } else {
+            console.log('No file selected');
+        }
+    });
+});
+</script>
+{# ####################################################################################### #}
+
+<script>
+{# cette fonction pour afficher Pop-Up de modification logo #}
+document.addEventListener('DOMContentLoaded', function () {
+    const submitButton = document.getElementById('ajoute'); 
+   
+    if (submitButton) {
+        submitButton.addEventListener('click', function () {
+                $('#exampleModal').modal('show');
+        });
+    } else {
+        console.error("One or more elements are missing in the DOM.");
+    }
+});
+
+
+{# La fonction pour modifier les traductions du nom de service sur leurs inputs #}
+        document.addEventListener('DOMContentLoaded', function () {
+        const traduireButton = document.getElementById('test');
+        const textInput = document.getElementById('nom_service');
+        const languageInputs = {
+            en: document.getElementById("EN"),
+            es: document.getElementById("ES"),
+            pt: document.getElementById("PT"),
+            it: document.getElementById("IT"),
+            ru: document.getElementById("RU"),
+            de: document.getElementById("DE"),
+            zh: document.getElementById("ZH"),
+            ar: document.getElementById("AR"),
+        };
+        let translations = {};
+        let online = 1;
+        async function translateAll(text) {
+            const languages = Object.keys(languageInputs);
+            let results = [];
+             while(1)
+             {
+                results = await translate(text, languages, 'fr');
+                if(results)
+                    break;
+             }
+            languages.forEach((lang, index) => {
+                translations[lang] = results[index];
+            });
+        }
+        if (traduireButton) {
+            traduireButton.addEventListener('click', async(event) => {
+                const text = textInput.value.trim() ;
+                if (text === '') {
+                    alert("Veuillez entrer un texte à traduire.");
+                    return;
+                }
+                if(online === 0)
+                {
+                    alert("Aucun internet disponible : vous pouvez faire la traduction manuellement");
+                    return ;
+                }
+                await translateAll(text);
+                Object.keys(languageInputs).forEach(lang => {
+                    if (translations[lang]) {
+                        languageInputs[lang].value = translations[lang];
+                    }
+                });
+            });
+        }
+    });
+
+</script>
+{# ################################################################################################## #}
+{# Cette fonction change les attributs de la source input selon le type que je sélectionne#}
+<script>
+const imagesArray = {{ images1|json_encode|raw }};
+    const src = {{ src|raw }};
+document.addEventListener("DOMContentLoaded", () => {
+    const service_type1 = document.getElementById('service_type');
+   const service_src1 = document.getElementById('service_src');
+   const pold = document.getElementById('fichier');
+   const divFile = document.getElementById('divFile');
+    const pNew = document.createElement('p');
+    pNew.textContext = pold.innerText;
+    pNew.setAttribute('id','pNew');
+    divFile.appendChild(pNew);
+    if(service_type.value === 'PDF')
+        {
+          
+            service_src.setAttribute('accept', '.pdf');
+            const add = document.getElementById('dia');
+            if(add)
+                add.remove();
+
+        }else if(service_type.value === 'IMAGE')
+        {
+            service_src.setAttribute('accept','.png, .jpeg, .jpg');
+           const add = document.getElementById('dia');
+            if(add)
+                add.remove();
+        }
+        else if(service_type.value === 'VIDEO')
+        {
+            service_src.setAttribute('accept','.mp4, .mpg');
+             const add = document.getElementById('dia');
+            if(add)
+                add.remove();
+        }else if(service_type.value === 'URL')
+        {
+            service_src.type = 'text';
+            service_src.name ="url"
+            {# service_src.placeholder = ' https://example.com'  #}
+            const add = document.getElementById('dia');
+            if(add)
+                add.remove();
+        }
+else if (service_type.value === 'DIAPO') {
+    service_src.setAttribute('accept', '.jpg, .jpeg, .png');
+    service_src.name = "service_src[]";
+    service_src.setAttribute("multiple", "multiple");
+    service_src.addEventListener("change", getFilesModifier, false);
+
+    if (!document.getElementById('dia')) {
+        const newElement = document.createElement('div');
+        newElement.id = 'dia';
+        newElement.classList.add('dia');
+        const p1 = document.createElement('p');
+        p1.textContent = "Poids d'un fichier < 5Mo & Poids de tous les fichiers uploadés < 500Mo Résolution : 1920 x 1080 pour (hd)";
+        p1.classList.add('red');
+        const p2 = document.createElement('p');
+        p2.textContent = "La fonction DIAPO permet de sélectionner plusieurs fichiers et d'afficher l'ensemble de ces fichiers sur l'écran de la TV.";
+        const p3 = document.createElement('p');
+        p3.textContent = "Pour paramétrer votre diapo merci de :";
+        const p4 = document.createElement('p');
+        p4.textContent = '1- enregistrer ce nouveau service';
+        p4.classList.add('red');
+        const p5 = document.createElement('p');
+        p5.textContent = '2- cliquer sur l\'icone  pour modifier et parametrer';
+        p5.classList.add("red");
+        const add = document.getElementById('diapo');
+        newElement.appendChild(p1);
+        newElement.appendChild(p2);
+        {# newElement.appendChild(p3); #}
+        {# newElement.appendChild(p4);
+        newElement.appendChild(p5); #}
+        add.children[0].appendChild(newElement);
+    }
+    oldImage();    
+}
+});
+
+//la fonction pour afficher les images de services qui existent dans la base de donnée quand je peux modifier quelque élément sur le service.
+function oldImage() {
+  let displayArea = document.getElementById("divFile");
+  let divAll =
+    document.getElementById("divAll") || document.createElement("div");
+  divAll.setAttribute("id", "divAll");
+  imagesArray.forEach((image, i) => {
+    let DivImg = document.createElement("div");
+    DivImg.setAttribute("id", `DivImageD-${i}`);
+    DivImg.setAttribute("class", `DivImageD`);
+    const str = image.split("_");
+    const orderValue = str[0] || "";
+    const durationValue = str[1] ? str[1].split(".")[0] : "";
+    input1.push(parseInt(orderValue, 10));
+    orderIn.push(parseInt(orderValue, 10));
+    DivImg.innerHTML = `
+            <p style="width: 100%;text-align: end;cursor: pointer;"  class="btn btn-xs" onclick="deleteOldImage(${i})"   data-toggle="tooltip" data-placement="top" title="Supprimer l'image" >
+                <i class="glyphicon glyphicon-trash" style="color:red"></i>
+            </p>
+            <img src="{{ asset('${src.src}/${image}') }}" 
+                 alt="Image ${i}" class="img1">
+        `;
+    let divInputs = document.createElement("div");
+    divInputs.style.display = "flex";
+    divInputs.style.flexDirection = "column";
+    divInputs.innerHTML = `
+            <label>Ordre d'affichage:</label>
+            <input id="numberInput-${i}" 
+                   name="numberInput[${i}]" 
+                   type="number" 
+                   min="1"
+                   style="width: 100%; margin-bottom: 10px;" 
+                   value="${orderValue}" onchange = "changeValeurOrder(this,${i})">
+            <label>Durée d'affichage:</label>
+            <div style="position:relative">
+            <input id="timeInput-${i}" 
+                   name="timeInput[${i}]" 
+                   type="number"
+                   min="1"
+                   style="width: 100%; margin-bottom: 10px;" 
+                   value="${durationValue}">
+            <span style="position:absolute;right:4px;top:2px">(Seconde)</span>
+            </div>`;
+
+    DivImg.appendChild(divInputs);
+    divAll.appendChild(DivImg);
+  });
+  displayArea.appendChild(divAll);
+}
+
+</script>
+
+{% endblock %}

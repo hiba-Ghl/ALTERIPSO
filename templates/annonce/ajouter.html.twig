@@ -306,6 +306,57 @@
 
 <!--for translation part in the form -->
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+	const traduireButton = document.getElementById('translateBtn');
+	 const languageInputs = {
+            en: document.getElementById("EN"),
+            es: document.getElementById("ES"),
+            pt: document.getElementById("PT"),
+            it: document.getElementById("IT"),
+            ru: document.getElementById("RU"),
+            de: document.getElementById("DE"),
+            zh: document.getElementById("ZH"),
+            ar: document.getElementById("AR"),
+        };
+        let translations = {};
+        let online = 1;
+        async function translateAll(text) {
+            const languages = Object.keys(languageInputs);
+            let results = [];
+             while(1)
+             {
+                results = await translate(text, languages, 'fr');
+                if(results)
+                    break;
+             }
+            languages.forEach((lang, index) => {
+                translations[lang] = results[index];
+            });
+        }
+        if (traduireButton) {
+            traduireButton.addEventListener('click', async(event) => {
+                const text = textInput.value.trim() ;
+                if (text === '') {
+                    alert("Veuillez entrer un texte à traduire.");
+                    return;
+                }
+                if(online === 0)
+                {
+                    alert("Aucun internet disponible : vous pouvez faire la traduction manuellement");
+                    return ;
+                }
+                await translateAll(text);
+                Object.keys(languageInputs).forEach(lang => {
+                    if (translations[lang]) {
+                        languageInputs[lang].value = translations[lang];
+                    }
+                });
+            });
+        }
+});
+
+</script>
+{# <script>
     document.getElementById('translateBtn').addEventListener('click', function() {
         const Fr = document.getElementById('text').value.trim();
         if (Fr === '') {
@@ -325,7 +376,7 @@
             window.open(translationUrl, '_blank');
         }
     });
-</script>
+</script> #}
 
 <!--for photo dimensions modal-->
 <script>
