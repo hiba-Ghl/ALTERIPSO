@@ -1,24 +1,50 @@
 {% extends 'home/index.html.twig' %}
   {% block body %}
+
+
+  {# offline #}
+{% if appConfig.StatusServeur is same as('Offline') %}
+<link rel="stylesheet" href="assets/css/jsgrid.min.css">
+<link rel="stylesheet" href="assets/css/jsgrid-theme.min.css">
+<link rel="stylesheet" href="assets/css/ui.fancytree.min.css">
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery-ui.min.js"></script>
+<script src="assets/js/jsgrid.min.js"></script>
+{% else %}
+  {# online #}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.4.1/jsgrid.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.4.1/jsgrid-theme.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.17.0/skin-themeroller/ui.fancytree.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.4.1/jsgrid.min.js"></script>
+{% endif %}
+
+
+
+
+
     <!-- Styles spécifiques à cette page -->    
+
+
+
     <style>
         /* Styles pour la div avec l'ID 'div2' */
-            #div2 {
+            #div4 {
                 border-radius: 25px;
                 border: 2px solid #3087ce;
-                padding: 20px;
                 width: 1091px;
-                height: auto;
                 margin-left: 10px;
+                padding:20px;
+                padding-bottom:60px;
                 margin-top: 10px;
                 background-color: white;
             }
+                 {# overflow: auto; 
+  scrollbar-width: none;  #}
+            {# #div2::-webkit-scrollbar {
+            display: none; 
+            } #}
             /*champ de couleur qui est vide*/
             .error {
               box-shadow: 0 0 5px #FF0000;/* Ombre rouge */
@@ -33,14 +59,14 @@
        
     </style>
     <!-- En-tête de la page -->                                  
-    <div style="margin-top:-15px; border-radius: 8px;text-align: center;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 350px;padding-left: 10px;">
-      Ajouter un service en chambre
-    </div>
-    
-    <div id="div2">
+    <div style="border-radius: 8px;text-align: left;margin-bottom: 10px;margin-top:10px;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 350px;padding-left: 10px;">
+    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+        Ajouter un service en chambre 
+</div>
+    <div id="div4">
     
     <!-- Formulaire d'ajout de service -->
-    <form name="" method="post" action="{{ path('ajouterservice') }}" class="form-horizontal" enctype="multipart/form-data" onsubmit="return validateForm()">  
+    <form name="" method="post" action="{{ path('ajouterservice') }}" class="form-horizontal" enctype="multipart/form-data">  
            <br>
             <!-- Champs du formulaire pour ajouter un service -->
            <div class="form-row" style="margin-left:27px">
@@ -62,67 +88,73 @@
             </div>
            
             <!-- Champs des langues -->
-            <div  style="width:1005px;margin-left:32px;margin-bottom:15px;margin-top:20px">
-                  <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" >
-                   <span > <i class="glyphicon glyphicon-plus"></i></span>
-                  </a><label style="margin-left: 5px;">Langues</label>
-             
-              <div id="collapseTwo" class="panel-collapse collapse">
+            <div style="width: 900px; margin-left:30px; margin-bottom: 5px; margin-top: 20px">
+            <!-- le boutons des langues --> 
+            <label style="margin-right: 20px;" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Langues</label>
+            <!-- le bouton de traduction -->
+            <button type="button" id="translateBtn" class="btn btn-info btn-sm">
+                <i class="glyphicon glyphicon-globe"></i> Traduire le texte
+            </button>
+            <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                <span><i class="glyphicon glyphicon-plus"></i></span>
+            </a>
+            <!-- les champs des langues -->
+            <div id="collapseTwo" class="panel-collapse collapse">
                 <div class="panel-body">
-                  <div id="inputGroup1" >
-                    <div class="form-row" style="margin-left:27px">
-                        <div class="form-group col-md-6">
-                            <img style="width: 30px" src=" {{asset('images/eng.png')}}">
-                        <label for="EN">English</label>
-                        <input type="text" class="form-control" id="EN" name="EN">
+                    <div id="inputGroup1">
+                        <div class="form-row" style="margin-left:27px">
+                            <div class="form-group col-md-6">
+                                <img style="width: 30px" src="{{ asset('images/eng.png') }}">
+                                <label for="EN">English</label>
+                                <input type="text" class="form-control" id="EN" name="EN">
+                            </div>
+                            <div class="form-group col-md-6" style="margin-left:27px">
+                                <img style="width: 30px" src="{{ asset('images/es.png') }}">
+                                <label for="ES">Espagnol</label>
+                                <input type="text" class="form-control" id="ES" name="ES">
+                            </div>
                         </div>
-                        <div class="form-group col-md-6" style="margin-left:27px">
-                            <img style="width: 30px" src="{{asset('images/es.png')}}">
-                        <label for="ES">Espagnol</label>
-                        <input type="text" class="form-control" id="ES" name="ES">
+                        <div class="form-row" style="margin-left:27px">
+                            <div class="form-group col-md-6">
+                                <img style="width: 30px" src="{{ asset('images/pt.png') }}">
+                                <label for="PT">Portugues</label>
+                                <input type="text" class="form-control" id="PT" name="PT">
+                            </div>
+                            <div class="form-group col-md-6" style="margin-left:27px">
+                                <img style="width: 30px" src="{{ asset('images/ita.png') }}">
+                                <label for="IT">Italiano</label>
+                                <input type="text" class="form-control" id="IT" name="IT">
+                            </div>
+                        </div>
+                        <div class="form-row" style="margin-left:27px">
+                            <div class="form-group col-md-6">
+                                <img style="width: 30px" src="{{ asset('images/rus.png') }}">
+                                <label for="RU">Russian</label>
+                                <input type="text" class="form-control" id="RU" name="RU">
+                            </div>
+                            <div class="form-group col-md-6" style="margin-left:27px">
+                                <img style="width: 30px" src="{{ asset('images/deu.png') }}">
+                                <label for="DE">Deutsch</label>
+                                <input type="text" class="form-control" id="DE" name="DE">
+                            </div>
+                        </div>
+                        <div class="form-row" style="margin-left:27px">
+                            <div class="form-group col-md-6">
+                                <img style="width: 30px" src="{{ asset('images/ch.png') }}">
+                                <label for="ZH">China</label>
+                                <input type="text" class="form-control" id="ZH" name="ZH">
+                            </div>
+                            <div class="form-group col-md-6" style="margin-left:27px">
+                                <img style="width: 30px" src="{{ asset('images/ma.png') }}">
+                                <label for="AR">العربية</label>
+                                <input type="text" class="form-control" id="AR" name="AR">
+                            </div>
                         </div>
                     </div>
-              
-                    <div class="form-row" style="margin-left:27px">
-                        <div class="form-group col-md-6">
-                            <img style="width: 30px" src=" {{asset('images/pt.png')}}">
-                        <label for="PT">Portugues</label>
-                        <input type="text" class="form-control" id="PT" name="PT">
-                        </div>
-                        <div class="form-group col-md-6" style="margin-left:27px">
-                            <img style="width: 30px" src=" {{asset('images/ita.png')}}">
-                        <label for="IT">Italiano</label>
-                        <input type="text" class="form-control" id="IT" name="IT">
-                        </div>
-                    </div>
-                    <div class="form-row" style="margin-left:27px">
-                        <div class="form-group col-md-6">
-                            <img style="width: 30px" src=" {{asset('images/rus.png')}}">
-                        <label for="RU">Russian</label>
-                        <input type="text" class="form-control" id="RU" name="RU">
-                        </div>
-                        <div class="form-group col-md-6" style="margin-left:27px">
-                          <img style="width: 30px" src=" {{asset('images/deu.png')}}">
-                        <label for="DE">Deutsch</label>
-                        <input type="text" class="form-control" id="DE" name="DE">
-                        </div>
-                    </div>
-                    <div class="form-row" style="margin-left:27px">
-                        <div class="form-group col-md-6">
-                            <img style="width: 30px" src=" {{asset('images/ch.png')}}">
-                        <label for="ZH">China</label>
-                        <input type="text" class="form-control" id="ZH" name="ZH">
-                        </div>
-                        <div class="form-group col-md-6" style="margin-left:27px">
-                            <img style="width: 30px" src=" {{asset('images/ma.png')}}">
-                        <label for="AR">العربية</label>
-                        <input type="text" class="form-control" id="AR" name="AR">
-                        </div>
-                    </div>
-                  </div>
                 </div>
-              </div>
             </div>
+        </div>
+         
             <script>
               $(document).ready(function(){
                 $('.accordion-toggle').click(function(){
@@ -136,7 +168,6 @@
                 <label for="type_service_en_chambre">Type service en chambre</label>
                  <!-- Affichage Liste des types services -->
                 <select style="width: 97%;" id="type_service_en_chambre" name="type_service_en_chambre" class="form-control" onchange="toggleSection()">
-                    
                     {% for typeServiceEnChambre in typeserviceEnChambres %}
                       <option value="{{ typeServiceEnChambre.id }}" data-id="{{ typeServiceEnChambre.id }}" data-nom="{{ typeServiceEnChambre.nom }}">{{ typeServiceEnChambre.nom }}</option>
                     {% endfor %}
@@ -370,10 +401,15 @@
               </div>
             </div>
           <!-- button enregistrer et annuler  -->
-          <span style="margin-left: 800px;">
-            <a href="{{ path('service_en_chambre') }}" class="btn btn-danger" style=" border: 2px solid ; padding: 12px" > <i class="glyphicon glyphicon-remove"></i>  Annuler</a>
-            <button type="submit" class="btn btn-success" style="background-color: #3087ce; border: 2px solid #3087ce;margin-left:13px;"><i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer</button>
-          </span>
+           <div style="float:right;margin-right:20px;">
+          <a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/serviceenchambre">
+              <i class="glyphicon glyphicon-remove"></i> Annuler
+          </a>
+          <button type="submit" class="btn btn-primary btn-md" name="valider" >
+              <i class="glyphicon glyphicon-floppy-disk"></i>
+              Enregistrer
+          </button>
+  </div>
      </form>
     </div>
 
@@ -481,8 +517,10 @@
 
         // Afficher la section appropriée en fonction de la valeur sélectionnée
         if (selectedNom === "Achat" || selectedNom === "achat") {
+          
             achatSection.style.display = "block";
         } else if (selectedNom === "List" || selectedNom === "list") {
+            
             listSection.style.display = "block";
         } else if (selectedNom === "Menu" || selectedNom === "menu") {
             menuSection.style.display = "block";
@@ -496,6 +534,7 @@
    <script>
     function validateForm() {
         // Récupérer les valeurs des champs
+        console.log("test");
         var nom = document.getElementById("nom");
         var logo = document.getElementById("logo");
         var EN = document.getElementById("EN");
@@ -580,6 +619,57 @@
     });
 </script>
 
+ <script>
+      const configApp = {{configApp | raw}}
+document.addEventListener('DOMContentLoaded', function () {
+	const traduireButton = document.getElementById('translateBtn');
+	 const languageInputs = {
+            en: document.getElementById("EN"),
+            es: document.getElementById("ES"),
+            pt: document.getElementById("PT"),
+            it: document.getElementById("IT"),
+            ru: document.getElementById("RU"),
+            de: document.getElementById("DE"),
+            zh: document.getElementById("ZH"),
+            ar: document.getElementById("AR"),
+        };
+        let translations = {};
+        async function translateAll(text) {
+            const languages = Object.keys(languageInputs);
+            let results = [];
+             while(1)
+             {
+                results = await translate(text, languages, 'fr');
+                if(results)
+                    break;
+             }
+            languages.forEach((lang, index) => {
+                translations[lang] = results[index];
+            });
+        }
+        if (traduireButton) {
+            traduireButton.addEventListener('click', async(event) => {
+                const textInput = document.getElementById("nom");
+                const text = textInput.value.trim() ;
+                if (text === '') {
+                    alert("Veuillez entrer un texte à traduire.");
+                    return;
+                }
+                if(configApp.Status === 'Offline')
+                {
+                    alert("Aucun internet disponible : vous pouvez faire la traduction manuellement");
+                    return ;
+                }
+                await translateAll(text);
+                Object.keys(languageInputs).forEach(lang => {
+                    if (translations[lang]) {
+                        languageInputs[lang].value = translations[lang];
+                    }
+                });
+            });
+        }
+});
 
+</script>
 
 {% endblock %}

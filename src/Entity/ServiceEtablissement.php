@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class ServiceEtablissement
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    // #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
@@ -27,8 +27,8 @@ class ServiceEtablissement
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $background = null;
 
-    #[ORM\ManyToOne]
-    private ?etablissement $etablissement = null;
+    #[ORM\ManyToOne(inversedBy: 'ServiceEtablissement', targetEntity: Etablissement::class,cascade: ['persist'])]
+    private ?Etablissement $etablissement = null;
 
     #[ORM\OneToMany(mappedBy: 'service', targetEntity: Chambre::class)]
     private Collection $chambres;
@@ -51,6 +51,12 @@ class ServiceEtablissement
         return $this->id;
     }
 
+    public function setId(?int $id): static
+    {
+        $this->id = $id;
+
+        return $this;
+    }
     public function getActive(): ?string
     {
         return $this->active;

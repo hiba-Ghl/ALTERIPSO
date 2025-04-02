@@ -160,7 +160,7 @@
     }
 </style>
 <div class="div">
-    <form method="get" action=""{{ path('app_resultat_questionnaire') }}">
+    <form method="get" action="{{ path('app_resultat_questionnaire') }}">
       <div class="container">
     {# partie de filtrage #}
     <table id="filtre">
@@ -599,7 +599,7 @@ document.getElementById('exportPdfBtn').addEventListener('click', function () {
             }
         });
 
-        doc.save('statistiques.pdf');
+        doc.Sauvegarder('statistiques.pdf');
     });
 });
 

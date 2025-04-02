@@ -11,40 +11,61 @@
 			margin-top: 10px;
 
 		}
-		#div2 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 20px;
-			width: 1300px;
-			height: 900px;
-			margin-left: -70px;
-			margin-top: 10px;
-			background-color: white;
-		}
 	</style>
 
 	<p id='p'></p>
-	<div style="margin-top: -40px;position: absolute;border-radius: 8px;text-align: left;margin-left: -68px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: -27px;">
+	<div style="border-radius: 8px;text-align: left;margin-bottom: 10px;margin-left: -120px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
+    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
 		Liste Catégorie radio
-	</div>
+</div>
+<form name="form" action="{{ path('app_update_active_categorie_radio') }}" method="post" enctype="multipart/form-data">
 
 	<div id="div2">
 
-
-		<a href="{{path('app_ajouter_categorieradio')}}" class="btn btn-info btn-sm" name="add" id="add">
+	    <div style="display:flex;align-items:center;justify-content:space-between;gap:3px;">
+<div>
+   <a {% if app.user.AjoutCatRadio == '0' %} disabled {% endif %} href="{{path('app_ajouter_categorieradio')}}" class="btn btn-info btn-sm" name="add" id="add" style="margin-bottom: 10px; border: 2px; padding: 8px;">
 			<i class="glyphicon glyphicon-plus"></i>
 			Ajouter Catégorie radio</a>
+    <button type="submit" {% if app.user.SauvegarderCatRadio == '0' %} disabled {% endif %} name="valider" class="btn btn-success btn-sm" style="margin-bottom: 10px; border: 2px; padding: 8px;width:150px;">
+        <i class="glyphicon glyphicon-floppy-disk"></i>
+        Sauvegarder
+    </button>
 
+    <a name="annuler" href="{{ path('app_categorie_radio') }}" class="btn btn-danger btn-sm" style="margin-bottom: 10px; border: 2px; padding: 8px;width:150px;">
+        <i class="glyphicon glyphicon-remove"></i>
+        Annuler
+    </a>
+</div>
+    <!-- la barre de recherche -->
+    <input id="myInput" type="text" placeholder="Search.." style="float: right; padding: 6px; border-radius: 5px;">
+</div>
+		
 
-		<table class="table table-striped table-bordered table-hover table-checkable order-column" id="sample_1">
+ <table class="table table-striped table-bordered header-fixed table-hover" id="dataTables-example" style="width: 100%;margin-top:20px;">
 			<thead>
 
 				<tr>
-					<th>Titre</th>
-					<th>Icon</th>
-					<th>Actif</th>
-                    <th>Position</th>
-					<th>Action</th>
+					<th style="height: 50px;width:250px;text-align:center;">Titre</th>
+					<th style="height: 50px;width:250px;text-align:center;">Icon</th>
+					<th style="height: 50px;width:250px;text-align:center;">
+					<p style="display:flex;gap:10px;justify-content:center">
+                        <span>
+                            Active
+                        </span>
+                        <input type="checkbox" id="checklist" style="margin-top:-1px;"></th>
+                    </p>
+					</th>
+					<script>
+    document.getElementById('checklist').addEventListener('click', function() {
+        var checkboxes = document.querySelectorAll('input.jpCheckbox');
+        for (var checkbox of checkboxes) {
+            checkbox.checked = this.checked;
+        }
+    });
+</script>
+                    <th style="height: 50px;width:250px;text-align:center;">Position</th>
+					<th style="height: 50px;width:250px;text-align:center;">Action</th>
 
 
 				</tr>
@@ -56,25 +77,25 @@
 
 
 					<tr class="odd gradeX">
-						<td>{{catradio.nom}}</td>
-						<td>
+						<td style="height: 50px;width:250px;text-align:center;">{{catradio.nom}}</td>
+						<td style="height: 50px;width:250px;text-align:center;">
 							<img style="width:50px;height:50px;text-align:center" src="{{ asset(catradio.logo) }}" alt="..." class="img-rounded img-responsive center-block">
 						</td>
 
-						<td>{{catradio.Active}}</td>
-						<td>{{catradio.position}}</td>
+						<td style="height: 50px; width: 250px; text-align: center;">
+    					<input type="checkbox" value="{{ catradio.Active }}" class="jpCheckbox" name="listeactive[{{ catradio.id }}]"{% if catradio.Active == '1' %} checked {% endif %} {% if app.user.SauvegarderCatRadio == '0' %} disabled {% endif %}>
+						</td>
+						<td style="height: 50px;width:250px;text-align:center;">{{catradio.position}}</td>
 
 
-						<td>
+						<td style="height: 50px;width:250px;text-align:center;">
 							
 
-								<a data-toggle="tooltip" data-placement="top" title="modifier Catégorie radio" href="{{path('app_modifier_categorieradio',{'id':catradio.id})}}" class="btn btn-warning btn-xs">
+								<a {% if app.user.ModifierCatRadio == '0' %} disabled {% endif %} data-toggle="tooltip" data-placement="top" title="modifier Catégorie radio" href="{{path('app_modifier_categorieradio',{'id':catradio.id})}}" class="btn btn-warning btn-xs">
 									<i class="glyphicon glyphicon-pencil"></i>
 								</a>
-						
 
-
-								<a data-toggle="tooltip" data-placement="top" title="Supprimer Catégorie radio" href="{{path('app_supprimer_categorieradio',{'id':catradio.id})}}" class="btn btn-danger btn-xs"  onclick="return confirm('Voulez-vous vraiment supprimer la catégorie radio : {{catradio.nom}} ?')">
+								<a {% if app.user.SuppCatRadio == '0' %} disabled {% endif %} data-toggle="tooltip" data-placement="top" title="Supprimer Catégorie radio" href="{{path('app_supprimer_categorieradio',{'id':catradio.id})}}" class="btn btn-danger btn-xs"  onclick="return confirm('Voulez-vous vraiment supprimer la catégorie radio : {{catradio.nom}} ?')">
 									<i class="glyphicon glyphicon-trash"></i>
 								</a>
 							
@@ -90,4 +111,5 @@
 
 
 	</div>
+	</form>
 {% endblock %}

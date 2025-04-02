@@ -6,6 +6,7 @@
             border-radius: 25px;
             border: 2px solid #3087ce;
             padding: 20px;
+            padding-bottom:50px;
             background-color: white;
             margin-left: -70px;
             margin-top: 10px;
@@ -54,10 +55,10 @@
         }
 </style>
 
-<div style="position: absolute; margin-top: -40px; border-radius: 8px; text-align: left; margin-left: -70px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 250px; padding-left: 10px; text-align: center;">
-    Ajouter Question
+<div style="border-radius: 8px;text-align: left;margin-top:10px;margin-bottom: 10px;margin-left: -70px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
+    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+        Ajouter Question
 </div>
-
 <div id="div">
     <form action="{{ path('app_ajouter_question') }}" method="post">
         <table>
@@ -205,16 +206,25 @@
                     </div>
                 </td>
             </tr>
-            <tr>
+            {# <tr>
                 <td colspan="2">
                     <div class="btn-container">
-                        <button type="submit" name="valider" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-saved"></i> Enregistrer</button>
                         <div><a class="btn btn-danger" href="{{ path('app_questionnaire') }}" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a></div>
+                        <button type="submit" name="valider" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-Sauvegarderd"></i> Enregistrer</button>
                     </div>
                 </td>
-            </tr>
+            </tr> #}
         </table>
     </form>
+        <div style="float:right;margin-right:10px;margin-top:-10px;">
+				<a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/questionnaire">
+					<i class="glyphicon glyphicon-remove"></i> Annuler
+				</a>
+				<button type="submit" class="btn btn-primary btn-md" name="valider" >
+					<i class="glyphicon glyphicon-floppy-disk"></i>
+					Enregistrer
+				</button>
+				</div>
 </div>
 
 <script>
@@ -320,7 +330,9 @@ $(document).ready(function() {
     }
 });
 </script>
+
 <script>
+ const configApp = {{configApp | raw}}
 document.addEventListener('DOMContentLoaded', function () {
 	const traduireButton = document.getElementById('translateBtn');
 	 const languageInputs = {
@@ -334,7 +346,6 @@ document.addEventListener('DOMContentLoaded', function () {
             ar: document.getElementById("AR"),
         };
         let translations = {};
-        let online = 1;
         async function translateAll(text) {
             const languages = Object.keys(languageInputs);
             let results = [];
@@ -350,12 +361,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         if (traduireButton) {
             traduireButton.addEventListener('click', async(event) => {
+                const textInput = document.getElementById("fr");
                 const text = textInput.value.trim() ;
                 if (text === '') {
                     alert("Veuillez entrer un texte à traduire.");
                     return;
                 }
-                if(online === 0)
+                if(configApp.Status === 'Offline')
                 {
                     alert("Aucun internet disponible : vous pouvez faire la traduction manuellement");
                     return ;
@@ -403,8 +415,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 </script> #}
-
-</script>
 
 
 

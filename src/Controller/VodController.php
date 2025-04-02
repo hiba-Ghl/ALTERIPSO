@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\CategorieVod;
+use App\Entity\ConfigApp;
 use App\Entity\Vod;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,10 +21,20 @@ class VodController extends AbstractController
     public function index(EntityManagerInterface $entityManager): Response
     {
         $repository = $entityManager->getRepository(Vod::class);
+        if( !$this->getUser())
+            return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->getVOD() && $configApp->getEnableVOD() == "1";
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');        }
+
         $vod  = $repository->findBy(['etablissement' => $etablissement],['nom' => 'ASC']); 
         return $this->render('vod/index.html.twig', [
-            'videos' => $vod ]);
+            'videos' => $vod,'appConfig' => $configApp,
+            'user' => $this->getUser(),
+        ]);
     }
 
 
@@ -32,7 +43,14 @@ class VodController extends AbstractController
     #[Route('/vod/ajouter', name: 'app_ajouter_vod')]
     public function ajoutervod(EntityManagerInterface $entityManager): Response
     {
+        if( !$this->getUser())
+            return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->getAjouteVod() && $this->getUser()->getVOD() && $configApp->getEnableVOD() == "1" ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');        }
         $request = Request::createFromGlobals();
 
         //recuperation des categories deja existantes
@@ -91,7 +109,10 @@ class VodController extends AbstractController
 
         //sinon on reaffiche le formulaire de la creation d'une nouvelle categorie VOD
         return $this->render('vod/ajouter.html.twig',[
-            'categories' => $categories
+            'categories' => $categories,
+            'appConfig' => $configApp,
+            'user' => $this->getUser(),
+
         ]);
     }
 
@@ -102,6 +123,14 @@ class VodController extends AbstractController
     #[Route('/vod/supprimer/{id}',name: 'app_supprimer_vod')]
     public function supprimervod(EntityManagerInterface $entityManager, int $id): Response
     {
+        $etablissement = $this->getUser()->getEtablissement();
+          if( !$this->getUser())
+     return $this->redirectToRoute('app_login');
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->getSupprimerVod() && $this->getUser()->getVOD() && $configApp->getEnableVOD() == "1" ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');        }
        $vod = $entityManager->getRepository(vod::class)->find($id);
 
         if (!$vod) {
@@ -125,8 +154,15 @@ class VodController extends AbstractController
     #[Route('/vod/modifier/{id}', name: 'app_modifier_vod')]
     public function modifiervod(EntityManagerInterface $entityManager, int $id): Response{
 
-
+        if( !$this->getUser())
+            return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->getModifierVod() && $this->getUser()->getVOD() && $configApp->getEnableVOD() == "1" ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');   
+        }
         $vod = $entityManager->getRepository(Vod::class)->findById($id)[0];
         $request = Request::createFromGlobals();
 
@@ -178,12 +214,14 @@ class VodController extends AbstractController
 
             //variable twig a definir  en raison de l'utiliser dans le template modifier
              $ancienLogo = $vod->getLogo() ?? 'valeur_par_defaut.jpg';
-
+             $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
 
                 return $this->render('vod/modifier.html.twig', [
                     'vods' => $vod,
                     'categories' => $categories,
                     'ancienLogo' => $ancienLogo,
+                    'appConfig' => $appConfig,
+                    'user' => $this->getUser(),
                     ]);
 
         }
@@ -194,9 +232,17 @@ class VodController extends AbstractController
         #[Route('/vod/active', name: 'app_active_vod')]
         public function activevod(EntityManagerInterface $entityManager) :Response {
 
+            if( !$this->getUser())
+                return $this->redirectToRoute('app_login');
+            $etablissement = $this->getUser()->getEtablissement();
+            $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+    
+            $Acce = $this->getUser()->getSauvegarderVod() && $this->getUser()->getVOD() && $configApp->getEnableVOD() == "1" ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');        }
             $repository = $entityManager->getRepository(Vod::class);
             $request = Request::createFromGlobals();
-            $etablissement = $this->getUser()->getEtablissement();
             $vods = $repository->findBy(['etablissement' => $etablissement]);
 
 

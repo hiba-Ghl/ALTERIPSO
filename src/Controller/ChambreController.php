@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\ServiceEtablissement;
 use App\Entity\Chambre;
+use App\Entity\ConfigApp;
 use App\Entity\Television;
 use App\Push\PushRabbit;
 use App\Repository\ChambreRepository;
@@ -19,9 +20,18 @@ class ChambreController extends AbstractController
     public function index(EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
+        $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->getSupportConnect() && $configApp->getEnableSupportConnect()=="1";
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+        }
         $repository = $entityManager->getRepository(Chambre::class);
         $repositorys = $entityManager->getRepository(ServiceEtablissement::class);
-        $etablissement = $this->getUser()->getEtablissement();
+        $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
         $idetab = $etablissement->getId();
         $chambres  = $repository->findBy(['etablissement' => $etablissement]);
         $ar = array();
@@ -29,13 +39,24 @@ class ChambreController extends AbstractController
         $ar=$Manager->isConnected($idetab,$chambres);
         $serviceetablissement  = $repositorys->findBy(['etablissement' => $etablissement]);
         return $this->render('chambre/index.html.twig', [
-            'chambres' => $chambres,'etablissement' =>$etablissement,'serviceetablissement'=>$serviceetablissement,'ar'=>$ar
+            'chambres' => $chambres,'etablissement' =>$etablissement,
+            'serviceetablissement'=>$serviceetablissement,'ar'=>$ar,'appConfig' => $appConfig,
+            'user' => $this->getUser(),
         ]);
     }
 
     #[Route('/chambre/checkin', name: 'app_checkin')]
     public function checkin(EntityManagerInterface $entityManager): Response
    {
+       if( !$this->getUser())
+       return $this->redirectToRoute('app_login');
+    $etablissement = $this->getUser()->getEtablissement();
+    $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->getSupportConnect() && $configApp->getEnableSupportConnect()=="1";
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+        }
         $request = Request::createFromGlobals();
         $repository = $entityManager->getRepository(Chambre::class);
         $etatcheckin = $request->get("etatcheckin");
@@ -76,7 +97,16 @@ class ChambreController extends AbstractController
    public function redemarrer(EntityManagerInterface $entityManager): Response
    {
         $request = Request::createFromGlobals();
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
+        $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
         $repository = $entityManager->getRepository(Chambre::class);
+        $Acce = $this->getUser()->getRedimarerSupport() && $this->getUser()->getSupportConnect()&& $configApp->getEnableSupportConnect()=="1" ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+        }
         $idetablissement = $this->getUser()->getEtablissement()->getId();
        $box = $request->get('id');
        $queues = array();
@@ -97,7 +127,14 @@ class ChambreController extends AbstractController
    public function supprimerchambre(EntityManagerInterface $entityManager, int $id): Response
    {
        $chambre = $entityManager->getRepository(Chambre::class)->find($id);
-
+       if( !$this->getUser())
+       return $this->redirectToRoute('app_login');
+       $etablissement = $this->getUser()->getEtablissement();
+       $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);       $Acce = $this->getUser()->getSupprimerSupport() && $this->getUser()->getSupportConnect() && $configApp->getEnableSupportConnect()=="1";
+       if (!$Acce) {
+        $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+        return $this->redirectToRoute('home');
+       }
        if (!$chambre) {
            throw $this->createNotFoundException(
                'No room found for id '.$id
@@ -114,22 +151,35 @@ class ChambreController extends AbstractController
    public function ajouterchambre(EntityManagerInterface $entityManager): Response
    {
     $request = Request::createFromGlobals();
+    if( !$this->getUser())
+    return $this->redirectToRoute('app_login');
     $etablissement = $this->getUser()->getEtablissement();
+    $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+    $Acce = $this->getUser()->getAjouteSupport()  && $this->getUser()->getSupportConnect()&& $configApp->getEnableSupportConnect()=="1";
+    if (!$Acce) {
+        $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+        return $this->redirectToRoute('home');
+    }
     $idetablissement = $etablissement->getId();
     $serviceetablissement  =  $entityManager->getRepository(ServiceEtablissement::class)->findBy(['etablissement' => $etablissement], ['nom' => 'ASC']);
     $listechaine  =  $entityManager->getRepository(Television::class)->findBy(['etablissement' => $etablissement], ['numero' => 'ASC']);
     $chambres  =  $entityManager->getRepository(Chambre::class)->findBy(['etablissement' => $etablissement]);
+    $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
     
     $listback = [];
     foreach ($chambres as $ch) {
     $background = $ch->getBackground();
     if (!in_array($background, $listback)) {
         $listback[] = $background;
-    }
+        }
     }
 
-   
-
+    // si on n'a aucun chambre on va prend fond d'ecran d'etablissement
+    if(empty($listback))
+    {
+        $listback[] =$etablissement->getBackground();
+    }
+    // dd(empty($listback));
       $nom = $request->get("nom");
       $type = $request->get("typesupport");
       $typetv = $request->get("type");
@@ -145,15 +195,10 @@ class ChambreController extends AbstractController
       $sq  =  $entityManager->getRepository(ServiceEtablissement::class)->findById($service);
 
 
-      $ch = curl_init();
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-      curl_setopt($ch, CURLOPT_URL, "http://localhost:1111/site_config.php");
-      $json_as_string = curl_exec($ch);
-      curl_close($ch);
-      $CONFIG = json_decode($json_as_string, true);
+     
 
 
-      $drois = $CONFIG['CHECKIN'];
+      $drois = '1/1/1/1/1/1/1/1/1/1/';
 
       if ($type == 'Samsung') {
          $support = 'R-TV';
@@ -186,6 +231,8 @@ class ChambreController extends AbstractController
       $valider = $request->get("valider");
       //var_dump($sq);die();
       $date ='29/02/2024 11:00:00';
+    //   dd($valider);
+
       if (isset($valider)) {
          $box = new Chambre();
          $box->setEtablissement($etablissement);
@@ -215,20 +262,33 @@ class ChambreController extends AbstractController
          $entityManager->flush();
          return $this->redirectToRoute('app_chambre');
       }
-
-      return $this->render('chambre/ajouter.html.twig', array('listechaine' => $listechaine, 'serviceasc' => $service, 'listback' => $listback));
+      return $this->render('chambre/ajouter.html.twig', array('listechaine' => $listechaine,
+     'listback' => $listback,'appConfig'=>$appConfig,
+       'serviceasc' => $serviceetablissement,
+        'user' => $this->getUser(),
+      ));
    }
 
    #[Route('/chambre/modifier/{id}', name: 'app_modifier_chambre')]
    public function modifierchambre(EntityManagerInterface $entityManager, int $id): Response
    {
       $request = Request::createFromGlobals();
+      if( !$this->getUser())
+      return $this->redirectToRoute('app_login');
       $etablissement = $this->getUser()->getEtablissement();
+      $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+      $Acce = $this->getUser()->getModifierSupport() && $this->getUser()->getSupportConnect()&& $configApp->getEnableSupportConnect()=="1" ;
+      if (!$Acce) {
+        $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+        return $this->redirectToRoute('home');
+      }
       $idetablissement = $etablissement->getId();
       $serviceetablissement  =  $entityManager->getRepository(ServiceEtablissement::class)->findBy(['etablissement' => $etablissement], ['nom' => 'ASC']);
       $listechaine  =  $entityManager->getRepository(Television::class)->findBy(['etablissement' => $etablissement], ['numero' => 'ASC']);
       $chambres  =  $entityManager->getRepository(Chambre::class)->findBy(['etablissement' => $etablissement]);
       $box = $entityManager->getRepository(chambre::class)->findById($id)[0];
+      $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
       //var_dump($box);die();
       $listback = [];
       foreach ($chambres as $ch) {
@@ -237,7 +297,11 @@ class ChambreController extends AbstractController
           $listback[] = $background;
       }
       }
-  
+      // si on n'a aucun chambre on va prend fond d'ecran d'etablissement
+      if(empty($listback))
+      {
+          $listback[] =$etablissement->getBackground();
+      }
       $nom = $request->get("nom");
       $type = $request->get("typesupport");
       $typetv = $request->get("type");
@@ -287,18 +351,30 @@ class ChambreController extends AbstractController
 
       $service =   $entityManager->getRepository(ServiceEtablissement::class)->findBy(['etablissement' => $idetablissement], ['nom' => 'ASC']);
 
-      return $this->render('chambre/modifier.html.twig', array('listechaine' => $listechaine, 'box' => $box, 'service' => $service, 'listback' => $listback));
+      return $this->render('chambre/modifier.html.twig', array('listechaine' => $listechaine, 'box' => $box,
+      'service' => $service, 'listback' => $listback,'appConfig'=>$appConfig,
+      'user' => $this->getUser(),
+   ));
    }
    #[Route('/chambre/liste', name: 'app_liste_chambre')]
    public function boxlist(EntityManagerInterface $entityManager): Response
     {
       $repository = $entityManager->getRepository(Chambre::class);
-      $repositorys = $entityManager->getRepository(ServiceEtablissement::class);
+      if( !$this->getUser())
+      return $this->redirectToRoute('app_login');
       $etablissement = $this->getUser()->getEtablissement();
+      $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+      $Acce = $this->getUser()->getSupportConnect() && $configApp->getEnableSupportConnect()=="1";
+      if (!$Acce) {
+        $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+        return $this->redirectToRoute('home');
+      }
+      $repositorys = $entityManager->getRepository(ServiceEtablissement::class);
+      $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
       $chambres  = $repository->findBy(['etablissement' => $etablissement]);
       $serviceetablissement  = $repositorys->findBy(['etablissement' => $etablissement]);
       return $this->render('chambre/listechambre.html.twig', [
-          'chambres' => $chambres,'etablissement' =>$etablissement,'serviceetablissement'=>$serviceetablissement
+          'chambres' => $chambres,'etablissement' =>$etablissement,'serviceetablissement'=>$serviceetablissement,'appConfig'=>$appConfig,
       ]);
        
     }
@@ -308,14 +384,25 @@ class ChambreController extends AbstractController
     public function ajouterserviceetablissement(EntityManagerInterface $entityManager): Response
     {
      $request = Request::createFromGlobals();
-     $etablissement = $this->getUser()->getEtablissement(); 
+     if( !$this->getUser())
+     return $this->redirectToRoute('app_login');
+     $etablissement = $this->getUser()->getEtablissement();
+     $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+     $Acce = $this->getUser()->getAjouteSupport() && $this->getUser()->getSupportConnect() && $configApp->getEnableSupportConnect()=="1";
+     if (!$Acce) {
+        $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+        return $this->redirectToRoute('home');
+         }
        $nom = $request->get("nom");
+       if($nom)
+       {
           $service = new ServiceEtablissement();
           $service->setEtablissement($etablissement);
           $service->setNom($nom);
-      
+        //  dd($service);
           $entityManager->persist($service);
           $entityManager->flush();
+        }
        
        
  
@@ -326,8 +413,16 @@ class ChambreController extends AbstractController
     public function envoyermessage(EntityManagerInterface $entityManager)
     {
       $request = Request::createFromGlobals();
-      $repository = $entityManager->getRepository(Chambre::class);
+      if( !$this->getUser())
+      return $this->redirectToRoute('app_login');
       $etablissement = $this->getUser()->getEtablissement();
+      $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+      $Acce = $this->getUser()->getMessagePersonnel() && $this->getUser()->getSupportConnect() && $configApp->getEnableSupportConnect()=="1";
+      if (!$Acce) {
+        $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+        return $this->redirectToRoute('home');
+      }
+      $repository = $entityManager->getRepository(Chambre::class);
       $idetab= $etablissement->getId();
       $chambres  = $repository->findBy(['etablissement' => $etablissement]);
       $ar = array();
@@ -370,7 +465,9 @@ class ChambreController extends AbstractController
 
             return $this->redirectToRoute('app_envoyer_message_chambre');}
 
-            return $this->render('chambre/message.html.twig', array('boxs' => $chambres,'ar'=>$ar));
+            return $this->render('chambre/message.html.twig', array('boxs' => $chambres,'ar'=>$ar,'appConfig'=>$configApp,
+            'user' => $this->getUser(),
+         ));
     }
 
 
@@ -378,6 +475,15 @@ class ChambreController extends AbstractController
     public function updatechambre(EntityManagerInterface $entityManager): Response
    {
         $request = Request::createFromGlobals();
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
+        $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->getSupportConnect()&& $configApp->getEnableSupportConnect()=="1";
+      if (!$Acce) {
+        $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+        return $this->redirectToRoute('home');
+      }
         $repository = $entityManager->getRepository(Chambre::class);
         $idetablissement = $this->getUser()->getEtablissement()->getId();
         $box = $request->get('box');
@@ -385,9 +491,7 @@ class ChambreController extends AbstractController
 
         
        if (isset($box) and !empty($box)) {
-
            foreach ($box as $key => $k) {
-
                $boxs  = $repository->findById($key);
                $chambre= $boxs[0]->getNom();
                $queue = $idetablissement . '.' . $chambre . '.service';

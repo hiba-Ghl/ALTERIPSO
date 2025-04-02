@@ -9,17 +9,16 @@
 		<title>
 			ALTER
 		</title>
-		<link	href="{{ asset('css/bootstrap.css') }}"	rel="stylesheet">
-		<link	href="{{ asset('css/style.css') }}"	rel="stylesheet">
-		<link rel="stylesheet" href="{{ asset('css/mycss.css') }}" />
+	
+		
+	</head>
 
-		<link	href="{{ asset('css/jquery.m.toast.css') }}"	rel="stylesheet">
-		<link	href="{{ asset('css/ui.fancytree.min.css') }}"	rel="stylesheet">
-		<link	href="{{ asset('css/jsgrid-theme.min.css') }}"	rel="stylesheet">
-		<link	href="{{ asset('css/jsgrid.min.css') }}"	rel="stylesheet">
-		<script src="{{ asset('javascript/service.js') }}"></script>
-	<script src="{{ asset('javascript/serviceIndex.js') }}"></script>
-		<script src="{{ asset('javascript/jquery.min.js') }}"></script>
+
+
+ {% if appConfig.StatusServeur is same as('Offline') %}
+
+{# offline #}
+<script src="{{ asset('javascript/serviceIndex.js') }}"></script>
 		<script src="{{ asset('javascript/jquery1.min.js') }}"></script>
 		<script src="{{ asset('javascript/jquery-ui.min.js') }}"></script>
 		<script src="{{ asset('javascript/jsgrid.min.js') }}"></script>
@@ -27,10 +26,34 @@
 		<script src="{{ asset('javascript/metisMenu.min.js') }}"></script>
 		<script src="{{ asset('javascript/jquery.dataTables.min.js') }}"></script>
 		<script src="{{ asset('javascript/jquery.m.toast.js') }}"></script>
+		<link rel="stylesheet" href="{{ asset('css/fontawesome.min.css') }}">
+		<script src="{{ asset('javascript/fontawesome.min.js') }}"></script>
 
-	</head>
+
+{% else %}
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/fancytree/2.36.0/skin-lion/ui.fancytree.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid-theme.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/metismenu/3.0.7/metisMenu.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
+
+{% endif %}
+		<link	href="{{ asset('css/bootstrap.css') }}"	rel="stylesheet">
+		<script src="{{ asset('javascript/jquery.min.js') }}"></script>
+		<script src="{{ asset('javascript/bootstrap.min.js') }}"></script>
+		<link	href="{{ asset('css/style.css') }}"	rel="stylesheet">
+		<link rel="stylesheet" href="{{ asset('css/mycss.css') }}" />
+		<script src="{{ asset('javascript/serviceIndex.js') }}"></script>
+		<script src="{{ asset('javascript/service.js') }}"></script>
+		<script src="{{ asset('javascript/user.js') }}"></script>
 	<body>
-
+	
 		<nav	class="navbar navbar-default navbar-fixed-top">
 			<div	class="container-fluid">
 
@@ -137,19 +160,29 @@ submenu.style.display = 'none';
 								top: 0;
 							}
 						</style>
-
 						<!-- changements -->
+						{% if appConfig is defined and appConfig is defined and appConfig.EnableCategories is defined and appConfig.EnableCategories == '1' %}
+						{% if app.user is defined and app.user.TELEVISION  or
+						app.user.RADIO or app.user.SERVICE or app.user.VOD 
+						or app.user.MUSIQUE or app.user.LIVREAUDIO or 
+						app.user.JEUX or app.user.SERVICESPAYANTS 
+						or app.user.QUESTIONNAIRE or app.user.APPLICATION 
+						or app.user.CHARTES  or app.user.VIDEOS  
+						or app.user.CatLivreAudio 
+						or app.user.CatRadio or app.user.CatVod or app.user.ServiceEnChambre
+						or app.user.ResultatQs  or app.user.STATISTIQUECHAINETV %}
 						<li	class="dropdown Categories">
-							<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+							<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button" aria-haspopup="true" aria-expanded="false">
 								<i	class="glyphicon glyphicon-list"></i>
 								CATEGORIES
 								<span	class="caret"></span>
 							</a>
 							<ul	class="dropdown-menu">
 								<!-- Application-->
+								{% if appConfig is defined and appConfig is defined and appConfig.EnableAPPLICATION is defined and appConfig.EnableAPPLICATION == '1' %}
+								{% if app.user.APPLICATION  %}
 								<li	class="dropdown APPLICATION">
 									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
-
 										<i	class="glyphicon glyphicon-phone"	style="margin-right: 10px;"></i>
 										APPLICATION
 										<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
@@ -166,7 +199,11 @@ submenu.style.display = 'none';
 
 									</ul>
 								</li>
+								{% endif %}
+								{% endif %}
 								<!-- Charte Patient-->
+								{% if appConfig is defined and appConfig is defined and appConfig.EnableCHARTES is defined and appConfig.EnableCHARTES == '1' %}
+								{% if app.user.CHARTES %}
 								<li	class="dropdown CHARTEPATIENT">
 									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
 										<i	class="glyphicon glyphicon-file"	style="margin-right: 10px;"></i>
@@ -191,7 +228,11 @@ submenu.style.display = 'none';
 									</li>-->
 									</ul>
 								</li>
+							{% endif %}
+							{% endif %}
 								<!--JEUX -->
+							{% if appConfig is defined and appConfig is defined and appConfig.EnableJEUX is defined and appConfig.EnableJEUX == '1' %}
+								{% if app.user.JEUX %}
 								<li	class="dropdown JEUX">
 									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
 										<i	class="glyphicon glyphicon-knight"	style="margin-right: 10px;"></i>
@@ -209,8 +250,11 @@ submenu.style.display = 'none';
 										</li>
 									</ul>
 								</li>
-
+							{% endif %}
+							{% endif %}
 								<!-- LIVRE AUDIO -->
+							{% if appConfig is defined and appConfig is defined and appConfig.EnableLIVREAUDIO is defined and appConfig.EnableLIVREAUDIO == '1' %}
+								{% if app.user.LIVREAUDIO == '1'or app.user.CatLivreAudio == "1" %}
 								<li	class="dropdown LIVREAUDIO">
 									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
 										<i	class="glyphicon glyphicon-equalizer"	style="margin-right: 10px;"></i>
@@ -220,22 +264,30 @@ submenu.style.display = 'none';
 										</svg>
 									</a>
 									<ul	class="dropdown-menu">
+										{% if app.user.CatLivreAudio == "1" %}
 										<li>
 											<a	href="{{ path('app_categorie_livreaudio') }}">
 												<i	class="glyphicon glyphicon-folder-open"	style="margin-right: 10px;"></i>
 												Catégorie LIVRE AUDIO
 											</a>
 										</li>
+										{% endif %}
+										{% if app.user.LIVREAUDIO == '1' %}
 										<li>
 											<a	href="{{ path('app_livreaudio') }}">
 												<i	class="glyphicon glyphicon-list"	style="margin-right: 10px;"></i>
 												Liste Livre audio
 											</a>
 										</li>
+										{% endif %}
 									</ul>
 								</li>
+							 {% endif %}
+							{% endif %}
 								<!-- MUSIQUE -->
-								<!--	<li class="dropdown MUSIQUE">
+							{% if appConfig is defined and appConfig is defined and appConfig.EnableMUSIQUE is defined and appConfig.EnableMUSIQUE == '1' %}
+							{% if app.user.MUSIQUE == '1' %}
+							<li class="dropdown MUSIQUE">
 									<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 									<i class="glyphicon glyphicon-music"  style="margin-right: 10px;"></i>
 									MUSIQUE
@@ -251,9 +303,13 @@ submenu.style.display = 'none';
 									</a>
 									</li>
 									</ul>
-								</li>-->
+							</li>
+							{% endif %}
+							{% endif %}
 								<!-- QUESTIONNAIRE-->
-									<li	class="dropdown QUESTIONNAIRE">	<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+								{% if appConfig is defined and appConfig is defined and appConfig.EnableQUESTIONNAIRE is defined and appConfig.EnableQUESTIONNAIRE == '1' %}
+								{% if app.user.QUESTIONNAIRE or app.user.ResultatQs %}
+								<li	class="dropdown QUESTIONNAIRE">	<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
 										<i	class="glyphicon glyphicon-pencil"	style="margin-right: 10px;"></i>
 										QUESTIONNAIRE
 										<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
@@ -261,23 +317,29 @@ submenu.style.display = 'none';
 										</svg>
 									</a>
 									<ul	class="dropdown-menu">
-
+										{% if app.user.QUESTIONNAIRE  %}	
 										<li>
 											<a	href="{{ path('app_questionnaire') }}">
 												<i	class="glyphicon glyphicon-pencil "	style="margin-right: 10px;"></i>
 												Liste QUESTIONNAIRE
 											</a>
 										</li>
-
+										{% endif %}
+										{% if app.user.ResultatQs %}
 										<li>
 											<a	href=" {{ path('app_resultat_questionnaire') }}">
 												<i	class="glyphicon glyphicon-list "	style="margin-right: 10px;"></i>
 												Resultat QUESTIONNAIRE
 											</a>
 										</li>
+										{% endif %}
 									</ul>
 								</li>
+								{% endif %}
+								{% endif %}
 								<!-- radio-->
+								{% if appConfig is defined and appConfig is defined and appConfig.EnableRADIO is defined and appConfig.EnableRADIO == '1' %}
+								{% if app.user.RADIO == '1' or app.user.CatRadio == "1" %}
 								<li	class="dropdown RADIO">
 									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
 										<i	class="glyphicon glyphicon-equalizer"	style="margin-right: 10px;"></i>
@@ -287,21 +349,29 @@ submenu.style.display = 'none';
 										</svg>
 									</a>
 									<ul	class="dropdown-menu ">
+									{% if app.user.CatRadio == "1" %}
 										<li>
 											<a	href="{{ path('app_categorie_radio') }}">
 												<i	class="glyphicon glyphicon-list"	style="margin-right: 10px;"></i>
 												Catégories radio
 											</a>
 										</li>
+									{% endif %}
+									{% if app.user.RADIO == '1' %}
 										<li>
 											<a	href="{{ path('app_radio') }}">
 												<i	class="glyphicon glyphicon-stats"	style="margin-right: 10px;"></i>
 												Liste radio
 											</a>
 										</li>
+									{% endif %}
 									</ul>
 								</li>
+								{% endif %}
+								{% endif %}
 								<!-- SERVICE -->
+								{% if appConfig is defined and appConfig is defined and appConfig.EnableSERVICE is defined and appConfig.EnableSERVICE == '1' %}
+								{% if app.user.SERVICE or app.user.ServiceEnChambre %}
 								<li	class="dropdown SERVICE">
 									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
 										<i	class="glyphicon glyphicon-bell"	style="margin-right: 10px;"></i>
@@ -311,22 +381,30 @@ submenu.style.display = 'none';
 										</svg>
 									</a>
 									<ul	class="dropdown-menu">
+									{% if app.user.SERVICE %}
 										<li>
 											<a	href="{{ path('app_services') }}">
 												<i	class="glyphicon glyphicon-list"	style="margin-right: 10px;"></i>
 												Liste Services
 											</a>
 										</li>
+									{% endif %}
+										{% if app.user.ServiceEnChambre %}		
 										<li>
 											<a	href="{{ path('service_en_chambre') }}">
 												<i	class="glyphicon glyphicon-home"	style="margin-right: 10px;"></i>
 												Service en chambre
 											</a>
 										</li>
+										{% endif %}
 
 									</ul>
 								</li>
+								{% endif %}
+								{% endif %}
 								<!-- SERVICES PAYANTS-->
+								{% if appConfig is defined and appConfig is defined and appConfig.EnableSERVICESPAYANTS is defined and appConfig.EnableSERVICESPAYANTS == '1' %}
+								{% if app.user.SERVICESPAYANTS %}	
 								<li	class="dropdown SERVICESPAYANTS">
 									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
 										<i	class="glyphicon glyphicon-euro"	style="margin-right: 10px;"></i>
@@ -350,7 +428,11 @@ submenu.style.display = 'none';
 										</li>
 									</ul>
 								</li>
+								{% endif %}
+								{% endif %}
 								<!-- television -->
+								{% if appConfig is defined and appConfig is defined and appConfig.EnableTELEVISION is defined and appConfig.EnableTELEVISION == '1' %}
+								{% if app.user.TELEVISION or app.user.STATISTIQUECHAINETV %}
 								<li	class="dropdown TELEVISION">
 									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
 										<i	class="glyphicon glyphicon-blackboard"	style="margin-right: 10px;"></i>
@@ -360,23 +442,29 @@ submenu.style.display = 'none';
 										</svg>
 									</a>
 									<ul	class="dropdown-menu">
+									{% if app.user.TELEVISION %}
 										<li>
 											<a	href="{{ path('app_television') }}">
 												<i	class="glyphicon glyphicon-list"	style="margin-right: 10px;"></i>
 												Liste TÉLÉVISION
 											</a>
 										</li>
+									{% endif %}
+										{% if app.user.STATISTIQUECHAINETV %}	
 										<li>
 											<a	href="{{ path('home') }}">
 												<i	class="glyphicon glyphicon-stats"	style="margin-right: 10px;"></i>
 												STATISTIQUE UTILISATION CHAINE TV
 											</a>
 										</li>
+										{% endif %}
 									</ul>
-
 								</li>
-
+								{% endif %}
+								{% endif %}
 								<!-- VIDEO -->
+								{% if appConfig is defined and appConfig is defined and appConfig.EnableVIDEOS is defined and appConfig.EnableVIDEOS == '1' %}
+								{% if app.user.VIDEOS == '1' %}
 								<li	class="dropdown VIDEO">
 									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
 										<i	class="glyphicon glyphicon-facetime-video"	style="margin-right: 10px;"></i>
@@ -394,8 +482,11 @@ submenu.style.display = 'none';
 										</li>
 									</ul>
 								</li>
-
+								{% endif %}
+								{% endif %}
 								<!-- VOD -->
+								{% if appConfig is defined and appConfig is defined and appConfig.EnableVOD is defined and appConfig.EnableVOD == '1' %}
+								{% if app.user.VOD == '1' or app.user.CatRadio == "1" %}
 								<li	class="dropdown VOD">
 									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
 										<i	class="glyphicon glyphicon-facetime-video"	style="margin-right: 10px;"></i>
@@ -405,25 +496,32 @@ submenu.style.display = 'none';
 										</svg>
 									</a>
 									<ul	class="dropdown-menu">
+									{% if app.user.CatRadio == "1" %}
 										<li>
 											<a	href="{{ path('app_categorie_vod') }}">
 												<i	class="glyphicon glyphicon-folder-open"	style="margin-right: 10px;"></i>
 												Catégorie VOD
 											</a>
 										</li>
+									{% endif %}
+									{% if app.user.VOD == '1' %}
 										<li>
 											<a	href="{{ path('app_vod') }}">
 												<i	class=" glyphicon glyphicon-list"	style="margin-right: 10px;"></i>
 												Liste VOD
 											</a>
 										</li>
-
+									{% endif %}
 									</ul>
 								</li>
-
+								{% endif %}
+							{% endif %}
 							</ul>
 						</li>
-
+						{% endif %}
+						{% endif %}
+						{% if appConfig is defined and appConfig is defined and appConfig.EnableENREGISTREMENT is defined and appConfig.EnableENREGISTREMENT == '1' %}
+						{% if app.user is defined and (app.user.SupportConnect == '1' or app.user.MessagePersonnel == '1') %}
 						<li	class="dropdown ENREGISTREMENT">
 							<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
 								<i	class="glyphicon glyphicon-inbox "></i>
@@ -431,31 +529,42 @@ submenu.style.display = 'none';
 								<span	class="caret"></span>
 							</a>
 							<ul	class="dropdown-menu">
-
+								{% if appConfig is defined and appConfig is defined and appConfig.EnableSupportConnect is defined and appConfig.EnableSupportConnect == '1' %}
+								{% if app.user.SupportConnect == '1' %}
 								<li>
 									<a	href="{{ path('app_chambre') }}">
 										<i	class="glyphicon glyphicon-inbox "></i>
 										Support connecté
 									</a>
 								</li>
-
+								{% endif %}
+								{% endif %}
+								{% if appConfig is defined and appConfig is defined and appConfig.EnableMessagePersonnels is defined and appConfig.EnableMessagePersonnels == '1' %}
+								{% if  app.user.MessagePersonnel == '1' %}
 								<li>
 									<a	href=" {{ path('app_envoyer_message_chambre') }}">
 										<i	class="glyphicon glyphicon-comment "></i>
 										Messages personnels
 									</a>
 								</li>
-
+								{% endif %}
+								{% endif %}
 							</ul>
 						</li>
-
+						{% endif %}
+						{% endif %}
+						{% if appConfig is defined and appConfig is defined and appConfig.EnableANNONCES is defined and appConfig.EnableANNONCES == '1' %}
+						{% if app.user is defined and app.user.ANNONCES == '1' %}
 						<li	class="ANNONCES">
 							<a	href="{{ path('app_annonce') }}">
 								<i	class="glyphicon glyphicon-certificate"></i>
 								ANNONCES
 							</a>
 						</li>
-
+						{% endif %}
+						{% endif %}
+						{% if appConfig is defined and appConfig is defined and appConfig.EnableRApplication is defined and appConfig.EnableRApplication == '1' %}
+						{% if app.user is defined and (app.user.RREMOTE == '1' or app.user.RMOBILE == '1') %}
 						<li	class="dropdown APPLICATION">
 							<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
 								<i	class="glyphicon glyphicon-phone "></i>
@@ -463,24 +572,26 @@ submenu.style.display = 'none';
 								<span	class="caret"></span>
 							</a>
 							<ul	class="dropdown-menu">
-
+								{% if  app.user.RMOBILE == '1' %}
 								<li>
 									<a	href="{{ path('app_config_mobile') }} ">
 										<i	class="glyphicon glyphicon-phone "></i>
 										R-MOBILE
 									</a>
 								</li>
-
+								{% endif %}
+								{% if app.user.RREMOTE == '1' %}
 								<li>
 									<a	href="{{ path('home') }}">
 										<i	class="glyphicon glyphicon-phone "></i>
 										R-REMOTE
 									</a>
 								</li>
-
+								{% endif %}
 							</ul>
 						</li>
-
+						{% endif %}
+					{% endif %}
 					</ul>
 
 					<ul	class="nav navbar-nav navbar-right">
@@ -501,26 +612,36 @@ submenu.style.display = 'none';
 										Profil
 									</a>
 								</li>
-
+							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN')  %}
 								<li>
-									<a	href="{{ path('home') }}">
+									<a	href="{{ path('app_gestion_profile') }}">
 										<i	class="glyphicon glyphicon-modal-window "></i>
 										Gestion des Profils
 									</a>
 								</li>
-
+							{% endif %}
 								<li>
 									<a	href="{{ path('app_etablissement') }}">
 										<i	class="glyphicon glyphicon-flag "></i>
 										Infos établissement
 									</a>
 								</li>
+								{% if is_granted('ROLE_SUPER_ADMIN')  %}
+								<li>
+									<a	href="{{ path('app_super_admin') }}">
+									<i class='fas fa-user-cog'></i>
+										Administration
+									</a>
+								</li>
+								{% endif %}
+								{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN')  %}
 								<li>
 									<a	href="http://localhost:1111/r-import/Page_accueil.php?etab={{ app.user.etablissement.id }}"	target="_blank">
 										<i	class="glyphicon glyphicon-import "></i>
 										Import données
 									</a>
 								</li>
+								{% endif %}
 								<li	role="separator"	class="divider"></li>
 								<li>
 									<a	href="{{ path('app_logout') }}">
@@ -550,8 +671,48 @@ submenu.style.display = 'none';
 </html>
 <br>
 <br>
-<div	class="container"	style="margin-top:70px">
 
+{% for message in app.flashes('changerPassword') %}
+	<div class="alert alert-success show" role="alert" style="margin-top:30px;">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+{% endfor %}
+{% for message in app.flashes('danger') %}
+	<div class="alert alert-danger" role="alert"  >
+        {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endfor %}
+
+<script>
+    setTimeout(function() {
+        document.querySelectorAll('.alert').forEach(alert => {
+            alert.classList.remove('show');
+            alert.classList.add('fade');
+            setTimeout(() => alert.remove(), 500); 
+        });
+    }, 5000);
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% for message in app.flashes('success') %}
+    <script>
+        Swal.fire({
+            title: "Erreur",
+            html: '<p style="font-size:20px; padding: 10px; ">{{ message }}</p>',
+            icon: "warning",
+            showConfirmButton: false,
+  			timer: 3000,
+			animation:true
+        });
+    </script>
+{% endfor %}
+<div	class="container"	style="margin-top:70px">
 	{% block body %}
 
 		<div	class="row">
@@ -561,21 +722,18 @@ submenu.style.display = 'none';
 
 					<div	class="form-group">
 
-						<button	type="submit"	id="form_save"	name="form[save]"	class="btn-primary btn">
+						<button	 style="display:flex;gap:5px;align-items:center;" type="submit"	id="form_Sauvegarder"	name="form[Sauvegarder]"	class="btn-primary btn" {% if app.user.SauvegarderAcceuil == '0' %} disabled {% endif %}>
 							<i	class="glyphicon glyphicon-floppy-disk"></i>
 							Enregistrer
 						</button>
 					</div>
-
 					<div	class="form-group ">
-
-						<a	style="width: 100%"	href=""	id=""	name="send"	class="btn-danger btn  "	data-toggle="modal"	data-target="#update_categories">
+						<a	style="display:flex;gap:5px;align-items:center;"	href=""	id=""	{% if app.user.MjTv == '0' %} disabled {% endif %} name="send"	class="btn-danger btn" data-toggle="modal"	data-target="#update_categories">
 							<i	class="glyphicon glyphicon-send"></i>
 							Mise à jour
 						</a>
 
 					</div>
-
 					<!--<div class="form-group">
 						
 						<button type="button" id="clre" class="btn-warning btn">
@@ -593,7 +751,7 @@ submenu.style.display = 'none';
 					</div>-->
 					<div	class="form-group">
 
-						<a	style="width: 100%"	href=""	id=""	name="send"	class="btn-info btn  "	data-toggle="modal"	data-target="#backa">
+						<a	 style="display:flex;gap:5px;align-items:center;" {% if app.user.FondEcran == '0' %} disabled {% endif %} style="width: 100%"	href=""	id=""	name="send"	class="btn-info btn  "	data-toggle="modal"	data-target="#backa">
 							<i	class="glyphicon glyphicon-picture"></i>
 							Fond d'écran
 						</a>
@@ -614,17 +772,30 @@ submenu.style.display = 'none';
 						<i class="glyphicon glyphicon-wrench"></i>
 						Maintenance</button>
 					</div>-->
-
-					<div	class="form-group ">
-
-						<button	type="button"	class="btn btn-primary"	data-toggle="modal"	data-target="#exampleModal">
+					
+					<div class="form-group ">
+						<button	 style="display:flex;gap:5px;align-items:center;" type="button"	{% if app.user.AjoutCategorie == '0' %} disabled {% endif %} class="btn btn-primary"	data-toggle="modal"	data-target="#exampleModal">
 							<i	class="glyphicon glyphicon-wrench"></i>
 							Ajouter catégorie
 						</button>
 					</div>
-
+					{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN')  %}
+					<div class="form-group ">
+						<a	 style="display:flex;gap:5px;align-items:center;" type="button" class="btn btn-success" style="width:167px;" data-toggle="modal" id="ExportData">
+ 							<i class="fa-solid fa-clone"></i> Exporter 
+						</a>
+					</div>
+					{% endif %}
+					{% if is_granted('ROLE_SUPER_ADMIN') %}
+					<div class="form-group ">
+						<button  style="display:flex;gap:5px;align-items:center;" type="button" class="btn btn-info"	data-toggle="modal" id="importData" >
+ 							<i	class="glyphicon glyphicon-import "></i>
+							Importer
+						</button>
+					</div>
+					{% endif %}
 				</div>
-
+	
 				<br>
 				<br>
 				<div	class="col-md-10 backp "	style="height: 650px;padding:25px">
@@ -632,11 +803,7 @@ submenu.style.display = 'none';
 						{% set background='images/videoBAckground.png' %}
 					{% else %}
 						{% set background=asset(etablissement.background) %}
-					{# {% set background = asset('images/background.jpg') %} #}
 					{% endif %}
-
-					{# {% set background=asset(etablissement.background) %} #}
-
 					<div	class="col-md-12"	style="background:url('{{ background }}');height: 555px;background-size: cover!important;">
 
 						<div	class="col-md-12"	style="background-color: rgba(160, 160, 160, 0.25);height: 80px;margin-bottom: 15px">
@@ -649,7 +816,7 @@ submenu.style.display = 'none';
 							<div	class="col-sm-5"	style="padding: 0px ; margin-top: 10px;">
 								<a	href="{{ path('home') }}">
 									<h4	style="color: #fff;text-shadow: 2px 2px #000000;">
-										<input	name="logoactive"	class=""	type="checkbox"	{{ ch }}>
+										<input	name="logoactive"	{% if app.user.CocherLogo == '0' %} disabled {% endif %}  class=""	type="checkbox"	{{ ch }}>
 									<!--Logo de votre société-->
 									</h4>
 									<img	alt=""	src="{{ asset(etablissement.logo) }}"	style="width: 150px;margin-top: -41px;    height: 60px;float: left;margin-right: 8px">
@@ -671,7 +838,7 @@ submenu.style.display = 'none';
 
 								</a>
 								<h4	style="color: #fff;text-shadow: 2px 2px #000000;">
-									<input	name="meteoactive"	class=""	type="checkbox"	{{ ch }}	style="margin-left: 255px;position: absolute !important;">
+									<input	name="meteoactive"	{% if app.user.CocherMeteo == '0' %} disabled {% endif %} class=""	type="checkbox"	{{ ch }}	style="margin-left: 255px;position: absolute !important;">
 								<!--Logo de votre société-->
 								</h4>
 							</div>
@@ -693,18 +860,18 @@ submenu.style.display = 'none';
 										<div	class="col-sm-1"	style="margin-right: 10px;">
 											<div	style="margin-top: 5px; width: 80px; height: 80px; margin-left: 5px; position: relative;">
 												<div	class="cog"	style="position: absolute; padding: 3px;">
-													<button	data-toggle="modal"	data-target="#changeposition{{ categorie.id }}"	style="background-color: #f9f9f9; color: #333; border-width: 0px;"	type="button"	class="btn btn-default btn-xs">
+													<button	{% if app.user.ChangeCat == '0' %} disabled {% endif %} data-toggle="modal"	data-target="#changeposition{{ categorie.id }}"	style="background-color: #f9f9f9; color: #333; border-width: 0px;"	type="button"	class="btn btn-default btn-xs">
 														<span	class="glyphicon glyphicon-cog"	aria-hidden="true"></span>
 													</button>
 
-													<input	name="cat[{{ categorie.Id }}]"	class="caf"	style="width: 100%;"	type="checkbox"	{{ ch }}>
+													<input	{% if app.user.ChangeCat == '0' %} disabled {% endif %} name="cat[{{ categorie.Id }}]"	class="caf"	style="width: 100%;"	type="checkbox"	{{ ch }}>
 												</div>
 
 												<!--<img	src="{#{ asset(categorie.logo) }#}"	style="width: 80px; height: 80px; border-radius: 9px;">-->
 												<img src="{{ categorie.logo ? asset(categorie.logo) : asset('images/no_image.png') }}" style="width: 80px; height: 80px; border-radius: 9px;">
 
-												<div	class="caption">
-													<a	href="categories/{{ categorie.Id }}">
+												<div class="caption">
+													<a	href="categories/{{ categorie.Id }}"  {% if app.user.ChangeCat == '0' %} style="pointer-events: none; opacity: 0.5; cursor: default;" {% endif %}>
 														<label	name="titre"	class="center-block"	style="margin-top: -34px; font-size: 11px; color: white; text-align: center;">
 															{{ categorie.titre|capitalize }}
 														</label>
@@ -727,17 +894,17 @@ submenu.style.display = 'none';
 										<div	class="col-sm-1"	style="margin-right: 10px;">
 											<div	style="margin-top: 5px; width: 80px; height: 80px; margin-left: 5px; position: relative;">
 												<div	class="cog"	style="position: absolute; padding: 3px;">
-													<button	data-toggle="modal"	data-target="#changeposition{{ categorie.id }}"	style="background-color: #f9f9f9; color: #333; border-width: 0px;"	type="button"	class="btn btn-default btn-xs">
+													<button	data-toggle="modal"	data-target="#changeposition{{ categorie.id }}" {% if app.user.ChangeCat == '0' %} disabled {% endif %}	style="background-color: #f9f9f9; color: #333; border-width: 0px;"	type="button"	class="btn btn-default btn-xs">
 														<span	class="glyphicon glyphicon-cog"	aria-hidden="true"></span>
 													</button>
 
-													<input	name="cat[{{ categorie.Id }}]"	class="caf"	style="width: 100%;"	type="checkbox"	{{ ch }}>
+													<input	name="cat[{{ categorie.Id }}]"	class="caf"	style="width: 100%;"	{% if app.user.ChangeCat == '0' %} disabled {% endif %} type="checkbox"	{{ ch }}>
 												</div>
 
 												<img	src="{{ asset(categorie.logo) }}"	style="width: 80px; height: 80px; border-radius: 9px;">
 												<div	class="caption">
-													<a	href="categories/{{ categorie.Id }}">
-														<label	name="titre"	class="center-block"	style="margin-top: -34px; font-size: 11px; color: white; text-align: center;">
+													<a	 {% if app.user.ChangeCat == '0' %} style="pointer-events: none; opacity: 0.5; cursor: default;" {% endif %} href="categories/{{ categorie.Id }}">
+														<label	name="titre"	 class="center-block"	style="margin-top: -34px; font-size: 11px; color: white; text-align: center;">
 															{{ categorie.titre|capitalize }}
 														</label>
 													</a>
@@ -817,7 +984,7 @@ submenu.style.display = 'none';
 											</tr>
 										</thead>
 										<tbody	id="myTable">
-											{% for box in boxs %}
+{{ dump(boxs) }}											{% for box in boxs %}
 												<tr>
 													<td>
 														<label	class="labelbox">
@@ -1328,7 +1495,166 @@ submenu.style.display = 'none';
 			</div>
 		{% endfor %}
 	</div>
+{# modal pour import etablissement #}
+<div class="modal fade bd-example-modal-lg" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <form action="{{ path('app_import') }}" method="post" enctype="multipart/form-data">
+	<div class="modal-dialog" role="document" style="width:1000px" >
+        <div class="modal-content">
+            <div class="modal-header" style="margin-top:30px">
+                <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding: 5px 10px; display: inline-block;">
+                    <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+                    Importer un établissement
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+  			<div class="modal-body">
+				<input type="file" class="form-control" name="fileData" accept=".zip"></input>
+			</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" style="width:130px;"><i class="glyphicon glyphicon-remove"></i>Annuler</button>
+				<button	type="submit"	class="btn btn-primary" style="width:130px;">
+				<i class="glyphicon glyphicon-floppy-disk"></i>
+					Enregistrer
+				</button>
+            </div>
+        </div>
+    </div>
+	</form>
+</div>
 
+{# modal pour export une etablissement #}
+<div class="modal fade bd-example-modal-lg" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <form id="passwordForm" method="post" enctype="multipart/form-data">
+        <div class="modal-dialog" role="document" style="width:1000px">
+            <div class="modal-content">
+                <div class="modal-header" style="margin-top:30px">
+                    <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding: 5px 10px; display: inline-block;">
+                        <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+                        Exporter un établissement
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="window.location.href='{{ path('home') }}'">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modal-body">
+				<div>
+                    <label>Entrez votre password : </label>
+                    <input type="password" class="form-control" name="password" />
+				</div>
+                </div>
+                <div class="modal-footer">
+				 <button type="button" class="btn btn-danger" data-dismiss="modal" style="width:130px;" onclick="window.location.href='{{ path('home') }}'"><i class="glyphicon glyphicon-remove"></i>Annuler</button>
+				<button	type="submit" id ="submit" class="btn btn-primary" style="width:130px;" data-user-id="{{ app.user.id }}">
+				<i class="glyphicon glyphicon-floppy-disk"></i>
+					Enregistrer
+				</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+	const password = document.querySelector('input[name="password"]');
+	password.addEventListener('click',(e)=>{
+		const erreur = document.getElementById('erreurExport');
+		if(erreur){
+			erreur.remove();
+		}
+
+	})
+</script>
+{# fonction pour verifier le mot de passe pour exporter les donnes d'etablissement #}
+<script>
+    document.getElementById('passwordForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const password = document.querySelector('input[name="password"]').value;
+        const userId = document.getElementById("submit").getAttribute('data-user-id');
+		const modalBody = document.getElementById("modal-body");
+        if (password === "") {
+            	if(modalBody)
+					{
+						const erreur = document.getElementById('erreurExport');
+                		if(!erreur)
+                		{
+							const p = document.createElement('p');
+							p.textContent="Entrez votre mot de passe s'il vous plaît";
+							p.setAttribute('id','erreurExport');
+							p.style.color = "red";
+							modalBody.appendChild(p);
+						}
+					}
+            		return false;
+        } else {
+            try {
+                const response = await fetch(`/app_Confirme_export/${userId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ password: password }) 
+                });
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                if (data.passwordValid) {
+					$('#exampleModal3').modal('hide');
+					window.location.href ="/export";
+                } else {
+					if(modalBody)
+					{
+						const erreur = document.getElementById('erreurExport');
+                		if(!erreur)
+                		{
+							const p = document.createElement('p');
+							if(data.message)
+								p.textContent=data.message;
+							else 
+								p.textContent="Le mot de passe est invalide. Merci de réessayer avec un mot de passe correct.";
+							p.setAttribute('id','erreurExport');
+							p.style.color = "red";
+							modalBody.appendChild(p);
+						}
+					}
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert("There was an error processing your request.");
+            }
+        }
+        return true;
+    });
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const submitButton = document.getElementById('importData'); 
+    if (submitButton) {
+        submitButton.addEventListener('click', function () {
+                $('#exampleModal2').modal('show');
+        });
+    } else {
+        console.error("One or more elements are missing in the DOM.");
+    }
+});
+
+document.addEventListener('DOMContentLoaded',  function () {
+    const submitButton = document.getElementById('ExportData'); 
+    if (submitButton) {
+        submitButton.addEventListener('click', async function () {
+				const response = await fetch(`/app_Reinisialiser_password/${app.user.id}`);
+        		if (!response.ok) throw new Error(`Erreur serveur: ${response.status}`);
+        		const data = await response.json();
+                $('#exampleModal3').modal('show');
+        });
+    } else {
+        console.error("One or more elements are missing in the DOM.");
+    }
+});
+</script>
 	<!--  Scripts -->
 	<script type="text/javascript">
 
@@ -1487,7 +1813,7 @@ $(this).prop("checked", true);
                             });
                         });
                     </script>
-					{# <script>
+{# <script>
     document.getElementById('translateBtn').addEventListener('click', function() {
     // Récupérer la question en français
     const questionFr = document.getElementById('nom').value;
@@ -1521,6 +1847,7 @@ $(this).prop("checked", true);
 </script> #}
 
 <script>
+     const configApp = {{configApp | raw}}
 document.addEventListener('DOMContentLoaded', function () {
 	const traduireButton = document.getElementById('translateBtn');
 	 const languageInputs = {
@@ -1534,7 +1861,6 @@ document.addEventListener('DOMContentLoaded', function () {
             ar: document.getElementById("AR"),
         };
         let translations = {};
-		let online = 1;
         async function translateAll(text) {
             const languages = Object.keys(languageInputs);
             let results = [];
@@ -1550,12 +1876,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         if (traduireButton) {
             traduireButton.addEventListener('click', async(event) => {
+				const textInput = document.getElementById("nom");
                 const text = textInput.value.trim() ;
                 if (text === '') {
                     alert("Veuillez entrer un texte à traduire.");
                     return;
                 }
-                if(online === 0)
+                if(configApp.Status === 'Offline')
                 {
                     alert("Aucun internet disponible : vous pouvez faire la traduction manuellement");
                     return ;
@@ -1568,6 +1895,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             });
         }
+});
+
+</script>
+
+<script>
+
+    var app = {
+        user: {
+            id: {{ app.user.id|default(null) }}
+        }
+    };
+
 
 </script>
 

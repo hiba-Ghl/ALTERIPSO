@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Categories;
+use App\Entity\ConfigApp;
 use Symfony\Component\HttpFoundation\Request;
 
 class ServicePayantController extends AbstractController
@@ -27,8 +28,18 @@ class ServicePayantController extends AbstractController
     public function index(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-        $repository = $this->entityManager->getRepository(Categories::class);
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
+        $Acce = $this->getUser()->getSERVICESPAYANTS() && $configApp->getEnableSERVICESPAYANTS()=="1" ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+        }
+        $repository = $this->entityManager->getRepository(Categories::class);
+
         $servicepayant = $repository->findBy(
             ['etablissement' => $etablissement, 'titre' => 'servicepayant']
         )[0];
@@ -70,7 +81,10 @@ class ServicePayantController extends AbstractController
         }
         //var_dump($servicepayant);die();
         return $this->render('service_payant/index.html.twig', [
-            'servicepayant' => $servicepayant,'package'=>$package
+            'servicepayant' => $servicepayant,'package'=>$package,'appConfig' => $configApp,        
+            'user' => $this->getUser(),
+
+
 
         ]);
     }

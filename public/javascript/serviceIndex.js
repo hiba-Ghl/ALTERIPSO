@@ -168,6 +168,7 @@ function extractTableData() {
         columnWidth: "auto",
       },
     };
+    
     pdfMake.createPdf(docDefinition).download("Liste du services.pdf");
   });
 }
@@ -205,7 +206,7 @@ function convertImagesToBase64(data, callback) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
-// la fonction pour ajouter les options sur select position
+// .fonction pour ajouter les options sur select position
 
 function get_AllPosition() {
   const selects = document.querySelectorAll("#position_service");
@@ -237,3 +238,6 @@ async function getImages(id) {
     console.error("Error fetching image:", error);
   }
 }
+
+
+////////////////////////////////////////////////////////////////////////////////////

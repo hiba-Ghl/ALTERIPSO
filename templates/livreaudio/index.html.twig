@@ -1,15 +1,6 @@
 {% extends 'home/index.html.twig' %}
 {% block body %}
 <style>
-	 #div2 {
-        border-radius: 25px;
-        border: 2px solid #3087ce;
-        padding: 20px;
-        display: flex;
-        background-color: white;
-        margin: 10px -30px;
-        flex-direction: column;
-    }
 
 
 		.fileUpload {
@@ -77,39 +68,44 @@
 	
 
 </style>
-
-
-<div style="border-radius: 8px; text-align: left; margin-bottom: 10px; margin-left: -30px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 200px; padding-left: 10px;display: inline-block;">
-    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+<div style="border-radius: 8px;text-align: left;margin-bottom: 10px;margin-left: -120px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
+    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
     Liste Livre Audio
 </div>
 
 <!--le formulaire de modification d'un LivreAudio-->	
 <form action="{{ path('modifier_livreaudio')}}" name="form" method="post" enctype="multipart/form-data" onsubmit="return validateListeIpForm();">
 			<!--les boutons en haut du tableau-->
-			<button type="submit" name="valider" class="btn btn-success btn-sm" style="margin-right: 5px;" href="{{path('modifier_chaine')}}">
+	<div id="div2">
+	 <div style="display:flex;align-items:center;justify-content:space-between;gap:3px;">
+		<div>
+			<button type="submit" name="valider"   {% if app.user.SauvegarderLiveAudio == '0' %} disabled {% endif %}  class="btn btn-success btn-sm" style="margin-right: 5px;width:150px;" href="{{path('modifier_chaine')}}">
 				<i class="glyphicon glyphicon-floppy-disk"></i> Sauvegarder
 			</button>
-			<a name="annuler" href="{{ path('app_livreaudio') }}" class="btn btn-danger btn-sm" style="margin-right: 5px;">
+			<a name="annuler" href="{{ path('app_livreaudio') }}" class="btn btn-danger btn-sm" style="margin-right: 5px;width:150px;">
 				<i class="glyphicon glyphicon-remove"></i> Annuler
 			</a>
+			</div>
 			<!--la barre de recherche-->
-			<input id="myInput" type="text" placeholder="Search.." style="float: right; padding: 6px; border-radius: 5px;" >
-
-		<div id="div2">
-
+			<input id="myInput" type="text" placeholder="Search.." style="float: right;width:200px; padding: 6px; border-radius: 5px;" >
+	</div>
 		<div class="table-container">
-			<table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column">
-
+ <table class="table table-striped table-bordered header-fixed table-hover" id="dataTables-example" style="width: 100%;margin-top:20px;">
 				<thead>
-
 					<tr>
-						<th style="height: 35px;width:250px;">Nom Livre Audio</th>
-						<th style="height: 35px;width:250px">Fichier Livre Audio</th>
-						<th style="height: 35px;width:250px">Catégorie </th>
-						<th style="height: 35px;width:125px">Icons</th>
-						<th style="height: 35px;width:125px"><input type="checkbox" id="checklist" style="margin-right:10px; vertical-align: middle;" >Active</th>
-						<th style="height: 35px;width:125px">Action</th>
+						<th style="height: 50px;width:220px;text-align:center;">Nom Livre Audio</th>
+						<th style="height: 50px;width:220px;text-align:center;">Fichier Livre Audio</th>
+						<th style="height: 50px;width:220px;text-align:center;">Catégorie </th>
+						<th style="height: 50px;width:220px;text-align:center;">Icons</th>
+						<th style="height: 50px;width:220px;text-align:center;">
+						 <p style="display:flex;gap:10px;justify-content:center">
+                        <span>
+                            Active
+                        </span>
+                        <input type="checkbox" id="checklist" style="margin-top:-1px;">
+                        </p>
+						</th>
+						<th style="height: 50px;width:220px;text-align:center;">Action</th>
 
 
 					</tr>
@@ -122,19 +118,20 @@
 
 						<tr >
 							<!--le nom-->
-							<td  style="width:250px">
-								<label><input name='listenom[{{tele.Id}}]' type="text" value="{{tele.nom|capitalize}}" class="form-control" style="font-size: 11px;width: 230px;"></label>
+							<td style="height: 50px;width:220px;text-align:center;">
+								<label><input {% if app.user.SauvegarderLiveAudio == '0' %} disabled {% endif %} name='listenom[{{tele.Id}}]' type="text" value="{{tele.nom|capitalize}}" class="form-control"></label>
 							</td>
 							<!--le nom du fichier-->
-							<td  style="width:250px">
+							<td  style="height: 50px;width:220px;text-align:center;">
 								<label>
-									<input name='listeip[{{tele.Id}}]' class="form-control" value="{{tele.Ip}}" style="width: 230px;font-size: 11px;"></input>
+									<input {% if app.user.SauvegarderLiveAudio == '0' %} disabled {% endif %} name='listeip[{{tele.Id}}]' class="form-control" value="{{tele.Ip}}" ></input>
 								</label>
 							</td>
 							<!--la categorie-->
-							<td style="width:250px">
+							<td style="height: 50px;width:220px;text-align:center;">
 								<label>
-									<select class="form-control" name='listcatlivreaudio[{{tele.Id}}]'  style="width: 230px; font-size: 11px;" > 
+									<select {% if app.user.SauvegarderLiveAudio == '0' %} disabled {% endif %} class="form-control" name='listcatlivreaudio[{{tele.Id}}]' > 
+										{% if tele.categorie is not null %}
 										<option selected=selected value ='{{tele.categorie.Id}}'>{{tele.categorie.nom|capitalize }}</option>
 										 {% for a in categorielivreaudio %}      
 									  	{% if a.nom == tele.categorie.nom %}
@@ -142,14 +139,15 @@
 										<option value ='{{a.id}}'>{{a.nom|capitalize }}</option>
 										{% endif %}
 										{% endfor %} 
+										{% endif %}
 									</select>
 								</label>
 							</td>
 							<!--l'icone-->
-							<td style="width:125px">
+							<td style="height: 50px;width:220px;text-align:center;">
 								<div class="fileUpload " id="mainform">
 									<img id="preview-{{tele.Id}}" style="width:50px;height:50px;text-align:center" src="{{asset(tele.logo)}}" alt="..." class="img-rounded img-responsive center-block">
-									<input id="{{tele.Id}}" type="file" class="upload" name="listelogo[{{tele.Id}}]" accept=".jpg, .jpeg, .png" style="width:50px;text-align:center"/>
+									<input {% if app.user.SauvegarderLiveAudio == '0' %} disabled {% endif %}  id="{{tele.Id}}" type="file" class="upload" name="listelogo[{{tele.Id}}]" accept=".jpg, .jpeg, .png" style="width:50px;text-align:center"/>
 								</div>
 							</td>
 
@@ -160,12 +158,12 @@
 								{% set ch = 'checked' %}
 							{% endif %}
 							
-							<td style="width:125px; text-align: center; vertical-align: middle;">
-								<label><input name='listeactive[{{tele.Id}}]' type="checkbox" {{ch}} class="jpCheckbox" style="height: 36.5px;"></label>
+							<td style="width:220px; text-align: center; vertical-align: middle;">
+								<label><input {% if app.user.SauvegarderLiveAudio == '0' %} disabled {% endif %}  name='listeactive[{{tele.Id}}]' type="checkbox" {{ch}} class="jpCheckbox" style="height: 36.5px;"></label>
 							</td>
 							<!--l'action-->
-							<td style="width:125px; height: 68px; text-align: center; vertical-align: middle;">
-								<a data-toggle="tooltip" data-placement="top" title="supprimer la chaîne"  href="{{path('supprimer_livreaudio',{'id':tele.id})}}"  class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer le Livre Audio : {{tele.nom}} ?')">
+							<td style="width:220px; height: 68px; text-align: center; vertical-align: middle;">
+								<a data-toggle="tooltip" data-placement="top" {% if app.user.SupprimerLiveAudio == '0' %} disabled {% endif %} title="supprimer la chaîne"  href="{{path('supprimer_livreaudio',{'id':tele.id})}}"  class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer le Livre Audio : {{tele.nom}} ?')">
 									<i class="glyphicon glyphicon-trash"></i>
 								</a>
 							</td>
@@ -183,26 +181,27 @@
 </form>
 
 <!--le formulaire d'ajout d'un LivreAudio-->
+
 <form action="{{ path('ajouter_livreaudio')}}" name="form" method="post" enctype="multipart/form-data" onsubmit="return validateIpForm();" style="height: 70px;">
-			<table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column">
+ <table class="table table-striped table-bordered header-fixed table-hover" id="dataTables-example" style="width: 100%;margin-top:20px;">
 				<tbody style="height: auto !important;">
 					<tr  style="background-color:white;">
 					<!--le nom-->
-						<td style="width:250px">
-							<label><input name='nom' type="text" value="" class="form-control" style="font-size: 11px;width: 230px;"></label>
+						<td style="height: 50px;width:220px;text-align:center;">
+							<label><input {% if app.user.AjoutLiveAudio == '0' %}	disabled {% endif %} name='nom' type="text" value="" class="form-control"></label>
 						</td>
 
 					<!--le nom du fichier -->
-						<td style="width:250px">
+						<td style="height: 50px;width:220px;">
 							<label>
-								<input name='ip' class="form-control" style="margin: 0px -320px 0px 0px;width: 230px;height: 45px;font-size: 11px;"></input>
+								<input {% if app.user.AjoutLiveAudio == '0' %}	disabled {% endif %} name='ip' class="form-control" ></input>
 							</label>
 						</td>
 
 					<!--la categorie-->
-						<td style="width:250px">
+						<td style="height: 50px;width:220px;text-align:center;">
 							<label>
-								<select class="form-control" name='catlivreaudio'  style="width: 230px; font-size: 11px;" > 								
+								<select {% if app.user.AjoutLiveAudio == '0' %}	disabled {% endif %} class="form-control" name='catlivreaudio'> 								
 									{% for a in categorielivreaudio %}      
 									  <option value ='{{a.id}}'>{{a.nom|capitalize }}</option>
 								  	{% endfor %} 
@@ -212,23 +211,23 @@
 
 						<!--l'icone-->
 
-						<td style="width:125px">
+						<td style="height: 50px;width:220px;text-align:center;">
 							<div class="fileUpload " id="mainform0">
 								<img id="preview-0" style="width:50px;height:50px;text-align:center" src="{{ asset('images/no_image.png') }}" alt="..." class="img-rounded img-responsive center-block">
-								<input id="0" type="file" class="upload" name="logo" accept=".jpg, .jpeg, .png" style="width:50px;height:50px;text-align:center"/>
+								<input {% if app.user.AjoutLiveAudio == '0' %}	disabled {% endif %} id="0" type="file" class="upload" name="logo" accept=".jpg, .jpeg, .png" style="width:50px;height:50px;text-align:center"/>
 							</div>
 
 						</td>
 
 				
 						<!--le status active-->
-						<td style="width:125px; text-align: center; vertical-align: middle;">
-							<label><input name='active' type="checkbox" style="height: 36.5px;"></label>
+						<td style="width:220px; text-align: center; vertical-align: middle;">
+							<label><input {% if app.user.AjoutLiveAudio == '0' %}	disabled {% endif %} name='active' type="checkbox" style="height: 36.5px;"></label>
 						</td>
 
 						<!--l'action -->
-						<td style="width:154px; height: 68px; text-align: center; vertical-align: middle;">
-						<button type="submit" id="" href="{{path('ajouter_chaine')}}" class="btn btn-info btn-xs">
+						<td style="width:220px; height: 68px; text-align: center; vertical-align: middle;">
+						<button type="submit" {% if app.user.AjoutLiveAudio == '0' %}	disabled {% endif %} id="" href="{{path('ajouter_chaine')}}" class="btn btn-info btn-xs">
 								<i data-toggle="tooltip" data-placement="top" title="Ajouter un livre audio" class="glyphicon glyphicon-plus"></i>
 							</button>
 						</td>

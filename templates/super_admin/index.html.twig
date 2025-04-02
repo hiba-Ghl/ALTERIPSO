@@ -1,0 +1,550 @@
+{% extends 'home/index.html.twig' %}
+{% block body %}
+	<style>
+		#div4 {
+			border-radius: 25px;
+            border: 2px solid #3087ce;
+            padding: 20px;
+            width: 1400px;
+            height: 600px;
+            margin-left: -130px;
+            background-color: white;
+            margin-bottom: 20px;
+		}
+    .dataTables_filter{
+    float: right;
+    width: 25%;
+    margin-top: -30px;
+}
+
+	</style>
+    <!-- Ajouter Bootstrap Icons (CDN) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+
+{% if appConfig.StatusServeur is same as('Offline') %}
+<script src="libs/js/jquery-3.6.0.min.js"></script>
+<script src="libs/js/bootstrap.min.js"></script>
+<script src="libs/js/bootstrap.bundle.min.js"></script>
+<script src="{{ asset('javascript/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('javascript/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('javascript/jquery.min.js') }}"></script>
+<script src="{{ asset('javascript/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('javascript/datatables2.min.js') }}"></script>
+
+{% else %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="{{ asset('javascript/datatables2.min.js') }}"></script>
+{% endif %}
+
+<div style="border-radius: 8px;  margin-top:10px;text-align: left; margin-bottom: 10px; margin-left: -130px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding-left: 10px; display: inline-block;">
+    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+    Administration
+</div>
+<div id="div4">
+    <div style="display:flex;gap:2px;width:200px;" >
+        <a class="btn btn-danger btn-sm" id = "annulerButton" style="width:130px;" href="/home">
+        <i class="glyphicon glyphicon-remove"></i> Annuler
+    </a>
+    </div>
+  <div id="myDiv">
+    <table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column" id="dataTables-example" role="none" style="width:100%;height: 400px;">
+            <thead>
+                <tr >
+                    <th style="text-align: center;width:300px;">ID établissement</th>
+                    <th style="text-align: center;width:430px;">Nom établissement</th>
+                    <th style="text-align: center;width:530px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for etablissement in etablissements %}
+                        {% if app.user.getEtablissement() and etablissement.id != app.user.getEtablissement().id and etablissement.id != 87371 and etablissement.id != 69911 %}
+                        <tr>
+                            <td style="text-align: center;width:300px;">{{ etablissement.id }}</td>
+                            <td style="text-align: center;width:480px;">{{ etablissement.getNomEtablissement() | capitalize }}</td>
+                            <td style="text-align: center;width:520px;display:flex;gap:5px;justify-content:center;">
+                                <a data-toggle="tooltip" title="Supprimer l'etablissement" href="/delateEtablissement/{{etablissement.id}}" class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer cet etablissement ?');">
+                                    <i class="glyphicon glyphicon-trash"></i>
+                                </a>
+                                <div data-toggle="modal" data-target="#modal1-{{etablissement.id}}"  name="modalCopier" id="modalCopier"  data-id="{{app.user.id}}" class="modalCopier"> 
+                                <a title="Copier l'établissement" class="btn btn-info btn-xs">
+                                    <i class="fa fa-copy"></i>
+                                </a>
+                                </div>
+
+                            </td>
+                        </tr>
+                        {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- DataTables Core -->
+
+
+<script>
+   $(document).ready(function () {
+      $('#dataTables-example').DataTable({
+         language: {
+            search: "Recherche:",
+            emptyTable: "Aucun  Etablissement disponible."
+         },
+         paging: false,
+         searching: true,
+         ordering: true,
+         info: false,
+         columnDefs: [{ orderable: false, targets: 2 }]
+      });
+   });
+</script>
+
+<!-- Include Bootstrap JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function createModal(Id,IdEt) {
+    if (document.getElementById(`modal1-${IdEt}`)) return;
+    const popUP = document.createElement('div');
+      popUP.setAttribute("class", "modal fade in");
+    popUP.setAttribute("tabindex", "-1");
+    {# popUP.style.marginLeft="-100px"; #}
+    popUP.setAttribute("role", "dialog");
+    popUP.setAttribute("id", `modal1-${IdEt}`);
+    popUP.setAttribute("aria-labelledby", "modalLabel1");
+    popUP.setAttribute("aria-hidden", "true");
+
+    popUP.innerHTML = `
+            <div class="modal-dialog" role="document" style="width:1000px">
+                <div class="modal-content" style="margin-left:80px;">
+                    <div class="modal-header" style="margin-top:30px">
+                        <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding: 5px 10px; display: inline-block;">
+                            <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+                            Copier un établissement
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+        <form id="passwordForm" method="post" enctype="multipart/form-data">
+                    <div class="modal-body" id="modal-body">
+                        <div>
+                            <label>Entrez votre mot de passe :</label>
+                            <input type="password" class="form-control passwordAdmin" name="password" autocomplete="new-password"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="close1 btn btn-danger" data-dismiss="modal" style="width:130px;"><i class="glyphicon glyphicon-remove"></i> Annuler</button>
+                        <button type="submit" id="copyEt" class="btn btn-primary" style="width:130px;" data-etablissement-id="${IdEt}" data-id="${Id}"><i class="glyphicon glyphicon-floppy-disk"></i>Enregistrer</button>
+                    </div>
+            </form>
+            </div>
+            </div>
+        `;
+    document.body.appendChild(popUP);
+    $(`#modal1-${IdEt}`).modal('show');
+}
+
+
+document.addEventListener('click', function (event) {
+    const submitButton = event.target.closest('.modalCopier');
+    if(!submitButton)
+      return ;
+    const Id = submitButton.getAttribute('data-id');
+    let index = -1;
+    if (submitButton.getAttribute('data-target')) {
+      index = submitButton.getAttribute("data-target").split('-')[1];
+    createModal(Id,index);
+    setTimeout(() => $(`#modal1-${Id}`).modal({ backdrop: 'static', keyboard: false }).modal('show'), 100);
+    }
+})
+
+function createModal1(Id) {
+    if (document.getElementById(`modal2`)) return;
+    const popUP = document.createElement('div');
+      popUP.setAttribute("class", "modal fade in");
+    popUP.setAttribute("tabindex", "-1");
+    popUP.style.marginLeft="-200px";
+    popUP.setAttribute("role", "dialog");
+    popUP.setAttribute("id", `modal2`);
+    popUP.setAttribute("aria-labelledby", "modalLabel1");
+    popUP.setAttribute("aria-hidden", "true");
+
+    popUP.innerHTML = `
+            <div class="modal-dialog" role="document" style="width:1000px;padding:10px;">
+                <div class="modal-content" style="margin-left:200px;">
+                    <div class="modal-header" style="margin-top:30px">
+                        <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding: 5px 10px; display: inline-block;">
+                            <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+                            Copier un établissement
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="CopierForm"  method="post" enctype="multipart/form-data">
+                    <div class="modal-body2" id="modal-body2">
+                        <div style="padding:10px;" id="divNom">
+                            <label>Entrez nouveau Identifiant :</label>
+                            <input type="text" class="nomInput form-control" name="nom" id="nom" />
+                        </div>
+                        <div style="padding:10px;" id="divEmail">
+                            <label>Entrez nouveau email :</label>
+                            <input type="text" class="emailInput form-control" name="email" id="email"/>
+                        </div>
+                        <div style="padding:10px;" id="divPassword">
+                            <label>Entrez nouveau mot de passe :</label>
+                                <div style=" position:relative;display:flex;">
+                            <input type="password" id="first_password" class="passwordInput form-control" name="password1" autocomplete="new-password" />
+                            <span class="input-group-addon" style="position:absolute;right:0px;width:10%;height:100%;cursor: pointer;" onclick="togglePasswordVisibility('first_password', this)">
+                <i class="bi bi-eye-fill"></i>   </i>
+            </span>
+            </div>
+                        </div>
+                         <div style="padding:10px;" id="divPasswordConfirm">
+                            <label>Confirmer le mot de passe :</label>
+                            <div style=" position:relative;display:flex;">
+                            <input type="password" id="confirmPassword" class="ConfirmpasswordInput form-control" name="Confirmpassword1" autocomplete="new-password"/>
+                            <span class="input-group-addon" style="position:absolute;right:0px;width:10%;height:100%;cursor: pointer;" onclick="togglePasswordVisibility('confirmPassword', this)">
+<i class="bi bi-eye-fill"></i>        </span>
+            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="close1 btn btn-danger" data-dismiss="modal" style="width:130px;"><i class="glyphicon glyphicon-remove"></i>Annuler</button>
+				 <button type="submit" id="copyEt" class="btn btn-primary" style="width:130px;" data-etablissement-id="${Id}">
+				<i class="glyphicon glyphicon-floppy-disk"></i>
+					Enregistrer
+				</button>
+                    </div>
+            </form>
+            </div>
+            </div>
+        `;
+    document.body.appendChild(popUP);
+    $(`#modal2`).modal('show');
+}
+// Écoute la fermeture du modal
+document.addEventListener('click', function (event) {
+    const closeButton = event.target.closest('.close');
+    if (!closeButton) return;
+    const modal = closeButton.closest('.modal');
+    if (modal) {
+        $(modal).modal('hide');
+        modal.remove();
+    }
+});
+
+document.addEventListener('click', function (event) {
+    const closeButton = event.target.closest('.close1');
+    if (!closeButton) return;
+    window.location.href = `/super/admin`
+});
+
+// Gestion du formulaire dynamiquement
+document.addEventListener('submit', async function(event) {
+    if (event.target.id === 'passwordForm') {
+        event.preventDefault();
+        const password = event.target.querySelector('input[name="password"]').value;
+        const Id = document.getElementById("copyEt").getAttribute('data-id');
+        const etablissementId = document.getElementById("copyEt").getAttribute('data-etablissement-id');
+
+        const modalBody = document.getElementById(`modal-body`);
+       if (password === "") {
+        if(modalBody)
+			{
+                const erreur = document.getElementById('erreurExport');
+                if(!erreur)
+                {
+				const p = document.createElement('p');
+				p.textContent="Entrez votre mot de passe s'il vous plaît";
+				p.setAttribute('id','erreurExport');
+				p.style.color = "red";
+				modalBody.appendChild(p);
+                }
+			}
+            return false;
+        } 
+        try {
+            const response = await fetch(`/app_Confirme_Copier/${Id}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ password })
+            });
+
+            const data = await response.json();
+            console.log(data);
+            if (data.passwordValid) {
+                $('.modal').modal('hide');
+                createModal1(etablissementId);
+            } else {
+				if(modalBody)
+				{
+                const erreur = document.getElementById('erreurExport');
+                if(!erreur)
+                {
+					const p = document.createElement('p');
+					p.textContent="Le mot de passe est invalide. Merci de réessayer avec un mot de passe correct.";
+					p.setAttribute('id','erreurExport');
+					p.style.color = "red";
+					modalBody.appendChild(p);
+                    return false;
+                }
+				}
+                }
+        } catch (error) {
+            console.error('Erreur:', error);
+            alert("Erreur lors de la requête.");
+        }
+    }
+
+    else if (event.target.id === 'CopierForm') {
+        event.preventDefault();
+        var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        const password = event.target.querySelector('input[name="password1"]').value;
+        const Confirmpassword = event.target.querySelector('input[name="Confirmpassword1"]').value;
+        const nom = event.target.querySelector('input[name="nom"]').value;
+        const email = event.target.querySelector('input[name="email"]').value;
+        const etablissementId = document.getElementById("copyEt").getAttribute('data-etablissement-id');
+        const divPassword = document.getElementById(`divPassword`);
+        const divConfirmPassword = document.getElementById(`divPasswordConfirm`);
+        const divNom = document.getElementById(`divNom`);
+        const divEmail = document.getElementById(`divEmail`);
+      
+        if(nom === "" || password === "" || email === "" || Confirmpassword === "")
+        {
+          if (divNom && nom === "") {
+                const erreur = document.getElementById('erreurExport');
+                if(!erreur)
+                {
+				const p = document.createElement('p');
+				p.textContent="Entrez le nom du nouveau utilisateur s'il vous plaît";
+				p.setAttribute('id','erreurExport');
+				p.style.color = "red";
+				divNom.appendChild(p);
+                }
+        }
+          if ( divEmail && email === "") {
+                const erreur = document.getElementById('erreurExport1');
+                if(!erreur)
+                {
+				const p = document.createElement('p');
+				p.textContent="Entrez l'email du nouveau utilisateur s'il vous plaît";
+				p.setAttribute('id','erreurExport1');
+				p.style.color = "red";
+				divEmail.appendChild(p);
+                }
+        } 
+         if (divPassword && password === "") {
+                const erreur = document.getElementById('erreurExport2');
+                if(!erreur)
+                {
+				const p = document.createElement('p');
+				p.textContent="Entrez le nouveau mot de passe s'il vous plaît";
+				p.setAttribute('id','erreurExport2');
+				p.style.color = "red";
+				divPassword.appendChild(p);
+                }
+        }
+         if (divConfirmPassword && Confirmpassword === "") {
+                const erreur = document.getElementById('erreurExport3');
+                if(!erreur)
+                {
+				const p = document.createElement('p');
+				p.textContent="Confirmer le mot de passe s'il vous plaît";
+				p.setAttribute('id','erreurExport3');
+				p.style.color = "red";
+				divConfirmPassword.appendChild(p);
+                }
+        }
+        return false;
+        }
+        else{
+            if (!email.match(validRegex)) {
+                const ErreurEmail = document.getElementById('erreurExport1');
+                if(!ErreurEmail)
+                {
+                    const p = document.createElement('p');
+                    p.setAttribute('id','erreurExport1');
+                    p.textContent = 'Entrez un email valide s\'il vous plait ';
+                    p.style.color ='red';
+                    document.getElementById('divEmail').appendChild(p);
+                }
+                return false;
+            }
+            if(password !== Confirmpassword)
+            {
+                const erreur = document.getElementById('erreurExport3');
+                if(!erreur)
+                {
+				const p = document.createElement('p');
+				p.textContent="Entrez le meme mot de passe s'il vous plaît";
+				p.setAttribute('id','erreurExport3');
+				p.style.color = "red";
+				divConfirmPassword.appendChild(p);
+                }
+            }
+            else {
+    const FormValid = document.getElementById('CopierForm');
+    if (FormValid) {
+        FormValid.setAttribute('action', `/copier/etablissement/${etablissementId}`);
+        FormValid.submit();
+        return true;
+    } 
+}
+
+        }
+    }
+
+
+});
+
+
+</script>
+
+<script>
+function togglePasswordVisibility(inputId, iconElement) {
+    var input = document.getElementById(inputId);
+    var isPasswordVisible = input.type === 'text';
+    input.type = isPasswordVisible ? 'password' : 'text';
+    var icon = iconElement.querySelector('i');
+    if(isPasswordVisible)
+    {
+        icon.className = 'bi bi-eye-fill'
+    }
+    else{
+        icon.className = 'bi bi-eye-slash-fill'
+    }
+}
+</script>
+
+<script>
+    document.addEventListener('change', async function (event) {
+    const username = document.getElementById('nom');
+    const email = document.getElementById('email');
+    if(username)
+    {
+        const usernameValue = username.value;
+        var text = usernameValue;
+    	var firstLetter = text.slice(0,1);
+    	text = firstLetter.toUpperCase() + text.substring(1);
+    	username.value = text;
+        if(usernameValue)
+        {
+        const response = await fetch("/searchExisteUtilisateur", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ username : usernameValue, email: null })
+        });
+
+        if (!response.ok) {
+            console.error("Network response was not ok");
+            return false;
+        }
+        const data = await response.json();
+        if(data.exists)
+		{
+            const ErreurNom = document.getElementById('erreurExport');
+            if(!ErreurNom)
+            {
+                const p = document.createElement('p');
+                p.setAttribute('id','erreurExport');
+                p.textContent = 'Le nom d\'utilisateur existe déjà.';
+                p.style.color ='red';
+                document.getElementById('divNom').appendChild(p);
+            }
+		    } 
+        }
+    }
+    if(email)
+    {
+        const emailValue = email.value;
+        var text = emailValue;
+    	var firstLetter = text.slice(0,1);
+    	text =firstLetter.toUpperCase() + text.substring(1);
+    	email.value = text;
+        if(emailValue)
+        {
+        	const response = await fetch("/searchExisteUtilisateur", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ username : null, email:emailValue})
+        });
+        if (!response.ok) {
+            console.error("Network response was not ok");
+            return false;
+        }
+        const data = await response.json();
+        if(data.exists)
+		{
+            const ErreurEmail = document.getElementById('erreurExport1');
+            if(!ErreurEmail)
+            {
+                const p = document.createElement('p');
+                p.setAttribute('id','erreurExport1');
+                p.textContent = 'L \'email d\'utilisateur existe déjà.';
+                p.style.color ='red';
+                document.getElementById('divEmail').appendChild(p);
+            }
+		} 
+        }
+    }    	
+})
+
+</script>
+<script>
+	document.addEventListener('change', function (event) {
+    const removePasswordErreur = event.target.closest('.passwordAdmin');
+    if (removePasswordErreur)
+    {
+   const erreur = document.getElementById('erreurExport');
+		if(erreur){
+			erreur.remove();
+		}
+    }
+    const removeNomErreur = event.target.closest('.nomInput');
+    if (removeNomErreur){
+   const erreur = document.getElementById('erreurExport');
+		if(erreur){
+			erreur.remove();
+		}
+    }
+    const removeEmailErreur = event.target.closest('.emailInput');
+    if (removeEmailErreur){
+        const erreur = document.getElementById('erreurExport1');
+		if(erreur){
+			erreur.remove();
+		}
+    }
+    const removePasswordIErreur = event.target.closest('.passwordInput');
+    if (removePasswordIErreur){
+    const erreur = document.getElementById('erreurExport2');
+		if(erreur){
+			erreur.remove();
+		}
+    }
+    const removePasswordIErreur1 = event.target.closest('.ConfirmpasswordInput');
+    if (removePasswordIErreur1){
+    const erreur = document.getElementById('erreurExport3');
+		if(erreur){
+			erreur.remove();
+		}
+    }
+});
+</script>
+
+{% endblock %}
+
+
+
+
+
+
+
+

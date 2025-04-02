@@ -20,6 +20,10 @@ parameters:
     annonce_directory: '%kernel.project_dir%/public/annonce'
     vod_directory: '%kernel.project_dir%/public/images/vod'
     categorie_vod_directory: '%kernel.project_dir%/public/images/categorie_vod'
+    smtp_username: '%env(SMTP_USERNAME)%'
+    smtp_password: '%env(SMTP_PASSWORD)%'
+    smtp_host: '%env(SMTP_HOST)%' 
+    smtp_port: '%env(SMTP_PORT)%' 
     
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\ConfigApp;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,18 +29,15 @@ class QuestionnaireController extends AbstractController
      public function index(EntityManagerInterface $entityManager): Response
      {
          $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-     
-         // Récupération de l'établissement de l'utilisateur connecté
+         if( !$this->getUser())
+         return $this->redirectToRoute('app_login');
          $etablissement = $this->getUser()->getEtablissement();
-         $user = $this->getUser();
-         $userRoles = $user->getRoles(); // Récupère les rôles de l'utilisateur connecté
-         $userId = $user->getId();
-
-     
-         if (!$etablissement) {
-             throw $this->createAccessDeniedException('Vous n\'êtes associé à aucun établissement.');
-         }
-     
+         $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+ 
+         $Acce = $this->getUser()->getQUESTIONNAIRE() && $configApp->getEnableQUESTIONNAIRE()=="1" ;
+         if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');         }     
          // Récupération des services et des questionnaires de l'établissement
          $serviceEtablissementRepo = $entityManager->getRepository(ServiceEtablissement::class);
          $questionnaireRepo = $entityManager->getRepository(Questionnaire::class);
@@ -59,6 +57,8 @@ class QuestionnaireController extends AbstractController
              'serviceetablissement' => $servicesEtablissement,
              'questionnaire' => $questionnaires,
              'idgeneral' => $idGeneral,
+             'appConfig' => $configApp,
+
              
          ]);
      }
@@ -69,10 +69,25 @@ class QuestionnaireController extends AbstractController
     public function ajouterquestion(Request $request): Response
     {
         $user = $this->getUser();
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
+        $Acce = $this->getUser()->getAjouteqs() && $this->getUser()->getQUESTIONNAIRE() && $configApp->getEnableQUESTIONNAIRE()=="1";
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+        }
         $serviceetablissement  = $this->entityManager->getRepository(ServiceEtablissement::class)->findBy(['etablissement' => $etablissement], ['nom' => 'ASC']);
         $questions = $this->entityManager->getRepository(Questionnaire::class)->findBy(['etablissement' => $etablissement], ['position' => 'ASC']);
-    
+        if ($configApp) {
+            $configArray = ['Status'=>$configApp->getStatusServeur()];
+        } 
+        else{
+            $configArray = ['Status'=>'online'];
+        }
+        $configJson = json_encode($configArray);
         // Retrieve existing positions by service
         $positionsByService = [];
         $firstFreePositionByService = [];
@@ -180,6 +195,8 @@ class QuestionnaireController extends AbstractController
             'positionsByService' => $positionsByService,
             'questionsByService' => $questionsByService,
             'firstFreePositionByService' => $firstFreePositionByService,
+            'configApp' => $configJson,
+            'appConfig' => $configApp
         ]);
     }
     
@@ -190,7 +207,16 @@ class QuestionnaireController extends AbstractController
    public function supprimerquestion(EntityManagerInterface $entityManager, int $id): Response
    {
        $question = $entityManager->getRepository(Questionnaire::class)->find($id);
+       if( !$this->getUser())
+       return $this->redirectToRoute('app_login');
+       $etablissement = $this->getUser()->getEtablissement();
+       $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
 
+       $Acce = $this->getUser()->getSupprimerqs() && $this->getUser()->getQUESTIONNAIRE() && $configApp->getEnableQUESTIONNAIRE()=="1";
+       if (!$Acce) {
+        $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+        return $this->redirectToRoute('home');
+       }
        if (!$question) {
            throw $this->createNotFoundException(
                'No question found for id '.$id
@@ -209,12 +235,29 @@ class QuestionnaireController extends AbstractController
    public function modifierquestion(EntityManagerInterface $entityManager, int $id): Response
    {
       $request = Request::createFromGlobals();
+      if( !$this->getUser())
+      return $this->redirectToRoute('app_login');
       $etablissement = $this->getUser()->getEtablissement();
+      $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
+      $Acce = $this->getUser()->getModifierqs() && $this->getUser()->getQUESTIONNAIRE() && $configApp->getEnableQUESTIONNAIRE()=="1";
+      if (!$Acce) {
+        $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+        return $this->redirectToRoute('home');
+      }
       $questionnaire = $entityManager->getRepository(Questionnaire::class)->find($id);
       $serviceetablissement  = $this->entityManager->getRepository(ServiceEtablissement::class)->findBy(['etablissement' => $etablissement], ['nom' => 'ASC']);
       $question = $this->entityManager->getRepository(Questionnaire::class)->findBy(['etablissement' => $etablissement], ['position' => 'ASC']);
       $info = $entityManager->getRepository(Questionnaire::class)->findById($id)[0];
 
+      $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+      if ($configApp) {
+        $configArray = ['Status'=>$configApp->getStatusServeur()];
+    } 
+    else{
+        $configArray = ['Status'=>'online'];
+    }
+    $configJson = json_encode($configArray);
       // Récupérer les positions existantes par service
       $positionsByService = [];
 
@@ -270,7 +313,12 @@ class QuestionnaireController extends AbstractController
         return $this->redirectToRoute('app_questionnaire', ['serviceId' => $serviceId]);
       }
       
-      return $this->render('questionnaire/modifier.html.twig', array('service' => $service,'questionnaire' => $questionnaire,'info' => $info, 'listback' => $listback, 'serviceetablissement' => $serviceetablissement, 'question' => $question,  'positionsByService' =>  $positionsByService ));
+      return $this->render('questionnaire/modifier.html.twig', array('service' => $service,'questionnaire' => $questionnaire,
+      'info' => $info, 'listback' => $listback, 'serviceetablissement' => $serviceetablissement, 'question' => $question,
+        'positionsByService' =>  $positionsByService,
+        'configApp' => $configJson,
+        'appConfig' => $configApp
+    ));
    }
       
     //-----------------------Update button active----------------------------------
@@ -278,6 +326,16 @@ class QuestionnaireController extends AbstractController
     #[Route('/update-active-service', name: 'update_active', methods: ['POST'])]
     public function updateActiveService(Request $request, EntityManagerInterface $entityManager)
     {
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
+        $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
+        $Acce = $this->getUser()->getSauvgarderqs() && $this->getUser()->getQUESTIONNAIRE() && $configApp->getEnableQUESTIONNAIRE()=="1";
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+            }
         $box = $request->get('list');
         if (isset($box) && !empty($box)) {
             foreach ($box as $key => $value) {
@@ -290,7 +348,6 @@ class QuestionnaireController extends AbstractController
         }
     
         // Mise à jour des autres questionnaires comme inactifs
-        $etablissement = $this->getUser()->getEtablissement();
         $services = $entityManager->getRepository(ServiceEtablissement::class)->findBy(['etablissement' => $etablissement]);
         foreach ($services as $service) {
             $questionnaires = $entityManager->getRepository(Questionnaire::class)->findBy(['service' => $service]);

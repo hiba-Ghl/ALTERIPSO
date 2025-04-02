@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Etablissement;
 use App\Entity\Categories;
+use App\Entity\ConfigApp;
 
 class CategoriesController extends AbstractController
 {
@@ -18,14 +19,25 @@ class CategoriesController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
         return $this->render('categories/ajouter.html.twig', [
             'controller_name' => 'CategoriesController',
+            'user' => $this->getUser(),
         ]);
     }
 
     #[Route('/categories/{id}', name: 'categories')]
     public function show(EntityManagerInterface $entityManager, int $id): Response
     {
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
+        $etablissement = $this->getUser()->getEtablissement();
         $categories = $entityManager->getRepository(categories::class)->find($id);
-
+        $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        if ($appConfig) {
+            $configArray = ['Status'=>$appConfig->getStatusServeur()];
+        } 
+        else{
+            $configArray = ['Status'=>'online'];
+        }
+        $configJson = json_encode($configArray);
         if (!$categories) {
             throw $this->createNotFoundException(
                 'Aucune categorie trouvé pour id ' . $id
@@ -36,15 +48,21 @@ class CategoriesController extends AbstractController
 
         // or render a template
         // in the template, print things with {{ product.name }}
-        return $this->render('categories/modifier.html.twig', ['categorie' => $categories]);
+        return $this->render('categories/modifier.html.twig',
+         ['categorie' => $categories,
+         'configApp'=>$configJson,
+        'appConfig' =>$appConfig,
+        'user' => $this->getUser()
+    ]);
     }
 
     #[Route('/ajoutercategories', name: 'ajoutercategories')]
     public function ajoutercategories(EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
-
         $request = Request::createFromGlobals();
         $nom = $request->get("nom");
         $titre = $request->get("titre");
@@ -131,6 +149,7 @@ class CategoriesController extends AbstractController
         $categories->setDE($DE);
         $categories->setZH($ZH);
         $categories->setAR($AR);
+        $categories->setId(mt_rand(1, 99999));
 
         $entityManager->persist($categories);
         $entityManager->flush();
@@ -228,7 +247,8 @@ class CategoriesController extends AbstractController
     
         // Redirection après la mise à jour
         return $this->redirectToRoute('categories', [
-            'id' => $categories->getId()
+            'id' => $categories->getId(),
+            'user' => $this->getUser(),
         ]);
     }
     

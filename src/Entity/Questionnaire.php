@@ -15,7 +15,7 @@ class Questionnaire
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'questionnaires')]
+    #[ORM\ManyToOne(targetEntity: Etablissement::class,inversedBy: 'questionnaires',cascade: ['persist'])]
     private ?Etablissement $etablissement = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -27,8 +27,8 @@ class Questionnaire
     #[ORM\Column(nullable: true)]
     private ?int $active = null;
 
-    #[ORM\ManyToOne(inversedBy: 'questionnaires')]
-    private ?ServiceEtablissement $service = null;
+    #[ORM\ManyToOne(targetEntity: ServiceEtablissement::class,inversedBy: 'questionnaires')]
+    private ?ServiceEtablissement $service  = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $fr = null;

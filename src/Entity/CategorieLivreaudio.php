@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class CategorieLivreaudio
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    // #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
@@ -68,6 +68,13 @@ class CategorieLivreaudio
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(?int $id): static
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getNom(): ?string

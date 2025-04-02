@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\CategorieLivreaudio;
+use App\Entity\ConfigApp;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,22 +19,36 @@ class LivreaudioController extends AbstractController
     public function index(EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-        $repository = $entityManager->getRepository(Livreaudio::class);
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
-        $idetablissement = $etablissement->getId();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+  
+        $Acce = $this->getUser()->getLIVREAUDIO() && $configApp->getEnableLIVREAUDIO()=="1" ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page."); 
+            return $this->redirectToRoute('home');
+        }
+        $repository = $entityManager->getRepository(Livreaudio::class);
         $livreaudio  = $repository->findBy(['etablissement' => $etablissement],['nom' => 'ASC']);
         $categorielivreaudio =  $entityManager->getRepository(CategorieLivreaudio::class)->findBy(['etablissement' => $etablissement],['nom' => 'ASC']);
- 
+        // dd($livreaudio);
         return $this->render('livreaudio/index.html.twig', [
-            'livreaudio' => $livreaudio , 'categorielivreaudio' => $categorielivreaudio]);
+            'livreaudio' => $livreaudio , 'categorielivreaudio' => $categorielivreaudio,'appConfig' => $configApp,'user' => $this->getUser(),
+        ]);
     }
 
     #[Route('/ajouterlivreaudio', name: 'ajouter_livreaudio')]
     public function ajouterlivreaudio(EntityManagerInterface $entityManager): Response
     {
-        $user = $this->getUser();
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
-    
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->getAjoutLiveAudio() && $this->getUser()->getLIVREAUDIO() && $configApp->getEnableLIVREAUDIO()=="1" ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');        }
         $request = Request::createFromGlobals();
 
         $nom = $request->get("nom");
@@ -88,8 +103,16 @@ class LivreaudioController extends AbstractController
     #[Route('/livreaudio/supprimer/{id}', name: 'supprimer_livreaudio')]
     public function supprimerlivreaudio(EntityManagerInterface $entityManager, int $id): Response
     {
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
+        $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+  
        $livreaudio = $entityManager->getRepository(Livreaudio::class)->find($id);
-
+       $Acce = $this->getUser()->getSupprimerLiveAudio() && $this->getUser()->getLIVREAUDIO() && $configApp->getEnableLIVREAUDIO()=="1" ;
+       if (!$Acce) {
+        $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+        return $this->redirectToRoute('home');       }
         if (!$livreaudio) {
             throw $this->createNotFoundException(
                 'No product found for id '.$id
@@ -106,8 +129,15 @@ class LivreaudioController extends AbstractController
     public function modifierlivreaudio(EntityManagerInterface $entityManager): Response
     {   
         $repository = $entityManager->getRepository(Livreaudio::class);
-        $user = $this->getUser();
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+          $Acce = $this->getUser()->getSauvegarderLiveAudio() && $this->getUser()->getLIVREAUDIO() && $configApp->getEnableLIVREAUDIO()=="1" ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');      
+        }
        $livreaudio  = $repository->findBy(['etablissement' => $etablissement]);
        // var_dump($livreaudio);die();
         foreach ($livreaudio as $tele) {
@@ -175,14 +205,6 @@ class LivreaudioController extends AbstractController
                 $entityManager->flush();
                 }
             }
-         
-       
-            
-       
-
-       
-      
-
         return $this->redirectToRoute('app_livreaudio');
         
     }

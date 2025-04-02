@@ -2,7 +2,16 @@
 {% block body %}
 <head>
   <!-- Autres balises head ... -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+ {# offline #}
+{% if appConfig.StatusServeur is same as('Offline') %}
+
+<script src="assets/js/all.min.js"></script>
+{% else %}
+{# online #}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+
+{% endif %}
+
 </head>
 
 	<div>

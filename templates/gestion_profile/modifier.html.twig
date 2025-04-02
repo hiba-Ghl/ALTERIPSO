@@ -1,0 +1,1118 @@
+{% extends 'home/index.html.twig' %}
+{# Cette section concerne la conception de modèles pour l'ajout d'un service.#}
+{% block body %}
+{% for type, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert alert-{{ type }}">
+         	{{ message }}
+        </div>
+    {% endfor %}
+	{% endfor %}
+{# offline #}
+{% if appConfig.StatusServeur is same as('Offline') %}
+
+<script src="assets/js/all.min.js"></script>
+{% else %}
+{# online #}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+
+{% endif %}
+<div style="border-radius: 8px;  margin-top:10px;margin-left:-70px;text-align: left; margin-bottom: 10px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding-left: 10px; display: inline-block;">
+    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+    Mise à jour de l'utilisateur :
+</div>
+<form action="{{path('Update',{'id':users.id})}}" onsubmit="return validateUtilisateur()">
+<div style="background-color:white;padding-bottom:100px;width:1400px">
+<h3 style=" color:#3087ce;margin-left:-70px;">Informations personnelles</h3>
+{# {{ dump(users) }} #}
+<div style=" display:flex;flex-direction:column;gap:20px;border-radius: 25px;margin-left:-70px;border: 2px solid #3087ce;padding: 20px; width: 1400px;background-color: white;margin-bottom: 20px;">
+			<div style="width:100%;display:flex;align-items:center">
+            <label for="inputNom" class="col-lg-4 control-label required">Identifiant:</label>
+			<div id="requiredNom">
+			<input type="text" value="{{userName ?? users.username | capitalize}}" id="contact_Identifiant" name="contact[Identifiant]"  placeholder="" class="form-control test" style="border-radius:5px;outline:none;border:1px solid gray;">
+			</div>
+			</div>
+            <div style="width:100%;display:flex;align-items:center">
+			<label for="inputEmail" class="col-lg-4 control-label required">Email:</label>
+			<div id="requiredEmail">
+			<input type="text" value="{{email ?? users.email | capitalize}}" id="contact_email" name="contact[email]"  placeholder="Exemple@gmail.com" class="form-control test" style="border-radius:5px;outline:none;border:1px solid gray;">
+			</div>
+			</div>
+            <div style="width:100%;display:flex;align-items:center">
+            <label for="inputEmail" class="col-lg-4 control-label required">Fonction:</label>
+			<select id="contact_fonction" name="contact[fonction]" class="form-control test" style="border-radius:5px;outline:none;border:1px solid gray;"> 
+                    <option value="Administrateur" {% if users.Roles[0]== 'Administrateur' %}selected{% endif %}>Administrateur</option>  
+                    <option value="It manager" {% if users.Roles[0] == 'It manager' %}selected{% endif %}>It manager</option>     
+                    <option value="Technicien" {% if users.Roles[0] == 'Technicien' %}selected{% endif %}>Technicien</option>      
+                    <option value="Community manager" {% if users.Roles[0] == 'Community manager' %}selected{% endif %}>Community Manager</option> 
+                    <option value="House keeping" {% if users.Roles[0] == 'House keeping' %}selected{% endif %}>House keeping</option></select>
+            </div>
+            <div id="contact_plainPassword" style="display:flex;flex-direction:column;gap:20px;">
+                <div style="width:100%;display:flex;align-items:center">
+                    <label for="contact_plainPassword_first" class="required col-lg-4 ">Mot de passe:</label>
+                    <div id="requiredFirstPassword">
+					<input type="password" id="contact_plainPassword_first" name="contact[plainPassword][first]" class="form-control test" style="border-radius:5px;outline:none;border:1px solid gray;">
+					</div>
+				</div>
+                <div style="width:100%;display:flex;align-items:center">
+                    <label for="contact_plainPassword_second" class="required col-lg-4 ">Confirmer mot de passe:</label>
+                    <div id="requiredSecondPassword">
+					<input type="password" id="contact_plainPassword_second" name="contact[plainPassword][second]" class="form-control test" style="border-radius:5px;outline:none;border:1px solid gray;">
+					</div>
+			    </div>
+            </div>
+</div>
+<h3 style=" color:#3087ce;margin-left:-70px;">
+	Liste des opérations autorisées
+</h3>
+<div style=" display:flex;flex-direction:column;gap:20px;border-radius: 25px;margin-left:-70px;border: 2px solid #3087ce;padding: 20px; width: 1400px;background-color: white;margin-bottom: 20px;">
+		 <div style="display:flex;gap:2px;align-items: start;width:50%;justify-content:space-between;">
+			<label>Ajouter une catégorie</label>
+			<input type="checkbox" id="contact_Ajoutecategorie" name="contact[Ajoutecategorie]" value=1 {% if users.AjoutCategorie %} checked {% endif %}>
+        </div>
+		<div style="display:flex;gap:2px;align-items: start;width:50%;justify-content:space-between;">
+            <label>Mettre à jour les TV</label>
+			<input type="checkbox" id="contact_maj" name="contact[maj]" value=1 {% if users.MjTv %} checked {% endif %}>
+        </div>
+        <div style="display:flex;gap:2px;align-items: start;width:50%;justify-content:space-between;">
+			<label>Changer catégories page d'acceuil</label>
+			<input type="checkbox" id="contact_changecategorie" name="contact[changecategorie]" value=1 {% if users.ChangeCat %} checked {% endif %}>
+        </div>
+		<div style="display:flex;gap:2px;align-items: start;width:50%;justify-content:space-between;">
+			<label>Changer font d'ecran de page d'acceuil</label>
+			<input type="checkbox" id="contact_fondEcran" name="contact[fondEcran]" value=1  {% if users.FondEcran %} checked {% endif %}>
+        </div>
+		<div style="display:flex;gap:2px;align-items: start;width:50%;justify-content:space-between;">
+			<label>Enregistrer les échanges des catégories de pages d'accueil</label>
+			<input type="checkbox" id="contact_SauvegarderAcceuil" name="contact[SauvegarderAcceuil]" value=1  {% if users.SauvegarderAcceuil %} checked {% endif %}>
+        </div>
+		<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+			<label>Contrôler l’affichage du logo sur TV</label>
+			<input type="checkbox" id="contact_SauvegarderAcceuil" name="contact[SauvegarderLogo]" value=1 {% if users.CocherLogo %} checked {% endif %}>
+        </div>
+		<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+			<label>Contrôler l’affichage de la météo sur TV</label>
+			<input type="checkbox" id="contact_SauvegarderAcceuil" name="contact[SauvegarderMeteo]" value=1 {% if users.CocherMeteo %} checked {% endif %}>
+        </div>
+</div>	
+<h3 style=" color:#3087ce;margin-left:-70px;">
+			Liste des onglets autorisés :
+</h3>
+<div style=" display:flex;flex-direction:column;gap:20px;border-radius: 25px;margin-left:-70px;border: 2px solid #3087ce;padding: 20px; width: 1400px;background-color: white;margin-bottom: 20px;">
+<table>
+			<tbody>
+				<tr>
+				<td>
+					<div id="rcorners1" class="CategorieLivreAudio">
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Categorie Livre Audio</label>
+							<input type="checkbox" id="contact_CategorieLivreAudio" name="contact[CategorieLivreAudio]" value=1 {% if users.CatLivreAudio %} checked {% endif %}>
+						</div>
+						<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="Ajouter CategorieLivreAudio">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ajouterCategorieLivreAudio" name="contact[ajouterCategorieLivreAudio]" value=1 {% if users.ajoutCatLivreAudio %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="Modifier CategorieLivreAudio">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_modifierCategorieLivreAudio" name="contact[modifierCategorieLivreAudio]" value=1 {% if users.ModifierCatLivreAudio %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="Supprimer CategorieLivreAudio">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimerCategorieLivreAudio" name="contact[supprimerCategorieLivreAudio]" value=1 {% if users.SuppCatLivreAudio %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="Sauvegarder CategorieLivreAudio">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderCategorieLivreAudio" name="contact[sauvegarderCategorieLivreAudio]" value=1 {% if users.SauvegarderCatLivreAudio %} checked {% endif %}>
+						</div>
+						</div>
+							<div style="display:flex;gap:3px;align-items: start">
+							<label>Livreaudio
+							</label>
+							<input type="checkbox" id="contact_livreaudio" name="contact[livreaudio]" value=1 {% if users.LIVREAUDIO %} checked {% endif %}>
+							
+						</div>
+				<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="Ajouter livreaudio">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+
+						<input type="checkbox" id="contact_ajouterlivreaudio" name="contact[ajouterlivreaudio]" value=1 {% if users.AjoutLiveAudio %} checked {% endif %}>
+						</div>
+						{# <div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="Modifier livreaudio">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_modifierlivreaudio" name="contact[modifierlivreaudio]" value=1 {% if users.ModifierLiveAudio %} checked {% endif %}>
+						</div> #}
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="Supprimer livreaudio">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimerlivreaudio" name="contact[supprimerlivreaudio]" value=1 {% if users.SupprimerLiveAudio %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="Sauvegarder livreaudio">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderlivreaudio" name="contact[sauvegarderlivreaudio]" value=1 {% if users.SauvegarderLiveAudio %} checked {% endif %}>
+					</div>
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-primary  btn-sm" data-original-title="Lancer/arreter livreAudio">
+								<i class="glyphicon glyphicon-play-circle"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_lancerLivreAudio" name="contact[lancerLivreAudio]" value=1 {% if users.lancerLivreAudio %} checked {% endif %}>
+						</div>
+					</div>
+					</div>
+				</td>
+				<td>
+					<div id="rcorners1" class="CategorieRadio">
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Categorie Radio</label>
+							<input type="checkbox" id="contact_CategorieRadio" name="contact[CategorieRadio]" value=1 {% if users.CatRadio %} checked {% endif %}>
+						</div>
+						<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Ajouter CategorieRadio" class="btn btn-info  btn-sm" data-original-title="Ajouter CategorieRadio">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ajouterCategorieRadio" name="contact[ajouterCategorieRadio]" value=1 {% if users.AjoutCatRadio %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="Modifier CategorieRadio">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_modifierCategorieRadio" name="contact[modifierCategorieRadio]" value=1 {% if users.ModifierCatRadio %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="Supprimer CategorieRadio">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimerCategorieRadio" name="contact[supprimerCategorieRadio]" value=1 {% if users.SuppCatRadio %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="Sauvegarder CategorieRadio">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderCategorieRadio" name="contact[sauvegarderCategorieRadio]" value=1 {% if users.SauvegarderCatRadio %} checked {% endif %}>
+						</div>
+						</div>
+						<div>
+							<label>Radio</label>
+							<input type="checkbox" id="contact_radio" name="contact[radio]" value=1 {% if users.RADIO %} checked {% endif %}>
+							
+						</div>
+						<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="Ajouter radio">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ajouterradio" name="contact[ajouterradio]" value=1 {% if users.AjoutRadio %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="Supprimer radio">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimerradio" name="contact[supprimerradio]" value=1 {% if users.SupprimerRadio %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="Sauvegarder radio">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderradio" name="contact[sauvegarderradio]" value=1 {% if users.SauvegarderRadio %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-primary  btn-sm" data-original-title="Lancer/arreter service">
+								<i class="glyphicon glyphicon-play-circle"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_lancerRadio" name="contact[lancerRadio]" value=1 {% if users.lancerRadio %} checked {% endif %}>
+						</div>
+							<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-success btn-sm" title="Exporter les radios">
+								<i class="fa-solid fa-clone"></i> 	
+							</a>
+						</label>
+						<input type="checkbox" id="contact_exporterRadio" name="contact[exporterRadio]" value=1 {% if users.ExportRadio %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-info  btn-sm" title="Importer les radios">
+ 							<i	class="glyphicon glyphicon-import "></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ImporterRadio" name="contact[ImporterRadio]" value=1 {% if users.ImportRadio %} checked {% endif %}>
+						</div>
+						</div>
+					</div>
+				</td>
+							<td>
+					<div id="rcorners1" class="CategorieVod">
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Categorie Vod</label>
+							<input type="checkbox" id="contact_CategorieVod" name="contact[CategorieVod]" value=1 {% if users.CatVod %} checked {% endif %}>
+						</div>
+						<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Ajouter CategorieVod" class="btn btn-info  btn-sm" data-original-title="Ajouter CategorieVod">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_CategorieVod" name="contact[ajouterCategorieVod]" value=1 {% if users.AjoutCatVod %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Modifier CategorieVod" class="btn btn-warning  btn-sm" data-original-title="Modifier CategorieVod">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_modifierCategorieVod" name="contact[modifierCategorieVod]" value=1 {% if users.ModifierCatVod %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Supprimer CategorieVod" class="btn btn-danger  btn-sm" data-original-title="Supprimer CategorieVod">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimerCategorieVod" name="contact[supprimerCategorieVod]" value=1 {% if users.SuppCatVod %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Sauvegarder CategorieVod" class="btn btn-success  btn-sm" data-original-title="Sauvegarder CategorieVod">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderCategorieVod" name="contact[sauvegarderCategorieVod]" value=1 {% if users.SauvegarderCatVod %} checked {% endif %}>
+						</div>
+						</div>
+							<div style="display:flex;gap:3px;align-items: start">
+							<label>
+								Vod</label>
+							<input type="checkbox" id="contact_vod" name="contact[vod]" value=1 {% if users.VOD %} checked {% endif %}>
+							
+						</div>
+					
+						<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="Ajouter vod">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ajoutervod" name="contact[ajoutervod]" value=1 {% if users.AjouteVod %} checked {% endif %}>
+						</div>
+
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="Modifier vod">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_modifiervod" name="contact[modifiervod]" value=1 {% if users.ModifierVod %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="Supprimer vod">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimervod" name="contact[supprimervod]" value=1 {% if users.SupprimerVod %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="Sauvegarder vod">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegardervod" name="contact[sauvegardervod]" value=1 {% if users.SauvegarderVod %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-primary  btn-sm" data-original-title="Lancer la video">
+								<i class="glyphicon glyphicon-play-circle"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_lancervod" name="contact[lancervod]" value=1 {% if users.LancerVod %} checked {% endif %}>
+						</div>
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div id="rcorners1" class="service1">
+						<div style="display:flex;gap:3px;align-items: start">
+							<label for="inputEmail" class="">Service</label>
+							<input type="checkbox" id="contact_service" name="contact[service]" value=1 {% if users.SERVICE %} checked {% endif %}>
+							
+						</div>
+						<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="Ajouter service">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ajouterservice" name="contact[ajouterservice]" value=1 {% if users.AjouteService %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="Modifier service">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_modifierservice" name="contact[modifierservice]" value=1 {% if users.ModifierService %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="Supprimer service">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimerservice" name="contact[supprimerservice]" value=1 {% if users.SupprimerService %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="Sauvegarder service">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderservice" name="contact[sauvegarderservice]" value=1 {% if users.SauvegarderService %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-primary  btn-sm" data-original-title="Lancer/arreter service">
+								<i class="glyphicon glyphicon-play-circle"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_lancerservice" name="contact[lancerservice]" value=1 {% if users.LancerArretService %} checked {% endif %}>
+						</div>
+					</div>
+					<div style="display:flex;gap:3px;align-items: start">
+							<label>Service en chambre</label>
+							<input type="checkbox" id="contact_ServiceEnChambre" name="contact[ServiceEnChambre]" value=1 {% if users.ServiceEnChambre %} checked {% endif %}>
+						</div>
+						<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Ajouter ServiceEnChambre" class="btn btn-info  btn-sm" data-original-title="Ajouter ServiceEnChambre">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ServiceEnChambre" name="contact[ajouterServiceEnChambre]" value=1 {% if users.AjoutServiceEnChambre %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Modifier ServiceEnChambre" class="btn btn-warning  btn-sm" data-original-title="Modifier ServiceEnChambre">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_modifierServiceEnChambre" name="contact[modifierServiceEnChambre]" value=1 {% if users.ModifierServiceEnChambre %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Supprimer ServiceEnChambre" class="btn btn-danger  btn-sm" data-original-title="Supprimer ServiceEnChambre">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimerServiceEnChambre" name="contact[supprimerServiceEnChambre]" value=1 {% if users.SuppServiceEnChambre %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Sauvegarder ServiceEnChambre" class="btn btn-success  btn-sm" data-original-title="Sauvegarder ServiceEnChambre">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderServiceEnChambre" name="contact[sauvegarderServiceEnChambre]" value=1 {% if users.SauvegarderServiceEnChambre %} checked {% endif %}>
+						</div>
+						
+					</div>
+				</td>
+								<td>
+					<div id="rcorners1" class="support1">
+					<div style="display:flex;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Support Connecté</label>
+							<input type="checkbox" id="contact_supp" name="contact[supp]" value=1 {% if users.SupportConnect %} checked {% endif %}>
+						</div>
+					
+					</div>
+					<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="Ajouter support">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+
+						<input type="checkbox" id="contact_ajoutersupport" name="contact[ajoutersupport]" value=1 {% if users.AjouteSupport %} checked {% endif %}>
+						
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="Modifier support">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+
+						<input type="checkbox" id="contact_modifiersupport" name="contact[modifiersupport]" value=1 {% if users.ModifierSupport %} checked {% endif %}>
+						
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="Supprimer support">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+
+						<input type="checkbox" id="contact_supprimersupport" name="contact[supprimersupport]" value=1 {% if users.SupprimerSupport %} checked {% endif %}>
+						
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="Redemarrer support">
+								<i class="glyphicon glyphicon-refresh"></i>
+							</a>
+						</label>
+
+						<input type="checkbox" id="contact_redemarrersupport" name="contact[redemarrersupport]" value=1 {% if users.RedimarerSupport %} checked {% endif %}>
+						
+						</div>
+					
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Check-in Check-out" class="btn btn-success  btn-sm" data-original-title="Check-in CHeck-out">
+								<i class="glyphicon glyphicon-log-in"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_Check" name="contact[sauvegarderCheck]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Ajouter Service Etablissement" class="btn btn-primary  btn-sm" data-original-title="Ajouter Service Etablissement">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_Ajoute Service Etablissement" name="contact[AjouteServiceEtablissement]" value=1>
+						</div>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Message personnel</label>
+							<input type="checkbox" id="contact_msgperso" name="contact[msgperso]" value=1 {% if users.MessagePersonnel %} checked {% endif %}>	
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-primary  btn-sm" data-original-title="Envoyer message">
+								<i class="glyphicon glyphicon-comment"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_envoyermsg" name="contact[envoyermsg]" value=1 {% if users.EnvoyerMessage %} checked {% endif %}>
+						</div>
+				</div>
+			</td>
+							<td>
+					<div id="rcorners1" class="charte">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>Charte Patient</label>
+						<input type="checkbox" id="contact_charte" name="contact[charte]" value=1 {% if users.CHARTES %} checked {% endif %}>
+						</div>
+							<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Sauvegarder Charte Patient" class="btn btn-success  btn-sm" data-original-title="Sauvegarder Charte Patiant">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderChartPatient" name="contact[sauvegarderChartPatient]" value=1 {% if users.SauvgarderServicePayant %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>Service Payants</label>
+						<input type="checkbox" id="contact_servicePayant" name="contact[servicepayant]" value=1 {% if users.SERVICESPAYANTS %} checked {% endif %}>
+					</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Sauvegarder Service Payants" class="btn btn-success  btn-sm" data-original-title="Sauvegarder Service Payants">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderServicePayant" name="contact[sauvegarderServicePayant]" value=1 {% if users.SauvegarderChartPatient %} checked {% endif %}>
+						</div>
+					</div>
+				</td>
+
+					
+			</tr>
+			<tr>
+				<td>
+					<div id="rcorners" class="jeux">
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Jeux</label>
+							<input type="checkbox" id="contact_jeux" name="contact[jeux]" value=1 {% if users.JEUX %} checked {% endif %}>
+						</div>
+						<br>
+					<div style="display:flex;align-items:center;justify-content:space-between">
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="Ajouter jeux">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ajouterjeux" name="contact[ajouterjeux]" value=1 {% if users.AjouterJeux %} checked {% endif %}>
+					</div>
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="Modifier jeux">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+
+						<input type="checkbox" id="contact_modifierjeux" name="contact[modifierjeux]" value=1 {% if users.ModifierJeux %} checked {% endif %}>
+					</div>
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="Supprimer jeux">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimerjeux" name="contact[supprimerjeux]" value=1 {% if users.SupprimerJeux %} checked {% endif %}>
+					</div>
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="Sauvegarder jeux">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderjeux" name="contact[sauvegarderjeux]" value=1 {% if users.SauvegarderJeux %} checked {% endif %}>
+					</div>
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-primary  btn-sm" data-original-title="Lancer/arreter service">
+								<i class="glyphicon glyphicon-play-circle"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_lancerJeux" name="contact[lancerJeux]" value=1 {% if users.lancerJeux %} checked {% endif %}>
+						</div>
+					</div>
+					</div>
+				</td>
+				<td>
+					<div id="rcorners" class="application">
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Application</label>
+							<input type="checkbox" id="contact_application" name="contact[application]" value=1 {% if users.APPLICATION %} checked {% endif %}>
+							
+						</div>
+					<div style="display:flex;align-items:center;justify-content:space-between">
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="Ajouter application">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+
+						<input type="checkbox" id="contact_ajouterapplication" name="contact[ajouterapplication]" value=1 {% if users.AjoutApp %} checked {% endif %}>
+					</div>
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="Modifier application">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+
+						<input type="checkbox" id="contact_modifierapplication" name="contact[modifierapplication]" value=1 {% if users.ModifierApp %} checked {% endif %}>
+					</div>
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="Supprimer application">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimerapplication" name="contact[supprimerapplication]" value=1 {% if users.SupprimerApp %} checked {% endif %}>
+					</div>
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="Sauvegarder application">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+
+						<input type="checkbox" id="contact_sauvegarderapplication" name="contact[sauvegarderapplication]" value=1 {% if users.SauvegarderApp %} checked {% endif %}>
+					</div>
+					</div>
+					</div>
+				</td>
+				<td>
+					<div id="rcorners" class="video">
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Vidéo</label>
+							<input type="checkbox" id="contact_video" name="contact[video]" value=1 {% if users.VIDEOS %} checked {% endif %}>
+						</div>
+						<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Ajouter video" class="btn btn-info  btn-sm" data-original-title="Ajouter video">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ajoutervideo" name="contact[ajoutervideo]" value=1 {% if users.ajoutVideo %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="Modifier video">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_modifiervideo" name="contact[modifiervideo]" value=1 {% if users.ModifierVideo %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="Supprimer video">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimervideo" name="contact[supprimervideo]" value=1 {% if users.suppVideo %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="Sauvegarder video">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegardervideo" name="contact[sauvegardervideo]" value=1 {% if users.SauvegarderVideo %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-primary  btn-sm" data-original-title="Lancer/arreter musique">
+								<i class="glyphicon glyphicon-play-circle"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_lancerVideo" name="contact[lancerVideo]" value=1 {% if users.lancerVideo  %} checked {% endif %}>
+						</div>
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+			<td>
+					<div id="rcorners" class="Musique">
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Musique</label>
+							<input type="checkbox" id="contact_musique" name="contact[musique]" value=1 {% if users.MUSIQUE %} checked {% endif %}>
+						</div>
+						<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Ajouter musique" class="btn btn-info  btn-sm" data-original-title="Ajouter musique">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ajouterannonce" name="contact[ajoutermusique]" value=1 {% if users.ajoutMusique %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Modifier musique" class="btn btn-warning  btn-sm" data-original-title="Modifier musique">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_modifiermusique" name="contact[modifiermusique]" value=1 {% if users.ModifierMusique %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Supprimer musique" class="btn btn-danger  btn-sm" data-original-title="Supprimer musique">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimermusique" name="contact[supprimermusique]" value=1 {% if users.SuppMusique %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Sauvegarder musique" class="btn btn-success  btn-sm" data-original-title="Sauvegarder musique">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegardermusique" name="contact[sauvegardermusique]" value=1 {% if users.SauvegarderMusique %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Lancer/arreter musique" class="btn btn-primary  btn-sm" data-original-title="Lancer/arreter musique">
+								<i class="glyphicon glyphicon-play-circle"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_lancerMusique" name="contact[lancerMusique]" value=1 {% if users.lancerMusique %} checked {% endif %}>
+						</div>
+						</div>
+					</div>
+				</td>
+				<td>
+					<div id="rcorners" class="questionnaire">
+					<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Questionnaire</label>
+							<input type="checkbox" id="contact_qst" name="contact[qst]" value=1 {% if users.QUESTIONNAIRE %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Resultat de questionnaire</label>
+							<input type="checkbox" id="contact_Resultatqst" name="contact[Resultqst]" value=1  {% if users.ResultatQs %} checked {% endif %} >
+						</div>
+					</div>
+					<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="Ajouter questionnaire">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+
+						<input type="checkbox" id="contact_ajouterquestionnaire" name="contact[ajouterquestionnaire]" value=1 {% if users.Ajouteqs %} checked {% endif %}>
+						
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="Modifier questionnaire">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+
+						<input type="checkbox" id="contact_modifierquestionnaire" name="contact[modifierquestionnaire]" value=1 {% if users.Modifierqs %} checked {% endif %}>
+						
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="Supprimer questionnaire">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+
+						<input type="checkbox" id="contact_supprimerquestionnaire" name="contact[supprimerquestionnaire]" value=1 {% if users.Supprimerqs %} checked {% endif %}>
+						
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="Sauvegarder questionnaire">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderquestionnaire" name="contact[sauvegarderquestionnaire]" value=1 {% if users.Sauvgarderqs %} checked {% endif %}>
+					</div>
+					</div>
+					</div>
+				</td>
+
+			<td>
+					<div id="rcorners" class="annance">
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Annonce</label>
+							<input type="checkbox" id="contact_radio" name="contact[annance]" value=1 {% if users.ANNONCES %} checked {% endif %}>
+						</div>
+						<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="Ajouter annonce">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ajouterannonce" name="contact[ajouterannonce]" value=1 {% if users.AjouterAnnonce %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="Modifier annonce">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_modifierannonce" name="contact[modifierannonce]" value=1 {% if users.ModifierAnnonce %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="Supprimer annonce">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimerannance" name="contact[supprimerannonce]" value=1 {% if users.SuppAnnonce %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="Sauvegarder annonce">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderannonce" name="contact[sauvegarderannonce]" value=1 {% if users.SauvegarderAnnonce %} checked {% endif %}>
+						</div>
+						</div>
+					</div>
+				</td>
+			</tr>
+
+			<tr>
+								<td>
+					<div id="rcorners" class="television">
+						<div style="display:flex;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Télévision</label>
+							<input type="checkbox" id="contact_tv" name="contact[tv]" value=1 {% if users.TELEVISION %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Statistiques Télévision</label>
+							<input type="checkbox" id="contact_stattv" name="contact[stattv]" value=1 {% if users.STATISTIQUECHAINETV %} checked {% endif %}>
+						</div>
+						</div>
+						<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Ajouter télévision" class="btn btn-info  btn-sm" data-original-title="Ajouter télévision">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ajouter" name="contact[ajouter]" value=1 {% if users.AjoutTV %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Supprimer télévision" class="btn btn-danger  btn-sm" data-original-title="Supprimer télévision">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimer" name="contact[supprimer]" value=1 {% if users.SupprimerTV %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Sauvegarder télévision" class="btn btn-success  btn-sm" data-original-title="Sauvegarder télévision">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarder" name="contact[sauvegarder]" value=1 {% if users.SauvegarderTv %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Gratuité des chaines" class="btn btn-primary  btn-sm" data-original-title="Gratuité des chaines ">
+								<i class="glyphicon glyphicon-refresh"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_chainegratuite" name="contact[chainegratuite]" value=1 {% if users.GratuiteTv %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Lancer/arreter télévision" class="btn btn-primary  btn-sm" data-original-title="Lancer/arreter télévision">
+								<i class="glyphicon glyphicon-play-circle"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_lancerTv" name="contact[lancerTv]" value=1 {% if users.lancerTV %} checked {% endif %}>
+						</div>
+
+							<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-success btn-sm" title="Exporter les télévisions">
+								<i class="fa-solid fa-clone"></i> 	
+							</a>
+						</label>
+						<input type="checkbox" id="contact_exporterTelevision" name="contact[exporterTelevision]" value=1 {% if users.ExportTv  %} checked {% endif %}>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-info  btn-sm" title="Importer les télévisions">
+ 							<i	class="glyphicon glyphicon-import "></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ImporterTelevision" name="contact[ImporterTelevision]" value=1 {% if users.ImportTV%} checked {% endif %}>
+						</div>
+						</div>
+					</div>
+				</td>
+				<td>
+					<div id="rcorners" class="Rremote">
+					<div style="display:flex;justify-content:space-between;">
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>R-Mobile</label>
+						<input type="checkbox" id="contact_Rmobile" name="contact[Rmobile]" value=1 {% if users.RMOBILE %} checked {% endif %}>
+					</div>
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>R-Remote </label>
+						<input type="checkbox" id="contact_Rremote" name="contact[Rremote]" value=1 {% if users.RREMOTE %} checked {% endif %}>
+					</div>
+					</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Sauvegarder Rmobile" class="btn btn-success  btn-sm" data-original-title="Sauvegarder Service Payants">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderRmobile" name="contact[sauvegarderRmobile]" value=1 {% if users.ModifierRmobile %} checked {% endif %}>
+						</div>	
+					</div>
+				</td>
+			</tr>
+		</tbody></table>
+</div>
+<div style="float:right;margin-right:70px;">
+                <a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/gestion/profile">
+                    <i class="glyphicon glyphicon-remove"></i> Annuler
+                </a>
+     <button type="submit" class="btn btn-primary btn-md" style="width:130px;">
+                    <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
+                </button>
+</div>
+</form>
+</div>
+
+<script>
+ 	const username = document.getElementById('contact_Identifiant');
+    const email = document.getElementById('contact_email');
+    const password =  document.getElementById('contact_plainPassword_first');
+    const confirmPassword = document.getElementById('contact_plainPassword_second'); 
+	username.addEventListener('change',async (e) => {
+			const response = await fetch("/searchExisteUtilisateur", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ username : e.target.value, email })
+        });
+
+        if (!response.ok) {
+            console.error("Network response was not ok");
+            return false;
+        }
+        
+        const data = await response.json();
+		if(data.exists)
+		{
+		username.style.border ='2px solid red';
+        const ErreurNom = document.getElementById('ErreurNom');
+        if(!ErreurNom)
+        {
+        const p = document.createElement('p');
+        p.setAttribute('id','ErreurNom');
+        p.textContent = 'Le nom d\'utilisateur existe déjà.';
+        p.style.color ='red';
+        document.getElementById('requiredNom').appendChild(p);
+        }
+		}
+	})
+	username.addEventListener('click',(e) => {
+		const ErreurNom = document.getElementById('ErreurNom');
+		const existUseName = document.getElementById('existUseName');
+		if(existUseName)
+		{
+			existUseName.remove();
+		}
+        if(ErreurNom)
+		{
+		    username.style.border ='2px solid black';
+			ErreurNom.remove();
+		}
+	})
+	email.addEventListener('click',(e) =>{
+		const ErreurEmail = document.getElementById('ErreurEmail');
+		const existMail = document.getElementById('existMail');
+		if(existMail)
+		{
+			existMail.remove();
+		}
+        if(ErreurEmail)
+        {
+			email.style.border ='2px solid black';
+			ErreurEmail.remove();
+		}
+		 const ErreurEmail1 = document.getElementById('ErreurEmailValid');
+        if(ErreurEmail1)
+        {
+			email.style.border ='2px solid black';
+			ErreurEmail1.remove();
+		}
+	})
+	email.addEventListener('change',async (e) => {
+			const response = await fetch("/searchExisteUtilisateur", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ username : null, email:e.target.value})
+        });
+        if (!response.ok) {
+            console.error("Network response was not ok");
+            return false;
+        }
+        
+        const data = await response.json();
+		if(data.exists)
+		{
+
+		email.style.border ='2px solid red';
+        const ErreurEmail = document.getElementById('ErreurEmail');
+        if(!ErreurEmail)
+        {
+        const p = document.createElement('p');
+        p.setAttribute('id','ErreurEmail');
+        p.textContent = 'L \'email d\'utilisateur existe déjà.';
+        p.style.color ='red';
+        document.getElementById('requiredEmail').appendChild(p);
+        }
+		}
+	})
+	password.addEventListener('click',(e)=>{
+	const ErreurPassword = document.getElementById('ErreurPassword');
+        if(ErreurPassword)
+        {
+			password.style.border ='2px solid black';
+			 ErreurPassword.remove();
+		}
+	})
+	confirmPassword.addEventListener('click',(e)=>{
+	const ErreurConfirmePassword = document.getElementById('ErreurConfirmePassword');
+        if(ErreurConfirmePassword)
+        {
+			confirmPassword.style.border ='2px solid black';
+			ErreurConfirmePassword.remove();
+		}
+		 const ErreurConfirmePassword1 = document.getElementById('ErreuregalPassword');
+        if(ErreurConfirmePassword1)
+        {
+			confirmPassword.style.border ='2px solid black';
+			ErreurConfirmePassword1.remove();
+		}
+})
+
+</script>
+{% endblock %}

@@ -11,17 +11,7 @@
 			margin-top: 10px;
 
 		}
-		#div2 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 20px;
-			width: 1250px;
-			height: auto;
-			margin-left: 10px;
-			margin-top: 10px;
-			background-color: white;
-		}
-
+	
 
 		.fileUpload {
 			position: relative;
@@ -76,8 +66,6 @@
 
 	{% if app.request.get('msg') is defined %}
 		{% if app.request.get('msg') ==1 %}
-
-
 			<div class="alert alert-success alert-dismissible fade in" role="alert">
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 					<span aria-hidden="true">×</span>
@@ -100,7 +88,7 @@
 				<strong>
 					<i class='glyphicon glyphicon-thumbs-down'></i>
 				</strong>
-				Opération gratuité est annulée.Veulliez contacter le support.
+				Opération gratuité est annulée.Veuillez contacter le support.
 			</div>
 
 		{% elseif app.request.get('msg') ==3 %}
@@ -120,75 +108,96 @@
 
 		{% endif %}
 	{% endif %}
-	<div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
-		Liste chaines television
-	</div>
-
+	<div style="border-radius: 8px; margin-left:-130px; margin-top:10px;text-align: left; margin-bottom: 10px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding-left: 10px; display: inline-block;">
+    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+		Liste chaînes télévision
+</div>
 	<div id="div2">
-		<a style="margin-left: 775px;width: 130px;margin-top: -120px;" type="submit" class="btn-primary btn btn-sm  chaine_gratuite" id="desvod" name="desvod" data-toggle="modal" data-target="#vodmodal">
-			<i class="glyphicon glyphicon-refresh"></i>
-			Gratuité</a>
-
-		<input id="myInput3" type="text" placeholder="Search.." style="position: absolute;height: 34px;margin-top: -66px;border-color: #3087ce;margin-left: 12px;width: 130px;border: 2px solid;border-radius: 5px;">
-		<form
-			action="{{ path('modifier_chaine')}}" name="form" method="post" enctype="multipart/form-data">
-
-			<!--<table id="" class="table table-striped header-fixed table-bordered table-hover table-checkable order-column">-->
-			<table id="liste-chaines" class="table table-striped header-fixed table-bordered table-hover table-checkable order-column">
-
+		<form action="{{ path('modifier_chaine')}}" name="form" method="post" enctype="multipart/form-data">
+		<div style="display:flex;align-items:center;justify-content:space-between;gap:3px;">
+		<div>
+			<a  {% if app.user.ExportTv == '0' %}	 disabled {% endif %} style="width: 120px;" type="submit" class="btn-success btn btn-sm  exporter" href="/export_tv">
+				<i class="fa-solid fa-clone"></i>
+				Exporter
+			</a>
+			<a 	{% if app.user.ImportTV == '0' %}	 disabled {% endif %} style="width: 120px;" type="submit" class="btn btn-info btn btn-sm  importer" id="desvod" name="desvod" data-toggle="modal" data-target="#myModal6">
+				<i	class="glyphicon glyphicon-import "></i>
+				Importer
+			</a>		
+			<a 	{% if app.user.GratuiteTv == '0' %}	 disabled {% endif %} style="width: 120px;" type="submit" class="btn-primary btn btn-sm  chaine_gratuite" id="desvod" name="desvod" data-toggle="modal" data-target="#vodmodal">
+				<i class="glyphicon glyphicon-refresh"></i>
+				Gratuité
+			</a>			
+			<button type="submit" {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} class="btn btn-success btn-sm" href="{{path('modifier_chaine')}}" style="width: 120px;">
+				<i class="glyphicon glyphicon-floppy-disk" style="margin-right:2px;"></i>Sauvegarder</button>
+			<button type="button" class="btn btn-danger btn-sm" style="width: 120px;">
+				<i class="glyphicon glyphicon-remove" style="margin-right:2px;"></i>Annuler</button>
+		</div>
+		<input id="myInput3" type="text" placeholder="Search.." style="height: 34px;border-color: #3087ce;width: 200px;border: 2px solid;border-radius: 5px;">
+		</div>
+        <table class="table table-striped table-bordered header-fixed table-hover" id="dataTables-example" style="width: 100%;margin-top:20px;">
 
 				<thead>
-
 					<tr>
 						<th style="width:150px;height: 50px;">Nom télévision</th>
-						<th style="height: 50px;width:150px">Ip</th>
-						<th style="height: 50px;width:70px">Port</th>
-						<th style="height: 50px;width:100px">Numéro </th>
-						<th style="height: 50px;width:70px">Icons</th>
-						<th style="height: 50px;width:100px">Pays</th>
-						<th style="height: 50px;width:100px">Protocole</th>
-						<th style="height: 50px;width:70px">Actif<input type="checkbox" id="checklist"></th>
-						<th style="height: 50px;width:70px">Gratuite<input type="checkbox" id="checklistgratuite"></th>
-						<th style="height: 50px;width:100px">Actions</th>
+						<th style="height: 50px;width:150px;text-align:center;">Ip</th>
+						<th style="height: 50px;width:120px;text-align:center;">Port</th>
+						<th style="height: 50px;width:120px;text-align:center;">Numéro </th>
+						<th style="height: 50px;width:120px;text-align:center;">Icons</th>
+						<th style="height: 50px;width:120px;text-align:center;">Pays</th>
+						<th style="height: 50px;width:120px;text-align:center;">Protocole</th>
+						<th style="height: 50px;width:120px;text-align:center;">
+						<p style="display:flex;gap:10px;justify-content:center">
+                        <span>
+                            Active
+                        </span>
+                        <input type="checkbox" id="checklist" style="margin-top:-1px;"></th>
+                        </p></th>
+						<th style="height: 50px;width:120px;text-align:center;">
+						<p style="display:flex;gap:10px;justify-content:center">
+                        <span>
+                           Gratuite
+                        </span>
+                        <input type="checkbox" id="checklistgratuite" style="margin-top:-1px;"></th>
+                        </p>
+						 </th>
+						<th style="height: 50px;width:214px;text-align:center;">Actions</th>
 
 
 					</tr>
 				</thead>
 
 				<tbody id="myTable3">
-
 					{% for tele in television %}
-
-
 						<tr class="odd gradeX">
 							<td style="width:150px">
-								<label><input name='listenom[{{tele.Id}}]' type="text" value="{{tele.nom}}" class="form-control" style="font-size: 11px;"></label>
+								<label><input {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} name='listenom[{{tele.Id}}]' type="text" value="{{tele.nom}}" class="form-control" style="font-size: 11px;"></label>
 								<label style="visibility: hidden;">{{tele.nom}}</label>
 							</td>
 
 							<td style="width:150px">
 								<label>
-									<textarea name='listeip[{{tele.Id}}]' class="form-control" style="margin: 0px -320px 0px 0px;width: 140px;height: 45px;font-size: 11px;">{{tele.Ip}}</textarea>
+									<textarea {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} name='listeip[{{tele.Id}}]' class="form-control" style="margin: 0px -320px 0px 0px;width: 140px;height: 45px;font-size: 11px;">{{tele.Ip}}</textarea>
 								</label>
 							</td>
 
 
-							<td style="width:70px">
-								<label><input name='listeport[{{tele.Id}}]' type="text" value="{{tele.port}}" class="form-control" style="font-size: 11px;"></label>
+							<td style="width:120px;text-align:center;">
+								<label><input {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} name='listeport[{{tele.Id}}]' type="text" value="{{tele.port}}" class="form-control" style="font-size: 11px;"></label>
 
 							</td>
 
 
-							<td style="width:100px">
-								<label><input name='listenumero[{{tele.Id}}]' type="number" value="{{tele.numero}}" class="form-control" style="font-size: 11px;"></label>
+							<td style="width:120px;text-align:center;">
+								<label><input {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} name='listenumero[{{tele.Id}}]' type="number" value="{{tele.numero}}" class="form-control" style="font-size: 11px;"></label>
 							</td>
 
-							<td style="width:70px">
+							<td style="width:120px;text-align:center;">
 
 
 								<div class="fileUpload " id="mainform">
 									<img id="preview-{{tele.Id}}" style="width:50px;height:50px;text-align:center" src="{{asset(tele.logo)}}" alt="..." class="img-rounded img-responsive center-block">
-									<input id="{{tele.Id}}" type="file" class="upload" name="listelogo[{{tele.Id}}]" accept=".jpg, .jpeg, .png" style="width:50px;height:50px;text-align:center"/>
+									<input {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} id="{{tele.Id}}" type="file" class="upload" name="listelogo[{{tele.Id}}]" accept=".jpg, .jpeg, .png" style="width:50px;height:50px;text-align:center"/>
 
 
 								</div>
@@ -196,9 +205,9 @@
 
 							</td>
 
-							<td style="width:100px">
+							<td style="width:120px;text-align:center;">
 								<label>
-									<select class="form-control pdf-select" name='listepays[{{tele.Id}}]' style="width: 100%; font-size: 11px;">
+									<select {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} class="form-control pdf-select" name='listepays[{{tele.Id}}]' style="width: 100%; font-size: 11px;">
 										<option selected value='{{tele.pays}}'>{{tele.pays}}</option>
 
 										<option value="Afghanistan">Afghanistan</option>
@@ -471,8 +480,8 @@
 							</td>
 
 
-							<td style="width:100px">
-								<select class="form-control" name='listeprotocole[{{tele.Id}}]' style="width: 100%; font-size: 11px;">
+							<td style="width:120px;text-align:center;">
+								<select {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} class="form-control" name='listeprotocole[{{tele.Id}}]' style="width: 100%; font-size: 11px;">
 									<option selected value='{{tele.Protocole}}'>{{tele.Protocole}}</option>
 									<option value="http://">HTTP</option>
 									<option value="coax">COAX</option>
@@ -488,17 +497,17 @@
 							{% if (tele.gratuite) == 1 %}
 								{% set chg = 'checked' %}
 							{% endif %}
-							<td style="width:70px">
-								<label><input name='listeactive[{{tele.Id}}]' type="checkbox" {{ch}} class="jpCheckbox"></label>
+							<td style="width:120px;text-align:center;">
+								<label><input {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} name='listeactive[{{tele.Id}}]' type="checkbox" {{ch}} class="jpCheckbox"></label>
 							</td>
 
 
-							<td style="width:70px">
-								<label><input name='listegratuite[{{tele.Id}}]' type="checkbox" {{chg}} class="jpCheckbox2"></label>
+							<td style="width:120px;text-align:center;">
+								<label><input {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} name='listegratuite[{{tele.Id}}]' type="checkbox" {{chg}} class="jpCheckbox2"></label>
 							</td>
 
 
-							<td style="width:120px">
+							<td style="width:185px;text-align:center;">
 								<a data-toggle="modal" data-target="#myModal5" name="send" class="btn btn-info btn-xs">
 									<i data-toggle="tooltip" data-placement="top" title="lancer la chaîne" class="glyphicon glyphicon-play-circle"></i>
 								</a>
@@ -506,8 +515,6 @@
 								<a data-toggle="tooltip" data-placement="top" title="supprimer la chaîne" id="ida" href="{{path('supprimer_chaine',{'id':tele.id})}}" class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer la chaine : {{tele.nom}} ?')">
 									<i class="glyphicon glyphicon-trash"></i>
 								</a>
-								
-
 							</td>
 						</tr>
 
@@ -518,58 +525,48 @@
 
 
 			</table>
-			<!-- button enregistrer et annuler  -->
-
-			<button type="submit" class="btn btn-success btn-sm" href="{{path('modifier_chaine')}}" style="margin-left: 495px;margin-top: -1103px;width: 130px; /*position: absolute; */background-color: #3087ce;border: 2px solid #3087ce;">
-				<i class="glyphicon glyphicon-floppy-disk"></i>Enregistrer</button>
-			<button type="button" class="btn btn-danger btn-sm" style="margin-left: 635px;margin-top: -1139px;width: 130px; /*position: absolute;*/background-color: red;border: 2px solid red;">
-				<i class="glyphicon glyphicon-remove"></i>Annuler</button>
-
+			
 
 		</form>
+		
+			
 		<form action="{{ path('ajouter_chaine')}}" name="form" method="post" enctype="multipart/form-data" style="height: 70px;">
-			<table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column">
+			<table class="table table-striped table-bordered header-fixed table-hover" style="width: 100%;margin-top:20px;" >
 				<tbody style="height: auto !important;">
 					<tr class="odd gradeX" style="background-color:white;">
-						<td style="width:150px">
-							<label><input name='nom' type="text" value="" class="form-control" style="font-size: 11px;"></label>
+						<td style="width:150px;text-align:center">
+							<label><input  {% if app.user.AjoutTV == '0' %} disabled {% endif %}name='nom' type="text" value="" class="form-control" style="font-size: 11px;"></label>
 
 						</td>
-
-
-						<td style="width:150px">
+						<td style="width:150px;">
 							<label>
-								<textarea name='ip' class="form-control" style="margin: 0px -320px 0px 0px;width: 140px;height: 45px;font-size: 11px;"></textarea>
+								<textarea {% if app.user.AjoutTV == '0' %} disabled {% endif %} name='ip' class="form-control" style="margin: 0px -320px 0px 0px;width: 140px;height: 45px;font-size: 11px;"></textarea>
 							</label>
 						</td>
 
 
-						<td style="width:70px">
-							<label><input name='port' type="text" value="" class="form-control" style="font-size: 11px;"></label>
+						<td style="width:120px;text-align:center;">
+							<label><input {% if app.user.AjoutTV == '0' %} disabled {% endif %} name='port' type="text" value="" class="form-control" style="font-size: 11px;"></label>
 
 						</td>
 
 
-						<td style="width:100px">
-							<label><input name='numero' type="number" value="" class="form-control" style="font-size: 11px;"></label>
+						<td style="width:120px;text-align:center;">
+							<label><input {% if app.user.AjoutTV == '0' %} disabled {% endif %} name='numero' type="number" value="" class="form-control" style="font-size: 11px;"></label>
 						</td>
 
-						<td style="width:70px">
+						<td style="width:120px;text-align:center;">
 
 
 							<div class="fileUpload " id="mainform0">
 								<img id="preview-0" style="width:50px;height:50px;text-align:center" src="{{ asset('images/no_image.png') }}" alt="..." class="img-rounded img-responsive center-block">
-								<input id="0" type="file" class="upload" name="logo" accept=".jpg, .jpeg, .png" style="width:50px;height:50px;text-align:center"/>
-
-
+								<input {% if app.user.AjoutTV == '0' %} disabled {% endif %} id="0" type="file" class="upload" name="logo" accept=".jpg, .jpeg, .png" style="width:50px;height:50px;text-align:center"/>
 							</div>
-
-
 						</td>
 
-						<td style="width:100px">
+						<td style="width:120px;text-align:center;">
 							<label>
-								<select class="form-control" name='pays' style="width: 100%; font-size: 11px;">
+								<select {% if app.user.AjoutTV == '0' %} disabled {% endif %} class="form-control" name='pays' style="width: 100%; font-size: 11px;">
 
 									<option value="France">France</option>
 									<option value="Afghanistan">Afghanistan</option>
@@ -840,31 +837,22 @@
 								</select>
 							</label>
 						</td>
-
-
-						<td style="width:100px">
-							<select class="form-control" name='protocole' style="width: 100%; font-size: 11px;">
+						<td style="width:120px;text-align:center;">
+							<select {% if app.user.AjoutTV == '0' %} disabled {% endif %} class="form-control" name='protocole' style="width: 100%; font-size: 11px;">
 								<option value="http://">HTTP</option>
 								<option value="coax">COAX</option>
 								<option value="udp://@">UDP</option>
 
 							</select>
 						</td>
-
-						<td style="width:70px">
-							<label><input name='active' type="checkbox"></label>
+						<td style="width:120px;text-align:center">
+							<label><input {% if app.user.AjoutTV == '0' %} disabled {% endif %} name='active' type="checkbox"></label>
 						</td>
-
-
-						<td style="width:70px">
-							<label><input name='gratuite' type="checkbox"></label>
+						<td style="width:120px;text-align:center;">
+							<label><input {% if app.user.AjoutTV == '0' %} disabled {% endif %} name='gratuite' type="checkbox"></label>
 						</td>
-
-
-						<td style="width:150px">
-
-
-							<button type="submit" data-toggle="tooltip" data-placement="top" title="Ajouter une chaîne" id="" href="{{path('ajouter_chaine')}}" class="btn btn-info btn-xs">
+						<td style="width:180px;text-align:center;">
+							<button {% if app.user.AjoutTV == '0' %} disabled {% endif %} type="submit" data-toggle="tooltip" data-placement="top" title="Ajouter une chaîne" id="" href="{{path('ajouter_chaine')}}" class="btn btn-info btn-xs">
 								<i data-toggle="tooltip" data-placement="top" title="Ajouter une chaîne" class="glyphicon glyphicon-plus"></i>
 							</button>
 						</td>
@@ -874,12 +862,38 @@
 		</form>
 	</div>
 	<br>
+
+	<div class="modal fade" id="myModal6" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		 <form action="{{ path('app_import_tv',{'id':app.user.etablissement.id}) }}" method="post" enctype="multipart/form-data">
+	<div class="modal-dialog" role="document" style="width:1000px" >
+        <div class="modal-content">
+            <div class="modal-header" style="margin-top:30px">
+                <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding: 5px 10px; display: inline-block;">
+                    <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+                    Importer les televisions
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+  			<div class="modal-body">
+				<input type="file" class="form-control" name="fileData" accept=".zip"></input>
+			</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" style="width:130px;">Annuler</button>
+				<button	type="submit" class="btn btn-primary" style="width:130px;">
+					Enregistrer
+				</button>
+            </div>
+        </div>
+    </div>
+	</form>
+	  </div>
+	
 	<!-- Modals -->
 	<!-- Modal lancement direct de chaine sur tv -->
 	<div class="modal fade" id="myModal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		<div class="modal-dialog modal-sm" role="document"> 
-			  
-	  
 					  <div class="modal-content">
 						<form action="{{ path('home')}}" name="form" method="post" enctype="multipart/form-data">
 					<div class="modal-header">
@@ -895,8 +909,6 @@
 					</div>
 				</form>
 				  </div>
-	  
-	  
 		</div>
 	  </div>
 	
@@ -914,11 +926,8 @@
 							<h4 style="line-height: 3;" class="modal-title" id="myModalLabel">Chaine TV gratuite
 							</h4>
 						</div>
-
 					</div>
 					<div class="modal-body">
-
-
 						<div class="form-group">
 							{% if (typegratuite == 'stop') %}
 								<p style="color: red;font-size: 16px;">
@@ -961,7 +970,7 @@
 
 
 							<input type="radio" id="t_gratuite" class="t_gratuite" name="t_gratuite" value="r_defini">
-							<label>Gratuité avec date debut et fin :</label><br>
+							<label>Gratuité avec date début et fin :</label><br>
 
 
 							<div class="d_defini" style="display:none;">
@@ -980,8 +989,7 @@
 
 						</div>
 						<div class="modal-footer">
-
-							<button type="submit" id='chaine_gratuite' name='chaine_gratuite' class="button btn btn-primary btn-sm">
+							<button type="submit" id='chaine_gratuite' name='chaine_gratuite' class=" btn btn-primary btn-sm">
 								<i class="glyphicon glyphicon-floppy-disk"></i>
 								Valider
 							</button>
@@ -1216,3 +1224,5 @@ magazines.prop('checked', false);
 </script>
 
 	{% endblock %}
+
+

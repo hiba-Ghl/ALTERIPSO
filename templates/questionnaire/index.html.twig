@@ -1,7 +1,6 @@
 {% extends 'home/index.html.twig' %}
 {% block body %}
-<h1>Liste <strong id="cat"> QUESTIONNAIRE</strong></h1>
-<hr>
+
 
 <script src="{{ asset('javascript/jquery.min.js') }}"></script>
 
@@ -65,16 +64,6 @@
         background-color: white;
     }
 
-    #myselect {
-        width: 200%;
-        margin-left: 3%;
-        margin-top: 6%;
-        height: 1%;
-        background-color: #F2F2F2;
-        color: black;
-        border: 0.5px dotted #4C4FF1;
-    }
-
     .table-container {
         width: 100%;
         height: 400px; /* Ajustez la hauteur selon vos besoins */
@@ -82,50 +71,53 @@
         overflow-x: auto; /* Pour le défilement horizontal */
     }
 </style>
-
-<div class="div">
+<div style="border-radius: 8px;text-align: left;margin-bottom: 10px;margin-left: -120px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
+    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+    Liste QUESTIONNAIRE
+</div>
+<div id="div2">
     <div>
         <form method="post" action="{{ path('update_active') }}">
-            <table>
-                <tr>
-                     <td>
-                        <a href="{{ path('app_ajouter_question') }}" class="btn btn-info btn-sm" name="add" id="add">
+                <div style="width:100%;display:flex;gap:5px">
+                        <a href="{{ path('app_ajouter_question') }}" class="btn btn-info btn-sm" name="add" id="add"   {% if app.user.Ajouteqs == '0' %}   disabled {% endif %}>
                             <i class="glyphicon glyphicon-plus"></i> Ajouter des questions
                         </a>
-                    </td>
-                     <td>
-                            <button style="margin-left:-30%;" class="btn btn-success btn-sm" type="submit" name="save-button" id="save-button">
-                                <i class="glyphicon glyphicon-inbox"></i> Sauvegarder
-                            </button>
-                        </td>
-                </tr>
-                <tr>
-                    <td>
+                        <button  class="btn btn-success btn-sm" type="submit" name="Sauvegarder-button" id="Sauvegarder-button" {% if app.user.Sauvgarderqs == '0' %} disabled {% endif %} style="width:150px;">
+                            <i class="glyphicon glyphicon-inbox"></i> Sauvegarder
+                        </button>
+                        <a name="annuler" href="{{ path('app_questionnaire') }}" class="btn btn-danger btn-sm" style="width:150px;">
+        			<i class="glyphicon glyphicon-remove"></i>
+        			Annuler
+    			</a>
+                </div>
+                <div style="display:flex;justify-content:space-between;">
                         <label style="margin-top:20px;font-size:14px" class="form-label" for="myselect">Liste des services établissement créés :</label>
-                    </td>
                     {% set selectedServiceId = app.request.query.get('serviceId') %}
-                    <td>
+                        <div style="height:40px;">
                         <select id="myselect" class="form-control" name="selectservices">
-                            <option value="">Recherche par service</option>
+                            <option value="" slected>Recherche par service</option>
                             {% for s in serviceetablissement %}
                                 <option value="{{ s.id }}" {% if s.id == selectedServiceId %}selected{% endif %}>{{ s.nom|upper }}</option>
                             {% endfor %}
                         </select>
-                    </td>
-                </tr>
-            </table>
-
+                        </div>
+                </div>
             <div class="table-container">
                 <table class="table" id="myTab">
                     <thead>
                         <tr>
-                            <th style="text-align:left;">Question</th>
-                            <th>Position</th>
-                            <th>Service</th>
-                            <th>
-                                <input type="checkbox" class="form-check-input" id="checklist"> Active
-                            </th>
-                            <th style="text-align:left;">Actions</th>
+                            <th style="height: 50px;text-align:left;">Question</th>
+                            <th style="height: 50px;text-align:center;">Position</th>
+                            <th style="height: 50px;text-align:center;">Service</th>
+                            <th style="height: 50px;text-align:center;">
+                            {# <p style="display:flex;gap:10px;"> #}
+                                <span>
+                                Active
+                                </span>
+                                <input type="checkbox" id="checklist" style="margin-top:10px;margin-left:2px;" ></th>
+                        {# </p>   #}
+                                                  </th>
+                            <th style="height: 50px;text-align:center;">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="questionnaireTableBody">
@@ -135,17 +127,13 @@
                                 <td>{{ questionnaire.position }}</td>
                                 <td>{{ questionnaire.service.nom }}</td>
                                 <td>
-                                    <input name='list[{{ questionnaire.id }}]' type="checkbox" class="btncheckbox" {% if questionnaire.active %}checked{% endif %}>
+                                    <input name='list[{{ questionnaire.id }}]' type="checkbox" class="btncheckbox" {% if questionnaire.active %}checked{% endif %} {% if app.user.Sauvgarderqs == '0' %} disabled {% endif %}>
                                 </td>
-                  
-
-                                <td style="text-align:right;">
-                                
-                                    <a data-toggle="tooltip" data-placement="top" title="Modifier la question" href="{{ path('app_modifier_question', {'id': questionnaire.id}) }}" class="btn btn-warning btn-xs btn-modifier">
+                                <td style="text-align:center;">
+                                    <a data-toggle="tooltip" data-placement="top"   {% if app.user.Modifierqs == '0'%} disabled {% endif %} title="Modifier la question" href="{{ path('app_modifier_question', {'id': questionnaire.id}) }}" class="btn btn-warning btn-xs btn-modifier">
                                         <i class="glyphicon glyphicon-pencil"></i>
-                                    </a>
-                                
-                                    <a data-toggle="tooltip" data-placement="top" title="Supprimer la question" href="{{ path('app_supprimer_question', {'id': questionnaire.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer cette question : {{ questionnaire.fr }} ?')" class="btn btn-danger btn-xs btn-supprimer">
+                                    </a>                                 
+                                    <a data-toggle="tooltip" data-placement="top"  {% if app.user.Supprimerqs == '0' %} disabled {% endif %} title="Supprimer la question" href="{{ path('app_supprimer_question', {'id': questionnaire.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer cette question : {{ questionnaire.fr }} ?')" class="btn btn-danger btn-xs btn-supprimer">
                                         <i class="glyphicon glyphicon-trash"></i>
                                     </a>
                                 </td>

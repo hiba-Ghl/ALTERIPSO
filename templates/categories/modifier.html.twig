@@ -14,12 +14,13 @@
 			padding: 43px;
 
 		}
-		#div2 {
+		#div4 {
 			border-radius: 25px;
 			border: 2px solid #3087ce;
 			padding: 20px;
+            padding-bottom:50px;
 			width: 1091px;
-			height: 1150px;
+			{# height: 1150px; #}
 			margin-left: 10px;
 			margin-top: 10px;
 		}
@@ -36,21 +37,12 @@
     Modifier  {{categorie.nom}}
 </div>
 
-<div id="div2">
+<div id="div4">
 
    
     <form name="" method="post" action="{{ path('modifiercategories', {'id': categorie.id}) }}" class="form-horizontal" enctype="multipart/form-data">
 
-
-        
-			
-
-
-            <strong>Infos
-            </strong>
-    
-    
-    
+            <strong>Infos</strong>
             <div class="form-group">
                 <label for="nom" class="col-lg-2 control-label">Nom
                 </label>
@@ -91,9 +83,7 @@
             <div class="form-group">
                 <label for="position" class="col-lg-2 control-label">Position</label>
                 <div class="col-lg-10">
-    
                     <input type="number" id="position" name="position" class="form-control" value="{{categorie.position}}"  readonly/>
-    
                 </div>
             </div>
     
@@ -220,7 +210,7 @@
             </table>-->
 
             <div>
-            <button type="button" id="translateBtn" class="btn btn-info">Traduire la categorie</button>
+            <button type="button" id="translateBtn" class="btn btn-info">Traduire</button>
             &nbsp;&nbsp;&nbsp;
             <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
                 <span><i class="glyphicon glyphicon-plus"></i></span>
@@ -291,22 +281,21 @@
                 </table>
             </div>
         </div>
-    
-
-  
-
-        <br>
-   
-        <button type="submit" class="btn btn-success" style="margin-left: 920px;position: absolute;background-color: #3087ce; border: 2px solid #3087ce;"><i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer</button>
-
+        
+       <div style="float:right;margin-left:30px;">
+    <a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/home">
+        <i class="glyphicon glyphicon-remove"></i> Annuler
+    </a>
+     <button type="submit" class="btn btn-primary btn-md" style="width:130px;">
+        <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
+    </button>
+</div>
         </form>
-
-
 </div>
 <br> <br> <br> <br>
 
     
-      {# <script>
+    {# <script>
         document.getElementById('translateBtn').addEventListener('click', function() {
         // Récupérer la question en français
         const questionFr = document.getElementById('nom').value;
@@ -341,7 +330,8 @@
 
 
     <script>
-document.addEventListener('DOMContentLoaded', function () {
+    const configApp = {{configApp | raw}}
+    document.addEventListener('DOMContentLoaded', function () {
 	const traduireButton = document.getElementById('translateBtn');
 	 const languageInputs = {
             en: document.getElementById("EN"),
@@ -354,7 +344,6 @@ document.addEventListener('DOMContentLoaded', function () {
             ar: document.getElementById("AR"),
         };
         let translations = {};
-        let online = 1;
         async function translateAll(text) {
             const languages = Object.keys(languageInputs);
             let results = [];
@@ -370,12 +359,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         if (traduireButton) {
             traduireButton.addEventListener('click', async(event) => {
+                const textInput = document.getElementById("nom");
                 const text = textInput.value.trim() ;
                 if (text === '') {
                     alert("Veuillez entrer un texte à traduire.");
                     return;
                 }
-                if(online === 0)
+                if(configApp.Status === 'Offline')
                 {
                     alert("Aucun internet disponible : vous pouvez faire la traduction manuellement");
                     return ;

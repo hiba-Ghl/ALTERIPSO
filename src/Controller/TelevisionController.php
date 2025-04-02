@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\ConfigApp;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,8 +19,17 @@ class TelevisionController extends AbstractController
     public function index(EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-        $repository = $entityManager->getRepository(Television::class);
+        if( !$this->getUser())
+          return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
+        $Acce = $this->getUser()->getTELEVISION() && $configApp->getEnableTELEVISION()=="1" ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');        }
+        $repository = $entityManager->getRepository(Television::class);
+
         $idetablissement = $etablissement->getId();
         $television  = $repository->findBy(['etablissement' => $etablissement],['numero' => 'ASC']);
        // var_dump($television);die();
@@ -37,7 +47,9 @@ class TelevisionController extends AbstractController
         }
         //var_dump($dd);die();  
         return $this->render('television/index.html.twig', [
-            'television' => $television,'typegratuite' => $typegratuite, 'dd' => $dd, 'df' => $df
+            'television' => $television,'typegratuite' => $typegratuite, 'dd' => $dd, 'df' => $df,'appConfig' => $configApp,       
+             'user' => $this->getUser(),
+
         ]);
     }
 
@@ -45,8 +57,14 @@ class TelevisionController extends AbstractController
     public function ajouterchaine(EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+        if( !$this->getUser())
+            return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
-    
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->getAjoutTV() && $this->getUser()->getTELEVISION() && $configApp->getEnableTELEVISION()=="1" ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');        }
         $request = Request::createFromGlobals();
 
         $nom = $request->get("nom");
@@ -113,6 +131,15 @@ class TelevisionController extends AbstractController
     #[Route('/chaine/supprimer/{id}', name: 'supprimer_chaine')]
     public function supprimerchaine(EntityManagerInterface $entityManager, int $id): Response
     {
+        if( !$this->getUser())
+            return $this->redirectToRoute('app_login');
+        $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
+        $Acce = $this->getUser()->getSupprimerTV() && $this->getUser()->getTELEVISION() && $configApp->getEnableTELEVISION()=="1" ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');        }
         $television = $entityManager->getRepository(Television::class)->find($id);
 
         if (!$television) {
@@ -131,10 +158,18 @@ class TelevisionController extends AbstractController
     public function modifierchaine(EntityManagerInterface $entityManager): Response
     {   
         $repository = $entityManager->getRepository(Television::class);
-        $user = $this->getUser();
+        if( !$this->getUser())
+            return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
+        $Acce = $this->getUser()->getModifierTv() && $this->getUser()->getTELEVISION() && $configApp->getEnableTELEVISION()=="1";
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');      
+      }
         $television  = $repository->findBy(['etablissement' => $etablissement]);
-       // var_dump($television);die();
+    //    var_dump($television);
         foreach ($television as $tele) {
             $tele->setActive('0');
             $tele->setGratuite('0');
@@ -233,14 +268,6 @@ class TelevisionController extends AbstractController
                 $entityManager->flush();
                 }
             }
-         
-       
-            
-       
-
-       
-      
-
         return $this->redirectToRoute('app_television');
         
     }
@@ -249,7 +276,16 @@ class TelevisionController extends AbstractController
     public function envoyer_gratuite(EntityManagerInterface $entityManager): Response
     {
         $request = Request::createFromGlobals();
+        if( !$this->getUser())
+            return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
+        $Acce = $this->getUser()->getGratuiteTv() && $this->getUser()->getTELEVISION() && $configApp->getEnableTELEVISION()=="1";
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');  
+          }
         $idetablissement = $etablissement->getId();
       $typegratuite = $request->get('t_gratuite');
       //var_dump($typegratuite);die();
@@ -327,6 +363,8 @@ class TelevisionController extends AbstractController
     {
   
         $request = Request::createFromGlobals();
+        if( !$this->getUser())
+            return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
         $idetablissement = $etablissement->getId();
       
@@ -397,6 +435,8 @@ class TelevisionController extends AbstractController
     public function historique_gratuite(EntityManagerInterface $entityManager): Response
     {
         $request = Request::createFromGlobals();
+        if( !$this->getUser())
+            return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
         $idetablissement = $etablissement->getId();
         $repository = $entityManager->getRepository(Historiquegratuite::class);
@@ -422,21 +462,48 @@ class TelevisionController extends AbstractController
 
 
 
+        try{
+            $handle = fopen("logs/envoyer_date_".$idetablissement.".txt", "r");
+            if ($handle) {
+                while (($line = fgets($handle)) !== false) {
+                    // process the line read.
+                }
+                
+                fclose($handle);
+            } else {
+                // error opening the file.
+            }
+            //var_dump($handle);die();
+            $data = $handle;
+            $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+            
+            return $this->render('television/historique.html.twig', array('date2' => $date2, 'date1' => $date1, 'data' => $data, 'historiquegratuite' => $historiquegratuite,
+            'nbbox' => $nbbox,'appConfig' => $appConfig,     
+            'user' => $this->getUser(),
+        ));
+    }catch(\Exception $e) {
+        $date2 = $request->request->get('date2');
+        $date1 = $request->request->get('date1');
 
-        $handle = fopen("logs/envoyer_date_".$idetablissement.".txt", "r");
-        if ($handle) {
-        while (($line = fgets($handle)) !== false) {
-            // process the line read.
-        }
 
-        fclose($handle);
-        } else {
-        // error opening the file.
-        }
-        //var_dump($handle);die();
-        $data = $handle;
+        if (empty($date1))
 
-        return $this->render('television/historique.html.twig', array('date2' => $date2, 'date1' => $date1, 'data' => $data, 'historiquegratuite' => $historiquegratuite, 'nbbox' => $nbbox));
+        $date1 = date("Y-m-d", strtotime("$date2 -90 day"));
+
+        if (empty($date2))
+
+        $date2 = date('Y-m-d');
+
+        $date2 = date("d-m-Y", strtotime("$date2"));
+        $date1 = date("d-m-Y", strtotime("$date1"));
+
+        $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+            
+        return $this->render('television/historique.html.twig', array('date2' => $date2, 'date1' => $date1, 'data' => null, 'historiquegratuite' => null,
+        'nbbox' => null,'appConfig' => $appConfig,     
+        'user' => $this->getUser(),
+    ));
+    }
     }
 
 

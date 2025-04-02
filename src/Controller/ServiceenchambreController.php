@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-
+use App\Entity\ConfigApp;
 use App\Entity\ServiceEnChambre;
 use App\Entity\TypeServiceEnChambre;
 use Doctrine\ORM\EntityManagerInterface;
@@ -32,8 +32,15 @@ class ServiceenchambreController extends AbstractController
     {
         // Récupération de l'utilisateur actuel
         $user = $this->getUser();
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
-        
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->isServiceEnChambre() && $configApp->getEnableSERVICE()=="1" ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+        }
          // Récupération du repository pour l'entité ServiceEnChambre
         $serviceEnChambreRepository = $this->entityManager->getRepository(ServiceEnChambre::class);
         // Récupération de tous les services en chambre
@@ -43,6 +50,8 @@ class ServiceenchambreController extends AbstractController
         return $this->render('service_en_chambre/index.html.twig', [
             'user' => $user,
             'serviceEnChambres' => $serviceEnChambres,
+            'appConfig' => $configApp,
+            'user' => $this->getUser(),
         ]);
     }
 
@@ -51,7 +60,15 @@ class ServiceenchambreController extends AbstractController
     public function ajouterCategories(Request $request): Response
     {
         $user = $this->getUser();
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->isAjoutServiceEnChambre() && $this->getUser()->isServiceEnChambre() && $configApp->getEnableSERVICE()=="1"  ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+        }
         // Récupérer les données du formulaire
         $nom = $request->request->get('nom');
         $description = $request->request->get('Description');
@@ -65,12 +82,17 @@ class ServiceenchambreController extends AbstractController
         $this->entityManager->flush();
         // Récupérer à nouveau la liste des services après l'ajout
         $serviceEnChambreRepository = $this->entityManager->getRepository(ServiceEnChambre::class);
-        $serviceEnChambres = $serviceEnChambreRepository->findBy(['etablissement'=>$etablissement]);        
+        $serviceEnChambres = $serviceEnChambreRepository->findBy(['etablissement'=>$etablissement]);  
+        $appConfig = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+      
         // Rediriger ou afficher une réponse
         // (vous pouvez personnaliser cela en fonction de vos besoins)
         return $this->render('service_en_chambre/index.html.twig', [
             'user' => $user,
             'serviceEnChambres' => $serviceEnChambres,
+            'appConfig' => $appConfig,
+            'user' => $this->getUser(),
+
         ]);
     }
    
@@ -79,13 +101,34 @@ class ServiceenchambreController extends AbstractController
     public function pageaddservice(): Response
     {
         $user = $this->getUser();
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->isAjoutServiceEnChambre() && $this->getUser()->isServiceEnChambre() && $configApp->getEnableSERVICE()=="1";
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+        }
         $typeserviceEnChambreRepository = $this->entityManager->getRepository(TypeServiceEnChambre::class);
         $typeserviceEnChambres = $typeserviceEnChambreRepository->findBy(['etablissement'=>$etablissement],['nom' => 'ASC']);
+        $appConfig = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $appConfig = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        if ($appConfig) {
+            $configArray = ['Status'=>$appConfig->getStatusServeur()];
+        } 
+        else{
+            $configArray = ['Status'=>'online'];
+        }           
+        $configJson = json_encode($configArray);
         return $this->render('service_en_chambre/ajouter.html.twig', [
             'user' => $user,
             'typeserviceEnChambres' => $typeserviceEnChambres,
             'etablissement' => $etablissement,
+            'appConfig' => $appConfig,
+            'configApp' => $configJson,
+            'user' => $this->getUser(),
+
         ]);
     }
 
@@ -94,9 +137,20 @@ class ServiceenchambreController extends AbstractController
     public function ajouterservice(Request $request): Response
     {
         $user = $this->getUser();
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
+        $Acce = $this->getUser()->isAjoutServiceEnChambre() && $this->getUser()->isServiceEnChambre() && $configApp->getEnableSERVICE()=="1" ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+        }
+        $appConfig = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
         // Récupérer les données du formulaire
         $nom = $request->request->get('nom');
+
         $lastService = $this->entityManager->getRepository(ServiceEnChambre::class)->findOneBy(['etablissement'=>$etablissement], ['position' => 'DESC']);
         $position = $lastService ? $lastService->getPosition() + 1 : 1;
         $description = $request->request->get('Description');
@@ -267,14 +321,22 @@ class ServiceenchambreController extends AbstractController
                 'data' => $data,
                 'typeserviceEnChambres'=>$typeserviceEnChambres,
                 'formatContenu' => $formatContenu,
+                'appConfig' => $configApp,
+                'user' => $this->getUser(),
+
+
             ]);
         }
         // Rediriger ou rendre une réponse
-        return $this->render('service_en_chambre/index.html.twig', [
-            'user' => $user,
-            'serviceEnChambres' => $serviceEnChambres,
+        return $this->redirectToRoute('service_en_chambre');
+        // return $this->render('service_en_chambre/index.html.twig', [
+        //     'serviceEnChambres' => $serviceEnChambres,
+        //     'appConfig' => $appConfig,
+        //     'user' => $this->getUser(),
+
+
            
-        ]); // Remplacez par la route de succès réelle
+        // ]); 
     }
 
     //Affichage page Details service en chambre
@@ -282,7 +344,18 @@ class ServiceenchambreController extends AbstractController
     public function pagedetailsservice($id)
     {    
         $user = $this->getUser();
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
+        $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
+        $Acce = $this->getUser()->isServiceEnChambre() && $configApp->getEnableSERVICE()=="1" ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+        }
         $serviceEnChambreRepository = $this->entityManager->getRepository(ServiceEnChambre::class);
+
         $serviceEnChambres = $serviceEnChambreRepository->find($id);
         $ancienLogo = $serviceEnChambres->getLogo() ?? 'valeur_par_defaut.jpg';
         $publicDirectory = __DIR__ . '/../../public/MenuServiceEnChambre';
@@ -304,7 +377,8 @@ class ServiceenchambreController extends AbstractController
         }
         $contenuJson = $serviceEnChambres->getContenu();
         $typeserviceEnChambreRepository = $this->entityManager->getRepository(TypeServiceEnChambre::class);
-        $typeserviceEnChambres = $typeserviceEnChambreRepository->findAll();
+        $typeserviceEnChambres = $typeserviceEnChambreRepository->findBy(['etablissement'=>$etablissement],['nom' => 'ASC']);
+
         // Décoder le JSON en tableau associatif
         $data = json_decode($contenuJson, true);
         $formatContenu = 'format1';
@@ -320,6 +394,14 @@ class ServiceenchambreController extends AbstractController
                 $data3 = $jsonData;
                 $data2 = [['devise' => '', 'prix' => '', 'qmin' => '', 'qmax' => '']];
             }
+            $appConfig = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+            if ($appConfig) {
+                $configArray = ['Status'=>$appConfig->getStatusServeur()];
+            } 
+            else{
+                $configArray = ['Status'=>'online'];
+            }           
+            $configJson = json_encode($configArray);
         $listrequete = $serviceEnChambres->getContenu();
         return $this->render('service_en_chambre/modifier.html.twig', [
             'user' => $user,
@@ -332,6 +414,11 @@ class ServiceenchambreController extends AbstractController
             'data3' => $data3,
             'listrequete' => $listrequete,
             'formatContenu' => $formatContenu,
+            'appConfig' => $configApp,
+            'configApp' =>$configJson,
+            'user' => $this->getUser(),
+
+
         ]);
     }
 
@@ -341,6 +428,17 @@ class ServiceenchambreController extends AbstractController
     {
         // Récupération de l'utilisateur actuel
         $user = $this->getUser();
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
+        $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
+        $Acce = $this->getUser()->isServiceEnChambre() && $configApp->getEnableSERVICE()=="1" ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+        }
+
         // Récupération du repository pour ServiceEnChambre
         $serviceEnChambreRepository = $this->entityManager->getRepository(ServiceEnChambre::class);
         // Recherche du service en chambre spécifié par l'ID
@@ -375,6 +473,14 @@ class ServiceenchambreController extends AbstractController
         $contenuJson = $serviceEnChambres->getContenu();
          // Décoder le JSON en tableau associatif
         $data = json_decode($contenuJson, true);
+        $appConfig = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        if ($appConfig) {
+            $configArray = ['Status'=>$appConfig->getStatusServeur()];
+        } 
+        else{
+            $configArray = ['Status'=>'online'];
+        }           
+        $configJson = json_encode($configArray);
         $typeserviceEnChambreRepository = $this->entityManager->getRepository(TypeServiceEnChambre::class);
         $typeserviceEnChambres = $typeserviceEnChambreRepository->findAll();
         $formatContenu = 'format1';
@@ -386,6 +492,10 @@ class ServiceenchambreController extends AbstractController
             'data' => $data,
             'typeserviceEnChambres' => $typeserviceEnChambres,
             'formatContenu' => $formatContenu,
+            'appConfig' => $configApp,
+            'configApp' => $configJson,
+            'user' => $this->getUser(),
+
         ]);
     }
 
@@ -393,6 +503,16 @@ class ServiceenchambreController extends AbstractController
     #[Route('/get_categorie_options/{id}', name: 'get_categorie_options')]
     public function getCategorieOptions($id)
     {
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
+        $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
+        $Acce = $this->getUser()->isServiceEnChambre() && $configApp->getEnableSERVICE()=="1" ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+        }
         // Définition du chemin vers le répertoire public contenant les fichiers de MenuServiceEnChambre
         $publicDirectory = __DIR__ . '/../../public/MenuServiceEnChambre'; // direction du fichier MenuServiceEnChambre
          // Construction du chemin complet vers le fichier en fonction du nom fourni en paramètre
@@ -427,7 +547,16 @@ class ServiceenchambreController extends AbstractController
                 'No room found for id '.$id
             );
         }
- 
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
+        $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
+        $Acce = $this->getUser()->isSuppServiceEnChambre() && $this->getUser()->isServiceEnChambre() && $configApp->getEnableSERVICE()=="1"  ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+        }
         $entityManager->remove($chambre);
         $entityManager->flush();
  
@@ -437,9 +566,18 @@ class ServiceenchambreController extends AbstractController
     #[Route('/modifierservice/{id}', name: 'modifierservice')]
     public function modifierservice(EntityManagerInterface $entityManager, Request $request, $id): Response
     {
+        $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
+        $Acce = $this->getUser()->isModifierServiceEnChambre() && $this->getUser()->isServiceEnChambre() && $configApp->getEnableSERVICE()=="1";
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+        }
         // Récupérer les données du formulaire
         $nom = $request->request->get('nom');
         //$active = $request->request->get('active');
+
         $description = $request->request->get('Description');
         $EN = $request->request->get('EN');
         $ES = $request->request->get('ES');
@@ -621,6 +759,14 @@ class ServiceenchambreController extends AbstractController
              $data2 = [['devise' => '', 'prix' => '', 'qmin' => '', 'qmax' => '']];
          } 
         $listrequete = $serviceEnChambres->getContenu();
+        $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        if ($appConfig) {
+            $configArray = ['Status'=>$appConfig->getStatusServeur()];
+        } 
+        else{
+            $configArray = ['Status'=>'online'];
+        }           
+        $configJson = json_encode($configArray);
         // Rediriger vers une page de succès ou une autre page
         return $this->render('service_en_chambre/modifier.html.twig', [
             'user' => $user,
@@ -632,6 +778,10 @@ class ServiceenchambreController extends AbstractController
             'data2' => $data2,
             'data3' => $data3,
             'formatContenu' => $formatContenu,
+            'appConfig' => $configApp,
+            'configApp' =>$configJson,
+
+            'user' => $this->getUser(),
         ]);
     }
 
@@ -639,6 +789,16 @@ class ServiceenchambreController extends AbstractController
     #[Route('/update-position/{id}', name: 'update_position', methods:['POST'])]
     public function updatePosition(Request $request, ServiceEnChambre $serviceEnChambre)
     {
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
+        $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->isSauvegarderServiceEnChambre() && $this->getUser()->isServiceEnChambre() && $configApp->getEnableSERVICE()=="1" ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+        }
+       
         $position = $request->request->get('position');
         $serviceEnChambre->setPosition($position);
         $this->entityManager->flush();
@@ -651,6 +811,14 @@ class ServiceenchambreController extends AbstractController
     {
         $serviceId = $request->request->get('id');
         $isActive = $request->request->get('active');
+        $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
+        $Acce = $this->getUser()->isSauvegarderServiceEnChambre() && $configApp->getEnableSERVICE()=="1" ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+        }
         // Récupérer l'entité ServiceEnChambre correspondante depuis la base de données
         $service = $entityManager->getRepository(ServiceEnChambre::class)->find($serviceId);
         if (!$service) {
@@ -660,10 +828,7 @@ class ServiceenchambreController extends AbstractController
         $service->setActive($isActive);
         $entityManager->flush();
         return new JsonResponse(['message' => 'État mis à jour avec succès'], Response::HTTP_OK);
-    }
-
-
-   
+    }   
 }
 
 

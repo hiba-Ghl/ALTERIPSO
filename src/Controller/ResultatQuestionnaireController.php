@@ -11,6 +11,7 @@ use App\Entity\ServiceEtablissement;
 use App\Entity\Questionnaire;
 use App\Entity\ResultatQuestionnaire;
 use App\Entity\Chambre;
+use App\Entity\ConfigApp;
 use App\Entity\User;
 
 
@@ -31,13 +32,20 @@ class ResultatQuestionnaireController extends AbstractController
   
     public function index(Request $request): Response
     {
-        // Récupère l'établissement de l'utilisateur actuellement connecté
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+ 
+        $Acce = $this->getUser()->isResultatQs() && $configApp->getEnableQUESTIONNAIRE()=="1";
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');        }
         // Récupère les services de l'établissement, triés par nom en ordre croissant
         $serviceetablissement = $this->entityManager->getRepository(ServiceEtablissement::class)->findBy(['etablissement' => $etablissement], ['nom' => 'ASC']);
         // Récupère les chambres de l'établissement
         $chambres = $this->entityManager->getRepository(Chambre::class)->findBy(['etablissement' => $etablissement]);
-    
+
         // Récupération des paramètres de filtrage de la requête HTTP
         $chambreId = $request->query->get('chambre_id');
         $serviceId = $request->query->get('service_id');
@@ -145,6 +153,8 @@ class ResultatQuestionnaireController extends AbstractController
             'selectedServiceId' => $serviceId,
             'startDate' => $startDate->format('Y-m-d\TH:i'),
             'endDate' => $endDate->format('Y-m-d\TH:i'),
+            'appConfig' => $configApp,
+            'user' => $this->getUser(),
         ]);
     }
     

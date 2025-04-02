@@ -12,16 +12,6 @@
 			margin-left: -70px;
 			margin-top: 10px;
 		}
-		#div2 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 20px;
-			width: 1300px;
-			height: 900px;
-			margin-left: -70px;
-			margin-top: 10px;
-			background-color: white;
-		}
 		.nav-item {
 			display: inline-block;
 			width: 150px; /* Largeur fixe de chaque élément de la barre de navigation */
@@ -44,9 +34,10 @@
 	</style>
 
 	<p id='p'></p>
-	<div style="margin-top: -40px;position: absolute;border-radius: 8px;text-align: left;margin-left: -68px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: -27px;">
+<div style="border-radius: 8px;text-align: left;margin-bottom: 10px;margin-left: -120px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
+    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
 		Liste Applications
-	</div>
+</div>
 
 	<div id="div2">
 
@@ -60,16 +51,18 @@
    
 
 			<div class="col-md-12">
-				<a href="{{path('app_ajouter_application')}}" class="btn btn-info btn-sm" name="add" id="add">
+				<a href="{{path('app_ajouter_application')}}" class="btn btn-info btn-sm" name="add" id="add" {% if app.user.AjoutApp == '0' %} disabled {% endif %}>
 					<i class="glyphicon glyphicon-plus"></i>
-					Ajouter Application</a>
-
-				<button id="sauv" type="submit" class="btn btn-success btn-sm ">
+					Ajouter Application
+				</a>
+				<button id="sauv" type="submit" class="btn btn-success btn-sm " {% if app.user.SauvegarderApp == '0' %} disabled {% endif %}>
 					<i class="glyphicon glyphicon-floppy-disk"></i>
 					Sauvegarder
 				</button>
-
-
+				  <a name="annuler" href="{{ path('app_application') }}" class="btn btn-danger btn-sm" style="width:150px;">
+        <i class="glyphicon glyphicon-remove"></i>
+        Annuler
+    </a>
 				<br><br><br>
 
 				<nav>
@@ -103,17 +96,14 @@
 													{% set ch = 'checked' %}
 												{% endif %}
 
-												<input name="listeactive[{{application.id}}]" class="caf3" style="width:100%" type="checkbox" {{ch}}>
-												<input type="text" name="listeposition[{{application.id}}]" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" value="{{application.position}}" style="width: 27px;margin-top: -205px;position: absolute;margin-left: 59px;height: 26px;background-color: #020202bd;color: white;border-radius: 4px;"/>
-
-												<a data-toggle="tooltip" data-placement="top" title="modifier l'application" href="{{path('app_modifier_application',{'id':application.id})}}" class="btn btn-warning btn-xs" style="margin-top: -406px;background-color: #020202bd;border-color: #020202bd;">
+												<input name="listeactive[{{application.id}}]" class="caf3" style="width:100%" type="checkbox" {{ch}} {% if app.user.SauvegarderApp == '0' %} disabled {% endif %}>
+												<input type="text" {% if app.user.SauvegarderApp == '0' %} disabled {% endif %} name="listeposition[{{application.id}}]" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" value="{{application.position}}" style="width: 27px;margin-top: -205px;position: absolute;margin-left: 59px;height: 26px;background-color: #020202bd;color: white;border-radius: 4px;"/>
+												<a data-toggle="tooltip" data-placement="top" {% if app.user.ModifierApp == '0' %} disabled {% endif %} title="modifier l'application" href="{{path('app_modifier_application',{'id':application.id})}}" class="btn btn-warning btn-xs" style="margin-top: -406px;background-color: #020202bd;border-color: #020202bd;">
 													<i class="glyphicon glyphicon-pencil"></i>
 												</a>
-
-												<a data-toggle="tooltip" data-placement="top" title="supprimer l'application" href="{{path('app_supprimer_application',{'id':application.id})}}" class="btn btn-danger btn-xs" style="margin-top: -406px;background-color: #020202bd;border-color: #020202bd;" onclick="return(confirm('voulez vous vraiment supprimer cette application ?'));">
+												<a data-toggle="tooltip" data-placement="top" {% if app.user.SupprimerApp == '0' %} disabled {% endif %}  title="supprimer l'application" href="{{path('app_supprimer_application',{'id':application.id})}}" class="btn btn-danger btn-xs" style="margin-top: -406px;background-color: #020202bd;border-color: #020202bd;" onclick="return(confirm('voulez vous vraiment supprimer cette application ?'));">
 													<i class="glyphicon glyphicon-trash"></i>
 												</a>
-
 											</div>
 										</div>
 									</div>

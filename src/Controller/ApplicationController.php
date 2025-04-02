@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Support;
 use App\Entity\Application;
+use App\Entity\ConfigApp;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 class ApplicationController extends AbstractController
@@ -24,13 +25,23 @@ class ApplicationController extends AbstractController
     #[Route('/application', name: 'app_application')]
     public function index(EntityManagerInterface $entityManager): Response
     {
-        $support = $this->getUser()->getEtablissement()->getSupports();
-        $applicationsCollection = $this->getUser()->getEtablissement()->getApplications();
+      if( !$this->getUser())
+      return $this->redirectToRoute('app_login');
+      $etablissement = $this->getUser()->getEtablissement();
+      $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+      $support = $etablissement->getSupports();
+        $Acce = $this->getUser()->getAPPLICATION()  && $configApp->getEnableAPPLICATION() == "1";
+     if (!$Acce) {
+        $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+        return $this->redirectToRoute('home');     }
+        $applicationsCollection = $etablissement->getApplications();
+        $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement'=>$etablissement]);
     
         
         // Convertir la PersistentCollection en tableau PHP
         $applicationsArray = $applicationsCollection->toArray();
     
+        
         // Trier les applications par position
         usort($applicationsArray, function($a, $b) {
             return $a->getPosition() <=> $b->getPosition();
@@ -38,7 +49,8 @@ class ApplicationController extends AbstractController
     
         return $this->render('application/index.html.twig', [
             'supports' => $support,
-            'applications' => $applicationsArray
+            'applications' => $applicationsArray,
+            'appConfig' =>$appConfig,
         ]);
     }
     
@@ -48,10 +60,18 @@ class ApplicationController extends AbstractController
     public function ajouterapplication(EntityManagerInterface $entityManager): Response
     {
      $request = Request::createFromGlobals();
-     $support =  $this->getUser()->getEtablissement()->getSupports();
+     if( !$this->getUser())
+     return $this->redirectToRoute('app_login');
      $etablissement = $this->getUser()->getEtablissement();
- 
-     
+     $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+      $Acce = $this->getUser()->getAjoutApp() && $this->getUser()->getAPPLICATION() && $configApp->getEnableAPPLICATION() == "1";
+     if (!$Acce) {
+        $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+        return $this->redirectToRoute('home');
+     }
+     $support =  $etablissement->getSupports();
+     $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement'=>$etablissement]);
+
       $valider = $request->get("valider");
 
        if (isset($valider)) {
@@ -81,19 +101,29 @@ class ApplicationController extends AbstractController
           $entityManager->persist($application);
           $entityManager->flush();
           //return $this->redirectToRoute('app_application');
-          return $this->redirectToRoute('app_application', ['ongletActif' => $protocole]);
+          return $this->redirectToRoute('app_application', ['ongletActif' => $protocole
+        ]);
        }
  
-       return $this->render('application/ajouter.html.twig', array('supports' => $support));
+       return $this->render('application/ajouter.html.twig', array('supports' => $support,'appConfig' =>$appConfig));
     }
 
     #[Route('/application/modifier/{id}', name: 'app_modifier_application')]
     public function modifierapplication(EntityManagerInterface $entityManager, int $id): Response
     {
        $request = Request::createFromGlobals();
+       if( !$this->getUser())
+       return $this->redirectToRoute('app_login');
        $etablissement = $this->getUser()->getEtablissement();
-       $support =  $this->getUser()->getEtablissement()->getSupports();
-       $application = $entityManager->getRepository(Application::class)->findById($id)[0];            
+       $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+       $Acce = $this->getUser()->getModifierApp() && $this->getUser()->getAPPLICATION() && $configApp->getEnableAPPLICATION() == "1";
+       if (!$Acce) {
+        $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+        return $this->redirectToRoute('home');
+       }
+       $support =   $etablissement->getSupports();
+       $application = $entityManager->getRepository(Application::class)->findById($id)[0]; 
+       $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement'=>$etablissement]);           
        $valider = $request->get("valider");
        if (isset($valider)) {
         
@@ -129,14 +159,21 @@ class ApplicationController extends AbstractController
  
      
  
-       return $this->render('application/modifier.html.twig', array('application' => $application,'supports' => $support));
+       return $this->render('application/modifier.html.twig', array('application' => $application,'supports' => $support,'appConfig' =>$appConfig));
     }
  
     #[Route('/application/supprimer/{id}', name: 'app_supprimer_application')]
     public function supprimerapplication(EntityManagerInterface $entityManager, int $id): Response
     {
+      if( !$this->getUser())
+      return $this->redirectToRoute('app_login');
+      $etablissement = $this->getUser()->getEtablissement();
+      $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
         $application = $entityManager->getRepository(Application::class)->find($id);
- 
+        $Acce = $this->getUser()->getSupprimerApp() && $this->getUser()->getAPPLICATION() && $configApp->getEnableAPPLICATION() == "1";
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');        }
         if (!$application) {
             throw $this->createNotFoundException(
                 'No application found for id '.$id
@@ -153,8 +190,15 @@ class ApplicationController extends AbstractController
     public function modifierhomeapplication(Request $request,EntityManagerInterface $entityManager)
     {
     
-        $applications =  $this->getUser()->getEtablissement()->getApplications();
-  
+      if( !$this->getUser())
+      return $this->redirectToRoute('app_login');
+      $etablissement = $this->getUser()->getEtablissement();
+      $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+      $Acce = $this->getUser()->getModifierApp() && $this->getUser()->getAPPLICATION() && $configApp->getEnableAPPLICATION() == "1";
+      if (!$Acce) {
+          $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+          return $this->redirectToRoute('home');        }
+      $applications =  $this->getUser()->getEtablissement()->getApplications();
       foreach ($applications as $application) {
         $application->setActive('0');
         $entityManager->persist($application);

@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\File\File;
 class Categories
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    // #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
@@ -78,7 +78,7 @@ class Categories
     /**
      * @var Collection<int, Services>
      */
-    #[ORM\OneToMany(mappedBy: 'service', targetEntity: Services::class)]
+    #[ORM\OneToMany(mappedBy: 'categories', targetEntity: Services::class)]
     private Collection $services;
 
     public function __construct()
@@ -329,33 +329,30 @@ class Categories
         return $this;
     }
 
-    /**
+      /**
      * @return Collection<int, Services>
      */
     public function getServices(): Collection
     {
         return $this->services;
     }
-
-    public function addService(Services $service): static
+    public function addServices(Services $Services): static
     {
-        if (!$this->services->contains($service)) {
-            $this->services->add($service);
-            $service->setCategorie($this);
+        if (!$this->services->contains($Services)) {
+            $this->services->add($Services);
+            $Services->setCategories($this);
         }
 
         return $this;
     }
 
-    public function removeService(Services $service): static
+    public function removeServices(Services $Services): static
     {
-        if ($this->services->removeElement($service)) {
-            // set the owning side to null (unless already changed)
-            if ($service->getCategorie() === $this) {
-                $service->setCategorie(null);
+        if ($this->services->removeElement($Services)) {
+            if ($Services->getCategories() === $this) {
+                $Services->setCategories(null);
             }
         }
-
         return $this;
     }
 

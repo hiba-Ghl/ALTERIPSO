@@ -13,7 +13,7 @@ class Radio
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'radios')]
+    #[ORM\ManyToOne(targetEntity: Etablissement::class,inversedBy: 'radios',cascade: ['persist'])]
     private ?Etablissement $etablissement = null;
 
     #[ORM\ManyToOne(inversedBy: 'radios')]

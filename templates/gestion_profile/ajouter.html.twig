@@ -1,0 +1,1128 @@
+{% extends 'home/index.html.twig' %}
+{# Cette section concerne la conception de modèles pour l'ajout d'un service.#}
+{% block body %}
+
+{# offline #}
+{% if appConfig.StatusServeur is same as('Offline') %}
+
+<script src="assets/js/all.min.js"></script>
+{% else %}
+{# online #}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+
+{% endif %}
+
+{% for type, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert alert-{{ type }}">
+         	{{ message }}
+        </div>
+    {% endfor %}
+{% endfor %}
+<div style="border-radius: 8px;margin-left:-70px;  margin-top:10px;text-align: left; margin-bottom: 10px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding-left: 10px; display: inline-block;">
+    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+    Ajouter un utilisateur
+</div>
+<form action="{{ path('ajouterU') }}" onsubmit="return validateUtilisateur()">
+<div style="background-color:white;padding-bottom:100px;width: 1400px;">
+<h3 style=" color:#3087ce;margin-left:-70px;">Informations personnelles</h3>
+<div style=" display:flex;flex-direction:column;gap:20px;border-radius: 25px;border: 2px solid #3087ce;padding: 20px; width: 1400px;background-color: white;margin-bottom: 20px;margin-left:-70px;">
+			<div style="width:100%;display:flex;align-items:center">
+            <label for="inputNom" class="col-lg-4 control-label required">Identifiant:</label>
+			<div id="requiredNom">
+			<input type="text" id="contact_Identifiant" name="contact[Identifiant]" value="{{userName ?? ''}}" placeholder="" class="form-control test" style="border-radius:5px;outline:none;border:1px solid gray;">
+			</div>
+			</div>
+            <div style="width:100%;display:flex;align-items:center">
+			<label for="inputEmail" class="col-lg-4 control-label required">Email:</label>
+			<div id="requiredEmail">
+			<input type="text" <input type="text"  id="contact_email" name="contact[email]" placeholder="Exemple@gmail.com" class="form-control test" style="border-radius: 5px; outline: none; border: 1px solid gray;">
+			</div>
+			</div>
+            <div style="width:100%;display:flex;align-items:center">
+            <label for="inputEmail" class="col-lg-4 control-label required">Fonction:</label>
+			<select id="contact_fonction" name="contact[fonction]" class="form-control test" style="border-radius:5px;outline:none;border:1px solid gray;"> 
+                    <option value="Administrateur">Administrateur</option>  
+                    <option value="It manager">It manager</option>     
+                    <option value="Technicien">Technicien</option>      
+                    <option value="Community manager">Community Manager</option> 
+                    <option value="House keeping">House keeping</option></select>
+            </div>
+            <div id="contact_plainPassword" style="display:flex;flex-direction:column;gap:20px;">
+                <div style="width:100%;display:flex;align-items:center">
+                    <label for="contact_plainPassword_first" class="required col-lg-4 ">Mot de passe:</label>
+                    <div id="requiredFirstPassword">
+					<input type="password" id="contact_plainPassword_first" name="contact[plainPassword][first]"  class="form-control test" style="border-radius:5px;outline:none;border:1px solid gray;" <input type="text" autocomplete="new-password">
+				</div>
+				</div>
+                <div style="width:100%;display:flex;align-items:center">
+                    <label for="contact_plainPassword_second" class="required col-lg-4 ">Confirmer mot de passe:</label>
+                    <div id="requiredSecondPassword">
+					<input type="password" id="contact_plainPassword_second" name="contact[plainPassword][second]"  class="form-control test" style="border-radius:5px;outline:none;border:1px solid gray;" <input type="text" autocomplete="off">
+					</div>
+				</div>
+            </div>
+</div>
+<h3 style=" color:#3087ce;margin-left:-70px;">
+	Liste des opérations autorisées
+</h3>
+<div style=" display:flex;flex-direction:column;gap:20px;border-radius: 25px;border: 2px solid #3087ce;padding: 20px; width: 1400px;margin-left:-70px;background-color: white;margin-bottom: 20px;">
+		 <div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+			<label>Ajouter une catégorie</label>
+			<input type="checkbox" id="contact_Ajoutecategorie" name="contact[Ajoutecategorie]" value=1>
+        </div>
+		<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+            <label>Mettre à jour les TV</label>
+			<input type="checkbox" id="contact_maj" name="contact[maj]" value=1>
+        </div>
+        <div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+			<label>Changer Catégorie page d'acceuil</label>
+			<input type="checkbox" id="contact_changecategorie" name="contact[changecategorie]" value=1>
+        </div>
+		<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+			<label>Changer font d'ecran de page d'acceuil</label>
+			<input type="checkbox" id="contact_fondEcran" name="contact[fondEcran]" value=1>
+        </div>
+		<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+			<label>Enregistrer les échanges des catégories de pages d'accueil</label>
+			<input type="checkbox" id="contact_SauvegarderAcceuil" name="contact[SauvegarderAcceuil]" value=1>
+        </div>
+		<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+			<label>Contrôler l’affichage du logo sur TV</label>
+			<input type="checkbox" id="contact_SauvegarderLogo" name="contact[SauvegarderLogo]" value=1>
+        </div>
+		<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+			<label>Contrôler l’affichage de la météo sur TV</label>
+			<input type="checkbox" id="contact_SauvegarderMeteo" name="contact[SauvegarderMeteo]" value=1>
+        </div>
+</div>
+<h3 style=" color:#3087ce;margin-left:-70px;">
+			Liste des onglets autorisés :
+</h3>
+<div style=" display:flex;flex-direction:column;gap:20px;border-radius: 25px;border: 2px solid #3087ce;padding: 20px; width: 1400px;margin-left:-70px;background-color: white;margin-bottom: 20px;">
+<table>
+			<tbody>
+			<tr>
+				<td>
+					<div id="rcorners1" class="CategorieLivreAudio">
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Categorie livre audio</label>
+							<input type="checkbox" id="contact_CategorieLivreAudio" name="contact[CategorieLivreAudio]" value=1>
+						</div>
+						<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="Ajouter CategorieLivreAudio" class="btn btn-info  btn-sm" title="Ajouter CategorieLivreAudio">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ajouterCategorieLivreAudio" name="contact[ajouterCategorieLivreAudio]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="Modifier CategorieLivreAudio" class="btn btn-warning  btn-sm" title="Modifier CategorieLivreAudio">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_modifierCategorieLivreAudio" name="contact[modifierCategorieLivreAudio]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="Supprimer CategorieLivreAudio" class="btn btn-danger  btn-sm" title="Supprimer CategorieLivreAudio">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimerCategorieLivreAudio" name="contact[supprimerCategorieLivreAudio]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-success  btn-sm" title="Sauvegarder CategorieLivreAudio">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderCategorieLivreAudio" name="contact[sauvegarderCategorieLivreAudio]" value=1>
+						</div>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Livre audio
+							</label>
+							<input type="checkbox" id="contact_livreaudio" name="contact[livreaudio]" value=1>
+						</div>
+				<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-info  btn-sm" title="Ajouter livreaudio">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+
+						<input type="checkbox" id="contact_ajouterlivreaudio" name="contact[ajouterlivreaudio]" value=1>
+						</div>
+						{# <div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-warning  btn-sm" title="Modifier livreaudio">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_modifierlivreaudio" name="contact[modifierlivreaudio]" value=1>
+						</div> #}
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-danger  btn-sm" title="Supprimer livreaudio">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimerlivreaudio" name="contact[supprimerlivreaudio]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-success  btn-sm" title="Sauvegarder livreaudio">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderlivreaudio" name="contact[sauvegarderlivreaudio]" value=1>
+					</div>
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-primary  btn-sm" title="Lancer/arreter livreAudio">
+								<i class="glyphicon glyphicon-play-circle"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_lancerLivreAudio" name="contact[lancerLivreAudio]" value=1>
+						</div>
+					</div>
+					</div>
+				</td>
+				<td>
+					<div id="rcorners1" class="CategorieRadio">
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Categorie Radio</label>
+							<input type="checkbox" id="contact_CategorieRadio" name="contact[CategorieRadio]" value=1>
+						</div>
+						<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="Ajouter CategorieRadio" class="btn btn-info  btn-sm" title="Ajouter CategorieRadio">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ajouterCategorieRadio" name="contact[ajouterCategorieRadio]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-warning  btn-sm" title="Modifier CategorieRadio">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_modifierCategorieRadio" name="contact[modifierCategorieRadio]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-danger  btn-sm" title="Supprimer CategorieRadio">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimerCategorieRadio" name="contact[supprimerCategorieRadio]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-success  btn-sm" title="Sauvegarder CategorieRadio">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderCategorieRadio" name="contact[sauvegarderCategorieRadio]" value=1>
+						</div>
+						</div>
+						<div>
+					<label>Radio</label>
+					<input type="checkbox" id="contact_radio" name="contact[radio]" value=1>
+					</div>
+					<div style="display:flex;justify-content:space-between">
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-info  btn-sm" title="Ajouter radio">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ajouterradio" name="contact[ajouterradio]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-danger  btn-sm" title="Supprimer radio">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimerradio" name="contact[supprimerradio]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-success  btn-sm" title="Sauvegarder radio">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderradio" name="contact[sauvegarderradio]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-primary  btn-sm" title="Lancer/arreter service">
+								<i class="glyphicon glyphicon-play-circle"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_lancerRadio" name="contact[lancerRadio]" value=1 >
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-success btn-sm" title="Exporter les radios">
+								<i class="fa-solid fa-clone"></i> 	
+							</a>
+						</label>
+						<input type="checkbox" id="contact_exporterRadio" name="contact[exporterRadio]" value=1 >
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-info  btn-sm" title="Importer les radios">
+ 							<i	class="glyphicon glyphicon-import "></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ImporterRadio" name="contact[ImporterRadio]" value=1 >
+						</div>
+					</div>
+					</div>
+				</td>
+				<td>
+					<div id="rcorners1" class="CategorieVod">
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Categorie Vod</label>
+							<input type="checkbox" id="contact_CategorieVod" name="contact[CategorieVod]" value=1>
+						</div>
+						<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="Ajouter CategorieVod" class="btn btn-info  btn-sm" title="Ajouter CategorieVod">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_CategorieVod" name="contact[ajouterCategorieVod]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="Modifier CategorieVod" class="btn btn-warning  btn-sm" title="Modifier CategorieVod">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_modifierCategorieVod" name="contact[modifierCategorieVod]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="Supprimer CategorieVod" class="btn btn-danger  btn-sm" title="Supprimer CategorieVod">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimerCategorieVod" name="contact[supprimerCategorieVod]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="Sauvegarder CategorieVod" class="btn btn-success  btn-sm" title="Sauvegarder CategorieVod">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderCategorieVod" name="contact[sauvegarderCategorieVod]" value=1>
+						</div>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>
+								Vod</label>
+							<input type="checkbox" id="contact_vod" name="contact[vod]" value=1>
+							
+						</div>
+						<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-info  btn-sm" title="Ajouter vod">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ajoutervod" name="contact[ajoutervod]" value=1>
+						</div>
+
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-warning  btn-sm" title="Modifier vod">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_modifiervod" name="contact[modifiervod]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-danger  btn-sm" title="Supprimer vod">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimervod" name="contact[supprimervod]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-success  btn-sm" title="Sauvegarder vod">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegardervod" name="contact[sauvegardervod]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-primary  btn-sm" title="Lancer la video">
+								<i class="glyphicon glyphicon-play-circle"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_lancervod" name="contact[lancervod]" value=1>
+						</div>
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div id="rcorners1" class="service1">
+						<div style="display:flex;gap:3px;align-items: start">
+							<label for="inputEmail" class="">Service</label>
+							<input type="checkbox" id="contact_service" name="contact[service]" value=1>
+							
+						</div>
+						<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-info  btn-sm" title="Ajouter service">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ajouterservice" name="contact[ajouterservice]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-warning  btn-sm" title="Modifier service">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_modifierservice" name="contact[modifierservice]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-danger  btn-sm" title="Supprimer service">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimerservice" name="contact[supprimerservice]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-success  btn-sm" title="Sauvegarder service">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderservice" name="contact[sauvegarderservice]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-primary  btn-sm" title="Lancer/arreter service">
+								<i class="glyphicon glyphicon-play-circle"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_lancerservice" name="contact[lancerservice]" value=1>
+						</div>
+					</div>
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Service en chambre</label>
+							<input type="checkbox" id="contact_ServiceEnChambre" name="contact[ServiceEnChambre]" value=1>
+						</div>
+						<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="Ajouter ServiceEnChambre" class="btn btn-info  btn-sm" title="Ajouter ServiceEnChambre">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ServiceEnChambre" name="contact[ajouterServiceEnChambre]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="Modifier ServiceEnChambre" class="btn btn-warning  btn-sm" title="Modifier ServiceEnChambre">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_modifierServiceEnChambre" name="contact[modifierServiceEnChambre]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="Supprimer ServiceEnChambre" class="btn btn-danger  btn-sm" title="Supprimer ServiceEnChambre">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimerServiceEnChambre" name="contact[supprimerServiceEnChambre]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="Sauvegarder ServiceEnChambre" class="btn btn-success  btn-sm" title="Sauvegarder ServiceEnChambre">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderServiceEnChambre" name="contact[sauvegarderServiceEnChambre]" value=1>
+						</div>
+						
+						</div>
+					</div>
+				</td>
+								<td>
+					<div id="rcorners1" class="support1">
+					<div style="display:flex;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Support Connecté</label>
+							<input type="checkbox" id="contact_supp" name="contact[supp]" value=1>
+						</div>
+						
+					</div>
+					<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-info  btn-sm" title="Ajouter support">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+
+						<input type="checkbox" id="contact_ajoutersupport" name="contact[ajoutersupport]" value=1>
+						
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-warning  btn-sm" title="Modifier support">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+
+						<input type="checkbox" id="contact_modifiersupport" name="contact[modifiersupport]" value=1>
+						
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-danger  btn-sm" title="Supprimer support">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+
+						<input type="checkbox" id="contact_supprimersupport" name="contact[supprimersupport]" value=1>
+						
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-info  btn-sm" title="Redemarrer support">
+								<i class="glyphicon glyphicon-refresh"></i>
+							</a>
+						</label>
+
+						<input type="checkbox" id="contact_redemarrersupport" name="contact[redemarrersupport]" value=1>
+						
+						</div>
+						
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="Check-in CHeck-out" class="btn btn-success  btn-sm" title="Check-in CHeck-out">
+								<i class="glyphicon glyphicon-log-in"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_Check" name="contact[sauvegarderCheck]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="Ajouter Service Etablissement" class="btn btn-primary  btn-sm" title="Ajouter Service Etablissement">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_Ajoute Service Etablissement" name="contact[AjouteServiceEtablissement]" value=1>
+						</div>
+					</div>
+					<div style="display:flex;gap:3px;align-items: start">
+							<label>Message personnel</label>
+							<input type="checkbox" id="contact_msgperso" name="contact[msgperso]" value=1>	
+					</div>
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-primary  btn-sm" title="Envoyer message">
+								<i class="glyphicon glyphicon-comment"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_envoyermsg" name="contact[envoyermsg]" value=1>
+						</div>
+				</div>
+			</td>
+				<td>
+				<div id="rcorners1" class="charte">
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>Charte Patient</label>
+						<input type="checkbox" id="contact_charte" name="contact[charte]" value=1>
+					</div>
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" title="Sauvegarder Charte Patient">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderChartPatient" name="contact[sauvegarderChartPatient]" value=1>
+					</div>
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>Service Payants</label>
+						<input type="checkbox" id="contact_servicePayant" name="contact[servicepayant]" value=1>
+					</div>
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" title="Sauvegarder Service Payants">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderServicePayant" name="contact[sauvegarderServicePayant]" value=1>
+					</div>
+				</div>
+				</td>
+				
+				
+			</tr>
+			<tr>
+			
+				<td>
+					<div id="rcorners" class="jeux">
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Jeux</label>
+							<input type="checkbox" id="contact_jeux" name="contact[jeux]" value=1>
+						</div>
+					<div style="display:flex;align-items:center;justify-content:space-between">
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" title="Ajouter jeux">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ajouterjeux" name="contact[ajouterjeux]" value=1>
+					</div>
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" title="Modifier jeux">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+
+						<input type="checkbox" id="contact_modifierjeux" name="contact[modifierjeux]" value=1>
+					</div>
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" title="Supprimer jeux">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimerjeux" name="contact[supprimerjeux]" value=1>
+					</div>
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" title="Sauvegarder jeux">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderjeux" name="contact[sauvegarderjeux]" value=1>
+					</div>
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-primary  btn-sm" title="Lancer/arreter service">
+								<i class="glyphicon glyphicon-play-circle"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_lancerJeux" name="contact[lancerJeux]" value=1>
+						</div>
+					</div>
+					</div>
+				</td>
+				<td>
+					<div id="rcorners" class="application">
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Application</label>
+							<input type="checkbox" id="contact_application" name="contact[application]" value=1>
+							
+						</div>
+					<div style="display:flex;align-items:center;justify-content:space-between">
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" title="Ajouter application">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+
+						<input type="checkbox" id="contact_ajouterapplication" name="contact[ajouterapplication]" value=1>
+					</div>
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" title="Modifier application">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+
+						<input type="checkbox" id="contact_modifierapplication" name="contact[modifierapplication]" value=1>
+					</div>
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" title="Supprimer application">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimerapplication" name="contact[supprimerapplication]" value=1>
+					</div>
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" title="Sauvegarder application">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+
+						<input type="checkbox" id="contact_sauvegarderapplication" name="contact[sauvegarderapplication]" value=1>
+					</div>
+					</div>
+					</div>
+				</td>
+				<td>
+					<div id="rcorners" class="video">
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Vidéo</label>
+							<input type="checkbox" id="contact_video" name="contact[video]" value=1>
+						</div>
+						<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Ajouter video" class="btn btn-info  btn-sm" title="Ajouter video">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ajoutervideo" name="contact[ajoutervideo]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" title="Modifier video">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_modifiervideo" name="contact[modifiervideo]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" title="Supprimer video">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimervideo" name="contact[supprimervideo]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" title="Sauvegarder video">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegardervideo" name="contact[sauvegardervideo]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-primary  btn-sm" title="Lancer/arreter service">
+								<i class="glyphicon glyphicon-play-circle"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_lancerVideo" name="contact[lancerVideo]" value=1>
+						</div>
+						</div>
+					</div>
+				</td>
+			</tr>
+		<tr>
+		<td>
+					<div id="rcorners" class="Musique">
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Musique</label>
+							<input type="checkbox" id="contact_musique" name="contact[musique]" value=1>
+						</div>
+						<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Ajouter musique" class="btn btn-info  btn-sm" title="Ajouter musique">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ajoutermusique" name="contact[ajoutermusique]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Modifier musique" class="btn btn-warning  btn-sm" title="Modifier musique">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_modifiermusique" name="contact[modifiermusique]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Supprimer musique" class="btn btn-danger  btn-sm" title="Supprimer musique">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimermusique" name="contact[supprimermusique]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Sauvegarder musique" class="btn btn-success  btn-sm" title="Sauvegarder musique">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegardermusique" name="contact[sauvegardermusique]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Lancer/arreter musique" class="btn btn-primary  btn-sm" title="Lancer/arreter musique">
+								<i class="glyphicon glyphicon-play-circle"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_lancerMusique" name="contact[lancerMusique]" value=1>
+						</div>
+						</div>
+					</div>
+				</td>
+				<td>
+					<div id="rcorners" class="annance">
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Annonce</label>
+							<input type="checkbox" id="contact_annonce" name="contact[annance]" value=1>
+						</div>
+						<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" title="Ajouter annonce">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ajouterannonce" name="contact[ajouterannonce]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" title="Modifier annonce">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_modifierannonce" name="contact[modifierannonce]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" title="Supprimer annonce">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimerannance" name="contact[supprimerannonce]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" title="Sauvegarder annonce">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderannonce" name="contact[sauvegarderannonce]" value=1>
+						</div>
+						</div>
+					</div>
+				</td>
+			<td>
+				<div id="rcorners" class="questionnaire">
+					<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Questionnaire</label>
+							<input type="checkbox" id="contact_qst" name="contact[qst]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Resultat de questionnaire</label>
+							<input type="checkbox" id="contact_Resultatqst" name="contact[Resultqst]" value=1>
+						</div>
+					</div>
+					<div style="display:flex;align-items:center;justify-content:space-between">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" title="Ajouter questionnaire">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+
+						<input type="checkbox" id="contact_ajouterquestionnaire" name="contact[ajouterquestionnaire]" value=1>
+						
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" title="Modifier questionnaire">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+
+						<input type="checkbox" id="contact_modifierquestionnaire" name="contact[modifierquestionnaire]" value=1>
+						
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" title="Supprimer questionnaire">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+
+						<input type="checkbox" id="contact_supprimerquestionnaire" name="contact[supprimerquestionnaire]" value=1>
+						
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" title="Sauvegarder questionnaire">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderquestionnaire" name="contact[sauvegarderquestionnaire]" value=1>
+					</div>
+					</div>
+					</div>
+				</td>
+
+			</tr>
+			
+			<tr>
+			
+			<td>
+					<div id="rcorners" class="television">
+					
+					<div style="display:flex;justify-content:space-between;">
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Télévision</label>
+							<input type="checkbox" id="contact_tv" name="contact[tv]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+							<label>Statistiques Télévision</label>
+							<input type="checkbox" id="contact_stattv" name="contact[stattv]" value=1>
+						</div>
+						</div>
+						<div style="display:flex;align-items:center;justify-content:space-between;gap:5px;">
+						<div style="display:flex;gap:3px;align-items: start">
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" data-original-title="Ajouter télévision" class="btn btn-info  btn-sm" title="Ajouter télévision">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ajouter" name="contact[ajouter]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" data-original-title="Supprimer télévision" class="btn btn-danger  btn-sm" title="Supprimer télévision">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_supprimer" name="contact[supprimer]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" data-original-title="Sauvegarder télévision" class="btn btn-success  btn-sm" title="Sauvegarder télévision">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarder" name="contact[sauvegarder]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" data-original-title="Gratuité des chaines" class="btn btn-primary  btn-sm" title="Gratuité des chaines ">
+								<i class="glyphicon glyphicon-refresh"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_chainegratuite" name="contact[chainegratuite]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="Lancer/arreter télévision" class="btn btn-primary  btn-sm" title="Lancer/arreter television">
+								<i class="glyphicon glyphicon-play-circle"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_lancerTv" name="contact[lancerTv]" value=1>
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-success btn-sm" title="Exporter les télévisions">
+								<i class="fa-solid fa-clone"></i> 	
+							</a>
+						</label>
+						<input type="checkbox" id="contact_exporterTelevision" name="contact[exporterTelevision]" value=1 >
+						</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-info  btn-sm" title="Importer les télévisions">
+ 							<i	class="glyphicon glyphicon-import "></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_ImporterTelevision" name="contact[ImporterTelevision]" value=1 >
+						</div>
+						</div>
+					</div>
+				</td>
+				<td>
+
+				<div id="rcorners" class="Rremote">
+				<div style="display:flex;justify-content:space-between;">
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>R-Mobile
+						</label>
+						<input type="checkbox" id="contact_Rmobile" name="contact[Rmobile]" value=1>
+					</div>
+					<div style="display:flex;gap:3px;align-items: start">
+						<label>R-Remote
+						</label>
+						<input type="checkbox" id="contact_Rremote" name="contact[Rremote]" value=1>
+					</div>
+				</div>
+						<div style="display:flex;gap:3px;align-items: start">
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="Sauvegarder Rmobile" class="btn btn-success  btn-sm" title="Sauvegarder RMobile">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						<input type="checkbox" id="contact_sauvegarderRmobile" name="contact[sauvegarderRmobile]" value=1 >
+						</div>	
+					</div>
+				</td>
+			</tr>
+
+		</tbody></table>
+</div>
+<div style="float:right;margin-right:70px;">
+    <a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/gestion/profile">
+        <i class="glyphicon glyphicon-remove"></i> Annuler
+    </a>
+     <button type="submit" class="btn btn-primary btn-md" style="width:130px;">
+        <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
+    </button>
+</div>
+</form>
+</div>
+<script>
+ 	const username = document.getElementById('contact_Identifiant');
+    const email = document.getElementById('contact_email');
+    const password =  document.getElementById('contact_plainPassword_first');
+    const confirmPassword = document.getElementById('contact_plainPassword_second'); 
+	username.addEventListener('change',async (e) => {
+			const response = await fetch("/searchExisteUtilisateur", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ username : e.target.value, email })
+        });
+
+        if (!response.ok) {
+            console.error("Network response was not ok");
+            return false;
+        }
+        var text = e.target.value;
+    	var firstLetter = text.slice(0,1);
+    	text =firstLetter.toUpperCase() + text.substring(1);
+    	username.value = text;
+        const data = await response.json();
+		if(data.exists)
+		{
+		username.style.border ='2px solid red';
+        const ErreurNom = document.getElementById('ErreurNom');
+        if(!ErreurNom)
+        {
+        const p = document.createElement('p');
+        p.setAttribute('id','ErreurNom');
+        p.textContent = 'Le nom d\'utilisateur existe déjà.';
+        p.style.color ='red';
+        document.getElementById('requiredNom').appendChild(p);
+        }
+		}
+	})
+	username.addEventListener('click',(e) => {
+		const ErreurNom = document.getElementById('ErreurNom');
+		const existUseName = document.getElementById('existUseName');
+		if(existUseName)
+		{
+			existUseName.remove();
+		}
+        if(ErreurNom)
+		{
+		    username.style.border ='2px solid black';
+			ErreurNom.remove();
+		}
+	})
+	email.addEventListener('click',(e) =>{
+		const ErreurEmail = document.getElementById('ErreurEmail');
+		const existMail = document.getElementById('existMail');
+		if(existMail)
+		{
+			existMail.remove();
+		}
+        if(ErreurEmail)
+        {
+			email.style.border ='2px solid black';
+			ErreurEmail.remove();
+		}
+		 const ErreurEmail1 = document.getElementById('ErreurEmailValid');
+        if(ErreurEmail1)
+        {
+			email.style.border ='2px solid black';
+			ErreurEmail1.remove();
+		}
+	})
+	email.addEventListener('change',async (e) => {
+			const response = await fetch("/searchExisteUtilisateur", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ username : null, email:e.target.value})
+        });
+        if (!response.ok) {
+            console.error("Network response was not ok");
+            return false;
+        }
+        
+        const data = await response.json();
+		var text = e.target.value;
+    	var firstLetter = text.slice(0,1);
+    	text =firstLetter.toUpperCase() + text.substring(1);
+    	email.value = text;
+		if(data.exists)
+		{
+
+		email.style.border ='2px solid red';
+        const ErreurEmail = document.getElementById('ErreurEmail');
+        if(!ErreurEmail)
+        {
+        const p = document.createElement('p');
+        p.setAttribute('id','ErreurEmail');
+        p.textContent = 'L \'email d\'utilisateur existe déjà.';
+        p.style.color ='red';
+        document.getElementById('requiredEmail').appendChild(p);
+        }
+		}
+	})
+	password.addEventListener('click',(e)=>{
+	const ErreurPassword = document.getElementById('ErreurPassword');
+        if(ErreurPassword)
+        {
+			password.style.border ='2px solid black';
+			 ErreurPassword.remove();
+		}
+	})
+	confirmPassword.addEventListener('click',(e)=>{
+	const ErreurConfirmePassword = document.getElementById('ErreurConfirmePassword');
+        if(ErreurConfirmePassword)
+        {
+			confirmPassword.style.border ='2px solid black';
+			ErreurConfirmePassword.remove();
+		}
+		 const ErreurConfirmePassword1 = document.getElementById('ErreuregalPassword');
+        if(ErreurConfirmePassword1)
+        {
+			confirmPassword.style.border ='2px solid black';
+			ErreurConfirmePassword1.remove();
+		}
+})
+
+</script>
+{% endblock %}

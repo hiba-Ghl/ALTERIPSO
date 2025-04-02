@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Categories;
 use App\Entity\Chambre;
+use App\Entity\ConfigApp;
 use App\Entity\Etablissement;
 use App\Entity\LancerService;
 use Exception;
@@ -15,6 +16,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Services;
 use App\Push\PushRabbit;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -36,10 +38,24 @@ class ServicesController extends AbstractController
     ///////////////////////////  route pour afficher tous les services ////////////////////////////////////////////////////
 
     #[Route('/services', name: 'app_services')]
-    public function index(): Response
+    public function index(Security $security): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED'); 
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        
+        // dd($security->getUser());
+        // if (!$security->getUser()) {
+        //     $this->addFlash('warning', 'Votre session a expiré. Veuillez vous reconnecter.');
+        //     return $this->redirectToRoute('app_login');
+        // }     
+        if( !$this->getUser())
+          return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+           $Acce = $this->getUser()->getSERVICE() && $configApp->getEnableSERVICE() === '1';
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+        }
         $categorie = $this->entityManager->getRepository(Categories::class)
         ->findOneBy([
             'etablissement' => $etablissement,
@@ -48,12 +64,12 @@ class ServicesController extends AbstractController
         $id_slected = [];
         $id_slected = ['id'=>$categorie->getId()];
         $id_slectedJson = json_encode($id_slected);
-        $services  = $this->entityManager->getRepository(Services::class)->findBy(['etablissement' => $etablissement,'service' => $categorie->getId()],['position' => 'ASC']);
+        $services  = $this->entityManager->getRepository(Services::class)->findBy(['etablissement' => $etablissement,'categories' => $categorie->getId()],['position' => 'ASC']);
         $serviceArray = [];
         foreach ($services as $service1) {
             $serviceArray[] = $service1->getPosition();
         }
-        $chembre = $this->entityManager->getRepository(Chambre::class)->findBy(['etablissement' =>$etablissement,'service'=> 1]);
+        $chembre = $this->entityManager->getRepository(Chambre::class)->findBy(['etablissement' =>$etablissement]);
         $chembreArray = [];
         foreach ($chembre as $chambre) {
             $chembreArray[] = ['id'=>$chambre->getId(),'nom' => $chambre->getNom(),
@@ -62,7 +78,6 @@ class ServicesController extends AbstractController
         ];
         }
         $chembreJson = json_encode($chembreArray);
-        // dump($chembreJson).die();
         $serviceJson = json_encode($serviceArray);
         $categories = $this->entityManager->getRepository(Categories::class)
         ->findBy([
@@ -73,13 +88,16 @@ class ServicesController extends AbstractController
         foreach ($categories as $categorie) {
             $categorieArray[] = ['nom'=>$categorie->getNom(),'id'=>$categorie->getId(),'allService'=>$categorie->getServices()];
             }
-            $categorieJson = json_encode($categorieArray);
+        $categorieJson = json_encode($categorieArray);
         return $this->render('services/index.html.twig', ['services' => $services,
         'service1' =>$serviceJson,
         'categorie' =>$categorieJson,
         'id' => $categorie->getId(),
         'id_slected' => $id_slectedJson,
-        'chembre' => $chembreJson 
+        'chembre' => $chembreJson,
+        'appConfig' => $configApp,
+        'user' => $this->getUser(),
+        
     ]);
     }
 
@@ -89,10 +107,17 @@ class ServicesController extends AbstractController
 #[Route('/services/ajouter', name: 'app_ajouter_services')]
 public function ajouterService(Request $request): Response
 {
+    if( !$this->getUser())
+    return $this->redirectToRoute('app_login');
+    $etablissement = $this->getUser()->getEtablissement();
+    $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+    $Acce = $this->getUser()->getAjouteService() && $this->getUser()->getSERVICE() && $configApp->getEnableSERVICE() === '1';
+    if (!$Acce) {
+        $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+        return $this->redirectToRoute('home');    }   
     $this->denyAccessUnlessGranted('IS_AUTHENTICATED'); 
     $service = new Services();
-    $directory = $this->getParameter('kernel.project_dir') . '/public/services';
-    $etablissement = $this->getUser()->getEtablissement();
+    $directory = $this->getParameter('kernel.project_dir') . '/public/images/services';
 
     $service->setEtablissement($etablissement);
     if($request)
@@ -124,7 +149,7 @@ public function ajouterService(Request $request): Response
             }
            
                     $file1->move($directory, $fileName);
-                    $service->setLogo('services/' . $fileName);
+                    $service->setLogo('images/services/' . $fileName);
 
             } 
         if ($file2 || $url || $file3) {
@@ -137,7 +162,7 @@ public function ajouterService(Request $request): Response
                 } else {
                     $fileName = md5(uniqid()) . '.' . $file2->guessExtension();
                     $file2->move($directory, $fileName);
-                    $service->setSrc('services/' . $fileName);
+                    $service->setSrc('images/services/' . $fileName);
                 }
             }
         }
@@ -156,7 +181,7 @@ public function ajouterService(Request $request): Response
 
         $categorie = $this->entityManager->getRepository(Categories::class)->find($serviceServiceId);
         if ($categorie) {
-            $service->setCategorie($categorie);
+            $service->setCategories($categorie);
         }
 
         $this->entityManager->persist($service);
@@ -199,7 +224,7 @@ private function handleDiapoFiles($files, $tempDisplays, $orderDisplays, $direct
         $counter++;
     }
 
-    $service->setSrc('services/diapo/' . $aliatoire);
+    $service->setSrc('images/services/diapo/' . $aliatoire);
 }
 
 ///////////////////////////  route pour afficher le formulaire d'ajout de service ////////////////////////////////////////////////////
@@ -208,7 +233,14 @@ private function handleDiapoFiles($files, $tempDisplays, $orderDisplays, $direct
     public function Create_service(int $id_categorie): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED'); 
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->getAjouteService() && $this->getUser()->getSERVICE() && $configApp->getEnableSERVICE() === '1' ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');        }        
         $categories = $this->entityManager->getRepository(Categories::class)
         ->findBy([
             'etablissement' => $etablissement,
@@ -218,7 +250,14 @@ private function handleDiapoFiles($files, $tempDisplays, $orderDisplays, $direct
         foreach ($categories as $categorie) {
             $categorieArray[] = ['nom'=>$categorie->getNom(),'id'=>$categorie->getId()];
             }
-            $categorieJson = json_encode($categorieArray);
+        $categorieJson = json_encode($categorieArray);
+        if ($configApp) {
+            $configArray = ['Status'=>$configApp->getStatusServeur()];
+        } 
+        else{
+            $configArray = ['Status'=>'online'];
+        }
+        $configJson = json_encode($configArray);     
         $directory = $this->getParameter('kernel.project_dir') . '/public/images/imageIcone';
         if (!is_dir($directory)) {
             return new JsonResponse(['error' => 'Image directory not found'], 500);
@@ -233,7 +272,11 @@ private function handleDiapoFiles($files, $tempDisplays, $orderDisplays, $direct
         return $this->render('services/ajouter.html.twig', [
             'images' => $images,
             'categorie' =>$categorieJson,
-            'id_categorie' => $id_categorie
+            'id_categorie' => $id_categorie,
+            'configApp' => $configJson,
+            'appConfig' => $configApp,
+            'user' => $this->getUser(),
+
         ]);
     }
 
@@ -241,12 +284,20 @@ private function handleDiapoFiles($files, $tempDisplays, $orderDisplays, $direct
 
 #[Route('/services/categorie/{id}', name: 'services_Categorie')]
 public function display_service(string $id){
-    $this->denyAccessUnlessGranted('IS_AUTHENTICATED'); 
+    if( !$this->getUser())
+   return $this->redirectToRoute('app_login');
+    $etablissement = $this->getUser()->getEtablissement();
+    $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+    $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+    $Acce = $this->getUser()->getSERVICE() && $configApp->getEnableSERVICE() === '1' ;
+    if (!$Acce) {
+        $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+        return $this->redirectToRoute('home');    }
+    // $this->denyAccessUnlessGranted($Acce, $this->getUser());
     $id = (int) $id; 
     $this->denyAccessUnlessGranted('IS_AUTHENTICATED'); 
-    $etablissement = $this->getUser()->getEtablissement();
-    $services  = $this->entityManager->getRepository(Services::class)->findBy(['etablissement' => $etablissement,'service' => $id],['position' => 'ASC']);
-    $chembre = $this->entityManager->getRepository(Chambre::class)->findBy(['etablissement' =>$etablissement,'service'=>1]);
+    $services  = $this->entityManager->getRepository(Services::class)->findBy(['etablissement' => $etablissement,'categories' => $id],['position' => 'ASC']);
+    $chembre = $this->entityManager->getRepository(Chambre::class)->findBy(['etablissement' =>$etablissement]);
     $chembreArray = [];
     $serviceArray = [];
     foreach ($chembre as $chambre) {;  
@@ -277,6 +328,10 @@ public function display_service(string $id){
     'id' =>$id,
     'id_slected'=>$id_slectedJson,
     'chembre' => $chembreJson,
+    'appConfig' => $configApp,
+    'user' => $this->getUser(),
+
+
 ]);       
 }
 
@@ -285,11 +340,17 @@ public function display_service(string $id){
 
 #[Route('/update/{id}', name:'update_services')]
 public function update_services(int $id,Request $request){
-
-    $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-    $repository = $this->entityManager->getRepository(Services::class);
+    if( !$this->getUser())
+   return $this->redirectToRoute('app_login');
     $etablissement = $this->getUser()->getEtablissement();
-    $Services  = $repository->findBy(['etablissement' => $etablissement,'service'=> $id]);
+    $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+    $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+    $Acce = $this->getUser()->getSauvegarderService() && $this->getUser()->getSERVICE() && $configApp->getEnableSERVICE() === '1';
+    if (!$Acce) {
+        $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+        return $this->redirectToRoute('home');    } 
+    $repository = $this->entityManager->getRepository(Services::class);
+    $Services  = $repository->findBy(['etablissement' => $etablissement,'categories'=> $id]);
     $request = Request::createFromGlobals();
     foreach ($Services as $tele) {
         $tele->setActive(0);
@@ -331,8 +392,15 @@ public function update_services(int $id,Request $request){
     public function findService(int $id): Response
     {
         try{
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED'); 
-        $etablissement = $this->getUser()->getEtablissement();
+            if( !$this->getUser())
+   return $this->redirectToRoute('app_login');
+            $etablissement = $this->getUser()->getEtablissement();
+            $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        $Acce = $this->getUser()->getModifierService() && $this->getUser()->getSERVICE() && $configApp->getEnableSERVICE() === '1';
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');        }
         $categories = $this->entityManager->getRepository(Categories::class)
         ->findBy([
             'etablissement' => $etablissement,
@@ -350,10 +418,18 @@ public function update_services(int $id,Request $request){
         if (!$service) {
                 throw new \Exception( 'Service not found' . $service);
         }
-        $categorie = $service->getCategorie();
+        $categorie = $service->getCategories();
         if (!$categorie) {
             throw new \Exception( 'Categorie not found' . $categorie);
         }
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        if ($configApp) {
+            $configArray = ['Status'=>$configApp->getStatusServeur()];
+        } 
+        else{
+            $configArray = ['Status'=>'online'];
+        }
+        $configJson = json_encode($configArray);
         $directory = $this->getParameter('kernel.project_dir') . '/public/images/imageIcone';
         if (!is_dir($directory)) {
             throw new \Exception( 'Image directory not found');
@@ -406,6 +482,8 @@ public function update_services(int $id,Request $request){
             'src' =>$srcJson,
             'id_service' => $id_serviceJson,
             'id_categorie' => $categorie->getId(),
+            'configApp' => $configJson,
+            'user' => $this->getUser(),
         ]);
     } 
     return $this->render('services/modifier.html.twig', parameters: [
@@ -417,6 +495,9 @@ public function update_services(int $id,Request $request){
         'src' =>$srcJson,
         'id_service' => $id_serviceJson,
         'id_categorie' => $categorie->getId(),
+        'configApp' => $configJson,
+        'appConfig' => $configApp,
+        'user' => $this->getUser(),
     ]);
 }
     
@@ -426,12 +507,15 @@ public function update_services(int $id,Request $request){
     #[Route('/serviceUpdate/{id}', name: 'update_service')]
     public function updateService(int $id, Request $request): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED'); 
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        if( !$this->getUser())
+   return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
-    
-        // if (!$etablissement) {
-        //     return new JsonResponse(['error' => 'Etablissement not found'], 404);
-        // }
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->getModifierService() && $this->getUser()->getSERVICE() && $configApp->getEnableSERVICE() === '1';
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');        }
             $categories = $this->entityManager->getRepository(Categories::class)->findBy([
             'etablissement' => $etablissement,
             'package' => 'Service',
@@ -451,7 +535,7 @@ public function update_services(int $id,Request $request){
             throw $this->createNotFoundException('Service not found');
         }
     
-        $directory = $this->getParameter('kernel.project_dir') . '/public/services';
+        $directory = $this->getParameter('kernel.project_dir') . '/public/images/services';
         $oldDirectory = '';
         if($service->getType() === 'DIAPO')
         $oldDirectory = $this->getParameter('kernel.project_dir') . '/public/' . $service->getSrc();
@@ -496,7 +580,7 @@ public function update_services(int $id,Request $request){
                     }
                    
                             $file1->move($directory, $fileName);
-                            $service->setLogo('services/' . $fileName);
+                            $service->setLogo('images/services/' . $fileName);
         
                     } 
                 if ($file2 || $url) {
@@ -521,7 +605,7 @@ public function update_services(int $id,Request $request){
                     elseif($file2 && $type !== 'DIAPO') {
                         $fileName2 = md5(uniqid()) . '.' . $file2->guessExtension();
                         $file2->move($directory, $fileName2);
-                        $service->setSrc('services/' . $fileName2);
+                        $service->setSrc('images/services/' . $fileName2);
                     }
                 }
                 if ($type !== 'DIAPO' && $type !== 'URL'){
@@ -564,7 +648,7 @@ public function update_services(int $id,Request $request){
             }
             $categorie = $this->entityManager->getRepository(Categories::class)->find($serviceService);
             if ($categorie) {
-                $service->setCategorie($categorie);
+                $service->setCategories($categorie);
             }  
         }catch(\Exception $e)
         {
@@ -674,7 +758,7 @@ public function update_services(int $id,Request $request){
                 throw new \Exception('Error processing file: ' . $e->getMessage());
             }
         }
-        $service->setSrc('services/diapo/' . $aliatoire);
+        $service->setSrc('images/services/diapo/' . $aliatoire);
     }
 }
 
@@ -682,11 +766,18 @@ public function update_services(int $id,Request $request){
 
 #[Route('/services/delete/{id_service}/{id}' ,name:'service_delete')]
 
-    public function delete_service(int $id,int $id_service)
-    {
-        try{
-            $this->denyAccessUnlessGranted('IS_AUTHENTICATED'); 
-        $etablissement = $this->getUser()->getEtablissement();
+public function delete_service(int $id,int $id_service)
+{
+    $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+    if( !$this->getUser())
+   return $this->redirectToRoute('app_login');
+    $etablissement = $this->getUser()->getEtablissement();
+    $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->getSupprimerService() && $this->getUser()->getSERVICE()&& $configApp->getEnableSERVICE() === '1' ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');        }
+    try{
         $service = $this->entityManager->getRepository(Services::class)->findOneBy(['etablissement' => $etablissement, 'id' => $id]);
         if(empty($service))
         {
@@ -727,12 +818,20 @@ return $this->redirectToRoute('services_Categorie',['id' =>$id_service]);
 ///////////////////////////  route pour prend les positions de chaque categorie  ////////////////////////////////////////////////////
 
     #[Route('/services/{id}', name: 'service_categorie', methods: ['GET'])]
-    public function getServiceByCategory(int $id, EntityManagerInterface $entityManager): JsonResponse
+    public function getServiceByCategory(int $id, EntityManagerInterface $entityManager): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED'); 
+        if( !$this->getUser())
+   return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->getSERVICE() && $configApp->getEnableSERVICE() === '1';
+     if (!$Acce) {
+         $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+         return $this->redirectToRoute('home');
+     }
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED'); 
         $services = $entityManager->getRepository(Services::class)
-            ->findBy(['etablissement' => $etablissement, 'service' => $id]);
+            ->findBy(['etablissement' => $etablissement, 'categories' => $id]);
     
         if (empty($services)) {
             return new JsonResponse([]);
@@ -750,10 +849,18 @@ return $this->redirectToRoute('services_Categorie',['id' =>$id_service]);
  #[Route('/services/getService/{id}', name: 'get_services_Categorie',methods: ['GET'])]
     public function get_service(string $id){
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        if( !$this->getUser())
+            return $this->redirectToRoute('app_login');
+        $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->getSERVICE() && $configApp->getEnableSERVICE() === '1';
+     if (!$Acce) {
+         $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+         return $this->redirectToRoute('home');
+     }
         $id = (int) $id; 
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED'); 
-        $etablissement = $this->getUser()->getEtablissement();
-        $services  = $this->entityManager->getRepository(Services::class)->findBy(['etablissement' => $etablissement,'service' => $id],['position' => 'ASC']);
+        $services  = $this->entityManager->getRepository(Services::class)->findBy(['etablissement' => $etablissement,'categories' => $id],['position' => 'ASC']);
         $serviceArray = [];
         foreach ($services as $service1) {
             $serviceArray[] = ['nom' => $service1->getNom(),
@@ -778,9 +885,15 @@ return $this->redirectToRoute('services_Categorie',['id' =>$id_service]);
     public function get_images(string $id): JsonResponse
     {    
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-    
+        if( !$this->getUser())
+            return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
-    
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->getSERVICE() && $configApp->getEnableSERVICE() === '1';
+     if (!$Acce) {
+         $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+         return $this->redirectToRoute('home');
+     }
         $service = $this->entityManager->getRepository(Services::class)
             ->findOneBy(['etablissement' => $etablissement, 'id' => $id]);
     
@@ -809,7 +922,15 @@ return $this->redirectToRoute('services_Categorie',['id' =>$id_service]);
     public function delete_image(string $id, int $index): JsonResponse
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        if( !$this->getUser())
+          return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->getSERVICE() && $configApp->getEnableSERVICE() === '1';
+     if (!$Acce) {
+         $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+         return $this->redirectToRoute('home');
+     }
         $service = $this->entityManager->getRepository(Services::class)
             ->findOneBy(['etablissement' => $etablissement, 'id' => $id]);
     
@@ -853,7 +974,15 @@ return $this->redirectToRoute('services_Categorie',['id' =>$id_service]);
     public function renameFiles( int $id): JsonResponse
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        if( !$this->getUser())
+          return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->getSERVICE() && $configApp->getEnableSERVICE() === '1';
+     if (!$Acce) {
+         $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+         return $this->redirectToRoute('home');
+     }
         $service = $this->entityManager->getRepository(Services::class)
             ->findOneBy(['etablissement' => $etablissement, 'id' => $id]);
     
@@ -897,7 +1026,15 @@ return $this->redirectToRoute('services_Categorie',['id' =>$id_service]);
     public function lancerService(int $idService)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        if( !$this->getUser())
+            return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->getSERVICE() && $this->getUser()->getLancerArretService() && $configApp->getEnableSERVICE() === '1';
+     if (!$Acce) {
+         $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+         return $this->redirectToRoute('home');
+     }
         $repository = $this->entityManager->getRepository(Chambre::class);
         $queues = array();
         $service = $this->entityManager->getRepository(Services::class)
@@ -936,7 +1073,7 @@ return $this->redirectToRoute('services_Categorie',['id' =>$id_service]);
         }
     }
 }
-        return $this->redirectToRoute('services_Categorie',['id' =>$service->getCategorie()->getId()]);
+        return $this->redirectToRoute('services_Categorie',['id' =>$service->getCategories()->getId()]);
 }
 
 
@@ -953,7 +1090,15 @@ return $this->redirectToRoute('services_Categorie',['id' =>$id_service]);
 public function RemoveService(int $idService)
 {
     $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+    if( !$this->getUser())
+     return $this->redirectToRoute('app_login');
     $etablissement = $this->getUser()->getEtablissement();
+    $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+    $Acce = $this->getUser()->getSERVICE() && $this->getUser()->getLancerArretService() && $configApp->getEnableSERVICE() === '1';
+ if (!$Acce) {
+     $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+     return $this->redirectToRoute('home');
+ }
     $repository = $this->entityManager->getRepository(Chambre::class);
     $queues = array();
     $service = $this->entityManager->getRepository(Services::class)
@@ -988,14 +1133,22 @@ public function RemoveService(int $idService)
     }
 }
 }
-    return $this->redirectToRoute('services_Categorie',['id' =>$service->getCategorie()->getId()]);
+    return $this->redirectToRoute('services_Categorie',['id' =>$service->getCategories()->getId()]);
 }
 
 #[Route('/service/GetAllchambreLancerService/{idService}',name:'GetAllchambreLancerService',methods:'GET')]
 
 public function GetAllchambreLancerService(int $idService){
     $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+    if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
     $etablissement = $this->getUser()->getEtablissement();
+    $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+    $Acce = $this->getUser()->getSERVICE() && $configApp->getEnableSERVICE() === '1';
+ if (!$Acce) {
+     $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+     return $this->redirectToRoute('home');
+ }
     $service = $this->entityManager->getRepository(Services::class)
         ->findOneBy(['etablissement' => $etablissement, 'id' => $idService]);
     if (!$service) {

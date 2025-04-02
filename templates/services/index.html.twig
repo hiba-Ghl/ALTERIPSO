@@ -1,24 +1,43 @@
 {% extends 'home/index.html.twig' %}
 {% block body %}
+<style>
+.dataTables_filter{
+    float: right;
+    width: 50%;
+    margin-top: -27px;
+}
+
+.dataTables_filter label {
+  color: #3087ce;
+  font-size: 20px;
+}
+.dataTables_filter input {
+  color:black;
+  font-size: 16px;
+}
+</style>
 {# ce fichier contenent l'affichage de liste des services #}
 	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 {# Cette section concerne la conception de modèles pour l'affichage liste des services.#}
-<div style="border-radius: 8px;  margin-top:10px;text-align: left; margin-bottom: 10px; margin-left: -130px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 200px; padding-left: 10px; display: inline-block;">
+<div style="border-radius: 8px; text-align: left; margin-bottom: 10px; margin-left: -130px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 200px; padding-left: 10px; display: inline-block;">
     <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
    Liste des services
 </div>
+{# {{ dump(app.user) }} #}
+
 <form id="form" method="post" enctype="multipart/form-data" onsubmit="return validateUpdate(`{{path('update_services',{'id': id})}}`)">
 <div id="div2">
     <div style="display: flex;gap:2px">
-        <a  class="btn btn-info btn-sm" style="width:130px" id="add">
+        <a  class="btn btn-info btn-sm" style="width:130px" id="add" {% if app.user.AjouteService == '0' %} disabled {% endif %}> 
             <i class="glyphicon glyphicon-plus"></i>
             Ajouter service
         </a>
-                <button type="submit" class="btn btn-success btn-sm" style="width:130px">
-                    <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
+        
+                <button type="submit" class="btn btn-success btn-sm" style="width:130px" {% if app.user.SauvegarderService == '0' %} disabled {% endif %}>
+                    <i class="glyphicon glyphicon-floppy-disk"></i> Sauvegarder
                 </button>
                 <a class="btn btn-danger btn-sm" id = "annulerButton" style="width:130px">
                     <i class="glyphicon glyphicon-remove"></i> Annuler
@@ -28,18 +47,18 @@
     <p style="margin-top:10px">Sélectionner le service que vous souhaitez renseigner :</p>
     <div id="categorie">
     </div>
-    <div style="color: red; font-size: 14px; margin-left:16px">Choisissez le modèle d'extraction de données :</div>
+    <div style="color: red; font-size: 14px;">Choisissez le modèle d'extraction de données :</div>
     <br>
-  <div id="myDiv" class="col-md-12">
-    <table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column" id="dataTables-example" role="none" style="height: 200px;margin-left:70px;">
+  <div id="myDiv" >
+    <table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column" id="dataTables-example" role="none" style="width:100%;height: 200px;">
            <thead>
                     <tr>
-                        <th style="text-align: center; width: 140px;height:30px;">Icone</th>
-                        <th style="text-align: center; width: 100px;height:30px">Nom du Service</th>
-                        <th style="text-align: center; width: 70px;height:30px;">Position</th>
-                        <th style="text-align: center; width: 70px;height:30px">Active</th>
-                        <th style="text-align: center; width: 140px;height:30px;">Type</th>
-                        <th style="text-align: center; width: 172px;height:30px;">Source</th>
+                        <th style="text-align: center; width: 141px;height:30px;">Icone</th>
+                        <th style="text-align: center; width: 120px;height:30px">Nom du Service</th>
+                        <th style="text-align: center; width: 100px;height:30px;">Position</th>
+                        <th style="text-align: center; width: 100px;height:30px">Active</th>
+                        <th style="text-align: center; width: 160px;height:30px;">Type</th>
+                        <th style="text-align: center; width: 200px;height:30px;">Source</th>
                         <th style="text-align: center; width: 200px;height:30px;">Actions</th>
                     </tr>
                 </thead>
@@ -49,7 +68,7 @@
 </div>
 {# la creation de table avec bootstrap (DataTable),et aussi afficher liste de service selon leur categorie dinamiquement #}
 <script>
-const interval = '';
+const interval = '';  
    $(document).ready(function () {
     var table = $('#dataTables-example').DataTable({
        language: {
@@ -208,45 +227,45 @@ $.fn.dataTable.ext.order['dom-checkbox'] = function (settings, colIndex) {
           if(service.type === 'URL')
             URL = service.src;
           else if(service.type === 'DIAPO')
-            URL =   service.src;
+            URL = '/' + service.src;
           else
           URL = '/' + service.src;
             const rowData =  [
                 ` <td >
                 <div class="td1">
-                <div style="width:100px;height: 70px;border-radius:5px;">
+                <div style="width:102px;height: 70px;border-radius:5px;">
         <img src="{{ asset('${service.logo}') }}" style="width:60px;height:60px;text-align:center;border-radius:5px;" />
                 </div>
                 </div>
       </td>`,  
       `<td >
-        <div style="display:flex;align-items:center;justify-content:center;width: 122px;height:60px;">
+        <div style="display:flex;align-items:center;justify-content:center;width: 142px;height:60px;">
         ${service.nom}
         </div>
       </td>`,
       `
       <td >
-        <div style=" width: 92px;height:60px; display:flex;justify-content:center;align-items:center;">
-         <select id="position_service" class="form-control" name="position_service[${service.Id}]" value="${service.position}" style="width:60px;font-size:14px;padding:4px;text-align:center;">
+        <div style=" width: 123px;height:60px; display:flex;justify-content:center;align-items:center;">
+         <select {% if app.user.SauvegarderService == '0' %} disabled {% endif %} id="position_service" class="form-control" name="position_service[${service.Id}]" value="${service.position}" style="width:60px;font-size:14px;padding:4px;text-align:center;">
           <option style="display:none">${service.position}</option>
         </select>
         </div>
       </td>`,
       `
       <td >
-      <div style="text-align: center; width: 92px;height:60px;display:flex;align-items:center;justify-content:center;">
-        <input id="active-${service.Id}" name="active[${service.Id}]" type="checkbox" ${service.active === '1' || service.active === 'on' ? 'checked' : ''}>
+      <div style="text-align: center; width: 123px;height:60px;display:flex;align-items:center;justify-content:center;">
+        <input id="active-${service.Id}" name="active[${service.Id}]" {% if app.user.SauvegarderService == '0' %} disabled {% endif %} type="checkbox" ${service.active === '1' || service.active === 'on' ? 'checked' : ''}>
         </div>
       </td>`,
       `
       <td >
-      <div style="text-align: center;width: 162px;height:60px;display:flex;align-items:center;justify-content:center;">
+      <div style="text-align: center;width: 182px;height:60px;display:flex;align-items:center;justify-content:center;">
       ${service.type}
       </div>
       </td>`,
       `
       <td >
-      <div style="text-align: center;width: 194px; cursor: pointer;height:60px;display:flex;align-items:center;justify-content:center;">
+      <div style="text-align: center;width: 222px; cursor: pointer;height:60px;display:flex;align-items:center;justify-content:center;">
       <a data-toggle="modal" data-target="#modal-${index}" class="source-link" 
            data-type="${service.type}" 
            data-id="${service.Id}" 
@@ -276,20 +295,20 @@ $.fn.dataTable.ext.order['dom-checkbox'] = function (settings, colIndex) {
     </td>`,
     `
     <td >
-      <div style="width: 240px;height:60px;display:flex;justify-content:centre;gap:5px;align-items:center">
-      <a data-toggle="tooltip" data-placement="top" title="Modifier le service" href="/services/find_service/${service.Id}" class="btn btn-warning btn-xs">
+      <div style="width: 250px;height:60px;display:flex;justify-content:center;gap:5px;align-items:center;">
+      <a data-toggle="tooltip" data-placement="top" title="Modifier le service" href="/services/find_service/${service.Id}" class="btn btn-warning btn-xs" {% if app.user.ModifierService == '0' %} disabled {% endif %}>
         <i class="glyphicon glyphicon-pencil"></i>
       </a>
-      <a data-toggle="tooltip" data-placement="top" title="Supprimer le service" href="/services/delete/${id}/${service.Id}" class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer le service : ${service.nom} ?')">
+      <a data-toggle="tooltip" data-placement="top" title="Supprimer le service" href="/services/delete/${id}/${service.Id}" class="btn btn-danger btn-xs" {% if app.user.SupprimerService == '0' %} disabled {% endif %} onclick="return confirm('Voulez-vous vraiment supprimer le service : ${service.nom} ?')">
         <i class="glyphicon glyphicon-trash"></i>
       </a>
       <div data-toggle="modal" data-target="#modal1-${index}" data-id =${service.Id}  data-name=${service.nom} class="lancer-button">
-      <a  title="Lancer le service directement sur la TV" class="btn btn-info btn-xs">
+      <a  title="Lancer le service directement sur la TV" class="btn btn-info btn-xs" {% if app.user.LancerArretService == '0' %} disabled {% endif %}>
         <i class="glyphicon glyphicon-play-circle"></i>
       </a>
       </div>
-      <div data-toggle="modal" data-target="#modal2-${index}" data-id =${service.Id} data-name=${service.nom} class="arreter-button">
-  <a  title="Arrêter le service en cours"  class="btn btn-primary btn-xs ">
+      <div data-toggle="modal" data-target="#modal2-${index}" data-id =${service.Id} data-name=${service.nom} class="arreter-button" >
+  <a  title="Arrêter le service en cours"  class="btn btn-primary btn-xs " {% if app.user.LancerArretService == '0' %} disabled {% endif %}>
         <i class="glyphicon glyphicon-minus-sign"></i>
       </a>
       </div>
@@ -314,11 +333,10 @@ document.addEventListener('click', async (event) => {
     const id = event.target.dataset.id;
     const index = event.target.dataset.target.split('-')[1];
     const value = event.target.dataset.value;
-  const modalBody = document.querySelector(`#modal-body-${index}`);
+    const modalBody = document.querySelector(`#modal-body-${index}`);
  if (type === 'DIAPO') {
   const images = await getImages(id);
   const imageArray = Object.values(images);
-
   if (modalBody) {
     modalBody.innerHTML = '';
     const carousel = document.createElement('div');
@@ -528,7 +546,7 @@ annulerButton.addEventListener('click',async (event) => {
   });
 
 function createModal(index,Id,name) {
-      const a = document.getElementById('clicked');
+    const a = document.getElementById('clicked');
     const id_categorie = a.getAttribute('data-id');
     const popUP = document.createElement('div');
     popUP.setAttribute("class", "modal fade");
@@ -540,7 +558,7 @@ function createModal(index,Id,name) {
     popUP.setAttribute("aria-hidden", "true");
     popUP.innerHTML = `
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="margin:auto;width:800px;height:800px">
+            <div class="modal-content" style="margin:auto;width:800px;height:760px">
                 <div class="modal-header" style="margin-top:30px;">
                 <button id="close" type="button" class="close close2" data-dismiss="modal-${index}" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -551,12 +569,12 @@ function createModal(index,Id,name) {
                     </div>
                 </div>
                 <form id="form" method="post" enctype="multipart/form-data" action="/services/lancerService/${Id}">
-                      <div class="modal-body" id="modal-body1-${index}" >
-                <div style="font-size:16px;color:black;margin-bottom:-30px">Liste Support connecté à choisir</div>
+                <div class="modal-body" id="modal-body1-${index}" >
+                <div style="font-size:16px;color:black;">Liste Support connecté à choisir</div>
                 </div>
                 <div class="modal-footer">
                   <button id="envoyervod" type="submit" class="btn btn-primary conf" name="envoyervod"> <i class="glyphicon glyphicon-send"></i> Lancer le service</button>
-                  <a class="button btn btn-danger " style="width: 139px;" href="/services/categorie/${id_categorie}" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a>                </div>
+                  <a class="btn btn-danger " style="width: 139px;" href="/services/categorie/${id_categorie}" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a>                </div>
             </div>
             </form>
         </div>    
@@ -576,7 +594,7 @@ document.addEventListener('click', function (event) {
       index = lancerButton.getAttribute("data-target").split('-')[1];
       if(index >= 0)
       {
-         if (active && !active.checked) {
+        if (active && !active.checked) {
         confirm("Attention, le service n'est pas actif, donc non présent sur la box. Merci de le cocher.Faites dans un premier temps la mise à jour sur la BOX.Enfin, vous pouvez lancer le service avec l'icône bleue.");
         event.preventDefault(); 
         return false;
@@ -598,7 +616,7 @@ document.addEventListener('click', function (event) {
       thead.style.width = "100%";
       thead.innerHTML = `
         <tr style="width:100%;display:flex;justify-content:space-between">
-          <th style="width:120px;height:60px;display:flex;align-items: center;gap:5px"><input type="checkbox" id="checkAllboxn"/><p style="color:red">selectionner / deselectionner</p></th>
+          <th style="width:120px;height:60px;display:flex;align-items: center;gap:5px"><input type="checkbox" id="checkAllboxn"/><p style="color:red">Selectionner / Désélectionner</p></th>
           <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Chambre</th>
           <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Adresse IP</th>
           <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Adresse MAC</th> 
@@ -615,7 +633,7 @@ document.addEventListener('click', function (event) {
     tr1.style.justifyContent = 'space-between';
     tr1.innerHTML = `
         <td style="width:120px;height:40px;"><input type="checkbox" value=${chbr.id} name="checked[${i}]" class="boxcheck"/><input style="display:none" type="text" value=${chbr.id} name="chambre[${i}]"></td>
-        <td style="width:120px;height:40px;text-align:center;">${chbr.nom}</td>
+        <td style="width:120px;height:40px;text-align:center;">${capitalize(chbr.nom)}</td>
         <td style="width:120px;height:40px;text-align:center;">${chbr.ip}</td>
         <td style="width:120px;height:40px;text-align:center;">${chbr.Mac}</td>`;
     tbody.appendChild(tr1);
@@ -629,7 +647,10 @@ document.addEventListener('click', function (event) {
       modal.style.display = 'block';
       if (!$.fn.dataTable.isDataTable(`#table-${index}`)) {
       $(`#table-${index}`).DataTable({
-        oLanguage: {"sSearch": "Recherche du support :"},
+        language: {
+        emptyTable: "Aucune chambre disponible."
+    },
+        oLanguage: {"sSearch": "Recherche:"},
         paging: false,
         searching: true,
         ordering: false,
@@ -710,7 +731,7 @@ document.addEventListener('click', function (event) {
     popUP.setAttribute("aria-hidden", "true");
     popUP.innerHTML = `
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="width:800px;height:800px">
+            <div class="modal-content" style="width:800px;height:760px">
                 <div class="modal-header" style="margin-top:30px;">
                 <button id="close" type="button" class="close close1" data-dismiss="modal-${index}" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -722,17 +743,18 @@ document.addEventListener('click', function (event) {
                 </div>
             <form id="form" method="post" enctype="multipart/form-data" action="/services/RemoveService/${Id}">
                 <div class="modal-body" id="modal-body2-${index}" >
-                <div style="font-size:16px;color:black;margin-bottom:-30px">Liste Support connecté à choisir</div>
+                <div style="font-size:16px;color:black;">Liste Support connecté à choisir</div>
                 </div>
                 <div class="modal-footer">
                   <button id="envoyervod" type="submit" class="btn btn-primary conf"name="envoyervod"> <i class="glyphicon glyphicon-send" style="margin-right:3px"></i>Arrêt service en cours</button>
-                  <a class="button btn btn-danger " style="width: 139px;" href="/services/categorie/${id_categorie}" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a>                </div>
+                  <a class="btn btn-danger " style="width: 139px;" href="/services/categorie/${id_categorie}" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a>                </div>
             </div>
             </form>
         </div>    
     `;
     return popUP;
 }
+const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
 document.addEventListener('click', async function (event) {
     const arreterbutton = event.target.closest('.arreter-button');
@@ -740,6 +762,7 @@ document.addEventListener('click', async function (event) {
       return ;
     const Id = arreterbutton.getAttribute('data-id');
     const name = arreterbutton.getAttribute('data-name');
+
     const response = await fetch(`/service/GetAllchambreLancerService/${Id}`);
 if (!response.ok) {
     console.error(`HTTP error! Status: ${response.status}`);
@@ -774,7 +797,7 @@ if (!response.ok) {
       thead.style.width = "100%";
       thead.innerHTML = `
         <tr style="width:100%;display:flex;justify-content:space-between">
-          <th style="width:120px;height:60px;display:flex;align-items: center;gap:5px"><input type="checkbox" id="checkAllboxn1" checked/> <p style="color:red">selectionner / deselectionner</p></th>
+          <th style="width:120px;height:60px;display:flex;align-items: center;gap:5px"><input type="checkbox" id="checkAllboxn1" checked/> <p style="color:red">Selectionner / Désélectionner</p></th>
           <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Chambre</th>
           <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Adresse IP</th>
           <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Adresse MAC</th> 
@@ -791,7 +814,7 @@ if (!response.ok) {
     tr1.style.justifyContent = 'space-between';
     tr1.innerHTML = `
         <td style="width:120px;height:40px;"><input type="checkbox" value=${chbr.id} name="checked[${i}]" class="boxcheck1" checked/><input style="display:none" type="text" value=${chbr.id} name="chambre[${i}]"></td>
-        <td style="width:120px;height:40px;text-align:center;">${chbr.nom}</td>
+        <td style="width:120px;height:40px;text-align:center;">${capitalize(chbr.nom)}</td>
         <td style="width:120px;height:40px;text-align:center;">${chbr.ip}</td>
         <td style="width:120px;height:40px;text-align:center;">${chbr.Mac}</td>`;
     tbody.appendChild(tr1);
@@ -867,46 +890,35 @@ document.addEventListener('click', function (event) {
     }
   }
 });
-
 </script>
 
 </script>
 
-    <!-- online -->
-	<!--<script src="https://code.jquery.com/jquery-3.5.1.js"></script>-->
-    <script src="{{asset('javascript/jquery.min.js')}}"> </script>
+ {% if appConfig.StatusServeur is same as('Offline') %}
+  <script src="{{ asset('javascript/jszip.min.js') }}"></script>
+<script src="{{ asset('javascript/pdfmake.min.js') }}"></script>
+<script src="{{ asset('javascript/vfs_fonts.js') }}"></script>
+<script src="{{ asset('javascript/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('javascript/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('javascript/jquery.min.js') }}"></script>
+<script src="{{ asset('javascript/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('javascript/datatables2.min.js') }}"></script>
+<script src="{{ asset('javascript/xlsx.full.min.js') }}"></script> 
+<script src="{{ asset('javascript/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('javascript/clipboard.min.js') }}"></script>
+   {% else %}
+  <script src="{{asset('javascript/jquery.min.js')}}"> </script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 	<style type="text/css" src="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css"></style>
-	<style type="text/css" src="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css"></style>
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- DataTables CSS -->
-
-<!-- DataTables JS -->
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-
-	<!-- offline -->
-	<!--<script src="{{asset('javascript/jquery-3.5.1.js')}}"></script>
-				<script src="{{asset('javascript/jszip.min.js')}}"></script>
-				<script src="{{asset('javascript/pdfmake.min.js')}}"></script>
-				<script src="{{asset('javascript/vfs_fonts.js')}}"></script>
-				<link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet">
-				<link href="{{ asset('css/buttons.dataTables.min.css') }}" rel="stylesheet">
-				-->
-
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
   <script src="{{ asset('javascript/datatables2.min.js') }}"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script> <!-- Include SheetJS library -->
-
-
-<!-- Include DataTables Buttons JS -->
-<script src="https://cdn.datatables.net/buttons/2.3.3/js/dataTables.buttons.min.js"></script>
-
-<!-- Include Clipboard JS (for copying to clipboard) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script> 
+  <script src="https://cdn.datatables.net/buttons/2.3.3/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script> 
+  {% endif %} 
 
 <script>
     const data1 = {{ service1 | raw }};

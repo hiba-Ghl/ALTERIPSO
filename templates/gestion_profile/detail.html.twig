@@ -1,0 +1,1499 @@
+
+{% extends 'home/index.html.twig' %}
+{# Cette section concerne la conception de modèles pour l'ajout d'un service.#}
+{% block body %}
+
+{# offline #}
+{% if appConfig.StatusServeur is same as('Offline') %}
+
+<script src="assets/js/all.min.js"></script>
+{% else %}
+{# online #}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+
+{% endif %}
+<div style="border-radius: 8px;  margin-top:10px;margin-left:-110px;text-align: left; margin-bottom: 10px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding-left: 10px; display: inline-block;">
+    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+        Détails de l'utilisateur : {{user.username | capitalize}}
+</div>
+<div>
+<div style="background-color:white;padding-bottom:100px;width:1400px;margin-left:-50px;">
+<h3 style=" color:#3087ce;margin-left:-50px;">Informations personnelles</h3>
+{# {{ dump(user) }} #}
+<div style=" display:flex;flex-direction:column;gap:20px;border-radius: 25px;border: 2px solid #3087ce;padding: 20px; width: 1400px;margin-left:-50px;background-color: white;margin-bottom: 20px;">
+			<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+			<label for="inputEmail">Identifiant:</label>
+			<div style="align-self:flex-start;width:50%;">{{user.username | capitalize }}</div>
+			</div>
+			<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+			<label for="inputEmail">Email:</label>
+			<div style="align-self:flex-start;width:50%;">
+				{{user.email | capitalize }}
+			</div>
+			</div>
+			<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+			<label for="inputEmail">Fonction:</label>
+			<div style="align-self:flex-start;width:50%;"> 
+				{% for role in user.roles %}{{ role  | capitalize }}{% endfor %}
+			</div>
+			</div>
+</div>
+<h3 style=" color:#3087ce;margin-left:-50px;">
+	Liste des opérations autorisées
+</h3>
+<div style=" display:flex;flex-direction:column;gap:20px;border-radius: 25px;border: 2px solid #3087ce;padding: 20px; width: 1400px;margin-left:-50px;background-color: white;margin-bottom: 20px;">
+					 <div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+			<label>Ajouter une catégorie</label>
+			{% if user is defined and user.AjoutCategorie %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+            </div>
+					 <div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+            <label>Mettre à jour les TV</label>
+			{% if user is defined and user.MjTv %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+            </div>
+					 <div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+			<label>Changer Catégories page d'acceuil</label>
+			{% if user is defined and user.ChangeCat %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+            </div>
+			<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+			<label>Changer font d'écran de page d'accuei</label>
+			{% if user is defined and user.FondEcran %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+            </div>
+					 <div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+			<label>Enregistrer les échanges des catégories de pages d'accueil</label>
+			{% if user is defined and user.SauvegarderAcceuil %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+            </div>
+			<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+			<label>Contrôler l’affichage du logo sur TV</label>
+			{% if user is defined and user.CocherLogo %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+            </div>
+					 <div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+			<label>Contrôler l’affichage de la météo sur TV</label>
+			{% if user is defined and user.CocherMeteo %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+            </div>
+</div>
+<h3 style=" color:#3087ce;margin-left:-50px;">
+	Liste des onglets autorisés :
+</h3>
+<div style=" display:flex;flex-direction:column;gap:20px;border-radius: 25px;border: 2px solid #3087ce;padding: 20px; width: 1400px;margin-left:-50px;background-color: white;margin-bottom: 20px;">
+    <table>
+			<tbody>
+			<tr>
+<td>
+		<div id="rcorners1" class="CategorieLivreAudio">
+			<div style="">
+				<label>Categorie Livre Audio</label>
+					{% if user is defined and user.CatLivreAudio %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+			</div>
+			<div style="display:flex;justify-content:space-between">
+				<div>
+			<label style="">
+				<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="ajouter categorie livre audio ">
+				<i class="glyphicon glyphicon-plus"></i>
+				</a>
+			</label>
+						
+							{% if user is defined and user.ajoutCatLivreAudio %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				
+				</div>
+						
+				<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="modifier categorie livre audio ">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+							{% if user is defined and user.ModifierCatLivreAudio %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				</div>
+				<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="supprimer categorie livre audio ">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						
+							{% if user is defined and user.SuppCatLivreAudio %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				</div>
+				<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="sauvegarder categorie livre audio ">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+					{% if user is defined and user.SauvegarderCatLivreAudio %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+				</div>
+			</div>
+			<div>
+							<label>Livreaudio
+							</label>
+
+					{% if user is defined and user.LIVREAUDIO %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+		</div>
+		<div style="display:flex;justify-content:space-between">
+			<div>
+				<label>
+					<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="Ajouter livreaudio">
+						<i class="glyphicon glyphicon-plus"></i>
+					</a>
+				</label>
+			{% if user is defined and user.AjoutLiveAudio %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+						</div>
+						{# <div>
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="Modifier livreaudio">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+													{% if user is defined and user.ModifierLiveAudio %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+						
+			</div> #}
+			<div>
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="Supprimer livreaudio">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+				{% if user is defined and user.SupprimerLiveAudio %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+			</div>
+			<div>
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="Sauvegarder livreaudio">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>			
+			{% if user is defined and user.SauvegarderLiveAudio %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+			</div>
+				<div>
+					<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-primary  btn-sm" data-original-title="Lancer/arreter livreAudio">
+								<i class="glyphicon glyphicon-play-circle"></i>
+							</a>
+						</label>
+					{% if user is defined and user.lancerLivreAudio %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+				</div>
+		</div>
+		</div>
+	</td>
+	<td>
+		<div id="rcorners1" class="CategorieRadio">
+			<div style="">
+				<label>Categorie Radio</label>
+					{% if user is defined and user.CatRadio %} 
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+			</div>
+			<div style="display:flex;justify-content:space-between">
+				<div>
+			<label style="">
+				<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="ajouter categorie radio ">
+				<i class="glyphicon glyphicon-plus"></i>
+				</a>
+			</label>
+						
+							{% if user is defined and user.AjoutCatRadio %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				
+				</div>
+						
+				<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="modifier categorie radio ">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+							{% if user is defined and user.ModifierCatRadio %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				</div>
+				<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="supprimer categorie radio ">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						
+							{% if user is defined and user.SuppCatRadio %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				</div>
+				<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="sauvegarder categorie radio ">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+					{% if user is defined and user.SauvegarderCatRadio %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+				</div>
+			</div>
+			<div style="">
+							<label>Radio</label>
+								{% if user is defined and user.RADIO %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+
+					</div>
+		<div style="display:flex;justify-content:space-between">
+			<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="ajouter radio ">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						
+							{% if user is defined and user.AjoutRadio %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+			</div>
+			{# <div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="modifier radio ">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+							{% if user is defined and user.ModifierRadio %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+			</div> #}
+			<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="supprimer radio ">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						
+							{% if user is defined and user.SupprimerRadio %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+			</div>
+			<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="sauvegarder radio ">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+
+						
+							{% if user is defined and user.SauvegarderRadio %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+			</div>
+				<div>
+					<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-primary  btn-sm" data-original-title="Lancer/arreter radio">
+								<i class="glyphicon glyphicon-play-circle"></i>
+							</a>
+						</label>
+					{% if user is defined and user.lancerRadio %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+				</div>	
+
+				<div>
+					<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="Exporter les radios">
+								<i class="fa-solid fa-clone"></i> 	
+							</a>
+						</label>
+					{% if user is defined and user.ExportRadio %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+				</div>	
+
+				<div>
+					<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="Importer les radios">
+ 							<i	class="glyphicon glyphicon-import "></i>
+							</a>
+						</label>
+					{% if user is defined and user.ImportRadio %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+				</div>	
+		</div>
+
+		</div>
+	</td>
+	<td>
+		<div id="rcorners1" class="CategorieVod">
+			<div style="">
+				<label>Categorie Vod</label>
+					{% if user is defined and user.CatVod %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+			</div>
+			<div style="display:flex;justify-content:space-between">
+				<div>
+			<label style="">
+				<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="ajouter categorie vod ">
+				<i class="glyphicon glyphicon-plus"></i>
+				</a>
+			</label>
+						
+							{% if user is defined and user.AjoutCatVod %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				
+				</div>
+						
+				<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="modifier categorie vod ">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+							{% if user is defined and user.ModifierCatVod %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				</div>
+				<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="supprimer categorie vod ">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						
+							{% if user is defined and user.SuppCatVod %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				</div>
+				<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="sauvegarder categorie vod ">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+					{% if user is defined and user.SauvegarderCatVod %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+				</div>
+			</div>
+				<div>
+							<label>
+								Vod</label>
+
+			{% if user is defined and user.VOD %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				</div>
+					<div style="display:flex;justify-content:space-between">
+					<div>
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="Ajouter vod">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+				{% if user is defined and user.AjouteVod %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+					</div>
+					<div>
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="Modifier vod">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+
+													{% if user is defined and user.ModifierVod %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+					</div>
+					<div>
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="Supprimer vod">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+
+													{% if user is defined and user.SupprimerVod %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+					</div>
+					<div>
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="Sauvegarder vod">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+
+
+													{% if user is defined and user.SauvegarderVod %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+					</div>
+						<div>	
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-primary  btn-sm" data-original-title="Lancer la video">
+								<i class="glyphicon glyphicon-play-circle"></i>
+							</a>
+						</label>
+				{% if user is defined and user.LancerVod %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+			</div>
+			</div>
+		</div>
+	</td>
+</tr>
+			<tr>
+				<td>
+					<div id="rcorners1" class="service1">
+						<div style="">
+							<label for="inputEmail" class="">Service</label>
+								{% if user is defined and user.SERVICE %}
+								<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+								{% else %}
+								<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+								{% endif %}
+						</div>
+					<div style="display:flex;justify-content:space-between">		
+						<div>
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="Ajouter service">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						
+							{% if user is defined and user.AjouteService %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+
+						
+						</div>
+						<div>
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="Modifier service">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+							{% if user is defined and user.ModifierService %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+						</div>
+						<div>
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="Supprimer service">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						
+							{% if user is defined and user.SupprimerService %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+						</div>
+						<div>
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="Sauvegarder service">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+						
+							{% if user is defined and user.SauvegarderService %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+						</div>
+					<div>
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-primary  btn-sm" data-original-title="Lancer/arreter service">
+								<i class="glyphicon glyphicon-play-circle"></i>
+							</a>
+						</label>
+													{% if user is defined and user.LancerArretService %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+					</div>	
+				</div>
+				<div style="">
+				<label>Service En Chembre </label>
+					{% if user is defined and user.ServiceEnChambre %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+			</div>
+			<div style="display:flex;justify-content:space-between">
+				<div>
+			<label style="">
+				<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="ajouter radio ">
+				<i class="glyphicon glyphicon-plus"></i>
+				</a>
+			</label>
+						
+							{% if user is defined and user.AjoutServiceEnChambre %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				
+				</div>
+						
+				<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="modifier radio ">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+							{% if user is defined and user.ModifierServiceEnChambre %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				</div>
+				<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="supprimer radio ">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						
+							{% if user is defined and user.SuppServiceEnChambre %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				</div>
+				<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="sauvegarder radio ">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+					{% if user is defined and user.SauvegarderServiceEnChambre %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+				</div>
+				
+			</div>
+					</div>
+				</td>
+				<td>
+		<div id="rcorners1" class="support1">
+			<div style="display:flex;justify-content:space-between">
+				<div>
+					<label>Support Connecté</label>
+					{% if user is defined and user.SupportConnect %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				</div>
+		
+		</div>
+		<div style="display:flex;justify-content:space-between;">
+		<div>
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="Ajouter support">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+
+
+													{% if user is defined and user.AjouteSupport %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+			</div>
+			<div>
+						
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="Modifier support">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+
+													{% if user is defined and user.ModifierSupport %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+			</div>
+			<div>
+						
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="Supprimer support">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+
+
+													{% if user is defined and user.SupprimerSupport %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+			</div>
+			<div>
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="Redemarrer support">
+								<i class="glyphicon glyphicon-refresh"></i>
+							</a>
+						</label>
+
+
+													{% if user is defined and user.RedimarerSupport %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+			</div>
+			
+			<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="sauvegarder radio ">
+								<i class="glyphicon glyphicon-log-in"></i>
+							</a>
+						</label>
+					{% if user is defined and user.CheckSupport %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+				</div>
+				<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-primary  btn-sm" data-original-title="sauvegarder radio ">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+					{% if user is defined and user.AjouteServiceEtablissement  %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+				</div>
+		</div>
+			<div>
+				<label>Message personnel</label>
+			{% if user is defined and user.MessagePersonnel %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+			</div>
+			<div>
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-primary  btn-sm" data-original-title="Envoyer message">
+								<i class="glyphicon glyphicon-comment"></i>
+							</a>
+						</label>
+				{% if user is defined and user.EnvoyerMessage %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+			</div>
+	</div>
+</td>
+<td>
+		<div id="rcorners1" class="servicePayant">
+			<div style="display:flex;gap:10px;align-items: start">
+				<label>Service Payants</label>
+					{% if user is defined and user.SERVICESPAYANTS %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+			</div>
+			<div>
+				<label style="">
+					<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="sauvegarder Service Payant ">
+						<i class="glyphicon glyphicon-floppy-disk"></i>
+					</a>
+				</label>
+					{% if user is defined and user.SauvgarderServicePayant %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+			</div>
+			<div style="display:flex;gap:15px;align-items: start">
+				<label>Charte Patient</label>
+					{% if user is defined and user.CHARTES %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+			</div>
+				<div>
+				<label style="">
+					<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="sauvegarder Charte Patient ">
+						<i class="glyphicon glyphicon-floppy-disk"></i>
+					</a>
+				</label>
+					{% if user is defined and user.SauvegarderChartPatient %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+			</div>
+			</div>
+		</td> 
+				
+
+			</tr>
+			<tr>
+				<td>
+					<div id="rcorners" class="jeux">
+						<div>
+							<label>Jeux</label>
+					{% if user is defined and user.JEUX %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+		</div>
+		<div style="display:flex;justify-content:space-between">
+		<div>
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="Ajouter jeux">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+				{% if user is defined and user.AjouterJeux %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+		</div>
+		<div>
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="Modifier jeux">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+
+
+													{% if user is defined and user.ModifierJeux %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+		</div>
+		<div>
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="Supprimer jeux">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+
+
+													{% if user is defined and user.SupprimerJeux %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+		
+		</div>	
+		<div>
+			<label>
+				<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="Sauvegarder jeux">
+					<i class="glyphicon glyphicon-floppy-disk"></i>
+				</a>
+			</label>
+		{% if user is defined and user.SauvegarderJeux %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+		</div>
+			<div>
+					<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-primary  btn-sm" data-original-title="Lancer/arreter service">
+								<i class="glyphicon glyphicon-play-circle"></i>
+							</a>
+						</label>
+					{% if user is defined and user.lancerJeux %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+				</div>	
+		</div>
+	</div>
+</td>
+<td>
+	<div id="rcorners" class="application">
+		<div>
+			<label>Application</label>
+			{% if user is defined and user.APPLICATION %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+		</div>
+		<div style="display:flex;justify-content:space-between">
+		<div>
+			<label>
+				<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="Ajouter application">
+					<i class="glyphicon glyphicon-plus"></i>
+				</a>
+			</label>
+			{% if user is defined and user.AjoutApp %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+		</div>
+		<div>
+			<label>
+				<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="Modifier application">
+					<i class="glyphicon glyphicon-pencil"></i>
+				</a>
+			</label>
+			{% if user is defined and user.ModifierApp %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+		</div>
+		<div>
+			<label>
+				<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="Supprimer application">
+					<i class="glyphicon glyphicon-trash"></i>
+				</a>
+			</label>
+			{% if user is defined and user.SupprimerApp %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+		</div>
+		<div>
+		<label>
+			<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="Sauvegarder application">
+				<i class="glyphicon glyphicon-floppy-disk"></i>
+			</a>
+		</label>
+		{% if user is defined and user.SauvegarderApp %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+		</div>			
+		</div>
+</div>
+</td>
+<td>
+		<div id="rcorners" class="video">
+			<div style="">
+				<label>Vidéo</label>
+					{% if user is defined and user.VIDEOS %} 
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+			</div>
+			<div style="display:flex;justify-content:space-between">
+				<div>
+			<label style="">
+				<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="ajouter video ">
+				<i class="glyphicon glyphicon-plus"></i>
+				</a>
+			</label>
+						
+							{% if user is defined and user.ajoutVideo %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				
+				</div>
+						
+				<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="modifier video ">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+							{% if user is defined and user.ModifierVideo %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				</div>
+				<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="supprimer video ">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						
+							{% if user is defined and user.suppVideo %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				</div>
+				<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="sauvegarder video ">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+					{% if user is defined and user.SauvegarderVideo %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+				</div>
+				<div>
+					<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-primary  btn-sm" data-original-title="Lancer/arreter video">
+								<i class="glyphicon glyphicon-play-circle"></i>
+							</a>
+					</label>
+					{% if user is defined and user.lancerVideo %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</td>
+</tr>
+<tr>
+				<td>
+		<div id="rcorners" class="Musique">
+			<div style="">
+				<label>Musique</label>
+					{% if user is defined and user.MUSIQUE %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+			</div>
+			<div style="display:flex;justify-content:space-between">
+				<div>
+			<label style="">
+				<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="ajouter radio ">
+				<i class="glyphicon glyphicon-plus"></i>
+				</a>
+			</label>
+						
+							{% if user is defined and user.ajoutMusique %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				
+				</div>
+						
+				<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="modifier radio ">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+							{% if user is defined and user.ModifierMusique %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				</div>
+				<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="supprimer radio ">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						
+							{% if user is defined and user.SuppMusique %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				</div>
+				<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="sauvegarder radio ">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+					{% if user is defined and user.SauvegarderMusique %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+				</div>
+					<div>
+					<label>
+							<a data-toggle="tooltip" data-placement="top" title="Lancer/arreter musique" class="btn btn-primary  btn-sm" data-original-title="Lancer/arreter musique">
+								<i class="glyphicon glyphicon-play-circle"></i>
+							</a>
+						</label>
+					{% if user is defined and user.lancerMusique %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</td>
+<td>
+		<div id="rcorners" class="annonce">
+			<div style="">
+				<label>Annonce</label>
+					{% if user is defined and user.ANNONCES %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+			</div>
+			<div style="display:flex;justify-content:space-between">
+				<div>
+			<label style="">
+				<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="ajouter radio ">
+				<i class="glyphicon glyphicon-plus"></i>
+				</a>
+			</label>
+						
+							{% if user is defined and user.AjouterAnnonce %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				
+				</div>
+						
+				<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="modifier radio ">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+							{% if user is defined and user.ModifierAnnonce %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				</div>
+				<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="supprimer radio ">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+						
+							{% if user is defined and user.SuppAnnonce %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				</div>
+				<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="sauvegarder radio ">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+					{% if user is defined and user.SauvegarderAnnonce %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</td>
+	<td>
+		<div id="rcorners" class="questionnaire">
+			<div style="display:flex;justify-content:space-between">
+				<div>
+					<label>Questionnaire</label>
+					{% if user is defined and user.QUESTIONNAIRE %}
+						<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+						<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+				</div>
+				<div>
+					<label>Resultat de questionnaire</label>
+					{% if user is defined and user.ResultatQs %}
+						<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+						<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+				</div>
+		</div>
+		<div style="display:flex;justify-content:space-between">
+			<div>
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="Ajouter questionnaire">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+
+
+													{% if user is defined and user.Ajouteqs %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+			</div>
+			<div>
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="Modifier questionnaire">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+						</label>
+
+
+													{% if user is defined and user.Modifierqs %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+			</div>
+			<div>
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="Supprimer questionnaire">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</label>
+
+
+													{% if user is defined and user.Supprimerqs %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+			</div>
+			<div>
+						
+						<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="Sauvegarder questionnaire">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+
+
+													{% if user is defined and user.Sauvgarderqs %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}	
+			</div>			
+		</div>
+	</div>
+</td>
+
+</tr>
+<tr>
+	<td>
+					<div id="rcorners" class="television">
+					<div style="display:flex;justify-content:space-between">
+						<div style="">
+							<label>Télévision</label>
+							
+								{% if user is defined and user.TELEVISION %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+
+													</div>
+
+						<div style="">
+							<label>Statistiques Télévision</label>
+							
+								{% if user is defined and user.STATISTIQUECHAINETV %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+
+						</div>
+				</div>
+
+				<div style="display:flex;justify-content:space-between">
+				<div>
+					<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="Ajouter télévision">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+						</label>
+						
+							{% if user is defined and user.AjoutTV %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+			</div>
+				{# <div>
+<label style="">
+	<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-warning  btn-sm" data-original-title="Modifier télévision">
+		<i class="glyphicon glyphicon-pencil"></i>
+	</a>
+</label>
+
+		{% if user is defined and user.ModifierTv %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				</div> #}
+				<div>
+<label style="">
+	<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-danger  btn-sm" data-original-title="Supprimer télévision">
+		<i class="glyphicon glyphicon-trash"></i>
+	</a>
+</label>
+						
+							{% if user is defined and user.SupprimerTV %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				</div>
+				<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="Sauvegarder télévision">
+								<i class="glyphicon glyphicon-floppy-disk"></i>
+							</a>
+						</label>
+
+						
+							{% if user is defined and user.SauvegarderTv %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+
+						
+				</div>
+				<div>
+						<label style="">
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-primary  btn-sm" data-original-title="Gratuité des chaines ">
+								<i class="glyphicon glyphicon-refresh"></i>
+							</a>
+						</label>
+						
+							{% if user is defined and user.GratuiteTv %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+			{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+			{% endif %}
+				</div>
+					<div>
+					<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-primary  btn-sm" data-original-title="Lancer/arreter service">
+								<i class="glyphicon glyphicon-play-circle"></i>
+							</a>
+						</label>
+					{% if user is defined and user.lancerTv %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+				</div>
+
+				<div>
+					<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="Exporter les télévisions">
+								<i class="fa-solid fa-clone"></i> 	
+							</a>
+						</label>
+					{% if user is defined and user.ExportTv %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+				</div>	
+
+				<div>
+					<label>
+							<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-info  btn-sm" data-original-title="Importer les télévisions">
+ 							<i	class="glyphicon glyphicon-import "></i>
+							</a>
+						</label>
+					{% if user is defined and user.ImportTV %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+				</div>		
+		</div>
+	</div>
+</td>
+	
+	<td>
+		<div id="rcorners" class="R_application">
+			<div style="display:flex;justify-content:space-between;">
+				<div style="display:flex;gap:13px;align-items: start">
+					<label>R-Mobile</label>
+					{% if user is defined and user.RMOBILE %}
+						<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+						<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+				</div>
+			<div style="display:flex;gap:10px;align-items: start">
+				<label>R-Remote</label>
+				{% if user is defined and user.RREMOTE %}
+				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+				{% else %}
+				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+				{% endif %}
+			</div>
+			</div>
+			<div>
+				<label style="">
+					<a data-toggle="tooltip" data-placement="top" title="" class="btn btn-success  btn-sm" data-original-title="sauvegarder Rmobile ">
+						<i class="glyphicon glyphicon-floppy-disk"></i>
+					</a>
+				</label>
+					{% if user is defined and user.ModifierRmobile %}
+					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
+					{% else %}
+					<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+					{% endif %}
+			</div>
+		</div>
+
+				</td>
+			</tr>
+		</tbody></table>
+</div>
+<div style="float:right;margin-right:50px;">
+    <a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/gestion/profile">
+        <i class="glyphicon glyphicon-arrow-left"></i> Retour
+    </a>
+</div>
+{% endblock %}
+

@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\CategorieLivreaudio;
+use App\Entity\ConfigApp;
 use app\Entity\Livreaudio;
 use Doctrine\DBAL\Exception\IntegrityConstraintViolationException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException; // Importez également cette classe si nécessaire
@@ -20,7 +21,15 @@ class CategorieLivreaudioController extends AbstractController
     #[Route('/categorielivreaudio/supprimer/{id}', name: 'app_supprimer_categorielivreaudio')]
     public function supprimercategorielivreaudio(EntityManagerInterface $entityManager, int $id): Response
     {
-       
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
+        $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);  
+        $Acce = $this->getUser()->isCatLivreAudio() && $configApp->getEnableLIVREAUDIO()=="1" ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+        }
         try {
             $CategorieLivreaudio = $entityManager->getRepository(CategorieLivreaudio::class)->find($id);
 
@@ -55,15 +64,26 @@ class CategorieLivreaudioController extends AbstractController
 
     
     #[Route('/categorielivreaudio', name: 'app_categorie_livreaudio')]
-    public function index(): Response
+    public function index(EntityManagerInterface $entityManager): Response
     {
-        
-    
-        $catlivreaudios = $this->getUser()->getEtablissement()->getCategorieLivreaudios();
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
+        $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);  
+        $Acce = $this->getUser()->isCatLivreAudio() && $configApp->getEnableLIVREAUDIO()=="1" ;
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+        }
+        $catlivreaudios = $etablissement->getCategorieLivreaudios();
+        $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement'=>$etablissement]);
         //var_dump($catlivreaudios);die();
 
         return $this->render('categorie_livreaudio/index.html.twig', [
             'catlivreaudios' => $catlivreaudios,
+            'appConfig' => $appConfig,
+            'user' => $this->getUser(),
+
         ]);
     }
 
@@ -72,9 +92,23 @@ class CategorieLivreaudioController extends AbstractController
     #[Route('/categorielivreaudio/ajouter', name: 'app_ajouter_categorielivreaudio')]
     public function ajoutercategorielivreaudio(EntityManagerInterface $entityManager): Response
     {
-            $user = $this->getUser();
-            $etablissement = $this->getUser()->getEtablissement();
-        
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
+        $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);  
+        $Acce = $this->getUser()->isajoutCatLivreAudio() && $this->getUser()->isCatLivreAudio()  && $configApp->getEnableLIVREAUDIO()=="1";
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+        }
+            $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+            if ($appConfig) {
+                $configArray = ['Status'=>$appConfig->getStatusServeur()];
+            } 
+            else{
+                $configArray = ['Status'=>'online'];
+            }
+            $configJson = json_encode($configArray);
             $request = Request::createFromGlobals();
 
 
@@ -151,6 +185,7 @@ class CategorieLivreaudioController extends AbstractController
             $categories->setDE($DE);
             $categories->setZH($ZH);
             $categories->setAR($AR);
+            $categories->setId(mt_rand(1, 99999));
 
             $entityManager->persist($categories);
             $entityManager->flush();
@@ -158,6 +193,9 @@ class CategorieLivreaudioController extends AbstractController
         }
       return $this->render('categorie_livreaudio/ajouter.html.twig',[
         'availablePositions' => $availablePositions,
+        'configApp' => $configJson,
+        'appConfig' => $appConfig,
+        'user' => $this->getUser(),
       ]);
         
     }
@@ -165,8 +203,24 @@ class CategorieLivreaudioController extends AbstractController
     #[Route('/categorielivreaudio/modifier/{id}', name: 'app_modifier_categorielivreaudio')]
     public function modifiercategorielivreaudio(EntityManagerInterface $entityManager, int $id): Response
         {
-            $user = $this->getUser();
+            if( !$this->getUser())
+            return $this->redirectToRoute('app_login');
             $etablissement = $this->getUser()->getEtablissement();
+            $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+      
+            $Acce = $this->getUser()->isModifierCatLivreAudio() && $this->getUser()->isCatLivreAudio() && $configApp->getEnableLIVREAUDIO()=="1";
+            if (!$Acce) {
+                $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+                return $this->redirectToRoute('home');
+            }
+            $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+            if ($appConfig) {
+                $configArray = ['Status'=>$appConfig->getStatusServeur()];
+            } 
+            else{
+                $configArray = ['Status'=>'online'];
+            }
+            $configJson = json_encode($configArray);
             $categories = $entityManager->getRepository(CategorieLivreaudio::class)->findById($id)[0];
             $request = Request::createFromGlobals();
 
@@ -255,6 +309,9 @@ class CategorieLivreaudioController extends AbstractController
       return $this->render('categorie_livreaudio/modifier.html.twig', [
         'categorielivreaudio' => $categories,
         'availablePositions' => $availablePositions,
+        'configApp' => $configJson,
+        'appConfig' => $appConfig,
+        'user' => $this->getUser(),
     ]);
 
         
@@ -267,7 +324,16 @@ class CategorieLivreaudioController extends AbstractController
      #[Route('/categorielivreaudio/updateactive', name: 'app_update_active_categorie_livreaudio')]
      public function updateActiveStatus(EntityManagerInterface $entityManager): Response
      {
+         if( !$this->getUser())
+         return $this->redirectToRoute('app_login');
+        $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);  
          $repository = $entityManager->getRepository(CategorieLivreaudio::class);
+         $Acce = $this->getUser()->isSauvegarderCatLivreAudio() && $this->getUser()->isCatLivreAudio() && $configApp->getEnableLIVREAUDIO()=="1";
+            if (!$Acce) {
+                $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+                return $this->redirectToRoute('home');
+            }
          $user = $this->getUser();
          $etablissement = $this->getUser()->getEtablissement();
          $categories = $repository->findBy(['etablissement' => $etablissement]);

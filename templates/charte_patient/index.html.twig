@@ -18,43 +18,33 @@
 			margin-top: 10px;
 
 		}
-		#div2 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 20px;
-			width: 1091px;
-			height: auto;
-			margin-left: 10px;
-			margin-top: 10px;
-		}
 	</style>
 
-
-<div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
+<div style="border-radius: 8px;text-align: left;margin-bottom: 10px;margin-left: -120px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
+    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
        Charte Patient
-		
 </div>
-	<div id="div2">
+<div id="div2">
 <form action="" method="post" enctype="multipart/form-data">
 
 <input  type="file" name="file" id="file" class="upload"   accept=".pdf"   /> <br> 
 <label style="color: red" >Seul les fichiers pdf peuvent être téléchargés </label><br>
-<button type="submit"  class="button btn btn-primary btn-sm"  name="valider" ><i class="glyphicon glyphicon-floppy-disk" ></i> Enregistrer </button> 
+<div>
+  <button type="submit" {% if app.user.SauvegarderChartPatient == '0' %} disabled {% endif %} name="valider" class="btn btn-success btn-sm" style="margin-bottom: 10px; border: 2px; padding: 8px; margin-right: 5px;width:150px;">
+        <i class="glyphicon glyphicon-floppy-disk"></i>
+            Sauvegarder
+    </button>
 
-
-
-
-<h3> REPERTOIRE DU FICHIER : </h3>
-{{ asset(package)}}
-
-
-
-<body>
-    <object data="{{ asset(package)}}" type="application/pdf" width="100%" height="600px">
+    <a name="annuler"  class="btn btn-danger btn-sm" style="margin-bottom: 10px; border: 2px; padding: 8px;width:150px;" href="/home">
+        <i class="glyphicon glyphicon-remove"></i>
+        Annuler
+    </a>
+</div>
+<div style="display:flex;justify-content:center;width:100%;height:530px">
+    <object data="{{ asset(package)}}" type="application/pdf" width="50%" height="100%" style="border-radius:5px;">
         <p>Impossible d'afficher le fichier PDF. Vous pouvez le <a href="{{ asset(package)}}">télécharger ici</a>.</p>
     </object>
-</body>
-
+</div>
 </form>
 </div>
 

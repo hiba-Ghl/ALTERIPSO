@@ -3,9 +3,12 @@
 {% endblock %}
 
 {% block body %}
-	<!--                                                    sign in                                                -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  {# offline #}
 
+<script src="assets/js/all.min.js"></script>
+  {# online #}
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 	<style>
 		#div1 {
 			border-radius: 25px;
@@ -24,7 +27,7 @@
 			border: 2px solid #3087ce;
 			padding: 20px;
 			width: 1091px;
-			height: 1000px;
+			height: 1090px;
 			margin-left: 10px;
 			margin-top: 10px;
 		}
@@ -32,12 +35,12 @@
 	{% for type, messages in app.flashes %}
     {% for message in messages %}
         <div class="alert alert-{{ type }}">
-            {{ message }}
+         	{{ message }}
         </div>
     {% endfor %}
 	{% endfor %}
 
-	<br><br><br><br>
+	<br><br>
 	<div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
 		<img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
 		CONNECTEZ-VOUS
@@ -47,9 +50,7 @@
 				<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 	{% endif %}
 	<div id="div1">
-		<form method="post">
-			
-
+		<form method="post" autocomplete="off">
 			{% if app.user %}
 				<div class="mb-3">
 					Vous êtes connecté en tant que
@@ -59,40 +60,45 @@
 			{% endif %}
 
 
-			<label for="username">Utilisateur</label>
+			<label for="username" style="diaplay:flex">Utilisateur</label>
 			<input type="text" name="_username" value="{{last_username}}" id="username" class="form-control"  required >
 			<br>
 			<label for="password">Mot de passe</label>
-			<input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
-
-			<input
-			type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+			<input type="password" name="_password" id="password" class="form-control" required  autocomplete="new-password">
+			<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
 			{#
-			            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-			            See https://symfony.com/doc/current/security/remember_me.html
-			
+			    Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+			    See https://symfony.com/doc/current/security/remember_me.html
 			            <div class="checkbox mb-3">
 			                <label>
 			                    <input type="checkbox" name="_remember_me"> Remember me
 			                </label>
 			            </div>
 			        #}
+					<br>
+			<div class="form-group" style="display:flex;justify-content:space-between;">
+					{# <input type="checkbox" name="_remember_me" id="remember_me">
+					Se souvenir de moi #}
+			<div>
+    	<a href="#" style="font-size:16px;color: #3087ce" onclick="return redirectOublierMotDePasse()">Mot de passe oublié ?</a>
+		</div>
+		<script>
+		function redirectOublierMotDePasse() {
+    		const username = document.getElementById("username");
+    		if (username.value.trim() != "") {
+        		window.location.href = "/app_forgot_password_request/" + encodeURIComponent(username.value);
+    		} else {
+        		alert("Entrez votre identifiant, s'il vous plaît !");
+   			 }
+    		return false;
+			}
+		</script>
 
-			<br><br>
-			<div class="form-group">
-				<label>
-					<input type="checkbox" name="_remember_me">
-					Se souvenir de moi
-				<a href="{#{path('app_forgot_password_request')}#}" style="margin-left: 100px;">Mot de passe oublié ? </a>
-				</label>
-
-				 
-				<button type="submit" class="btn btn-success" style="margin-left: 505px;position: absolute;background-color: #3087ce; border: 2px solid #3087ce;">
+				<button type="submit" class="btn btn-success" style="background-color: #3087ce; border: 2px solid #3087ce;">
 					<i class="glyphicon glyphicon-log-in"></i>
 					Connexion
 				</button>
-
 			</div>
 
 
@@ -135,18 +141,13 @@
         </div>
     {% endif %} #}
 	<div id="div2">
-
+    
 		<form name="createUser" method="post" action="{{ path('app_register')}}" class="fos_user_registration_register form-horizontal">
-
-
-			<strong>Données Personnelles
-			</strong>
-
-
+			<h5 style="border-radius:10px;width:25%;padding:10px;background-color: #3087ce;color:white;font-size:20px;">Données Personnelles</h5>
 			<div class="form-group">
-				<label for="inputEmail" class="col-lg-2 control-label">Titre</label>
+				<label for="inputEmail" class="col-lg-2 control-label">
+				<p style="width:100%;text-align:left;padding-left:20px;">Titre</p></label>
 				<div class="col-lg-10">
-
 					<select id="genre" name="genre" class="form-control">
 						<option value="0">aucun</option>
 						<option value="1">Mr.</option>
@@ -157,26 +158,34 @@
 			</div>
 
 			<div class="form-group">
-				<label for="inputPassword" class="col-lg-2 control-label">Nom
+				<label for="inputPassword" class="col-lg-2 control-label">
+				<p style="width:100%;text-align:left;padding-left:20px;">
+				Nom
+				</p>
 				</label>
 				<div class="col-lg-10">
 					<input type="text" id="nom" name="nom" class="form-control" value="{{ nom|default('') }}"/>
-
 				</div>
 			</div>
 
 			<div class="form-group">
-				<label for="inputEmail" class="col-lg-2 control-label">Prénom</label>
+				<label for="inputEmail" class="col-lg-2 control-label">
+				<p style="width:100%;text-align:left;padding-left:20px;">
+				Prénom
+				</p>
+				</label>
 				<div class="col-lg-10">
 
 					<input type="text" id="prenom" name="prenom" class="form-control" value="{{ prenom|default('') }}"/>
 
 				</div>
 			</div>
-  
-
 <div class="form-group">
-    <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+    <label for="inputEmail" class="col-lg-2 control-label">
+	<p style="width:100%;text-align:left;padding-left:20px;">
+	Email
+	</p>
+	</label>
     <div class="col-lg-10">
         <input type="email" id="fos_user_registration_form_email" name="email" required="required" class="form-control" value="{{ email|default('') }}"/>
             {% if bugs['email'] is defined %}
@@ -184,15 +193,13 @@
         {% endif %} 
     </div>
 </div>
-
- 
-			<br>
-			<strong>Coordonnées
-			</strong>
-
-
+			<h5 style="border-radius:10px;width:25%;padding:10px;background-color: #3087ce;color:white;font-size:20px;">Coordonnées</h5>
 			<div class="form-group">
-				<label for="inputEmail" class="col-lg-2 control-label">Nom établissement</label>
+				<label for="inputEmail" class="col-lg-2 control-label">
+				<p style="width:100%;text-align:left;padding-left:20px;">
+				Nom établissement
+				</p>
+				</label>
 				<div class="col-lg-10">
 					<input type="text" id="nom_etablissement" name="nom_etablissement" class="form-control" value="{{ nom_etablissement|default('') }}"/>
 				</div>
@@ -200,7 +207,11 @@
 
 
 			<div class="form-group">
-				<label for="inputEmail" class="col-lg-2 control-label">Adresse</label>
+				<label for="inputEmail" class="col-lg-2 control-label">
+				<p style="width:100%;text-align:left;padding-left:20px;">
+				Adresse
+				</p>
+				</label>
 				<div class="col-lg-10">
 					<input type="text" id="adresse" name="adresse" class="form-control" value="{{ adresse|default('') }}"/>
 				</div>
@@ -208,7 +219,10 @@
 
 
 			<div class="form-group">
-				<label for="inputEmail" class="col-lg-2 control-label">Code Postal
+				<label for="inputEmail" class="col-lg-2 control-label">
+				<p style="width:100%;text-align:left;padding-left:20px;">
+				Code Postal
+				</p>
 				</label>
 				<div class="col-lg-10">
 					<input type="text" id="code" name="code" class="form-control" value="{{ code|default('') }}"/>
@@ -217,7 +231,11 @@
 
 
 			<div class="form-group">
-				<label for="inputEmail" class="col-lg-2 control-label">Ville</label>
+				<label for="inputEmail" class="col-lg-2 control-label">
+				<p style="width:100%;text-align:left;padding-left:20px;">
+				Ville
+				</p>
+				</label>
 				<div class="col-lg-10">
 					<input type="text" id="ville" name="ville" class="form-control" value="{{ ville|default('') }}"/>
 				</div>
@@ -225,9 +243,12 @@
 
 
 			<div class="form-group">
-				<label for="inputEmail" class="col-lg-2 control-label">Pays</label>
+				<label for="inputEmail" class="col-lg-2 control-label">
+				<p style="width:100%;text-align:left;padding-left:20px;">
+				Pays
+				</p>
+				</label>
 				<div class="col-lg-10">
-
 					<select id="pays" name="pays" required="required" class="form-control">
 						<option value="{{ pays|default('') }}"> {{ ville|default('') }} </option>
 						<option value="France" selected="selected">France</option>
@@ -497,16 +518,50 @@
 
 
 				</div>
+
 			</div>
-
-
-			<br>
-			<strong>Coordonnées utilisateur
-			</strong>
- 
-
+			<div class="form-group">
+				<label for="Support" class="col-lg-2 control-label">
+				<p style="width:100%;text-align:left;padding-left:20px;">
+				Support
+				</p>
+				</label>
+				<div class="col-lg-10">
+				<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+					<div>
+					<input type="checkbox" id="support_box" name="support[Box Ip/Box coax]" value=1 {% if supports is defined and supports['Box Ip/Box coax'] is defined %} checked {% endif %}>
+					<label>Box Ip/Box coax</label>
+					</div>
+					<div>
+					<input type="checkbox" id="support_Samsung" name="support[Tv Samsung]" value=2 {% if supports is defined and  supports['Tv Samsung'] is defined %} checked {% endif %}>
+					<label>Tv Samsung</label>
+					</div>			
+					<div>
+					<input type="checkbox" id="support_Lg" name="support[Tv LG]" value=3 {% if supports is defined and  supports['Tv LG'] is defined %} checked {% endif %}>
+					<label>Tv LG</label>
+					</div>
+					<div>
+					<input type="checkbox" id="support_Philips11" name="support[Tv Philips 5011]" value=4 {% if supports is defined and  supports['Tv Philips 5011'] is defined %} checked {% endif %}>
+					<label>Tv Philips 5011</label>
+					</div>
+					<div>
+					<input type="checkbox" id="support_Philips14" name="support[Tv Philips 5014]" value=5 {% if supports is defined and  supports['Tv Philips 5014'] is defined %} checked {% endif %}>
+					<label>Tv Philips 5014</label>
+					</div>
+				</div>
+				
+				  	{% if bugs['support'] is defined %}
+            		<div style="color:red;margin-left:8px;">{{ bugs['support'] }}</div>
+        			{% endif %} 
+				</div>
+				</div>
+			<h5 style="border-radius:10px;width:25%;padding:10px;background-color: #3087ce;color:white;font-size:20px;">Coordonnées utilisateur</h5>
 <div class="form-group">
-    <label for="inputEmail" class="col-lg-2 control-label">Identifiant</label>
+    <label for="inputEmail" class="col-lg-2 control-label">
+	<p style="width:100%;text-align:left;padding-left:20px;">
+				Identifiant
+				</p>
+				</label>
     <div class="col-lg-10">
         <input type="text" id="fos_user_registration_form_username" name="username" required="required" maxlength="255" pattern=".{2,}" class="form-control" value="{{ username|default('') }}"/>
            {% if bugs['username'] is defined %}
@@ -517,7 +572,11 @@
 
 <div id="fos_user_registration_form_plainPassword">
     <div class="form-group">
-    <label class="col-sm-2 control-label required" for="fos_user_registration_form_plainPassword_first">Mot de passe</label>
+    <label class="col-sm-2 control-label required" for="fos_user_registration_form_plainPassword_first">
+	<p style="width:100%;text-align:left;padding-left:20px;">
+	Mot de passe
+	</p>
+	</label>
     <div class="col-sm-10">
         <div class="input-group">
             <input type="password" id="fos_user_registration_form_plainPassword_first" name="password" required="required" class="form-control" value="{{ password|default('') }}"/>
@@ -528,7 +587,11 @@
     </div>
 </div>
 <div class="form-group">
-    <label class="col-sm-2 control-label required" for="fos_user_registration_form_plainPassword_second">Confirmation du Mot de passe</label>
+    <label class="col-sm-2 control-label required" for="fos_user_registration_form_plainPassword_second">
+	<p style="width:100%;text-align:left;padding-left:20px;">
+	Confirmation du Mot de passe
+	</p>
+	</label>
     <div class="col-sm-10">
         <div class="input-group">
             <input type="password" id="fos_user_registration_form_plainPassword_second" name="fos_user_registration_form[plainPassword][second]" required="required" class="form-control" value="{{ password|default('') }}"/>

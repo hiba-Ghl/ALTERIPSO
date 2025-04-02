@@ -13,11 +13,10 @@
 		}
 </style>
 
-
-<div style="margin-top: -40px;position: absolute;border-radius: 8px;text-align: left;margin-left: -68px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: -27px;">
-    Ajouter jeux 
+<div style="border-radius: 8px;text-align: left;margin-top:10px;margin-bottom: 10px;margin-left: -70px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
+    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+        Modifier un jeux 
 </div>
-
 <div id="div2">
 
 
@@ -26,9 +25,9 @@
       
         <div style="width: 100%;">
             <div style="float: left; width: 25%;">
-                <img src="{{ asset(jeux.logo) }}" alt="..." class="img-rounded img-responsive" style="width: 170px;height: 170px;">
+                <img src="{{ asset(jeux.logo) }}" alt="..." class="img-rounded img-responsive" style="width: 200px;height: 200px;">
             </div>
-            <div style="float: left; width: 67%;">
+            <div style="float: left; width: 75%;">
                 <table style="width: 100%;">
                     <tr>
                         <td>
@@ -66,7 +65,7 @@
                         <td>
                             <div class="form-group">
                                 <label>Logo:</label>
-                                <input type="file" class="form-control-file" id="logo" name="logo">
+                                <input type="file" class="form-control" id="logo" name="logo">
                             </div>
                         </td>
                     </tr>
@@ -74,21 +73,16 @@
             </div>
         </div>
         <br>
-        <button type="submit" class="button btn btn-primary btn-sm" style="margin-left:940px;" name="valider" >
-            <i class="glyphicon glyphicon-floppy-disk"></i>
-            Enregistrer
-        </button>
+        <div style="float:right;margin-right:-60px;">
+				<a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/jeux">
+					<i class="glyphicon glyphicon-remove"></i> Annuler
+				</a>
+				<button type="submit" class="button btn btn-primary btn-md" name="valider" >
+					<i class="glyphicon glyphicon-floppy-disk"></i>
+					Enregistrer
+				</button>
+				</div>
     </form>
-    
-		<form method="POST" action="{{path('app_jeux')}}">
-			<button type="submit" class="button btn btn-danger btn-sm" style="width: 103px;margin-left: 1050px;margin-top: -57px;">
-				<i class="glyphicon glyphicon-remove"></i>
-				Annuler
-			</button>
-		</form>
-
-
-	
 
 </div>
 <!-- Scripts -->

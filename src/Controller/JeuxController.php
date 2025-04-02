@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\ConfigApp;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,9 +15,17 @@ class JeuxController extends AbstractController
     #[Route('/jeux', name: 'app_jeux')]
     public function index(EntityManagerInterface $entityManager): Response
     {
-        $support = $this->getUser()->getEtablissement()->getSupports();
-        $jeuxsCollection = $this->getUser()->getEtablissement()->getJeuxes();
-    
+      if( !$this->getUser())
+      return $this->redirectToRoute('app_login');
+      $etablissement = $this->getUser()->getEtablissement();
+      $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+      $Acce = $this->getUser()->getJEUX() && $configApp->getEnableJEUX()=="1";
+        if (!$Acce) {
+          $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+          return $this->redirectToRoute('home');         }
+        $support =$etablissement->getSupports();
+        $jeuxsCollection = $etablissement->getJeuxes();
+        $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
         // Convertir la PersistentCollection en tableau PHP
         $jeuxsArray = $jeuxsCollection->toArray();
     
@@ -24,10 +33,11 @@ class JeuxController extends AbstractController
         usort($jeuxsArray, function($a, $b) {
             return $a->getPosition() <=> $b->getPosition();
         });
-    
         return $this->render('jeux/index.html.twig', [
             'supports' => $support,
-            'jeuxs' => $jeuxsArray
+            'jeuxs' => $jeuxsArray,
+            'appConfig' => $appConfig,
+            'user' => $this->getUser(),
         ]);
     }
     
@@ -37,8 +47,17 @@ class JeuxController extends AbstractController
     public function ajouterjeux(EntityManagerInterface $entityManager): Response
     {
      $request = Request::createFromGlobals();
-     $support =  $this->getUser()->getEtablissement()->getSupports();
+     if( !$this->getUser())
+     return $this->redirectToRoute('app_login');
      $etablissement = $this->getUser()->getEtablissement();
+     $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
+     $Acce = $this->getUser()->getAjouterJeux() && $this->getUser()->getJEUX() && $configApp->getEnableJEUX()=="1";
+     if (!$Acce) {
+      $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+      return $this->redirectToRoute('home');      }
+     $support =  $etablissement->getSupports();
+     $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
  
      
       $valider = $request->get("valider");
@@ -73,16 +92,25 @@ class JeuxController extends AbstractController
           return $this->redirectToRoute('app_jeux', ['ongletActif' => $protocole]);
        }
  
-       return $this->render('jeux/ajouter.html.twig', array('supports' => $support));
+       return $this->render('jeux/ajouter.html.twig', array('supports' => $support,'appConfig' => $appConfig));
     }
 
     #[Route('/jeux/modifier/{id}', name: 'app_modifier_jeux')]
     public function modifierjeux(EntityManagerInterface $entityManager, int $id): Response
     {
        $request = Request::createFromGlobals();
+       if( !$this->getUser())
+       return $this->redirectToRoute('app_login');
        $etablissement = $this->getUser()->getEtablissement();
-       $support =  $this->getUser()->getEtablissement()->getSupports();
-       $jeux = $entityManager->getRepository(Jeux::class)->findById($id)[0];            
+       $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
+       $Acce = $this->getUser()->getModifierJeux() && $this->getUser()->getJEUX() && $configApp->getEnableJEUX()=="1";
+       if (!$Acce) {
+        $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+        return $this->redirectToRoute('home');        }
+       $support =  $etablissement->getSupports();
+       $jeux = $entityManager->getRepository(Jeux::class)->findById($id)[0]; 
+       $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);           
        $valider = $request->get("valider");
        if (isset($valider)) {
         
@@ -118,20 +146,29 @@ class JeuxController extends AbstractController
  
      
  
-       return $this->render('jeux/modifier.html.twig', array('jeux' => $jeux,'supports' => $support));
+       return $this->render('jeux/modifier.html.twig', array('jeux' => $jeux,'supports' => $support,
+       'appConfig' => $appConfig
+      ));
     }
  
     #[Route('/jeux/supprimer/{id}', name: 'app_supprimer_jeux')]
     public function supprimerjeux(EntityManagerInterface $entityManager, int $id): Response
     {
+      if( !$this->getUser())
+      return $this->redirectToRoute('app_login');
+      $etablissement = $this->getUser()->getEtablissement();
+      $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
+      $Acce = $this->getUser()->getSupprimerJeux() && $this->getUser()->getJEUX() && $configApp->getEnableJEUX()=="1";
+       if (!$Acce) {
+        $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+        return $this->redirectToRoute('home');        }
         $jeux = $entityManager->getRepository(Jeux::class)->find($id);
- 
         if (!$jeux) {
             throw $this->createNotFoundException(
                 'No jeux found for id '.$id
             );
         }
- 
         $entityManager->remove($jeux);
         $entityManager->flush();
  
@@ -141,8 +178,16 @@ class JeuxController extends AbstractController
     #[Route('/jeux/modifierhome', name: 'app_modifier_homejeux')]
     public function modifierhomejeux(Request $request,EntityManagerInterface $entityManager)
     {
-    
-        $jeuxs =  $this->getUser()->getEtablissement()->getApplications();
+      if( !$this->getUser())
+      return $this->redirectToRoute('app_login');
+      $etablissement = $this->getUser()->getEtablissement();
+      $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
+      $Acce = $this->getUser()->getSauvegarderJeux() && $this->getUser()->getJEUX() && $configApp->getEnableJEUX()=="1";
+      if (!$Acce) {
+        $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+        return $this->redirectToRoute('home');       }
+      $jeuxs =  $this->getUser()->getEtablissement()->getApplications();
   
       foreach ($jeuxs as $jeux) {
         $jeux->setActive('0');

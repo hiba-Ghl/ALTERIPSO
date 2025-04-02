@@ -5,30 +5,20 @@
 <script >
 $('.dt-buttons').after('<hr>')
 </script>
-
-<h1><strong id="cat"> Messages personnels </strong></h1><hr>
-<br>
-
-
+<div style="border-radius: 8px; text-align: left; margin-bottom: 10px; margin-left: -130px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding-left: 10px; display: inline-block;">
+<img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">Messages personnels 
+</div>
 {% if app.request.get('msg') is defined %}
 {% if app.request.get('msg') ==1 %}
-    
-
-
-<div class="alert alert-success alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button> <strong><i class='glyphicon glyphicon-thumbs-up' ></i> votre message</strong> a été envoyé avec succès </div>
-
-
-
+<div class="alert alert-success alert-dismissible fade in" role="alert"> 
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+<span aria-hidden="true">×</span></button> <strong><i class='glyphicon glyphicon-thumbs-up' >
+</i> votre message</strong> a été envoyé avec succès </div>
 
 {% endif %}
 {% endif %}
-
-
-
-
-
 <form action="{{ path('app_envoyer_message_chambre')}}" method="post">
-
+<div id="div2">
 <div class="col-md-12">
 
 
@@ -39,42 +29,44 @@ $('.dt-buttons').after('<hr>')
 
 </div>
 
+
 <div class="col-md-12" style="margin-bottom:30px">
 
+
+   
 <div class="form-group">
-
-
-
-
-<button type="submit" id="envoyer" name="valider" class="btn-primary btn btn-sm"><i class="glyphicon glyphicon-comment"></i> Envoyer message aux chambres sélectionnées</button>
-
+<button type="submit" id="envoyer" name="valider" class="btn-primary btn btn-sm" {% if app.user.EnvoyerMessage == '0' %} disabled {% endif %}>
+<i class="glyphicon glyphicon-comment"></i>
+ Envoyer message aux chambres sélectionnées
+ </button>
 </div>
+
 
 <hr>
 <div class="col-md-8" >
 </div>
 
 
-<div class="col-md-12" margin-buttom:25px>
+<div class="col-md-12" style="margin-buttom:25p"x>
 
 
 
 
   <!--<table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column" id="dataTables-example">-->
 
- <table class="table table-striped table-bordered table-hover header-fixed" id="dataTables-example">
+   <table class="table table-striped table-bordered header-fixed table-hover" id="dataTables-example" style="width: 100%;margin-top:20px;">
 <thead> 
 
 <tr>
-<th  style="height: 50px;width: 100px;" > <input  type="checkbox"  id="checkAll" >   Selectionner</th>
+<th style="width:160px;height: 50px;text-align:center;display:flex;justify-content:space-between;align-items:center" > <input  type="checkbox"  id="checkAll" >   Selectionner</th>
 
-<th style="">Connexion</th>
-<th style="">Ip</th>
-<th style="">Support connecté</th>
-<th style="">Type</th>
-<th style="">Date Mise à jour</th>
-<th style="">Chambre</th>
-<th style="">Service</th>
+<th style="width:160px;height: 50px;text-align:center;display:flex;justify-content:center;align-items:center">Connexion</th>
+<th style="width:160px;height: 50px;text-align:center;display:flex;justify-content:center;align-items:center">Ip</th>
+<th style="width:160px;height: 50px;text-align:center;display:flex;justify-content:center;align-items:center">Support connecté</th>
+<th style="width:160px;height: 50px;text-align:center;display:flex;justify-content:center;align-items:center">Type</th>
+<th style="width:160px;height: 50px;text-align:center;display:flex;justify-content:center;align-items:center">Date Mise à jour</th>
+<th style="width:160px;height: 50px;text-align:center;display:flex;justify-content:center;align-items:center">Chambre</th>
+<th style="width:174px;height: 50px;text-align:center;display:flex;justify-content:center;align-items:center">Service</th>
 
 </tr>
 </thead> 
@@ -86,11 +78,9 @@ $('.dt-buttons').after('<hr>')
 <tr class="odd gradeX">
 
 
-<td style="" >
+<td style="width:160px;height: 50px;text-align:center; display:flex;justify-content:space-between;" >
 <label >
-
 <input class='arch' name='list[{{box.Id}}]' type="checkbox"  >
-
 </label>
 {{box.nom}}
 </td>
@@ -100,23 +90,23 @@ $('.dt-buttons').after('<hr>')
 {% if ar[i] == 0 %} 
 
 
-<td><p style="text-align: center;" ><i style="color:red;" class="glyphicon glyphicon-stop"></i> OFF</p></td>
+<td style="width:160px;height: 50px;text-align:center;"><p style="text-align: center;" ><i style="color:red;" class="glyphicon glyphicon-stop"></i> OFF</p></td>
 
  {% else %} 
 
- <td><p style="text-align: center;" ><i style="color:green;" class="glyphicon glyphicon-stop"></i> ON </p></td>
+ <td style="width:160px;height: 50px;text-align:center;"><p style="text-align: center;" ><i style="color:green;" class="glyphicon glyphicon-stop"></i> ON </p></td>
 
 
  {% endif  %} 
 
-<td style="">{{box.Ip}}</td>
+<td style="width:160px;height: 50px;text-align:center;">{{box.Ip}}</td>
 
 
-<td style="">{{box.Support}}</td>
-<td style="">{{box.type}}</td>
-<td style="">{{box.date}}</td>
-<td style="">{{box.Etage}}</td>
-<td style="">{{box.service.nom|capitalize}}</td>
+<td style="width:160px;height: 50px;text-align:center;">{{box.Support}}</td>
+<td style="width:160px;height: 50px;text-align:center;">{{box.type}}</td>
+<td style="width:160px;height: 50px;text-align:center;">{{box.date}}</td>
+<td style="width:160px;height: 50px;text-align:center;">{{box.Etage}}</td>
+<td style="width:174px;height: 50px;text-align:center;">{{box.service.nom|capitalize}}</td>
 
 
 
@@ -141,6 +131,9 @@ $('.dt-buttons').after('<hr>')
 </div>
 
 </div>
+</div>
+
+
 
 
 

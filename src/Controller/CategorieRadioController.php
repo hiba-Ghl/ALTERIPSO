@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\CategorieRadio;
+use App\Entity\ConfigApp;
 use Doctrine\DBAL\Exception\IntegrityConstraintViolationException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException; // Importez également cette classe si nécessaire
 
@@ -19,7 +20,15 @@ class CategorieRadioController extends AbstractController
     #[Route('/categorieradio/supprimer/{id}', name: 'app_supprimer_categorieradio')]
     public function supprimercategorieradio(EntityManagerInterface $entityManager, int $id): Response
     {
-       
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
+        $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);  
+        $Acce = $this->getUser()->isSuppCatRadio() && $this->getUser()->isCatRadio() && $configApp->getEnableRADIO()=="1";
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+        }
         try {
             $CategorieRadio = $entityManager->getRepository(CategorieRadio::class)->find($id);
 
@@ -51,15 +60,24 @@ class CategorieRadioController extends AbstractController
 
     
     #[Route('/categorieradio', name: 'app_categorie_radio')]
-    public function index(): Response
+    public function index(EntityManagerInterface $entityManager): Response
     {
-        
-    
-        $catradios = $this->getUser()->getEtablissement()->getCategorieRadios();
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
+        $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);  
+        $Acce = $this->getUser()->isCatRadio();
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+        }
+        $catradios = $etablissement->getCategorieRadios();
         //var_dump($catradios);die();
-
+        $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement'=>$etablissement]);
         return $this->render('categorie_radio/index.html.twig', [
             'catradios' => $catradios,
+            'appConfig' =>$appConfig,
+            'user' => $this->getUser(),
         ]);
     }
 
@@ -68,9 +86,22 @@ class CategorieRadioController extends AbstractController
     #[Route('/categorieradio/ajouter', name: 'app_ajouter_categorieradio')]
     public function ajoutercategorieradio(EntityManagerInterface $entityManager): Response
     {
-            $user = $this->getUser();
-            $etablissement = $this->getUser()->getEtablissement();
-        
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
+        $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);              $Acce = $this->getUser()->isAjoutCatRadio() && $configApp->getEnableRADIO()=="1";
+            if (!$Acce) {
+                $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+                return $this->redirectToRoute('home');
+            }
+            $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+            if ($appConfig) {
+                $configArray = ['Status'=>$appConfig->getStatusServeur()];
+            } 
+            else{
+                $configArray = ['Status'=>'online'];
+            }           
+            $configJson = json_encode($configArray);
             $request = Request::createFromGlobals();
 
             $valider = $request->get("valider");
@@ -127,20 +158,43 @@ class CategorieRadioController extends AbstractController
             $categories->setDE($DE);
             $categories->setZH($ZH);
             $categories->setAR($AR);
+            $categories->setId(mt_rand(1, 99999));
 
             $entityManager->persist($categories);
             $entityManager->flush();
             return $this->redirectToRoute('app_categorie_radio');
         }
-      return $this->render('categorie_radio/ajouter.html.twig');
+      return $this->render('categorie_radio/ajouter.html.twig',     
+      ['configApp' => $configJson,
+      'appConfig' =>$appConfig,
+      'user' => $this->getUser(),
+         ]
+    );
         
     }
 
     #[Route('/categorieradio/modifier/{id}', name: 'app_modifier_categorieradio')]
     public function modifiercategorieradio(EntityManagerInterface $entityManager, int $id): Response
         {
-            $user = $this->getUser();
+
+            if( !$this->getUser())
+            return $this->redirectToRoute('app_login');
             $etablissement = $this->getUser()->getEtablissement();
+            $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);  
+            
+            $Acce = $this->getUser()->isModifierCatRadio() && $configApp->getEnableRADIO()=="1";
+            if (!$Acce) {
+                $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+                return $this->redirectToRoute('home');
+            }
+            $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+            if ($appConfig) {
+                $configArray = ['Status'=>$appConfig->getStatusServeur()];
+            } 
+            else{
+                $configArray = ['Status'=>'online'];
+            }           
+            $configJson = json_encode($configArray);
             $categories = $entityManager->getRepository(CategorieRadio::class)->findById($id)[0];
             $request = Request::createFromGlobals();
 
@@ -205,11 +259,52 @@ class CategorieRadioController extends AbstractController
         }
       
       return $this->render('categorie_radio/modifier.html.twig', [
-        'categorieradio' => $categories]);
+        'categorieradio' => $categories,
+        'appConfig' =>$appConfig,
+        'configApp' => $configJson,
+        'user' => $this->getUser(),
+    ]);
 
         
     }
 
+
+    #[Route('/categorieradio/updateactive', name: 'app_update_active_categorie_radio')]
+    public function updateActiveStatus(EntityManagerInterface $entityManager): Response
+    {
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
+       $etablissement = $this->getUser()->getEtablissement();
+       $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);  
+        $repository = $entityManager->getRepository(CategorieRadio::class);
+        $Acce = $this->getUser()->isSauvegarderCatRadio() && $this->getUser()->isCatRadio() && $configApp->getEnableradio()=="1";
+           if (!$Acce) {
+               $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+               return $this->redirectToRoute('home');
+           }
+        $user = $this->getUser();
+        $etablissement = $this->getUser()->getEtablissement();
+        $categories = $repository->findBy(['etablissement' => $etablissement]);
+       //setting all active status of categories to 0
+        foreach ($categories as $cat) {
+            $cat->setActive('0');   
+            $entityManager->persist($cat);
+            $entityManager->flush();
+          }
+
+        $request = Request::createFromGlobals();
+        $active = $request->get("listeactive");
+        if (isset($active) and !empty($active)) {
+            foreach ($active as $key => $k) {
+                $active_categories  = $repository->findById($key);
+                $active_categories[0]->setActive("1");
+                $entityManager->persist($active_categories[0]);
+                $entityManager->flush();
+            }
+        }
+
+        return $this->redirectToRoute('app_categorie_radio'); 
+    }
    
 
 }

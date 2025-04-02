@@ -240,7 +240,7 @@ function selectImage(imagePath) {
 async function translate(text, targetLang, sourceLang) {
   //crée un script via AppScript sur Google et affiche une URL comprenant Body contenant du texte et les éléments de traduction.
   const url =
-    "https://script.google.com/macros/s/AKfycbxarVnWjUlyqgjVOPp-nDsVznHhMwywkWz4LiNVdMTwq5RpbVgHkTGVDfIc5ozrzfdi/exec";
+    "https://script.google.com/macros/s/AKfycbzHo20ZIdkj8KEEf7tAFL74VB6BGvjMERKzKjh7dZ_qFwM6UFAs9YAZTipnumuFXqf1Ow/exec";
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -256,9 +256,8 @@ async function translate(text, targetLang, sourceLang) {
     if (data.status === "success") {
       return data.translatedText;
     } else {
-        return null;
+      return null
     }
-  
 }
 
 // la fonction pour supprimer les éléments de diapo quand je sélectionne un autre type.

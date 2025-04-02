@@ -4,7 +4,6 @@
     #div2 {
 			border-radius: 25px;
 			border: 2px solid #3087ce;
-			padding: 20px;
 			width: 1300px;
 			height: 250px;
 			margin-left: -70px;
@@ -13,11 +12,10 @@
 		}
 </style>
 
-
-<div style="margin-top: -40px;position: absolute;border-radius: 8px;text-align: left;margin-left: -68px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: -27px;">
-    Ajouter Jeux 
+<div style="border-radius: 8px;text-align: left;margin-top:10px;margin-bottom: 10px;margin-left: -70px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
+    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+        Ajouter un jeux
 </div>
-
 <div id="div2">
 
 
@@ -31,7 +29,7 @@
 						<div class="control-label">
 							<label  class=" control-label">Nom Jeux:
 							</label>
-							<input type="text" name="nom" class="form-control" style="width: 75%;">
+							<input type="text" name="nom" class="form-control" style="width: 99%;">
 						</div>
 
 					</td>
@@ -40,7 +38,7 @@
 						<div class="control-label">
 							<label  class=" control-label">Package:
 							</label>
-							<input type="text" name="package" class="form-control" style="width: 75%;">
+							<input type="text" name="package" class="form-control" style="width: 99%;">
 						</div>
 
 					</td>
@@ -51,7 +49,7 @@
 							</label>
 
 
-							<select class="form-control" name="active" id="active" style="width: 75%;">
+							<select class="form-control" name="active" id="active" style="width: 99%;">
 
 								<option value='0'>0</option>
 								<option value='1'>1</option>
@@ -71,15 +69,15 @@
 						<div class="control-label">
 							<label  class=" control-label">Position:
 							</label>
-							<input type="number" name="position" id="position" class="form-control" style="width: 75%;" >
+							<input type="number" name="position" id="position" class="form-control" style="width: 99%;" >
 						</div>
 
 					</td>
 
 					<td style="width: 33%;">
 						<div class="form-group">
-							<label >logo :</label>
-							<input type="file" class="form-control-file" id="logo" name="logo" style="width: 75%;" >
+							<label >Logo :</label>
+							<input type="file" class="form-control" id="logo" name="logo" style="width: 99%;" >
 						</div>
 					</td>
 
@@ -88,7 +86,7 @@
 							<label  class=" control-label">
 								Protocole:
 							</label>
-							<select class="form-control" name="protocole" id="protocole" style="width: 75%;">
+							<select class="form-control" name="protocole" id="protocole" style="width: 99%;">
 								{% for support in supports %}
 									<option value="{{support.protocole}}">{{support.nom|upper}}</option>
 								{% endfor %}
@@ -104,20 +102,17 @@
 
 			<br>
 
-			<button type="submit" class="button btn btn-primary btn-sm" style="margin-left:940px;" name="valider" >
-				<i class="glyphicon glyphicon-floppy-disk"></i>
-				Enregistrer
-			</button>
-
-
+			<div style="float:right;margin-right:-60px;">
+				<a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/jeux">
+					<i class="glyphicon glyphicon-remove"></i> Annuler
+				</a>
+				<button type="submit" class="button btn btn-primary btn-md" name="valider" >
+					<i class="glyphicon glyphicon-floppy-disk"></i>
+					Enregistrer
+				</button>
+				</div>
 		</form>
 
-		<form method="POST" action="{{path('app_jeux')}}">
-			<button type="submit" class="button btn btn-danger btn-sm" style="width: 103px;margin-left: 1050px;margin-top: -57px;">
-				<i class="glyphicon glyphicon-remove"></i>
-				Annuler
-			</button>
-		</form>
 
 
 	

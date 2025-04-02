@@ -22,6 +22,8 @@ class Services
     #[ORM\ManyToOne(targetEntity: Etablissement::class, inversedBy: 'services')]
     private ?Etablissement $etablissement = null;
 
+    #[ORM\ManyToOne(targetEntity: Categories::class,inversedBy: 'services')]
+    private ?Categories $categories = null;
 
     #[Assert\Length(min: 3)]
     #[ORM\Column(length: 255, nullable: true)]
@@ -43,8 +45,7 @@ class Services
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $logo = null;
 
-    #[ORM\ManyToOne(inversedBy: 'services')]
-    private ?Categories $service = null;
+  
 
     #[Assert\Length(min: 3)]
     #[ORM\Column(length: 255, nullable: true)]
@@ -93,6 +94,18 @@ class Services
     public function setEtablissement(?Etablissement $etablissement): static
     {
         $this->etablissement = $etablissement;
+
+        return $this;
+    }
+
+    public function getCategories(): ?Categories
+    {
+        return $this->categories;
+    }
+
+    public function setCategories(?Categories $categories): static
+    {
+        $this->categories = $categories;
 
         return $this;
     }
@@ -290,15 +303,5 @@ class Services
         return $this;
     }
 
-    public function getCategorie(): ?Categories
-    {
-        return $this->service;
-    }
-
-    public function setCategorie(?Categories $service): static
-    {
-        $this->service = $service;
-
-        return $this;
-    }
+  
 }

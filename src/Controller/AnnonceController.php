@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Annonce;
 use App\Entity\Chambre;
+use App\Entity\ConfigApp;
 use App\Entity\HistoriqueAnnonce;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,15 +20,21 @@ class AnnonceController extends AbstractController
     #[Route('/annonce', name: 'app_annonce')]
     public function index(EntityManagerInterface $entityManager): Response
     {
-
         //recuperation de l'etablissement de l'utilisateur actuellement connecte 
+        if( !$this->getUser())
+            return $this->redirectToRoute('app_login');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->getANNONCES() && $configApp->getEnableANNONCES() == '1';
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');        }
         //affichage des annonces liees a l'etablissement selon l'ordre croissant de leur champ nom
         $annonce =  $entityManager->getRepository(Annonce::class)->findBy(['etablissement' => $etablissement],['nom' => 'ASC']);
-        
-        
         return $this->render('annonce/index.html.twig', [
             'annonces' => $annonce,
+            'appConfig' => $configApp,
         ]);
     }
 
@@ -38,8 +45,23 @@ class AnnonceController extends AbstractController
     {
 
 
+        if( !$this->getUser())
+            return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
 
+        $Acce = $this->getUser()->getAjouterAnnonce() && $this->getUser()->getANNONCES() && $configApp->getEnableANNONCES() == '1';
+            if (!$Acce) {
+                $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+                return $this->redirectToRoute('home');            }
+        $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        if ($appConfig) {
+            $configArray = ['Status'=>$appConfig->getStatusServeur()];
+        } 
+        else{
+            $configArray = ['Status'=>'online'];
+        }
+        $configJson = json_encode($configArray);
         $request = Request::createFromGlobals();
 
 
@@ -143,6 +165,9 @@ class AnnonceController extends AbstractController
         //sinon on reaffiche le formulaire de la creation d'une nouvelle annonce
         return $this->render('annonce/ajouter.html.twig',[
             'themes' => $themes,
+            'configApp'=>$configJson,
+            'appConfig' => $appConfig,
+
         ]);
 
 }
@@ -157,6 +182,14 @@ class AnnonceController extends AbstractController
         #[Route('/annonce/supprimer/{id}', name: 'app_supprimer_annonce')]
         public function supprimerannonce(EntityManagerInterface $entityManager, int $id): Response
         {
+            if( !$this->getUser())
+            return $this->redirectToRoute('app_login');
+            $etablissement = $this->getUser()->getEtablissement();
+            $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+            $Acce = $this->getUser()->getSuppAnnonce() && $this->getUser()->getANNONCES() && $configApp->getEnableANNONCES() == '1';
+            if (!$Acce) {
+                $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+                return $this->redirectToRoute('home');            }
             try {
                 $annonce = $entityManager->getRepository(Annonce::class)->find($id);
 
@@ -195,11 +228,22 @@ class AnnonceController extends AbstractController
     public function modifierAnnonce(EntityManagerInterface $entityManager, int $id): Response
     {
 
-
+        if( !$this->getUser())
+            return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
-
+        $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->getModifierAnnonce() && $this->getUser()->getANNONCES() && $appConfig->getEnableANNONCES() == '1';
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');        }
         $annonce = $entityManager->getRepository(Annonce::class)->findById($id)[0];
-
+        if ($appConfig) {
+            $configArray = ['Status'=>$appConfig->getStatusServeur()];
+        } 
+        else{
+            $configArray = ['Status'=>'online'];
+        }
+        $configJson = json_encode($configArray);
         $request = Request::createFromGlobals();
 
         $valider = $request->get("valider");
@@ -303,6 +347,9 @@ class AnnonceController extends AbstractController
         return $this->render('annonce/modifier.html.twig',[
             'themes' => $themes,
             'ann' => $annonce,
+            'configApp'=>$configJson,
+            'appConfig' => $appConfig,
+
         ]);
 
 }
@@ -315,14 +362,22 @@ class AnnonceController extends AbstractController
     public function detailsAnnonce(EntityManagerInterface $entityManager, int $id): Response
     {
 
-        //recuperation de l'etablissement de l'utilisateur actuellement connecte 
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement'=>$etablissement]);
+        $Acce = $this->getUser()->getANNONCES() && $configApp->getEnableANNONCES() == '1';
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');        }
+        //recuperation de l'etablissement de l'utilisateur actuellement connecte 
         //affichage des annonces liees a l'etablissement selon l'ordre croissant de leur champ nom
         $annonce = $entityManager->getRepository(Annonce::class)->findById($id)[0];
         
         
         return $this->render('annonce/details.html.twig', [
             'annonce' => $annonce,
+            'appConfig' => $configApp,
         ]);
     }
 
@@ -332,5 +387,4 @@ class AnnonceController extends AbstractController
 
 
 }
-
 

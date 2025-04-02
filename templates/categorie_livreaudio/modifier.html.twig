@@ -10,7 +10,7 @@
         display: flex;
         justify-content: center;
         background-color:white;
-        margin: 10px;
+        margin-left: -70px;
     }
 
     .accordion-toggle {
@@ -26,9 +26,10 @@
     }
 </style>
 
-<div style="border-radius: 8px; text-align: left; margin-left: 10px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 500px; padding-left: 10px;">
-    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
-    Modifier la catégorie Livre Audio : {{categorielivreaudio.nom}}
+
+<div style="border-radius: 8px;text-align: left;margin-bottom:10px;margin-top:10px;margin-left: -70px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 400px;padding-left: 10px;">
+    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+       Modifier la catégorie Livre Audio : {{categorielivreaudio.nom}}
 </div>
 
 <div id="div2">
@@ -80,10 +81,10 @@
                     </div>
                 </div>
                 <!-- logo upload -->
-                <div class="form-group">
+                <div class="form-group" >
                     <label for="logo" class="col-lg-2 control-label">Logo </label>
                     <div class="col-lg-10">
-                        <input type="file" class="form-control-file" id="logo" name="logo" accept=".jpg, .jpeg, .png" onchange="previewLogo(event)">
+                        <input type="file" class="form-control" id="logo" name="logo" accept=".jpg, .jpeg, .png" onchange="previewLogo(event)">
                         <p class="error-message" id="file-error">La taille maximale du fichier est de 400 Ko.</p>
                     </div>
                 </div>
@@ -161,14 +162,15 @@
 
         <br>
         <!-- les boutons du formulaire--> 
-        <span style="margin-left: 800px;">
-            <button type="submit" name="valider" class="button btn btn-primary btn-sm" style="solid; padding: 8px">
-                <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
-            </button>
-            <a href="{{ path('app_categorie_livreaudio') }}" class="btn btn-danger" style="solid; margin-left: 13px; padding: 8px">
-                <i class="glyphicon glyphicon-remove"></i> Annuler
-            </a>
-        </span>
+                 <div style="float:right;margin-left:30px;">
+				<a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/categorielivreaudio">
+					<i class="glyphicon glyphicon-remove"></i> Annuler
+				</a>
+				<button type="submit" class="btn btn-primary btn-md" name="valider" >
+					<i class="glyphicon glyphicon-floppy-disk"></i>
+					Enregistrer
+				</button>
+		</div>
 
     </form>
 
@@ -202,7 +204,9 @@
 </script>
 
 <!--implementation de la fonctionalite de traduction-->
- <script>
+
+    <script>
+          const configApp = {{configApp | raw}}
 document.addEventListener('DOMContentLoaded', function () {
 	const traduireButton = document.getElementById('translateBtn');
 	 const languageInputs = {
@@ -216,7 +220,6 @@ document.addEventListener('DOMContentLoaded', function () {
             ar: document.getElementById("AR"),
         };
         let translations = {};
-        let online = 1;
         async function translateAll(text) {
             const languages = Object.keys(languageInputs);
             let results = [];
@@ -232,12 +235,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         if (traduireButton) {
             traduireButton.addEventListener('click', async(event) => {
+                const textInput = document.getElementById("nom");
                 const text = textInput.value.trim() ;
                 if (text === '') {
                     alert("Veuillez entrer un texte à traduire.");
                     return;
                 }
-                if(online === 0)
+                if(configApp.Status === 'Offline')
                 {
                     alert("Aucun internet disponible : vous pouvez faire la traduction manuellement");
                     return ;

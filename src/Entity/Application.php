@@ -13,7 +13,7 @@ class Application
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'applications')]
+    #[ORM\ManyToOne(inversedBy: 'applications', targetEntity: Etablissement::class)]
     private ?Etablissement $etablissement = null;
 
     #[ORM\Column(length: 255, nullable: true)]

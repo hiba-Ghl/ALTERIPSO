@@ -28,16 +28,6 @@
         font-size: 14px;
       }
       /* Styles pour la div avec l'ID 'div2' */
-      #div2 {
-              border-radius: 25px;
-              border: 2px solid #3087ce;
-              padding: 20px;
-              width: 1300px;
-              height: auto;
-              margin-left: -70px;
-              margin-top: 10px;
-              background-color: white;
-            }
         /* Styles généraux pour tous les éléments */
             *{
               margin:0px;
@@ -217,25 +207,28 @@
           }
     </style>
     <!-- En-tête de la page -->
-    <div style="margin-top: -40px;position: absolute;border-radius: 8px;text-align: left;margin-left: -68px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 27px;">
+    <div style="border-radius: 8px;text-align: left;margin-bottom: 10px;margin-left: -120px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
+    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
       Service en chambre
-    </div>
+</div>
     <!-- Contenu principal de la page -->
     <div id="div2">
        <!-- Boutons d'ajout de service en chambre -->
-      <a  href="{{ path('service_formu') }}" class="btn btn-info btn-sm" name="add" id="add">
+      <a  {% if app.user.AjoutServiceEnChambre == '0' %} disabled {% endif %} href="{{ path('service_formu') }}" class="btn btn-info btn-sm" name="add" id="add">
           <i class="glyphicon glyphicon-plus"></i>
           Ajouter service
         </a>
         <!-- Boutons d'ajout de type de service -->
-        <button  data-toggle="modal" data-target="#exampleModal" class="btn btn-success btn-sm" name="add" id="add">
+        <button {% if app.user.AjoutServiceEnChambre == '0' %} disabled {% endif %}  data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm" name="add" id="add">
           <i class="glyphicon glyphicon-plus"></i>
           Ajouter Type service
         </button>
-        <a  href="{{ path('service_en_chambre') }}" class="btn btn-danger btn-sm" name="add" id="add">
+        <a  {% if app.user.SauvegarderServiceEnChambre == '0' %} disabled {% endif %} href="{{ path('service_en_chambre') }}" class="btn btn-success btn-sm" name="add" id="add">
           <i class="glyphicon glyphicon-inbox"></i>
-          Sauvgarder
+          Sauvegarder
         </a>
+        	<a type="button" class="btn btn-danger btn-sm" style="width: 150px;" href="{{ path('service_en_chambre') }}">
+				<i class="glyphicon glyphicon-remove"></i>Annuler</a>
     <!-- Affichage des services en chambre -->
     <div class="card-container">
       {% if serviceEnChambres is empty %}
@@ -252,10 +245,10 @@
                   <h3 style="text-align: center; margin-left: auto; margin-right: auto;margin-top:5px">{{ serviceEnChambre.getNom()}}</h3>
                   <!-- Affichage le description service en chambre -->
                   
-                <a href="{{ path('page_details_service_en_chambre', {'id': serviceEnChambre.getId()}) }}" class="btn3" style="position: absolute;margin-top:-190px;margin-bottom: 12px;margin-left: 12px;"><i class="glyphicon glyphicon-pencil"></i></a>
-                <a href="{{path('app_supprimer_service_en_chambre',{'id':serviceEnChambre.id})}}"  class="btn1" data-toggle="tooltip" data-placement="top" title="supprimer le service" style="position: absolute;margin-top:-190px;margin-left: 50px;" onclick="return confirm('Voulez-vous vraiment supprimer le service : {{serviceEnChambre.nom}} ?')"><i class="glyphicon glyphicon-trash"></i></a>
-                <input type="text" value="{{ serviceEnChambre.getPosition()}}" id="position_{{ serviceEnChambre.getId() }}" name="position" onchange="updatePosition({{ serviceEnChambre.getId() }})" style="position: absolute;margin-top:-190px;background-color: rgba(0, 0, 0, 0.7);color: white;width: 32px; height:35px;border-radius: 8px;margin-left: 87px;text-align: center; ">
-                <input type="checkbox" id="Active_{{ serviceEnChambre.getId() }}" {% if serviceEnChambre.isActive() == 0 %}checked{% endif %} onchange="updateActive({{ serviceEnChambre.getId() }})" style="margin-left: 150px;margin-top:20px" name="Active">
+                <a  {% if app.user.ModifierServiceEnChambre == '0' %} style="pointer-events: none; opacity: 0.5; cursor: default;position: absolute;margin-top:-190px;margin-bottom: 12px;margin-left: 12px;" {% endif %} href="{{ path('page_details_service_en_chambre', {'id': serviceEnChambre.getId()}) }}" class="btn3" style="position: absolute;margin-top:-190px;margin-bottom: 12px;margin-left: 12px;"><i class="glyphicon glyphicon-pencil"></i></a>
+                <a  {% if app.user.SuppServiceEnChambre == '0' %} style="pointer-events: none; opacity: 0.5; cursor: default;position: absolute;margin-top:-190px;margin-left: 50px;" {% endif %} href="{{path('app_supprimer_service_en_chambre',{'id':serviceEnChambre.id})}}"  class="btn1" data-toggle="tooltip" data-placement="top" title="supprimer le service" style="position: absolute;margin-top:-190px;margin-left: 50px;" onclick="return confirm('Voulez-vous vraiment supprimer le service : {{serviceEnChambre.nom}} ?')"><i class="glyphicon glyphicon-trash"></i></a>
+                <input {% if app.user.SauvegarderServiceEnChambre == '0' %} disabled {% endif %} type="text" value="{{ serviceEnChambre.getPosition()}}" id="position_{{ serviceEnChambre.getId() }}" name="position" onchange="updatePosition({{ serviceEnChambre.getId() }})" style="position: absolute;margin-top:-190px;background-color: rgba(0, 0, 0, 0.7);color: white;width: 32px; height:35px;border-radius: 8px;margin-left: 87px;text-align: center; ">
+                <input {% if app.user.SauvegarderServiceEnChambre == '0' %} disabled {% endif %}  type="checkbox" id="Active_{{ serviceEnChambre.getId() }}" {% if serviceEnChambre.isActive() == 0 %}checked{% endif %} onchange="updateActive({{ serviceEnChambre.getId() }})" style="margin-left: 150px;margin-top:20px" name="Active">
  
               </div>
           </div>

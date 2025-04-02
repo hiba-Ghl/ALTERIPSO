@@ -139,6 +139,9 @@ class ConfigApp
     #[ORM\Column(length: 255)]
     private ?string $CODEPORTAIL = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $StatusServeur = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -643,6 +646,17 @@ class ConfigApp
     public function setEtablissement(?Etablissement $etablissement): static
     {
         $this->etablissement = $etablissement;
+
+        return $this;
+    }
+    public function getStatusServeur(): ?string
+    {
+        return $this->StatusServeur;
+    }
+
+    public function setStatusServeur(string $StatusServeur): static
+    {
+        $this->StatusServeur = $StatusServeur;
 
         return $this;
     }

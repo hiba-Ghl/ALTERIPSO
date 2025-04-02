@@ -5,6 +5,7 @@
                 border-radius: 25px;
                 border: 2px solid #3087ce;
                 padding: 20px;
+                padding-bottom:50px;
                 width: auto;
                 height: auto;
                 margin-left: -70px;
@@ -45,23 +46,22 @@
         }
     </style>
 
-     <div style="margin-top: -40px;position: absolute;border-radius: 8px;text-align: center;margin-left: -68px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: -20px;">
+<div style="border-radius: 8px;text-align: left;margin-top:10px;margin-bottom: 10px;margin-left: -70px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
+    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
         Modifier Question 
-      </div>
-
-
+</div>
     <div id="div">
         <form action="{{path('app_modifier_question',{'id':questionnaire.id})}}" method="post">
             <table style="width: 100%;">
                     <tr>
-                        <td style="width: 44%;">
-                                <div class="form-group">
-                                <label class="control-label">Entrer question : Français(max120caractères)</label>
+                        <td style="width: 44%;height:20px;">
+                                <div class="form-group" style="height:100%">
+                                <label class="control-label">Entrer question : Français (max120caractères)</label>
                                 <textarea id="fr"  name="fr" maxlength="120" class="form-control" style="width:75%;" >{{questionnaire.Fr}}</textarea>
                             </div>
                         </td>
-                      <td style="width: 44%;">
-                                    <div class="form-group">
+                      <td style="width: 44%;height:20px;">
+                                    <div class="form-group" style="height:100%">
                                     <label class=" control-label">Services</label>
                                     <select class="form-control" id="serviceSelect" name="Service" style="width: 75%;">
                                     <option value="{{questionnaire.service.id }}" selected>{{questionnaire.service.nom|upper}}</option>
@@ -99,48 +99,48 @@
                                         <td>
                                             <img style="width: 30px" src=" {{asset('images/eng.png')}}">
                                             <label for="EN">English</label>
-                                            <textarea id="en" name="en" maxlength="120" class="form-control e" style="width:75%;">{{questionnaire.En}}</textarea>
+                                            <textarea id="EN" name="en" maxlength="120" class="form-control e" style="width:75%;">{{questionnaire.En}}</textarea>
                                         </td>
                                         <td>
                                             <img style="width: 30px" src=" {{asset('images/es.png')}}">
                                             <label for="ES">Espagnol</label>
-                                            <textarea id="es" name="es" maxlength="120" class="form-control e" style="width:75%;">{{questionnaire.Es}}</textarea>
+                                            <textarea id="ES" name="es" maxlength="120" class="form-control e" style="width:75%;">{{questionnaire.Es}}</textarea>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
                                 <img style="width: 30px" src=" {{asset('images/pt.png')}}">
                                             <label for="PT">Portugues</label>
-                                            <textarea id="pr"  name="pr" maxlength="120" class="form-control e" style="width:75%;">{{questionnaire.Pt}}</textarea>
+                                            <textarea id="PT"  name="pr" maxlength="120" class="form-control e" style="width:75%;">{{questionnaire.Pt}}</textarea>
                                         </td>
                                         <td>
                                 <img style="width: 30px" src=" {{asset('images/ita.png')}}">
                                             <label for="IT">Italiano</label>
-                                            <textarea id="it" name="it"  maxlength="120" class="form-control e" style="width:75%;">{{questionnaire.It}}</textarea>
+                                            <textarea id="IT" name="it"  maxlength="120" class="form-control e" style="width:75%;">{{questionnaire.It}}</textarea>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
                                 <img style="width: 30px" src=" {{asset('images/rus.png')}}">
                                             <label for="RU">Russian</label>
-                                            <textarea id="rus" name="rus" maxlength="120" class="form-control e" style="width:75%;">{{questionnaire.Ru}}</textarea>
+                                            <textarea id="RU" name="rus" maxlength="120" class="form-control e" style="width:75%;">{{questionnaire.Ru}}</textarea>
                                         </td>
                                         <td>
                                 <img style="width: 30px" src=" {{asset('images/deu.png')}}">
                                             <label for="DE">Deutsch</label>
-                                            <textarea id="deu" name="dtsh"  maxlength="120" class="form-control e" style="width:75%;">{{questionnaire.De}}</textarea>
+                                            <textarea id="DE" name="dtsh"  maxlength="120" class="form-control e" style="width:75%;">{{questionnaire.De}}</textarea>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
                                 <img style="width: 30px" src=" {{asset('images/ch.png')}}">
                                             <label for="ZH">China</label>
-                                            <textarea id="chi" name="chi"  maxlength="120" class="form-control e" style="width:75%;">{{questionnaire.Zh}}</textarea>
+                                            <textarea id="ZH" name="chi"  maxlength="120" class="form-control e" style="width:75%;">{{questionnaire.Zh}}</textarea>
                                         </td>
                                         <td>
                                 <img style="width: 30px" src=" {{asset('images/ma.png')}}">
                                             <label for="AR">العربية</label>
-                                            <textarea id="ar" name="ar"  maxlength="120" class="form-control e" style="width:75%;">{{questionnaire.Ar}}</textarea>
+                                            <textarea id="AR" name="ar"  maxlength="120" class="form-control e" style="width:75%;">{{questionnaire.Ar}}</textarea>
                                         </td>
                                     </tr>
                                 </table>
@@ -176,15 +176,16 @@
                             </td>
                             
                     </tr>
-                    <tr>      
-                        <td  colspan="2" style="width: 44%;">
-                            <div class="col-md-12" style="margin-top:30px;margin-left:66%;" >
-                                <button type="submit" name="valider" class="btn btn-primary"><i class='glyphicon glyphicon-floppy-saved'></i> Modifier</button> 
-                                <a class="button btn btn-danger " href="{{path('app_questionnaire')}}" role="button"><i class="glyphicon glyphicon-remove" ></i> Annuler</a>
-                            </div>
-                        </td>
-                    </tr>
                 </table>
+                   <div style="float:right;margin-right:130px;margin-top:-10px;">
+				<a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/questionnaire">
+					<i class="glyphicon glyphicon-remove"></i> Annuler
+				</a>
+				<button type="submit" class="btn btn-primary btn-md" name="valider" >
+					<i class="glyphicon glyphicon-floppy-disk"></i>
+					Enregistrer
+				</button>
+				</div>
             <form>
         </div>
           <script>
@@ -224,7 +225,9 @@
                 }
             });
     </script>
+
     <script>
+     const configApp = {{configApp | raw}}
 document.addEventListener('DOMContentLoaded', function () {
 	const traduireButton = document.getElementById('translateBtn');
 	 const languageInputs = {
@@ -238,7 +241,6 @@ document.addEventListener('DOMContentLoaded', function () {
             ar: document.getElementById("AR"),
         };
         let translations = {};
-        let online = 1;
         async function translateAll(text) {
             const languages = Object.keys(languageInputs);
             let results = [];
@@ -254,12 +256,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         if (traduireButton) {
             traduireButton.addEventListener('click', async(event) => {
+                const textInput = document.getElementById("fr");
                 const text = textInput.value.trim() ;
                 if (text === '') {
                     alert("Veuillez entrer un texte à traduire.");
                     return;
                 }
-                if(online === 0)
+                if(configApp.Status === 'Offline')
                 {
                     alert("Aucun internet disponible : vous pouvez faire la traduction manuellement");
                     return ;
@@ -307,7 +310,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         });
     </script> #}
-
 
 {% endblock %}
 

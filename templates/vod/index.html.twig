@@ -3,15 +3,6 @@
 {% block body %}
 
 <style>
-    #div2 {
-        border-radius: 25px;
-        border: 2px solid #3087ce;
-        padding: 20px;
-        display: flex;
-        background-color: white;
-        margin: 10px -30px;
-        flex-direction: column;
-    }
 
     .table-container {
         max-height: 400px;
@@ -58,77 +49,80 @@
         table-layout: fixed;
     }
 
-</style>
+</style>  
 
-<div style="border-radius: 8px; text-align: left; margin-bottom: 10px; margin-left: -30px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 180px; padding-left: 10px;">
+<div style="border-radius: 8px;margin-left:-130px;  margin-top:10px;text-align: left; margin-bottom: 10px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding-left: 10px; display: inline-block;">
     <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
     Liste VOD
 </div>
-
 <form name="form" action="{{ path('app_active_vod')}}" method="post" enctype="multipart/form-data">
 
+    <div id="div2">
     <!--les boutons en haut du formulaire-->
-    <a href="{{ path('app_ajouter_vod') }}" class="btn btn-info btn-sm" name="add" id="add" style="margin-right: 5px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:3px;">
+    <div>
+    <a href="{{ path('app_ajouter_vod') }}" {% if app.user.AjouteVod == '0' %} disabled {% endif %} class="btn btn-info btn-sm" name="add" id="add" style="margin-right: 5px;width:150px;">
         <i class="glyphicon glyphicon-plus"></i> Ajouter VOD
     </a>
-    <button type="submit" name="valider" class="btn btn-primary btn-sm" style="margin-right: 5px;">
-        <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
+    <button type="submit" name="valider" {% if app.user.SauvegarderVod == '0' %} disabled {% endif %} class="btn btn-success btn-sm" style="margin-right: 5px;width:150px;">
+        <i class="glyphicon glyphicon-floppy-disk"></i> Sauvegarder
     </button>
-    <a name="annuler" href="{{ path('app_vod') }}" class="btn btn-danger btn-sm" style="margin-right: 5px;">
+    <a name="annuler" href="{{ path('app_vod') }}" class="btn btn-danger btn-sm" style="margin-right: 5px;width:150px;">
         <i class="glyphicon glyphicon-remove"></i> Annuler
     </a>
+    </div>
     <!--la barre de recherche-->
-    <input id="myInput" type="text" placeholder="Search.." style="float: right; padding: 6px; border-radius: 5px;">
-
-    <div id="div2">
+    <input id="myInput" type="text" placeholder="Search.." style="float: right; padding: 6px; border-radius: 5px;width:200px;">
+    </div>
         <div class="table-container">
-            <table class="table table-striped table-bordered table-hover table-checkable order-column" id="sample_1">
-                
+ <table class="table table-striped table-bordered header-fixed table-hover" id="dataTables-example" style="width: 100%;margin-top:20px;">
                 
                 <thead>
                     <tr>
-                        <th >Logo</th>
-                        <th >Titre</th>
-                        <th>Description</th>
-                        <th >
-                            <input type="checkbox" id="checklist" style="margin-right: 10px;">Active
+                        <th style="height: 50px;width:190px;text-align:center;" >Logo</th>
+                        <th style="height: 50px;width:190px;text-align:center;" >Titre</th>
+                        <th style="height: 50px;width:190px;text-align:center;">Description</th>
+                        <th style="height: 50px;width:190px;text-align:center;" >
+                            <p style="display:flex;gap:10px;justify-content:center">
+                            <span>
+                                Active
+                            </span>
+                            <input type="checkbox" id="checklist" style="margin-top:-1px;"></th>
+                            </p>                
                         </th>
-                        <th >Répertoire Vidéo</th>
-                        <th >Type</th>
-                        <th style="width:180px">Action</th>
+                        <th style="height: 50px;width:190px;text-align:center;" >Répertoire Vidéo</th>
+                        <th style="height: 50px;width:190px;text-align:center;" >Type</th>
+                        <th style="height: 50px;width:214px;text-align:center;" style="width:180px">Action</th>
                     </tr>
                 </thead>
-
-
-
                 <tbody id="myTable">
                     {% for video in videos %}
                         <tr>
-                            <td>
-                                <img style="width:50px;height:50px;text-align:center" src="{{ asset(video.logo) }}" alt="..." class="img-rounded img-responsive center-block">
+                            <td style="height: 50px;width:190px;text-align:center;">
+                                <img style="width:40px;height:40px;text-align:center" src="{{ asset(video.logo) }}" alt="..." class="img-rounded img-responsive center-block">
                             </td>
-                            <td>{{ video.nom|capitalize }}</td>
-                            <td class="scrollable">{{ video.description }}</td>
+                            <td style="height: 50px;width:190px;text-align:center;">{{ video.nom|capitalize }}</td>
+                            <td class="scrollable" style="height: 50px;width:190px;text-align:center;">{{ video.description }}</td>
                             {% set ch = video.active == 1 ? 'checked' : '' %}
-                            <td>
-                                <label><input name="listeactive[{{ video.id }}]" type="checkbox" {{ ch }} class="jpCheckbox"></label>
+                            <td style="height: 50px;width:190px;text-align:center;">
+                                <label><input {% if app.user.SauvegarderVod == '0' %} disabled {% endif %} name="listeactive[{{ video.id }}]" type="checkbox" {{ ch }} class="jpCheckbox"></label>
                             </td>
-                            <td>{{ video.url }}</td>
-                            <td>{{ video.categorie.nom }}</td>
-                            <td>
+                            <td style="height: 50px;width:190px;text-align:center;">{{ video.url }}</td>
+                            <td style="height: 50px;width:190px;text-align:center;">{{ video.categorie.nom }}</td>
+                            <td style="height: 50px;width:214px;text-align:center;">
                                 <span data-toggle="tooltip" data-placement="top" title="Lire la VOD" >
                                 <a  title="Lire la VOD" class="btn btn-success btn-xs play-video" data-toggle="modal" data-target="#videoModal" data-video-url="{{ asset(video.url) }}" data-video-title="{{ video.nom|capitalize }}">
                                     <i class="glyphicon glyphicon-play"></i>
                                 </a>
                                 </span>
 
-                                <a  data-toggle="tooltip" data-placement="top" title="Modifier la VOD" href="{{ path('app_modifier_vod', { 'id': video.id }) }}" class="btn btn-warning btn-xs">
+                                <a  data-toggle="tooltip" data-placement="top" {% if app.user.ModifierVod == '0' %} disabled {% endif %} title="Modifier la VOD" href="{{ path('app_modifier_vod', { 'id': video.id }) }}" class="btn btn-warning btn-xs">
                                     <i class="glyphicon glyphicon-pencil"></i>
                                 </a>
-                                <a data-toggle="tooltip" data-placement="top" title="Supprimer la VOD" href="{{ path('app_supprimer_vod', { 'id': video.id }) }}" class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer la VOD : {{ video.nom }} ?')">
+                                <a data-toggle="tooltip" data-placement="top" {% if app.user.SupprimerVod == '0' %} disabled {% endif %} title="Supprimer la VOD" href="{{ path('app_supprimer_vod', { 'id': video.id }) }}" class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer la VOD : {{ video.nom }} ?')">
                                     <i class="glyphicon glyphicon-trash"></i>
                                 </a>
-                                <a data-toggle="tooltip" data-placement="top" title="Lancer la VOD" name="send" class="btn btn-info btn-xs">
+                                <a data-toggle="tooltip" data-placement="top" {% if app.user.LancerVod == '0' %} disabled {% endif %} title="Lancer la VOD" name="send" class="btn btn-info btn-xs">
                                     <i class="glyphicon glyphicon-play-circle"></i>
                                 </a>
                             </td>

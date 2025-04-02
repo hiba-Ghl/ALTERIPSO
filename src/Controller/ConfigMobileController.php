@@ -24,6 +24,8 @@ class ConfigMobileController extends AbstractController
     #[Route('/config/mobile', name: 'app_config_mobile')]
     public function index(): Response
     {   $repository = $this->entityManager->getRepository(ConfigMobile::class);
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
         $config = $repository->findBy(
             ['etablissement' => $etablissement]

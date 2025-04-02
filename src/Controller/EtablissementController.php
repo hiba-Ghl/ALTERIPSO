@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Etablissement;
 use App\Entity\Chambre;
+use App\Entity\ConfigApp;
 use App\Entity\ServiceEtablissement;
 
 class EtablissementController extends AbstractController
@@ -17,12 +18,18 @@ class EtablissementController extends AbstractController
     public function index(EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
 
         //var_dump($etablissement);die();
 
         return $this->render('etablissement/index.html.twig', [
             'etablissement' => $etablissement,
+            'appConfig'=>$appConfig,
+            'user' => $this->getUser(),
         ]);
     }
 
@@ -71,6 +78,8 @@ class EtablissementController extends AbstractController
         $typeFichier = $request->get('typa');
 
         $user = $this->getUser();
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
         $repository = $entityManager->getRepository(Chambre::class);
         // dd($typeFichier);
@@ -130,9 +139,9 @@ class EtablissementController extends AbstractController
     #[Route("/modifieretablissement/{id}", name: "modifieretablissement")]
     public function updateEtablissement(int $id, EntityManagerInterface $entityManager, Request $request): Response
     {
-        $user = $this->getUser();
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
-
         $etablissement = $entityManager->getRepository(etablissement::class)->find($id);
 
         // Récupérez le formulaire Twig pour le modifier

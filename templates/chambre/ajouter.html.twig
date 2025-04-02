@@ -1,12 +1,12 @@
 {% extends 'home/index.html.twig' %}
 {% block body %}
 <style>
-    #div2 {
+    #div4 {
 			border-radius: 25px;
 			border: 2px solid #3087ce;
 			padding: 20px;
+			padding-bottom: 60px;
 			width: 1300px;
-			height: 500px;
 			margin-left: -70px;
 			margin-top: 10px;
 			background-color: white;
@@ -14,34 +14,29 @@
 </style>
 
 
-<div style="margin-top: -40px;position: absolute;border-radius: 8px;text-align: left;margin-left: -68px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: -27px;">
+<div style="border-radius: 8px; text-align: left; margin-bottom: 10px; margin-left: -70px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding-left: 10px; display: inline-block;">
+<img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
     Ajouter Support 
 </div>
-
-<div id="div2">
-
-
-	
-		<form action="{{path('app_ajouter_chambre')}}" method="post" enctype="multipart/form-data">
-
-
+<div id="div4">
+		<form action="{{path('app_ajouter_chambre')}}" method="post" enctype="multipart/form-data" >
 			<table style="width: 100%;">
 				<tr>
-					<td style="width: 33%;">
+					<td style="width: 33%; padding-bottom:10px;">
 						<div class="control-label">
-							<label  class=" control-label">Nom Support:
+							<label  class=" control-label">Nom Support :
 							</label>
-							<input type="text" name="nom" class="form-control" style="width: 75%;">
+							<input type="text" name="nom" class="form-control" style="width: 95%;">
 						</div>
 
 					</td>
 
-					<td style="width: 33%;">
+					<td style="width: 33%; padding-bottom:10px;">
 						<div class="control-label">
 							<label class=" control-label">
-								Support:
+								Support :
 							</label>
-							<select class="form-control" name="typesupport" id="typesupport" style="width: 75%;">
+							<select class="form-control" name="typesupport" id="typesupport" style="width: 95%;">
 								<option selected="selected" value='Box-Ip'>Box-Ip</option>
 								<option value='Samsung'>Samsung</option>
 								<option value='Samsung Tizen'>Samsung Tizen
@@ -54,13 +49,13 @@
 
 					</td>
 
-					<td style="width: 33%;">
+					<td style="width: 33%; padding-bottom:10px;">
 						<div class="control-label">
-							<label  class=" control-label">Type:
+							<label  class=" control-label">Type :
 							</label>
 
 
-							<select class="form-control" name="type" id="type" style="width: 75%;">
+							<select class="form-control" name="type" id="type" style="width: 95%;">
 
 								<option value='ip'>ip</option>
 								<option value='coax'>coax</option>
@@ -75,30 +70,30 @@
 				
                 <tr>
 
-					<td style="width: 33%;">
+					<td style="width: 33%; padding-bottom:10px;">
 
 						<div class="control-label">
-							<label  class=" control-label">Mac:
+							<label  class=" control-label">Mac :
 							</label>
-							<input type="text" name="mac" id="mac" class="form-control" style="width: 75%;" placeholder="xx:xx:xx:xx:xx:xx">
+							<input type="text" name="mac" id="mac" class="form-control" style="width: 95%;" placeholder="xx:xx:xx:xx:xx:xx">
 						</div>
 
 					</td>
 
-					<td style="width: 33%;">
+					<td style="width: 33%; padding-bottom:10px;">
 						<div class="control-label">
-							<label class=" control-label">Chambre:
+							<label class=" control-label">Chambre :
 							</label>
-							<input type="text" name="etage" class="form-control" style="width: 75%;">
+							<input type="text" name="etage" class="form-control" style="width: 95%;">
 						</div>
 
 					</td>
 
-					<td style="width: 33%;">
+					<td style="width: 33%; padding-bottom:10px;">
 						<div class="control-label">
-							<label  class=" control-label">Ip:
+							<label  class=" control-label">Ip :
 							</label>
-							<input type="text" name="ip" id="ip" class="form-control" style="width: 75%;" placeholder="127.0.0.1">
+							<input type="text" name="ip" id="ip" class="form-control" style="width: 95%;" placeholder="127.0.0.1">
 						</div>
 					</td>
 
@@ -106,24 +101,23 @@
 				
                 <tr>
 
-					<td style="width: 33%;">
+					<td style="width: 33%; padding-bottom:10px;">
 						<div class="control-label">
 							<label  class=" control-label">
-								Service:
+								Service :
 							</label>
-							<select class="form-control" name="Service" id="Service" style="width: 75%;">
-								<option selected="selected" value='1'>Géneral</option>
+							<select class="form-control" name="Service" id="Service" style="width: 95%;">
 								{% for serv in serviceasc %}
-									<option value="{{serv.id}}">{{serv.title|upper}}</option>
+									<option value="{{serv.id}}">{{serv.nom|capitalize}}</option>
 								{% endfor %}
 
 							</select>
 						</div>
 
 					</td>
-                    <td style="width: 33%;">
+                    <td style="width: 33%; padding-bottom:10px;">
                         <div  class="control-label" >
-                        <label    class=" control-label">Type d'affichage: </label><label class="glyphicon glyphicon-question-sign" title="
+                        <label    class=" control-label">Type d'affichage : </label><label class="glyphicon glyphicon-question-sign" title="
                             Règle :   
 
                     - Affichage Atreipso :
@@ -144,7 +138,7 @@
                         -> dés qu'on la rallume elle se remet directement sur la chaine sélectionnée
                     "   data-placement="top" ></label>
 
-                    <select name="typeaffichage" class="form-control typeaffichage" style="width: 75%;">
+                    <select name="typeaffichage" class="form-control typeaffichage" style="width: 95%;">
                     
                         <option selected="selected" value="1" >Alteripso</option>
                         <option  value="2" >Dynamique</option>
@@ -154,18 +148,18 @@
 
                     </td>
 
-                    <td style="width: 33%;" class="listechaine">
+                    <td style="width: 33%; padding-bottom:10px;" class="listechaine">
                         <div  class="control-label" >
                             <label  class=" control-label ">Liste chaines </label>
 
-                    <select name="listechaine" class="form-control" style="width: 75%;">
+                    <select name="listechaine" class="form-control" style="width: 95%;">
                     
                     {% for ch in listechaine %}
 
 
                     <option  value="{{ch.id}}" >{{ch.nom}}</option>
 
-                    {% endfor%}
+                    {% endfor %}
 
                     </select>
                         </div>
@@ -173,15 +167,14 @@
                     </td>
 				</tr>
 				
-                <tr>
+                   <tr>
 					
-							<td style="width: 33%;">
+							<td style="width: 33%; padding-bottom:10px;">
 								<div class="control-label">
 									<label  class=" control-label">
-										Fond d'écran:
+										Fond d'écran :
 									</label>
 									<br>
-
 									{% for back in listback %}
 									 {% if ( '.mp4' not in back ) %}
 										<table>
@@ -190,9 +183,7 @@
 													<input type="radio" name="back" value="{{back}}">
 												</td>
 												<td>
-												
-
-													<img style="width:150px;height:100px;text-align:center;margin-left: 10px;" src="{{ asset('images/'~back) }}" alt="..." class="img-rounded img-responsive center-block">
+													<img style="width:150px;height:100px;text-align:center;margin-left: 10px;" src="{{ asset(''~back) }}" alt="..." class="img-rounded img-responsive center-block">
 											
 												</td>
 											</tr>
@@ -223,25 +214,21 @@
 							</td>
 					
 				</tr>
+				</tr>
 			</table>
 
 			<br>
-
-			<button type="submit" class="button btn btn-primary btn-sm" style="margin-left:800px;" name="valider" onclick='return CheckForm();'>
-				<i class="glyphicon glyphicon-floppy-disk"></i>
-				Enregistrer
-			</button>
-
-
+			<div style="float:right;margin-right:20px;">
+    		<a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/chambre">
+        		<i class="glyphicon glyphicon-remove"></i> Annuler
+    		</a>
+    		<button id="submit" type="submit" class="btn btn-primary mt-3" name="valider" style="width:130px" onclick='return CheckForm();'>
+                <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
+            </button>
+			</div>
+			 
+			
 		</form>
-
-		<form method="POST" action="{{path('app_chambre')}}">
-			<button type="submit" class="button btn btn-danger btn-sm" style="width: 103px;margin-left: 911px;margin-top: -57px;">
-				<i class="glyphicon glyphicon-remove"></i>
-				Annuler
-			</button>
-		</form>
-
 
 	
 

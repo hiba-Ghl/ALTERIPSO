@@ -78,10 +78,10 @@ class Chambre
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $status = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'chambres',targetEntity: Etablissement::class)]
     private ?Etablissement $etablissement = null;
 
-    #[ORM\ManyToOne(inversedBy: 'chambres')]
+    #[ORM\ManyToOne(inversedBy: 'chambres',targetEntity: ServiceEtablissement::class)]
     private ?ServiceEtablissement $service = null;
 
     #[ORM\OneToMany(mappedBy: 'chambre', targetEntity: ResultatQuestionnaire::class)]

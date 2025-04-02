@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Categories;
+use App\Entity\ConfigApp;
 use Symfony\Component\HttpFoundation\Request;
 
 class ChartePatientController extends AbstractController
@@ -27,8 +28,18 @@ class ChartePatientController extends AbstractController
     public function index(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-        $repository = $this->entityManager->getRepository(Categories::class);
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
+        $Acce = $this->getUser()->getCHARTES() && $configApp->getEnableCHARTES() == "1";
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');        }
+        $repository = $this->entityManager->getRepository(Categories::class);
+        $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
         $charte = $repository->findBy(
             ['etablissement' => $etablissement, 'titre' => 'charte']
         )[0];
@@ -70,8 +81,8 @@ class ChartePatientController extends AbstractController
         }
         //var_dump($charte);die();
         return $this->render('charte_patient/index.html.twig', [
-            'charte' => $charte,'package'=>$package
-
+            'charte' => $charte,'package'=>$package,
+            'appConfig' => $configApp,
         ]);
     }
 }

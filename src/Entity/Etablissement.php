@@ -47,13 +47,13 @@ class Etablissement
     private ?int $msgap = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $access_tv_in_checkout = null;
+    private ?int $accessTvInCheckout = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $ville = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $nom_etablissement = null;
+    private ?string $nomEtablissement = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $prenom = null;
@@ -63,74 +63,94 @@ class Etablissement
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $genre = null;
-
-    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: User::class)]
-    private Collection $users;
-
+    
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $logoactive = null;
+    
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $meteoactive = null;
+    
+    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: ServiceEtablissement::class)]
+    private Collection $ServiceEtablissement;
+    
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Categories::class)]
     private Collection $categories;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $logoactive = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $meteoactive = null;
-
+    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Services::class)]
+    private Collection $services;
+    
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Television::class)]
     private Collection $televisions;
-
+    
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: CategorieRadio::class)]
     private Collection $categorieRadios;
-
+    
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Radio::class)]
     private Collection $radios;
-
+    
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Support::class)]
     private Collection $supports;
-
+    
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Application::class)]
     private Collection $applications;
-
+    
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Jeux::class)]
     private Collection $jeuxes;
-
+    
+    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: CategorieVod::class)]
+    private Collection $categorieVods;
+    
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: CategorieLivreaudio::class)]
     private Collection $categorieLivreaudios;
-
+    
+    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Vod::class)]
+    private Collection $vods;
+    
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Livreaudio::class)]
     private Collection $livreaudios;
+    
+    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Annonce::class)]
+    private Collection $annonces;
 
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Configmobile::class)]
     private Collection $configmobiles;
-
+    
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Questionnaire::class)]
     private Collection $questionnaires;
-
     
-
-    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Services::class)]
-    private Collection $services;
-
-
+    
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: ResultatQuestionnaire::class)]
     private Collection $resultatQuestionnaires;
 
+    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Chambre::class)]
+    private Collection $chambres;
+
+    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: User::class)]
+    private Collection $users;
+    
     public function __construct()
     {
-        $this->users = new ArrayCollection();
-        $this->categories = new ArrayCollection();
-        $this->televisions = new ArrayCollection();
+        $this->ServiceEtablissement = new ArrayCollection();
         $this->categorieRadios = new ArrayCollection();
+        $this->categorieLivreaudios = new ArrayCollection();
+        $this->categorieVods = new ArrayCollection();
+        $this->categories = new ArrayCollection();
+        $this->services = new ArrayCollection();
+        $this->televisions = new ArrayCollection();
         $this->radios = new ArrayCollection();
+        $this->livreaudios = new ArrayCollection();
+        $this->vods = new ArrayCollection();
+        $this->annonces = new ArrayCollection();
         $this->supports = new ArrayCollection();
         $this->applications = new ArrayCollection();
         $this->jeuxes = new ArrayCollection();
-        $this->categorieLivreaudios = new ArrayCollection();
-        $this->livreaudios = new ArrayCollection();
         $this->configmobiles = new ArrayCollection();
         $this->questionnaires = new ArrayCollection();
         $this->resultatQuestionnaires = new ArrayCollection();
+        $this->chambres = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -266,12 +286,12 @@ class Etablissement
 
     public function getAccessTvInCheckout(): ?int
     {
-        return $this->access_tv_in_checkout;
+        return $this->accessTvInCheckout;
     }
 
     public function setAccessTvInCheckout(?int $access_tv_in_checkout): static
     {
-        $this->access_tv_in_checkout = $access_tv_in_checkout;
+        $this->accessTvInCheckout = $access_tv_in_checkout;
 
         return $this;
     }
@@ -290,12 +310,12 @@ class Etablissement
 
     public function getNomEtablissement(): ?string
     {
-        return $this->nom_etablissement;
+        return $this->nomEtablissement;
     }
 
     public function setNomEtablissement(?string $nom_etablissement): static
     {
-        $this->nom_etablissement = $nom_etablissement;
+        $this->nomEtablissement = $nom_etablissement;
 
         return $this;
     }
@@ -722,17 +742,7 @@ class Etablissement
         return $this;
     }
 
-    public function getServices(): ?Services
-    {
-        return $this->services;
-    }
 
-    public function setServices(?Services $services): static
-    {
-        $this->services = $services;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, ResultatQuestionnaire>
@@ -763,4 +773,187 @@ class Etablissement
 
         return $this;
     }
+    /**
+     * @return Collection<int, Services>
+     */
+    public function getServices(): Collection
+    {
+        return $this->services;
+    }
+    public function addServices(Services $Services): static
+    {
+        if (!$this->services->contains($Services)) {
+            $this->services->add($Services);
+            $Services->setEtablissement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeServices(Services $Services): static
+    {
+        if ($this->services->removeElement($Services)) {
+            // set the owning side to null (unless already changed)
+            if ($Services->getEtablissement() === $this) {
+                $Services->setEtablissement(null);
+            }
+        }
+        return $this;
+    }
+
+     /**
+     * @return Collection<int, ServiceEtablissement>
+     */
+    public function getServiceEtablissement(): Collection
+    {
+        return $this->ServiceEtablissement;
+    }
+
+    public function addServiceEtablissement(ServiceEtablissement $ServiceEtablissement): static
+    {
+        if (!$this->ServiceEtablissement->contains($ServiceEtablissement)) {
+            $this->ServiceEtablissement->add($ServiceEtablissement);
+            $ServiceEtablissement->setEtablissement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeServiceEtablissement(ServiceEtablissement $ServiceEtablissement): static
+    {
+        if ($this->ServiceEtablissement->removeElement($ServiceEtablissement)) {
+            // set the owning side to null (unless already changed)
+            if ($ServiceEtablissement->getEtablissement() === $this) {
+                $ServiceEtablissement->setEtablissement(null);
+            }
+        }
+
+        return $this;
+    }
+
+       /**
+     * @return Collection<int, Chambre>
+     */
+    public function getChambres(): Collection
+    {
+        return $this->chambres;
+    }
+
+    public function addChambres(Chambre $Chambres): static
+    {
+        if (!$this->chambres->contains($Chambres)) {
+            $this->chambres->add($Chambres);
+            $Chambres->setEtablissement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChamberes(Chambre $Chambres): static
+    {
+        if ($this->chambres->removeElement($Chambres)) {
+            // set the owning side to null (unless already changed)
+            if ($Chambres->getEtablissement() === $this) {
+                $Chambres->setEtablissement(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+
+
+
+        /**
+     * @return Collection<int, Annonce>
+     */
+    public function getAnnonces(): Collection
+    {
+        return $this->annonces;
+    }
+
+    public function addAnnonces(Annonce $annonce): static
+    {
+        if (!$this->annonces->contains($annonce)) {
+            $this->annonces->add($annonce);
+            $annonce->setEtablissement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnnonces(Annonce $annonce): static
+    {
+        if ($this->annonces->removeElement($annonce)) {
+            // set the owning side to null (unless already changed)
+            if ($annonce->getEtablissement() === $this) {
+                $annonce->setEtablissement(null);
+            }
+        }
+        return $this;
+    }
+
+
+    /**
+     * @return Collection<int, CategorieVod>
+     */
+    public function getCategorievods(): Collection
+    {
+        return $this->categorieVods;
+    }
+
+    public function addCategorievod(CategorieVod $categorievod): static
+    {
+        if (!$this->categorieVods->contains($categorievod)) {
+            $this->categorieVods->add($categorievod);
+            $categorievod->setEtablissement($this);
+        }
+        return $this;
+    }
+    public function removeCategorievod(CategorieVod $categorievod): static
+    {
+        if ($this->categorieVods->removeElement($categorievod)) {
+            // set the owning side to null (unless already changed)
+            if ($categorievod->getEtablissement() === $this) {
+                $categorievod->setEtablissement(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Vod>
+     */
+    public function getvods(): Collection
+    {
+        return $this->vods;
+    }
+
+    public function addvod(Vod $vod): static
+    {
+        if (!$this->vods->contains($vod)) {
+            $this->vods->add($vod);
+            $vod->setEtablissement($this);
+        }
+
+        return $this;
+    }
+
+    public function removevod(Vod $vod): static
+    {
+        if ($this->vods->removeElement($vod)) {
+            // set the owning side to null (unless already changed)
+            if ($vod->getEtablissement() === $this) {
+                $vod->setEtablissement(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+
+
 }

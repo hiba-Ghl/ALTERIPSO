@@ -11,18 +11,6 @@
 			margin-top: 10px;
 
 		}
-		#div2 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 20px;
-			width: 1250px;
-			height: auto;
-			margin-left: 10px;
-			margin-top: 10px;
-			background-color: white;
-		}
-
-
 		.fileUpload {
 			position: relative;
 			overflow: hidden;
@@ -73,37 +61,51 @@
 			float: left;
 		}
 	</style>
-
-
-	<div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
+<div style="border-radius: 8px; margin-left:-130px; margin-top:10px;text-align: left; margin-bottom: 10px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding-left: 10px; display: inline-block;">
+    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
 		Liste  radio
-	</div>
-
+</div>
+	<form action="{{ path('modifier_radio')}}" name="form" method="post" enctype="multipart/form-data">
 	<div id="div2">
-	
-
-		<input id="myInput3" type="text" placeholder="Search.." style="position: absolute;height: 35px;margin-top: -86px;border-color: #3087ce;margin-left: 777px;width: 130px;border: 2px solid;border-radius: 5px;">
-		<form
-			action="{{ path('modifier_radio')}}" name="form" method="post" enctype="multipart/form-data">
-
+		<div style="display:flex;align-items:center;justify-content:space-between;gap:3px;width:100%; ">
+			<!-- button enregistrer et annuler  -->
+			<div>
+			<a   {% if app.user.ExportRadio == '0' %}	 disabled {% endif %} style="width: 120px;" type="submit" class="btn-success btn btn-sm  exporter" href="/export_Radio">
+				<i class="fa-solid fa-clone"></i>
+				Exporter
+			</a>
+			<a 	 {% if app.user.ImportRadio == '0' %}	 disabled {% endif %} style="width: 120px;" type="submit" class="btn btn-info btn btn-sm  importer" id="desvod" name="desvod" data-toggle="modal" data-target="#myModal6">
+				<i	class="glyphicon glyphicon-import "></i>
+				Importer
+			</a>			
+			<button type="submit" {% if app.user.ModifierRadio == '0' %}	 disabled {% endif %} class="btn btn-success btn-sm" href="{{path('modifier_chaine')}}" style="width: 150px;">
+				<i class="glyphicon glyphicon-floppy-disk"></i>Sauvegarder</button>
+			<button type="button" class="btn btn-danger btn-sm" style="width: 150px;">
+				<i class="glyphicon glyphicon-remove"></i>Annuler</button>
+	</div>
+		<input id="myInput3" {% if app.user.ModifierRadio == '0' %}	 disabled {% endif %} type="text" placeholder="Search.." style="height: 35px;border-color: #3087ce;width: 200px;border: 2px solid;border-radius: 5px;">
+		</div>
 			<!--<table id="" class="table table-striped header-fixed table-bordered table-hover table-checkable order-column">-->
-			<table id="liste-chaines" class="table table-striped header-fixed table-bordered table-hover table-checkable order-column">
-
-
+			<table id="liste-chaines" class="table table-striped table-bordered header-fixed table-hover" style="width:100%;margin-top:10px;">
 				<thead>
 
 					<tr>
-						<th style="width:150px;height: 50px;">Nom Radio</th>
-						<th style="height: 50px;width:250px">Ip</th>
-						<th style="height: 50px;width:100px">Port</th>
-						<th style="height: 50px;width:200px">Catégorie </th>
-						<th style="height: 50px;width:70px">Icons</th>
-						<th style="height: 50px;width:100px">Pays</th>
-						<th style="height: 50px;width:100px">Protocole</th>
-						<th style="height: 50px;width:70px">Actif<input type="checkbox" id="checklist"></th>
-						<th style="height: 50px;width:100px">Actions</th>
-
-
+						<th style="width:130px;height: 50px;text-align:center;">Nom Radio</th>
+						<th style="height: 50px;width:250px;text-align:center;">Ip</th>
+						<th style="height: 50px;width:130px;text-align:center;">Port</th>
+						<th style="height: 50px;width:130px;text-align:center;">Catégorie </th>
+						<th style="height: 50px;width:130px;text-align:center;">Icons</th>
+						<th style="height: 50px;width:130px;text-align:center;">Pays</th>
+						<th style="height: 50px;width:130px;text-align:center;">Protocole</th>
+						<th style="height: 50px;width:130px;text-align:center;">
+							<p style="display:flex;gap:10px;justify-content:center">
+                        	<span>
+                            	Active
+                        	</span>
+                        	<input type="checkbox" id="checklist" style="margin-top:-1px;"></th>
+                        </p>	
+						</th>
+						<th style="height: 50px;width:130px;text-align:center;">Actions</th>
 					</tr>
 				</thead>
 
@@ -113,28 +115,28 @@
 
 
 						<tr class="odd gradeX">
-							<td style="width:150px">
-								<label><input name='listenom[{{tele.Id}}]' type="text" value="{{tele.nom}}" class="form-control" style="font-size: 11px;"></label>
-								<label style="visibility: hidden;">{{tele.nom}}</label>
+							<td style="width:130px;height: 70px;text-align:center;">
+								<label><input name='listenom[{{tele.Id}}]' type="text" value="{{tele.nom}}" class="form-control" style="font-size:11px" ></label>
+								<label style="visibility: hidden;font-size:11px;">{{tele.nom}}</label>
 							</td>
 
-							<td style="width:250px">
+							<td style="width:250px;height: 70px;text-align:center;">
 								<label>
-									<textarea name='listeip[{{tele.Id}}]' class="form-control" style="margin: 0px -320px 0px 0px;width: 230px;height: 45px;font-size: 11px;">{{tele.Ip}}</textarea>
+									<textarea {% if app.user.ModifierRadio == '0' %}	 disabled {% endif %} name='listeip[{{tele.Id}}]' class="form-control" style="font-size:11px" >{{tele.Ip}}</textarea>
 								</label>
 							</td>
 
 
-							<td style="width:100px">
-								<label><input name='listeport[{{tele.Id}}]' type="text" value="{{tele.port}}" class="form-control" style="font-size: 11px;"></label>
+							<td style="width:130px;height: 70px;text-align:center;">
+								<label><input {% if app.user.ModifierRadio == '0' %}	 disabled {% endif %} name='listeport[{{tele.Id}}]' type="text" value="{{tele.port}}" class="form-control" style="font-size:11px"></label>
 
 							</td>
 
 
-							<td style="width:200px">
+							<td style="width:130px;height: 70px;text-align:center;">
 								<label>
-									<select class="form-control" name='listcatradio[{{tele.Id}}]'  style="width: 180px; font-size: 11px;" > 
-										<option selected=selected value ='{{tele.categorie.Id}}'>{{tele.categorie.nom}}</option>
+									<select class="form-control" name='listcatradio[{{tele.Id}}]' style="font-size:11px" {% if app.user.ModifierRadio == '0' %}	 disabled {% endif %}> 
+										<option selected=selected value ='{{tele.categorie.Id}}' >{{tele.categorie.nom}}</option>
 										
 										 {% for a in categorieradio %}      
 									  {% if a.nom == tele.categorie.nom %}
@@ -152,22 +154,17 @@
 								</label>
 							</td>
 
-							<td style="width:70px">
+							<td style="width:130px;height: 70px;text-align:center;">
 
 
 								<div class="fileUpload " id="mainform">
 									<img id="preview-{{tele.Id}}" style="width:50px;height:50px;text-align:center" src="{{asset(tele.logo)}}" alt="..." class="img-rounded img-responsive center-block">
-									<input id="{{tele.Id}}" type="file" class="upload" name="listelogo[{{tele.Id}}]" accept=".jpg, .jpeg, .png" style="width:50px;height:50px;text-align:center"/>
-
-
+									<input {% if app.user.ModifierRadio == '0' %}	 disabled {% endif %} id="{{tele.Id}}" type="file" class="upload" name="listelogo[{{tele.Id}}]" accept=".jpg, .jpeg, .png" style="width:50px;height:50px;text-align:center"/>
 								</div>
-
-
 							</td>
-
-							<td style="width:100px">
+							<td style="width:130px;height: 70px;text-align:center;">
 								<label>
-									<select class="form-control pdf-select" name='listepays[{{tele.Id}}]' style="width: 100%; font-size: 11px;">
+									<select class="form-control pdf-select" name='listepays[{{tele.Id}}]' style="width: 100%; font-size: 11px;" {% if app.user.ModifierRadio == '0' %}	 disabled {% endif %}>
 										<option selected value='{{tele.pays}}'>{{tele.pays}}</option>
 
 										<option value="Afghanistan">Afghanistan</option>
@@ -440,8 +437,8 @@
 							</td>
 
 
-							<td style="width:100px">
-								<select class="form-control" name='listeprotocole[{{tele.Id}}]' style="width: 100%; font-size: 11px;">
+							<td style="width:130px;height: 70px;text-align:center;">
+								<select class="form-control" name='listeprotocole[{{tele.Id}}]' style="width: 100%; font-size: 11px;" {% if app.user.ModifierRadio == '0' %}	 disabled {% endif %}>
 									<option selected value='{{tele.Protocole}}'>{{tele.Protocole}}</option>
 									<option value="http://">HTTP</option>
 									<option value="coax">COAX</option>
@@ -455,23 +452,16 @@
 								{% set ch = 'checked' %}
 							{% endif %}
 							
-							<td style="width:70px">
-								<label><input name='listeactive[{{tele.Id}}]' type="checkbox" {{ch}} class="jpCheckbox"></label>
+							<td style="width:130px;height: 70px;text-align:center;">
+								<label><input name='listeactive[{{tele.Id}}]' type="checkbox" {{ch}} class="jpCheckbox" {% if app.user.ModifierRadio == '0' %}	 disabled {% endif %}></label>
 							</td>
-
-
-							
-
-							<td style="width:120px">
-								<a data-toggle="modal" data-target="#myModal5" name="send" class="btn btn-info btn-xs">
-									<i data-toggle="tooltip" data-placement="top" title="lancer la chaîne" class="glyphicon glyphicon-play-circle"></i>
+							<td style="width:130px;height: 70px;text-align:center;">
+								<a data-toggle="modal" {% if app.user.lancerRadio == '0' %} disabled {% endif %} data-target="#myModal5" name="send" class="btn btn-info btn-xs" >
+									<i data-toggle="tooltip"   data-placement="top" title="lancer la chaîne" class="glyphicon glyphicon-play-circle"></i>
 								</a>
-
-								<a data-toggle="tooltip" data-placement="top" title="supprimer la chaîne" id="ida" href="{{path('supprimer_radio',{'id':tele.id})}}" class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer la radio : {{tele.nom}} ?')">
+								<a data-toggle="tooltip" data-placement="top" {% if app.user.SupprimerRadio == '0' %} disabled {% endif %} title="supprimer la chaîne" id="ida" href="{{path('supprimer_radio',{'id':tele.id})}}" class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer la radio : {{tele.nom}} ?')">
 									<i class="glyphicon glyphicon-trash"></i>
 								</a>
-								
-
 							</td>
 						</tr>
 
@@ -482,41 +472,37 @@
 
 
 			</table>
-			<!-- button enregistrer et annuler  -->
-
-			<button type="submit" class="btn btn-success btn-sm" href="{{path('modifier_chaine')}}" style="margin-left: 495px;margin-top: -1103px;width: 130px; /*position: absolute; */background-color: #3087ce;border: 2px solid #3087ce;">
-				<i class="glyphicon glyphicon-floppy-disk"></i>Enregistrer</button>
-			<button type="button" class="btn btn-danger btn-sm" style="margin-left: 635px;margin-top: -1139px;width: 130px; /*position: absolute;*/background-color: red;border: 2px solid red;">
-				<i class="glyphicon glyphicon-remove"></i>Annuler</button>
+			
 
 
 		</form>
-		<form action="{{ path('ajouter_radio')}}" name="form" method="post" enctype="multipart/form-data" style="height: 70px;">
-			<table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column">
+	
+	<form action="{{ path('ajouter_radio')}}" name="form" method="post" enctype="multipart/form-data" style="height: 70px;">
+			<table class="table table-striped table-bordered header-fixed table-hover" style="width:100%;">
 				<tbody style="height: auto !important;">
 					<tr class="odd gradeX" style="background-color:white;">
-						<td style="width:150px">
-							<label><input name='nom' type="text" value="" class="form-control" style="font-size: 11px;"></label>
+						<td style="width:130px;height: 70px;text-align:center;">
+							<label><input name='nom' {% if app.user.AjoutRadio == '0' %} disabled {% endif %} type="text" value="" class="form-control" style="font-size: 11px;"></label>
 
 						</td>
 
 
-						<td style="width:250px">
+						<td style="width:250px;height: 70px;text-align:center;">
 							<label>
-								<textarea name='ip' class="form-control" style="margin: 0px -320px 0px 0px;width: 230px;height: 45px;font-size: 11px;"></textarea>
+								<textarea name='ip' {% if app.user.AjoutRadio == '0' %} disabled {% endif %} class="form-control" style="font-size: 11px;"></textarea>
 							</label>
 						</td>
 
 
-						<td style="width:100px">
-							<label><input name='port' type="text" value="" class="form-control" style="font-size: 11px;"></label>
+						<td style="width:130px;height: 70px;text-align:center;">
+							<label><input name='port' {% if app.user.AjoutRadio == '0' %} disabled {% endif %} type="text" value="" class="form-control" style="font-size: 11px;"></label>
 
 						</td>
 
 
-						<td style="width:200px">
+						<td style="width:130px;height: 70px;text-align:center;">
 							<label>
-								<select class="form-control" name='catradio'  style="width: 180px; font-size: 11px;" > 
+								<select class="form-control" name='catradio'  style="font-size: 11px;" {% if app.user.AjoutRadio == '0' %} disabled {% endif %}> 
 																	
 									 {% for a in categorieradio %}      
 									  <option value ='{{a.id}}'>{{a.nom}}</option>
@@ -529,12 +515,12 @@
 							</label>
 						</td>
 
-						<td style="width:70px">
+						<td style="width:130px;height: 70px;text-align:center;">
 
 
 							<div class="fileUpload " id="mainform0">
 								<img id="preview-0" style="width:50px;height:50px;text-align:center" src="{{ asset('images/no_image.png') }}" alt="..." class="img-rounded img-responsive center-block">
-								<input id="0" type="file" class="upload" name="logo" accept=".jpg, .jpeg, .png" style="width:50px;height:50px;text-align:center"/>
+								<input id="0" {% if app.user.AjoutRadio == '0' %} disabled {% endif %} type="file" class="upload" name="logo" accept=".jpg, .jpeg, .png" style="width:50px;height:50px;text-align:center"/>
 
 
 							</div>
@@ -542,9 +528,9 @@
 
 						</td>
 
-						<td style="width:100px">
+						<td style="width:130px;height: 70px;text-align:center;">
 							<label>
-								<select class="form-control" name='pays' style="width: 100%; font-size: 11px;">
+								<select class="form-control" name='pays' style="width: 100%; font-size: 11px;" {% if app.user.AjoutRadio == '0' %} disabled {% endif %}>
 
 									<option value="France">France</option>
 									<option value="Afghanistan">Afghanistan</option>
@@ -817,8 +803,8 @@
 						</td>
 
 
-						<td style="width:100px">
-							<select class="form-control" name='protocole' style="width: 100%; font-size: 11px;">
+						<td style="width:130px;height: 70px;text-align:center;">
+							<select class="form-control" name='protocole' style="width: 100%; font-size: 11px;" {% if app.user.AjoutRadio == '0' %} disabled {% endif %}>
 								<option value="http://">HTTP</option>
 								<option value="coax">COAX</option>
 								<option value="udp://@">UDP</option>
@@ -826,18 +812,18 @@
 							</select>
 						</td>
 
-						<td style="width:70px">
-							<label><input name='active' type="checkbox"></label>
+						<td style="width:130px;height: 70px;text-align:center;">
+							<label><input name='active' type="checkbox" {% if app.user.AjoutRadio == '0' %} disabled {% endif %}></label>
 						</td>
 
 
 						
 
 
-						<td style="width:150px">
+						<td style="width:130px;height: 70px;text-align:center;">
 
 
-							<button type="submit" data-toggle="tooltip" data-placement="top" title="Ajouter une chaîne" id="" href="{{path('ajouter_chaine')}}" class="btn btn-info btn-xs">
+							<button {% if app.user.AjoutRadio == '0' %} disabled {% endif %} type="submit" data-toggle="tooltip" data-placement="top" title="Ajouter une chaîne" id="" href="{{path('ajouter_chaine')}}" class="btn btn-info btn-xs">
 								<i data-toggle="tooltip" data-placement="top" title="Ajouter une chaîne" class="glyphicon glyphicon-plus"></i>
 							</button>
 						</td>
@@ -848,7 +834,32 @@
 	</div>
 	<br>
 	<!-- Modals -->
-	
+	<div class="modal fade" id="myModal6" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		 <form action="{{ path('app_import_Radio',{'id':app.user.etablissement.id}) }}" method="post" enctype="multipart/form-data">
+	<div class="modal-dialog" role="document" style="width:1000px" >
+        <div class="modal-content">
+            <div class="modal-header" style="margin-top:30px">
+                <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding: 5px 10px; display: inline-block;">
+                    <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+                    Importer les Radios
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+  			<div class="modal-body">
+				<input type="file" class="form-control" name="fileData" accept=".zip"></input>
+			</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" style="width:130px;">Annuler</button>
+				<button	type="submit" class="btn btn-primary" style="width:130px;">
+					Enregistrer
+				</button>
+            </div>
+        </div>
+    </div>
+	</form>
+	  </div>
 
 	<!-- Scripts -->
 <!-- Copier, Excel, CSV, PDF -->

@@ -2,7 +2,16 @@
 {% extends 'home/index.html.twig' %}
 {# Cette section concerne la conception de modèles pour l'ajout d'un service.#}
 {% block body %}
+{# offline #}
+{% if appConfig.StatusServeur is same as('Offline') %}
+
+<script src="assets/js/all.min.js"></script>
+{% else %}
+{# online #}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+
+{% endif %}
+<script src="assets/js/all.min.js"></script>
 <div style="border-radius: 8px;  margin-top:10px;text-align: left; margin-bottom: 10px; margin-left: -130px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 200px; padding-left: 10px; display: inline-block;">
     <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
     Ajouter un service
@@ -310,6 +319,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 <script>
+        const configApp = {{configApp | raw}}
        document.addEventListener('DOMContentLoaded', function () {
         const traduireButton = document.getElementById('test');
         const textInput = document.getElementById('nom_service');
@@ -324,7 +334,6 @@ document.addEventListener('DOMContentLoaded', function () {
             ar: document.getElementById("AR"),
         };
         let translations = {};
-        let online = 1;
         async function translateAll(text) {
             const languages = Object.keys(languageInputs);
             let results = [];
@@ -345,7 +354,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     alert("Veuillez entrer un texte à traduire.");
                     return;
                 }
-                if(online === 0)
+                if(configApp.Status === 'Offline')
                 {
                     alert("Aucun internet disponible : vous pouvez faire la traduction manuellement");
                     return ;
@@ -377,7 +386,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let translations = {};
 
-        async function translateAll(text) {
+        async  {
             const languages = Object.keys(languageInputs);
             const translationPromises = languages.map(lang => translate(text, lang, 'fr'));
             const results = await Promise.all(translationPromises);

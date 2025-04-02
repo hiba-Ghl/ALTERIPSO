@@ -1,0 +1,95 @@
+{% extends 'home/index.html.twig' %}
+{% block body %}
+
+{# offline #}
+{% if appConfig.StatusServeur is same as('Offline') %}
+<script src="assets/js/jquery-3.6.0.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/datatables2.min.js"></script>
+{% else %}
+{# online #}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+{% endif %}
+<div style="border-radius: 8px;  margin-top:10px;text-align: left; margin-bottom: 10px; margin-left: -130px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding-left: 10px; display: inline-block;">
+    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+    Gestion des utilisateurs
+</div>
+<div id="div2">
+    <div style="display:flex;gap:2px;margin-left:88px;width:200px" >
+        <a  class="btn btn-info btn-sm" style="margin-left:-72px;width:100%" id="add" href="{{path('ajouteUtilisateur')}}"> 
+            <i class="glyphicon glyphicon-plus"></i>
+            Ajouter un utilisateur
+        </a>
+        <a class="btn btn-danger btn-sm" id = "annulerButton" style="width:130px;" href="/home">
+        <i class="glyphicon glyphicon-remove"></i> Annuler
+    </a>
+    </div>
+  <div id="myDiv" class="col-md-12">
+        <table class="table table-striped table-bordered table-hover" id="dataTables-example" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th style="text-align: center;">Identifiant</th>
+                    <th style="text-align: center;">Email</th>
+                    <th style="text-align: center;">Fonction</th>
+                    <th style="text-align: center;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user1 in users %}
+                    {% if user1.id != user.getId() %}
+                        <tr>
+                            <td style="text-align: center;">{{ user1.username | capitalize }}</td>
+                            <td style="text-align: center;">{{ user1.email | capitalize }}</td>
+                            <td style="text-align: center;">
+                                {% for role in user1.roles %}
+                                    {{ role | capitalize }}
+                                {% endfor %}
+                            </td>
+                            <td style="text-align: center;">
+                                <a data-toggle="tooltip" title="Détails de l'utilisateur" href="/DetailUtilisateur/{{ user1.id }}" class="btn btn-default btn-xs">
+                                    <i class="glyphicon glyphicon-list-alt"></i>
+                                </a>
+                                <a data-toggle="tooltip" title="Modifier les droits de l'utilisateur" href="/ModifierUtilisateur/{{ user1.id }}" class="btn btn-warning btn-xs">
+                                    <i class="glyphicon glyphicon-edit"></i>
+                                </a>
+                                <a data-toggle="tooltip" title="Supprimer l'utilisateur" href="/DeleteUser/{{ user1.id }}" class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer cet utilisateur ?');">
+                                    <i class="glyphicon glyphicon-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- DataTables Core -->
+
+<script>
+   $(document).ready(function () {
+      $('#dataTables-example').DataTable({
+         language: {
+            search: "Recherche:",
+            emptyTable: "Aucun utilisateur disponible."
+         },
+         paging: false,
+         searching: true,
+         ordering: true,
+         info: false,
+         columnDefs: [{ orderable: false, targets: 3 }]
+      });
+   });
+</script>
+
+{% endblock %}
+
+
+
+
+
+
+
+

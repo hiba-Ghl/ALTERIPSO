@@ -5,12 +5,12 @@
     #div2 {
             border-radius: 25px;
 			border: 2px solid #3087ce;
-			padding: 20px;
             height: auto;
             display: flex;
             justify-content: center;
             background-color:white;
-            margin: 10px;
+            margin-left: -70px;
+            padding:10px;
 
 		}
 
@@ -27,7 +27,7 @@
     }
 </style>
 
-<div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 390px;padding-left: 10px;">
+<div style="border-radius: 8px;text-align: left;margin-bottom:10px;margin-top:10px;margin-left: -70px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 390px;padding-left: 10px;">
     <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
     Ajouter une catégorie Livre Audio
 </div>
@@ -35,20 +35,16 @@
 <div id="div2">
      <!-- le formulaire d'ajout --> 
     <form name="" method="post" action="{{ path('app_ajouter_categorielivreaudio') }}" class="form-horizontal" enctype="multipart/form-data" onsubmit="return validateForm()">
-
-
-       
-
         <div class="row">
             <!-- Colonne pour le logo -->
-            <div class="col-md-4 text-center">
+            <div class="col-md-2 text-center">
                 <div class="form-group">
                     <img id="logo-preview" style="width:250px;height:235px; margin-left:10px;" />
                 </div>
             </div>
 
             <!-- Colonne pour les autres champs -->
-            <div class="col-md-8">
+            <div class="col-md-10">
                 <!-- nom -->
                  <div class="form-group">
                     <label class="col-lg-2 control-label">Nom</label>
@@ -82,25 +78,25 @@
                 <div class="form-group ">
                     <label for="logo" class="col-lg-2 control-label">Logo </label>
                     <div class="col-lg-10">
-                    <input type="file" class="form-control-file" id="logo" name="logo" accept=".jpg, .jpeg, .png" onchange="previewLogo(event)">
+                    <input type="file" class="form-control" id="logo" name="logo" accept=".jpg, .jpeg, .png" onchange="previewLogo(event)">
                     <p class="error-message" id="file-error">La taille maximale du fichier est de 400 Ko.</p>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- les langues --> 
-        <div style="width: 1005px; margin-left: 32px; margin-bottom: 15px; margin-top: 20px">
-            <!-- le boutons des langues --> 
-            <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                <span><i class="glyphicon glyphicon-plus"></i></span>
-            </a>
-            <label style="margin-left: 5px;" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Langues</label>
-            <br>
+                <div class="form-group ">
+            <label class="col-lg-2 control-label accordion-toggle"data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Langues</label>
             <!-- le bouton de traduction -->
+            <div class="col-lg-10">
             <button type="button" id="translateBtn" class="btn btn-info btn-sm">
                 <i class="glyphicon glyphicon-globe"></i> Traduire le texte
             </button>
+                <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                <span><i class="glyphicon glyphicon-plus"></i></span>
+            </a>
+            <div>
+            <!-- les langues --> 
+        <div style="width: 900px; margin-left:-40px;margin-bottom: 15px; margin-top: 20px">
+            <!-- le boutons des langues --> 
+            
             <!-- les champs des langues -->
             <div id="collapseTwo" class="panel-collapse collapse">
                 <div class="panel-body">
@@ -157,19 +153,24 @@
                 </div>
             </div>
         </div>
+                </div>
+            </div>
+        </div>
+
+        
 
         <br>
 
          <!-- les boutons du formulaire--> 
-        <span style="margin-left: 800px;">
-            <button type="submit" name="valider" class="button btn btn-primary btn-sm" style="solid; padding: 8px">
-                <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
-            </button>
-            <a href="{{ path('app_categorie_livreaudio') }}" class="btn btn-danger" style="solid; margin-left: 13px; padding: 8px">
-                <i class="glyphicon glyphicon-remove"></i> Annuler
-            </a>
-        </span>
-
+                 <div style="float:right;margin-left:30px;">
+				<a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/categorielivreaudio">
+					<i class="glyphicon glyphicon-remove"></i> Annuler
+				</a>
+				<button type="submit" class="btn btn-primary btn-md" name="valider" >
+					<i class="glyphicon glyphicon-floppy-disk"></i>
+					Enregistrer
+				</button>
+		</div>
     </form>
 </div>
 
@@ -202,7 +203,10 @@
 </script>
 
 <!--Implémentation de la fonctionnalité de traduction ici-->
+
+
     <script>
+      const configApp = {{configApp | raw}}
 document.addEventListener('DOMContentLoaded', function () {
 	const traduireButton = document.getElementById('translateBtn');
 	 const languageInputs = {
@@ -216,7 +220,6 @@ document.addEventListener('DOMContentLoaded', function () {
             ar: document.getElementById("AR"),
         };
         let translations = {};
-        let online = 1;
         async function translateAll(text) {
             const languages = Object.keys(languageInputs);
             let results = [];
@@ -232,12 +235,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         if (traduireButton) {
             traduireButton.addEventListener('click', async(event) => {
+                const textInput = document.getElementById("nom");
                 const text = textInput.value.trim() ;
                 if (text === '') {
                     alert("Veuillez entrer un texte à traduire.");
                     return;
                 }
-                if(online === 0)
+                if(configApp.Status === 'Offline')
                 {
                     alert("Aucun internet disponible : vous pouvez faire la traduction manuellement");
                     return ;

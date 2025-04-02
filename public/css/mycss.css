@@ -12,12 +12,11 @@
   border: 2px solid #3087ce;
   padding: 20px;
   width: 1400px;
-  height: 700px;
+  height: 680px;
   margin-left: -130px;
   background-color: white;
   margin-bottom: 20px;
 }
-
 .fileUpload {
   position: relative;
   overflow: hidden;
@@ -137,6 +136,7 @@
 }
 .button {
   align-self: flex-end;
+  margin-right: 60px;
 }
 .test1 {
   width: 30px;
@@ -184,7 +184,7 @@
 }
 .dia {
   font-size: 16px;
-  width: 400px;
+  width: 370px;
 }
 
 #divAll {
@@ -316,21 +316,59 @@
   border-radius: 2px 2px 0 0;
 }
 
-.dataTables_filter{
-    margin-top: -24px;
-}
 input[type="number"]::-webkit-inner-spin-button, 
 input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
+.dataTables_filter{
+    float: right;
+    width: 25%;
+    margin-top: -27px;
+}
+
 
 .dataTables_filter label {
   color: #3087ce;
   font-size: 20px;
 }
-
 .dataTables_filter input {
   color:black;
   font-size: 16px;
+}
+
+/* #ModalelancerService {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+} */
+
+#rcorners{
+  border-radius: 25px;
+  border: 2px solid #15f4ee;
+  padding: 20px;
+  width: 420px;
+  height: 140px;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+#rcorners:hover{
+  border: 4px solid #0c1d24;
+}
+
+#rcorners1{
+  display: flex;
+  flex-direction: column;
+  gap:5px;
+  border-radius: 25px;
+  border: 2px solid #15f4ee;
+  padding: 20px;
+  width: 420px;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+#rcorners1:hover{
+  border: 4px solid #0c1d24;
 }

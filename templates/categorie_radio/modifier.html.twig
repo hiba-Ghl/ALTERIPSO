@@ -14,14 +14,14 @@
 			padding: 43px;
 
 		}
-		#div2 {
+		#div4 {
 			border-radius: 25px;
 			border: 2px solid #3087ce;
-			padding: 20px;
 			width: 1091px;
-			height: 750px;
+            background-color:white;
 			margin-left: 10px;
 			margin-top: 10px;
+            padding:60px;
 		}
 	</style>
 <!-- ajouter categories                                                      -->
@@ -31,7 +31,7 @@
     Modifier la  catégorie radio : {{categorieradio.nom}}
 </div>
 
-<div id="div2">
+<div id="div4">
 
     <form name="" method="post" action="" class="form-horizontal" enctype="multipart/form-data">
 
@@ -79,89 +79,144 @@
             </div>
         </div>
 
-
-        <br>
-     
-
-
-
-
-        <div class="form-group">
-            <label >logo :</label>
-           <center><input type="file" class="form-control-file" id="logo" name="logo"></center> 
+<div class="form-group" style="display:flex;">
+            <label for="logo" class="col-lg-2 control-label">Logo </label>
+            <div class="col-lg-10">
+           <input type="file" class="form-control" id="logo" name="logo"> 
+           </div>
         </div>
  
 
-        <br>
-        <strong>langues
-        </strong>
-
-      <table cellspacing="10" style="width: 100%;">
-            <tr>
-                <td>
-                    <img style="width: 30px" src=" {{asset('images/eng.png')}}">
-                    <label class="control-label required" for="EN">English</label>
-                    <input style="margin-right: 10px;" type="text" id="EN" name="EN" class="form-control" value="{{categorieradio.en}}">
-                </td>
-                <td>
-                    <img style="width: 30px" src="{{asset('images/es.png')}}">
-                    <label class="control-label required" for="ES">Espagnol</label>
-                    <input style="margin-right: 10px;" type="text" id="ES" name="ES" class="form-control" value="{{categorieradio.es}}">
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <img style="width: 30px" src=" {{asset('images/pt.png')}}">
-                    <label class="control-label required" for="PT">Portugues</label>
-                    <input type="text" id="PT" name="PT" class="form-control" value="{{categorieradio.pt}}">
-                </td>
-                <td>
-                    <img style="width: 30px" src=" {{asset('images/ita.png')}}">
-                    <label class="control-label required" for="IT">Italiano</label>
-                    <input type="text" id="IT" name="IT" class="form-control" value="{{categorieradio.it}}">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <img style="width: 30px" src=" {{asset('images/rus.png')}}">
-                    <label class="control-label required" for="RU">Russian</label>
-                    <input type="text" id="RU" name="RU" class="form-control" value="{{categorieradio.ru}}">
-                </td>
-                <td>
-                    <img style="width: 30px" src=" {{asset('images/deu.png')}}">
-                    <label class="control-label required" for="DE">Deutsch</label>
-                    <input type="text" id="DE" name="DE" class="form-control" value="{{categorieradio.de}}">
-                </td>
-
-            </tr>
-
-            <tr>
-                <td>
-                    <img style="width: 30px" src=" {{asset('images/ch.png')}}">
-                    <label class="control-label required" for="ZH">China</label>
-                    <input type="text" id="ZH" name="ZH" class="form-control" value="{{categorieradio.zh}}">
-                </td>
-                <td>
-                    <img style="width: 30px" src=" {{asset('images/ma.png')}}">
-                    <label class="control-label required" for="AR">العربية</label>
-                    <input type="text" id="AR" name="AR" class="form-control" value="{{categorieradio.ar}}">
-                </td>
-            </tr>
-
-        </table>
-
-
-
-      
-
-        <br>
+      <div style="width: 900px; margin-left:100px; margin-bottom: 5px; margin-top: 20px">
+            <!-- le boutons des langues --> 
+            <label style="margin-right: 20px;" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Langues</label>
+            <!-- le bouton de traduction -->
+            <button type="button" id="translateBtn" class="btn btn-info btn-sm">
+                <i class="glyphicon glyphicon-globe"></i> Traduire le texte
+            </button>
+            <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                <span><i class="glyphicon glyphicon-plus"></i></span>
+            </a>
+            <!-- les champs des langues -->
+            <div id="collapseTwo" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div id="inputGroup1">
+                        <div class="form-row" style="margin-left:27px">
+                            <div class="form-group col-md-6">
+                                <img style="width: 30px" src="{{ asset('images/eng.png') }}">
+                                <label for="EN">English</label>
+                                <input type="text" class="form-control" id="EN" name="EN">
+                            </div>
+                            <div class="form-group col-md-6" style="margin-left:27px">
+                                <img style="width: 30px" src="{{ asset('images/es.png') }}">
+                                <label for="ES">Espagnol</label>
+                                <input type="text" class="form-control" id="ES" name="ES">
+                            </div>
+                        </div>
+                        <div class="form-row" style="margin-left:27px">
+                            <div class="form-group col-md-6">
+                                <img style="width: 30px" src="{{ asset('images/pt.png') }}">
+                                <label for="PT">Portugues</label>
+                                <input type="text" class="form-control" id="PT" name="PT">
+                            </div>
+                            <div class="form-group col-md-6" style="margin-left:27px">
+                                <img style="width: 30px" src="{{ asset('images/ita.png') }}">
+                                <label for="IT">Italiano</label>
+                                <input type="text" class="form-control" id="IT" name="IT">
+                            </div>
+                        </div>
+                        <div class="form-row" style="margin-left:27px">
+                            <div class="form-group col-md-6">
+                                <img style="width: 30px" src="{{ asset('images/rus.png') }}">
+                                <label for="RU">Russian</label>
+                                <input type="text" class="form-control" id="RU" name="RU">
+                            </div>
+                            <div class="form-group col-md-6" style="margin-left:27px">
+                                <img style="width: 30px" src="{{ asset('images/deu.png') }}">
+                                <label for="DE">Deutsch</label>
+                                <input type="text" class="form-control" id="DE" name="DE">
+                            </div>
+                        </div>
+                        <div class="form-row" style="margin-left:27px">
+                            <div class="form-group col-md-6">
+                                <img style="width: 30px" src="{{ asset('images/ch.png') }}">
+                                <label for="ZH">China</label>
+                                <input type="text" class="form-control" id="ZH" name="ZH">
+                            </div>
+                            <div class="form-group col-md-6" style="margin-left:27px">
+                                <img style="width: 30px" src="{{ asset('images/ma.png') }}">
+                                <label for="AR">العربية</label>
+                                <input type="text" class="form-control" id="AR" name="AR">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
    
-        <button type="submit" name="valider" class="btn btn-success" style="margin-left: 920px;position: absolute;background-color: #3087ce; border: 2px solid #3087ce;"><i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer</button>
-
+            <div style="float:right;margin-left:30px;">
+            <a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/categorieradio">
+                <i class="glyphicon glyphicon-remove"></i> Annuler
+            </a>
+            <button type="submit" class="btn btn-primary btn-md" name="valider" >
+                <i class="glyphicon glyphicon-floppy-disk"></i>
+                Enregistrer
+            </button>
+    </div>
         </form>
 
 
 </div>
-<br> <br> <br> <br>
+<script>
+      const configApp = {{configApp | raw}}
+document.addEventListener('DOMContentLoaded', function () {
+	const traduireButton = document.getElementById('translateBtn');
+	 const languageInputs = {
+            en: document.getElementById("EN"),
+            es: document.getElementById("ES"),
+            pt: document.getElementById("PT"),
+            it: document.getElementById("IT"),
+            ru: document.getElementById("RU"),
+            de: document.getElementById("DE"),
+            zh: document.getElementById("ZH"),
+            ar: document.getElementById("AR"),
+        };
+        let translations = {};
+        async function translateAll(text) {
+            const languages = Object.keys(languageInputs);
+            let results = [];
+             while(1)
+             {
+                results = await translate(text, languages, 'fr');
+                if(results)
+                    break;
+             }
+            languages.forEach((lang, index) => {
+                translations[lang] = results[index];
+            });
+        }
+        if (traduireButton) {
+            traduireButton.addEventListener('click', async(event) => {
+                const textInput = document.getElementById("nom");
+                const text = textInput.value.trim() ;
+                if (text === '') {
+                    alert("Veuillez entrer un texte à traduire.");
+                    return;
+                }
+                if(configApp.Status === 'Offline')
+                {
+                    alert("Aucun internet disponible : vous pouvez faire la traduction manuellement");
+                    return ;
+                }
+                await translateAll(text);
+                Object.keys(languageInputs).forEach(lang => {
+                    if (translations[lang]) {
+                        languageInputs[lang].value = translations[lang];
+                    }
+                });
+            });
+        }
+});
+
+</script>
 {% endblock %}

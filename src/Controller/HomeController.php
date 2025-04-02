@@ -10,17 +10,21 @@ use App\Entity\Etablissement;
 use App\Entity\Categories;
 use App\Entity\ServiceEtablissement;
 use App\Entity\Chambre;
+use App\Entity\ConfigApp;
+use App\Entity\User;
 
 class HomeController extends AbstractController
 {
     #[Route('/home', name: 'app_home')]
     public function index(EntityManagerInterface $entityManager): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        // $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $repository = $entityManager->getRepository(Categories::class);
         $user = $this->getUser();
-        $etablissement = $this->getUser()->getEtablissement();
-        $idetablissement = $etablissement->getId();
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
+        $etablissement = $user->getEtablissement();
         $categories = $repository->findBy(
             ['etablissement' => $etablissement],
             ['position' => 'ASC']
@@ -30,17 +34,25 @@ class HomeController extends AbstractController
         $chambres  =  $entityManager->getRepository(Chambre::class)->findBy(['etablissement' => $etablissement]);
         $serviceEtablissementRepo = $entityManager->getRepository(ServiceEtablissement::class);
         $services = $serviceEtablissementRepo->findBy(['etablissement' => $etablissement], ['nom' => 'ASC']);
-
-        
+        $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        if ($appConfig) {
+            $configArray = ['Status'=>$appConfig->getStatusServeur()];
+        } 
+        else{
+            $configArray = ['Status'=>'online'];
+        }
+        $configJson = json_encode($configArray);
         //var_dump($categories);die();
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
             'etablissement' => $etablissement,
             'categories' => $categories,
-            'servicebox' => $serviceetablissement,
+            'servicebox' => $serviceetablissement,  
             'boxs' => $chambres,
             'services' => $services,
-
+            'appConfig' => $appConfig,
+            'configApp' => $configJson,
+            'user' => $user
         ]);
     }
 
@@ -78,7 +90,8 @@ class HomeController extends AbstractController
     {
         $repository = $entityManager->getRepository(Categories::class);
         $request = Request::createFromGlobals();
-        $user = $this->getUser();
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
         $logoactive = $request->get('logoactive');
         $meteoactive = $request->get('meteoactive');
@@ -111,12 +124,6 @@ class HomeController extends AbstractController
                 $etablissement->setMeteoactive(1);
             }
             $entityManager->flush();
-
-     
-       
-      
-
-
         return $this->redirectToRoute('app_home');
     }
 }

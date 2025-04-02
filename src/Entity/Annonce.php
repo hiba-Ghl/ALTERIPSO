@@ -15,7 +15,7 @@ class Annonce
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'annonces')]
+    #[ORM\ManyToOne(inversedBy: 'annonces', targetEntity: Etablissement::class)]
     private ?Etablissement $etablissement = null;
 
     #[ORM\Column(length: 255, nullable: true)]

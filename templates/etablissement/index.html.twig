@@ -16,15 +16,14 @@
 			border: 2px solid #3087ce;
 			padding: 20px;
 			width: 1091px;
-			height: 1150px;
+			height: 1180px;
 			margin-left: 10px;
 			margin-top: 10px;
 		}
 	</style>
 	<!--                                                      -->
-	<div
-		style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;"><!-- <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
-			   -->
+	<div style="border-radius: 8px;  margin-top:10px;text-align: left; margin-bottom: 10px;color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding-left: 10px; display: inline-block;">
+    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
 		Infos Etablissement
 	</div>
 	<div
@@ -36,7 +35,10 @@
 			<br>
 			<!-- nom d'etablissement -->
 			<div class="form-group">
-				<label for="nom_etablissement" class="col-lg-2 control-label">Nom d'établissement
+				<label for="nom_etablissement" class="col-lg-2 control-label">
+				<p style="width:100%;text-align:left;padding-left:20px;">
+				Nom d'établissement
+				</p>
 				</label>
 				<div class="col-lg-10">
 					<input type="text" id="nom_etablissement" name="nom_etablissement" class="form-control" value="{{app.user.etablissement.nometablissement}}"/>
@@ -45,7 +47,11 @@
 			<!-- description d'etablissement  -->
 
 			<div class="form-group">
-				<label for="description" class="col-lg-2 control-label">Type d'Etablissement</label>
+				<label for="description" class="col-lg-2 control-label">
+				<p style="width:100%;text-align:left;padding-left:20px;">
+				Type d'Etablissement
+				</p>
+				</label>
 				<div class="col-lg-10">
 					<label class="radio-inline">
 						<input type="radio" name="description" id="description" value="Hôtel" {% if app.user.etablissement.description == 'Hôtel' %} checked {% endif %}>Hôtel</label>
@@ -62,7 +68,11 @@
 			<br>
 			<!-- le genre  -->
 			<div class="form-group">
-				<label for="genre" class="col-lg-2 control-label">Genre</label>
+				<label for="genre" class="col-lg-2 control-label">
+				<p style="width:100%;text-align:left;padding-left:20px;">
+				Genre
+				</p>
+				</label>
 				<div class="col-lg-10">
 
 					<select id="genre" name="genre" class="form-control">
@@ -76,7 +86,10 @@
 
 			<!-- nom   -->
 			<div class="form-group">
-				<label for="nom" class="col-lg-2 control-label">Nom
+				<label for="nom" class="col-lg-2 control-label">
+				<p style="width:100%;text-align:left;padding-left:20px;">
+				Nom
+				</p>
 				</label>
 				<div class="col-lg-10">
 					<input type="text" id="nom" name="nom" class="form-control" value="{{ app.user.etablissement.nom}}"/>
@@ -84,7 +97,10 @@
 			</div>
 			<!-- prenom  -->
 			<div class="form-group">
-				<label for="prenom" class="col-lg-2 control-label">Prenom
+				<label for="prenom" class="col-lg-2 control-label">
+				<p style="width:100%;text-align:left;padding-left:20px;">
+				Prenom
+				</p>
 				</label>
 				<div class="col-lg-10">
 
@@ -94,7 +110,10 @@
 			</div>
 			<!-- ville  -->
 			<div class="form-group">
-				<label for="ville" class="col-lg-2 control-label">Ville
+				<label for="ville" class="col-lg-2 control-label">
+				<p style="width:100%;text-align:left;padding-left:20px;">
+				Ville
+				</p>
 				</label>
 				<div class="col-lg-10">
 
@@ -104,7 +123,10 @@
 			</div>
 			<!-- pays  -->
 			<div class="form-group">
-				<label for="pays" class="col-lg-2 control-label">Pays
+				<label for="pays" class="col-lg-2 control-label">
+				<p style="width:100%;text-align:left;padding-left:20px;">
+				Pays
+				</p>
 				</label>
 				<div class="col-lg-10">
 
@@ -114,7 +136,10 @@
 			</div>
 			<!-- addresse  -->
 			<div class="form-group">
-				<label for="adresse" class="col-lg-2 control-label">Adresse
+				<label for="adresse" class="col-lg-2 control-label">
+				<p style="width:100%;text-align:left;padding-left:20px;">
+				Adresse
+				</p>
 				</label>
 				<div class="col-lg-10">
 
@@ -124,7 +149,10 @@
 			</div>
 			<!-- nombres de chambres  -->
 			<div class="form-group">
-				<label for="licence" class="col-lg-2 control-label">Nombre de chambres
+				<label for="licence" class="col-lg-2 control-label">
+				<p style="width:100%;text-align:left;padding-left:20px;">
+				Nombre de chambres
+				</p>
 				</label>
 				<div class="col-lg-10">
 					<input type="number" id="nbr_chambres" name="licence" class="form-control" value="{{ app.user.etablissement.licence}}"/>
@@ -132,7 +160,11 @@
 			</div>
 			<!-- etat du logo   -->
 			<div class="form-group">
-				<label for="logoactive" class="col-lg-2 control-label">Logo active</label>
+				<label for="logoactive" class="col-lg-2 control-label">
+				<p style="width:100%;text-align:left;padding-left:20px;">
+				Logo
+				</p>
+				</label>
 				<div class="col-lg-10">
 
 					<select id="logoactive" name="logoactive" class="form-control">
@@ -150,7 +182,11 @@
 			<!-- file du talechargement du logo  -->
 
 			<div class="form-group">
-				<label for="logo" class="col-lg-2 control-label">Téléchargement logo :</label>
+				<label for="logo" class="col-lg-2 control-label">
+				<p style="width:100%;text-align:left;padding-left:20px;">
+				Téléchargement logo
+				</p>
+				</label>
 				<div class="col-lg-10">
 					<input type="file" class="form-control" id="logo" name="logo" value="{{ app.user.etablissement.logo }}" accept =".jpg , .peg , .png">
 				</div>
@@ -168,7 +204,7 @@
 
 			<div class="form-group">
 				<div class="col-lg-10">
-					   <h4 style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 400px;padding-left: 10px;">Paramétrage des messages sur ECRAN TV </h4>         
+					   <h4 style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 400px;padding: 10px;">Paramétrage des messages sur ECRAN TV </h4>         
 			   </div>
 			</div>	
 			
@@ -176,7 +212,11 @@
 			<!-- message de bienvenue  -->
 
 			<div class="form-group">
-				<label for="msgbienvenu" class="col-lg-2 control-label">Message bienvenue</label>
+				<label for="msgbienvenu" class="col-lg-2 control-label">
+				<p style="width:100%;text-align:left;padding-left:20px;">
+				Message bienvenue
+				</p>
+				</label>
 				<div class="col-lg-10">
 
 					<select id="msgbienvenu" name="msgbienvenu" class="form-control">
@@ -208,7 +248,11 @@
 			</div>
 			<!-- message ap  -->
 			<div class="form-group">
-				<label for="msgap" class="col-lg-2 control-label">Message AP</label>
+				<label for="msgap" class="col-lg-2 control-label">
+				<p style="width:100%;text-align:left;padding-left:20px;">
+				Message AP
+				</p>
+				</label>
 				<div class="col-lg-10">
 
 					<select id="msgap" name="msgap" class="form-control">
@@ -226,7 +270,10 @@
 			<!-- message internet  -->
 			<div class="form-group">
 				<label for="accessTvInCheckout" class="col-lg-2 control-label">
-					Message internet</label>
+					<p style="width:100%;text-align:left;padding-left:20px;">
+				Message internet
+				</p>
+				</label>
 				<div class="col-lg-10">
 					<select id="accessTvInCheckout" name="accessTvInCheckout" class="form-control">
 						{% if (app.user.etablissement.accessTvInCheckout == 0)  %}
@@ -241,15 +288,14 @@
 			</div>
 
 
-			<br>
-			<br>
-			<!-- button enregistrer et annuler  -->
-			<button type="submit" class="btn btn-success" style="margin-left: 920px;position: absolute;background-color: #3087ce; border: 2px solid #3087ce;">
-				<i class="glyphicon glyphicon-floppy-disk"></i>
-				Enregistrer</button>
-			<button</i type="submit" class="btn btn-success" style="margin-left: 820px; position: absolute;border: 2px solid ;" <i class="glyphicon glyphicon-remove">
-				Annuler</button>
-
+			<div style="float:right;margin-left:30px;">
+    <a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/home">
+        <i class="glyphicon glyphicon-remove"></i> Annuler
+    </a>
+<button type="submit" class="btn btn-primary btn-md" style="width:130px;" {% if not is_granted('ROLE_ADMIN') %} disabled {% endif %}>
+        <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
+    </button>
+</div>
 		</form>
 
 	</div>

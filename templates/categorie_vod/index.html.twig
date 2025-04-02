@@ -2,15 +2,7 @@
 
 {% block body %}
 <style>
-    #div2 {
-        border-radius: 25px;
-        border: 2px solid #3087ce;
-        padding: 20px;
-        display: flex;
-        background-color: white;
-        margin: 10px -30px;
-        flex-direction: column;
-    }
+
 
    table {
     width: 100%;
@@ -44,9 +36,9 @@ tr {
 
 </style>
 
-<div style="border-radius: 8px;text-align: left;margin-bottom: 10px;margin-left: -30px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
-    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
-    Liste Catégorie VOD
+<div style="border-radius: 8px; text-align: left; margin-bottom: 10px; margin-left: -130px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding-left: 10px; display: inline-block;">
+    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+Liste Catégorie VOD
 </div>
 
 
@@ -54,45 +46,48 @@ tr {
 
 <!-- la gestion des flash -->
  {% for label, messages in app.flashes %}
-        <div class="alert alert-danger"> <!-- -{{ label }} -->
-            {% for message in messages %}
-                <p>{{ message }}</p>
-            {% endfor %}
-        </div>
+        <div class="alert alert-danger" role="alert" >
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     {% endfor %}
-
-
-
-
     <form name="form" action="{{ path('app_update_active_categorie_vod')}}" method="post" enctype="multipart/form-data">
-        <a href="{{ path('app_ajouter_categorievod') }}" class="btn btn-info btn-sm" name="add" id="add" style="margin-bottom: 10px; margin-right: 5px;">
+      <div id="div2">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:3px;">
+        <div>
+        <a {% if app.user.AjoutCatVod == '0' %} disabled {% endif %} href="{{ path('app_ajouter_categorievod') }}" class="btn btn-info btn-sm" name="add" id="add" style="margin-bottom: 10px; margin-right: 5px;">
             <i class="glyphicon glyphicon-plus"></i>
             Ajouter Catégorie VOD
         </a>
-
-        <button type="submit"  name="valider" class="btn btn-primary btn-sm" style=" margin-bottom: 10px;border: 2px; padding:8px; margin-right: 5px;">
+        <button {% if app.user.SauvegarderCatVod == '0' %} disabled {% endif %} type="submit"  name="valider" class="btn btn-success btn-sm" style=" margin-bottom: 10px;border: 2px; padding:8px; margin-right: 5px;width:150px">
             <i class="glyphicon glyphicon-floppy-disk"></i>
-            Enregistrer
+            Sauvegarder
         </button>
 
-        <a name="annuler" href="{{ path('app_categorie_vod') }}" class="btn btn-danger btn-sm" style=" margin-bottom: 10px;border: 2px; padding:8px;">
+        <a name="annuler" href="{{ path('app_categorie_vod') }}" class="btn btn-danger btn-sm" style=" margin-bottom: 10px;border: 2px; padding:8px;width:150px;">
             <i class="glyphicon glyphicon-remove"></i>
             Annuler
         </a>
-
-
-      <div id="div2">
+</div>
+    </div>
         <div class="table-container">
-        <table class="table table-striped table-bordered table-hover table-checkable order-column" id="sample_1">
-            
-            
+        <table class="table table-striped table-bordered header-fixed table-hover" id="dataTables-example" style="width: 100%;margin-top:20px;">
             <thead>
                 <tr>
-                    <th>Nom</th>
-                    <th>Logo</th>
-                    <th ><input type="checkbox" id="checklist" style="margin-right: 10px;">Active</th>
-                    <th>Position</th>
-                    <th style="width:246px">Actions </th>
+                    <th style="height: 50px;width:251px;text-align:center;">Nom</th>
+                    <th style="height: 50px;width:251px;text-align:center;">Logo</th>
+                    <th style="height: 50px;width:251px;text-align:center;" >
+                     <p style="display:flex;gap:10px;justify-content:center">
+                        <span>
+                            Active
+                        </span>
+                        <input type="checkbox" id="checklist" style="margin-top:-1px;">
+                        </p>
+                    </th>
+                    <th style="height: 50px;width:251px;text-align:center;">Position</th>
+                    <th style="height: 50px;width:350px;text-align:center;" style="width:246px">Actions </th>
                 </tr>
             </thead>
 
@@ -100,24 +95,24 @@ tr {
             <tbody >
                 {% for catvod in categorie_v_o_ds %}
                     <tr class="odd gradeX">
-                        <td>{{ catvod.nom|capitalize}}</td>
-                        <td>
-                            <img style="width:50px;height:50px;text-align:center" src="{{ asset(catvod.logo) }}" alt="..." class="img-rounded img-responsive center-block">
+                        <td style="height: 50px;width:251px;text-align:center;">{{ catvod.nom|capitalize}}</td>
+                        <td style="height: 50px;width:251px;text-align:center;">
+                            <img style="width:40px;height:40px;text-align:center" src="{{ asset(catvod.logo) }}" alt="..." class="img-rounded img-responsive center-block">
                         </td>
                         <!-- checkbox -->
                         {% set ch = '' %}
                         {% if catvod.active == 1 %}
                             {% set ch = 'checked' %}
                         {% endif %}
-                        <td >
-                            <label><input name="listeactive[{{ catvod.id }}]" type="checkbox" {{ ch }} class="jpCheckbox"></label>
+                        <td style="height: 50px;width:251px;text-align:center;">
+                            <label><input {% if app.user.SauvegarderCatVod == '0' %} disabled {% endif %} name="listeactive[{{ catvod.id }}]" type="checkbox" {{ ch }} class="jpCheckbox"></label>
                         </td>
-                        <td>{{ catvod.position }}</td>
-                        <td>
-                            <a data-toggle="tooltip" data-placement="top" title="Modifier Catégorie VOD" href="{{ path('app_modifier_categorievod', { 'id': catvod.id }) }}" class="btn btn-warning btn-xs">
+                        <td style="height: 50px;width:251px;text-align:center;">{{ catvod.position }}</td>
+                        <td style="height: 50px;width:350px;text-align:center;">
+                            <a {% if app.user.ModifierCatVod == '0' %} disabled {% endif %} data-toggle="tooltip" data-placement="top" title="Modifier Catégorie VOD" href="{{ path('app_modifier_categorievod', { 'id': catvod.id }) }}" class="btn btn-warning btn-xs">
                                 <i class="glyphicon glyphicon-pencil"></i>
                             </a>
-                            <a data-toggle="tooltip" data-placement="top" title="Supprimer Catégorie VOD" href="{{ path('app_supprimer_categorievod', { 'id': catvod.id }) }}" class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer la catégorie VOD : {{ catvod.nom }} ?')">
+                            <a {% if app.user.SuppCatVod == '0' %} disabled {% endif %} data-toggle="tooltip" data-placement="top" title="Supprimer Catégorie VOD" href="{{ path('app_supprimer_categorievod', { 'id': catvod.id }) }}" class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer la catégorie VOD : {{ catvod.nom }} ?')">
                                 <i class="glyphicon glyphicon-trash"></i>
                             </a>
                         </td>

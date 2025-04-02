@@ -186,9 +186,7 @@
         <!-- languages part -->
         <div id="languagesPart" style="width:1005px;margin-left:32px;margin-bottom:15px;margin-top:20px">
             <!--le bouton langues-->
-            <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                <span><i class="glyphicon glyphicon-plus"></i></span>
-            </a>
+            
             <label style="margin-left: 5px;" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Langues</label>
             
             <br>
@@ -196,6 +194,9 @@
             <button type="button" id="translateBtn" class="btn btn-info btn-sm">
                 <i class="glyphicon glyphicon-globe"></i> Traduire le texte
             </button>
+            <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                <span><i class="glyphicon glyphicon-plus"></i></span>
+            </a>
             <!--les champs des langues-->
             <div id="collapseTwo" class="panel-collapse collapse">
                 <div class="panel-body">
@@ -256,17 +257,17 @@
 
         <br>
         <!-- les boutons du formulaire -->
-        <span style="margin-left: 700px;">
-            <a type="button" class="btn-primary btn" id="dim" style=" solid;border: none; padding: 8px;background-color:  #ED7F10;">
+		<div style="float:right;">
+            <a type="button" class="btn-primary btn btn-md" id="dim" style="background-color:  #ED7F10; border:2px solid   #ED7F10;">
                 <i class="glyphicon glyphicon-resize-full"></i> Photo Dimensions 
             </a>
-            <button type="submit" name="valider" class="button btn btn-primary btn-sm" style=" solid; padding: 8px;margin-left: 13px; ">
-                <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
-            </button>
-            <a href="{{ path('app_annonce') }}" class="btn btn-danger" style=" solid; margin-left: 13px; padding: 8px">
+            <a href="{{ path('app_annonce') }}" class="btn btn-danger btn-md" style=" width:130px;">
                 <i class="glyphicon glyphicon-remove"></i> Annuler
             </a>
-        </span>
+            <button type="submit" name="valider" class="btn btn-primary btn-md" style=" width:130px;">
+                <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
+            </button>
+        </div>
     </form>
 </div>
 
@@ -306,6 +307,7 @@
 
 <!--for translation part in the form -->
 <script>
+    const configApp = {{configApp | raw}}
 document.addEventListener('DOMContentLoaded', function () {
 	const traduireButton = document.getElementById('translateBtn');
 	 const languageInputs = {
@@ -319,7 +321,6 @@ document.addEventListener('DOMContentLoaded', function () {
             ar: document.getElementById("AR"),
         };
         let translations = {};
-        let online = 1;
         async function translateAll(text) {
             const languages = Object.keys(languageInputs);
             let results = [];
@@ -335,12 +336,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         if (traduireButton) {
             traduireButton.addEventListener('click', async(event) => {
+                const textInput = document.getElementById("nom");
                 const text = textInput.value.trim() ;
                 if (text === '') {
                     alert("Veuillez entrer un texte à traduire.");
                     return;
                 }
-                if(online === 0)
+                if(configApp.Status === 'Offline')
                 {
                     alert("Aucun internet disponible : vous pouvez faire la traduction manuellement");
                     return ;

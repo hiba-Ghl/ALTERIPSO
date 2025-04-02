@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\CategorieRadio;
+use App\Entity\ConfigApp;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,21 +20,40 @@ class RadioController extends AbstractController
     public function index(EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-        $repository = $entityManager->getRepository(Radio::class);
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
-        $idetablissement = $etablissement->getId();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
+        $Acce = $this->getUser()->getRADIO() && $configApp->getEnableRADIO()=="1";
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+        }
+        $repository = $entityManager->getRepository(Radio::class);
         $radio  = $repository->findBy(['etablissement' => $etablissement],['nom' => 'ASC']);
         $categorieradio =  $entityManager->getRepository(CategorieRadio::class)->findBy(['etablissement' => $etablissement],['nom' => 'ASC']);
- 
+        $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
         return $this->render('radio/index.html.twig', [
-            'radio' => $radio , 'categorieradio' => $categorieradio]);
+            'radio' => $radio , 'categorieradio' => $categorieradio,'appConfig' => $appConfig,'user' => $this->getUser(),
+        ]);
     }
 
     #[Route('/ajouterradio', name: 'ajouter_radio')]
     public function ajouterradio(EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
+        $Acce = $user->getAjoutRadio() && $user->getRADIO() && $configApp->getEnableRADIO()=="1";
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');
+        }
     
         $request = Request::createFromGlobals();
 
@@ -100,7 +120,14 @@ class RadioController extends AbstractController
     public function supprimerradio(EntityManagerInterface $entityManager, int $id): Response
     {
        $radio = $entityManager->getRepository(Radio::class)->find($id);
-
+       if( !$this->getUser())
+       return $this->redirectToRoute('app_login');
+       $etablissement = $this->getUser()->getEtablissement();
+       $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+       $Acce = $this->getUser()->getSupprimerRadio() && $this->getUser()->getRADIO() && $configApp->getEnableRADIO()=="1";
+       if (!$Acce) {
+        $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+        return $this->redirectToRoute('home');       }
         if (!$radio) {
             throw $this->createNotFoundException(
                 'No product found for id '.$id
@@ -117,8 +144,14 @@ class RadioController extends AbstractController
     public function modifierradio(EntityManagerInterface $entityManager): Response
     {   
         $repository = $entityManager->getRepository(Radio::class);
-        $user = $this->getUser();
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $Acce = $this->getUser()->getModifierRadio() && $this->getUser()->getRADIO() && $configApp->getEnableRADIO()=="1";
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');        }
        $radio  = $repository->findBy(['etablissement' => $etablissement]);
        // var_dump($radio);die();
         foreach ($radio as $tele) {

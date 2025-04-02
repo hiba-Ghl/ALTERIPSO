@@ -1,24 +1,28 @@
 {% extends 'home/index.html.twig' %}
 {% block body %}
 <style>
-    #div2 {
+    #div4 {
 			border-radius: 25px;
 			border: 2px solid #3087ce;
 			padding: 20px;
+      padding-bottom:60px;
 			width: 1300px;
-			height: 500px;
+			/* height: 500px; */
 			margin-left: -70px;
 			margin-top: 10px;
 			background-color: white;
 		}
 </style>
 
-
+{# 
 <div style="margin-top: -40px;position: absolute;border-radius: 8px;text-align: left;margin-left: -68px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 550px;padding-left: -27px;">
     Modifier Support: {{box.nom}} - IP : {{box.ip}}
+</div> #}
+<div style="border-radius: 8px; text-align: left; margin-bottom: 10px; margin-left: -70px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 500px; padding-left: 10px; display: inline-block;">
+<img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+    Modifier Support: {{box.nom}} - IP : {{box.ip}}
 </div>
-
-<div id="div2">
+<div id="div4">
     
         <form action="" method="post" enctype="multipart/form-data">
         
@@ -26,15 +30,15 @@
         
         <table style="width: 100%;">
         <tr>
-        <td style="width: 33%;">
+        <td style="width: 33%;padding-bottom:10px;">
             <div  class="control-label" >
               <label  class=" control-label">Nom Support: </label>
-             <input type="text" name="nom"  class="form-control" style="width: 75%;"  value="{{box.nom}}" >
+             <input type="text" name="nom"  class="form-control" style="width: 95%;"  value="{{box.nom}}" >
             </div>
             
         </td>
         
-        <td style="width: 33%;">
+        <td style="width: 33%;padding-bottom:10px;">
           <div  class="control-label" >
             <label  class=" control-label">Support: </label>
         {% if box.Support == 'R-TV' or box.Support == 'R-Tv' %}
@@ -56,7 +60,7 @@
         
         
         
-            <select class="form-control" name="typesupport" id="typesupport" style="width: 75%;" > 
+            <select class="form-control" name="typesupport" id="typesupport" style="width: 95%;" > 
                    <option selected=selected value ='{{a}}'>{{a}}</option>
                    <option value ='Box-Ip'>Box-Ip</option>
                    <option value ='Samsung'>Samsung</option>
@@ -67,7 +71,7 @@
           </div>
         
         </td>
-        <td style="width: 33%;">
+        <td style="width: 33%;padding-bottom:10px;">
           <div  class="control-label" >
             <label  class=" control-label">Type: </label>
         
@@ -76,7 +80,7 @@
         
         
         
-            <select class="form-control" name="type" id="type" style="width: 75%;" > 
+            <select class="form-control" name="type" id="type" style="width: 95%;" > 
                    <option selected=selected value ='{{box.type}}'>{{box.type}}</option>
                    <option value ='ip'>ip</option>
                    <option value ='coax'>coax</option>
@@ -88,39 +92,39 @@
         </tr>
         <tr>
         
-        <td style="width: 33%;">
+        <td style="width: 33%;padding-bottom:10px;">
           
         <div  class="control-label" >
               <label  class=" control-label">Adresse Mac: </label>
-             <input type="text" name="mac" id="mac"  class="form-control" style="width: 75%;" placeholder="xx:xx:xx:xx:xx:xx" value="{{box.mac}}" >
+             <input type="text" name="mac" id="mac"  class="form-control" style="width: 95%;" placeholder="xx:xx:xx:xx:xx:xx" value="{{box.mac}}" >
             </div>
         
         </td>
         
-        <td style="width: 33%;">
+        <td style="width: 33%;padding-bottom:10px;">
         <div  class="control-label" >
               <label  class=" control-label">Etage: </label>
-             <input type="text" name="etage"  class="form-control" style="width: 75%;" value="{{box.Etage}}"  >
+             <input type="text" name="etage"  class="form-control" style="width: 95%;" value="{{box.Etage}}"  >
             </div>
         
         </td>
         
         
-        <td style="width: 33%;">
+        <td style="width: 33%;padding-bottom:10px;">
          <div  class="control-label" >
               <label  class=" control-label">Adresse Ip: </label>
-             <input type="text" name="ip" id="ip"  class="form-control" style="width: 75%;" placeholder="127.0.0.1" value="{{box.Ip}}"   >
+             <input type="text" name="ip" id="ip"  class="form-control" style="width: 95%;" placeholder="127.0.0.1" value="{{box.Ip}}"   >
           </div>
         </td>
         
         </tr>
         
         <tr>
-        <td style="width: 33%;">
+        <td style="width: 33%;padding-bottom:10px;">
           <div  class="control-label" >
             <label  class=" control-label">Services: </label>
         
-        <select  name="service" class="form-control" style="width: 75%;">
+        <select  name="service" class="form-control" style="width: 95%;">
         <option selected="selected" value="{{box.service.id}}" style="text-transform: capitalize;">{{box.service.nom}}</option>
         {% for serv in service %}
         {% if (serv.nom == box.service.nom ) %}
@@ -136,7 +140,7 @@
         
         </td>
         
-        <td style="width: 33%;">
+        <td style="width: 33%;padding-bottom:10px;">
           <div  class="control-label" >
             <label    class=" control-label">Type d'affichage: </label><label class="glyphicon glyphicon-question-sign" title="
             Règle :   
@@ -161,7 +165,7 @@
         
         
         
-        <select name="typeaffichage" class="form-control typeaffichage" style="width: 75%;">
+        <select name="typeaffichage" class="form-control typeaffichage" style="width: 95%;">
         {% if box.typeaffichage == 1 %}
         <option selected="selected" value="{{box.typeaffichage}}" >Alteripso</option>
         <option  value="2" >Dynamique</option>
@@ -175,23 +179,23 @@
         
         </td>
         
-        <td style="width: 33%;" class="listechaine">
+        <td style="width: 33%;padding-bottom:10px;" class="listechaine">
           <div  class="control-label" >
             <label  class=" control-label ">Liste chaines </label>
         
-        <select name="listechaine" class="form-control" style="width: 75%;">
-        {% if (box.chaine.id)== 0 or box.chaine.id == null %}
-        {% else %}
-        <option selected="selected" value="{{box.chaine.id}}" >{{box.chaine.nom}}</option>
-        {% endif %}
-        {% for ch in listechaine %}
-        {% if (ch.id == box.chaine.id) %}
-        
-        {% else  %}
-        
-        <option  value="{{ch.id}}" >{{ch.nom}}</option>
-        {% endif %}
-        {% endfor%}
+        <select name="listechaine" class="form-control" style="width: 95%;">
+        {% if box.chaine is not null and box.chaine.id is not null and box.chaine.id != 0 %}
+    <option selected="selected" value="{{ box.chaine.id }}">{{ box.chaine.nom }}</option>
+{% endif %}
+
+       {% for ch in listechaine %}
+    {% if box.chaine is not null and ch.id == box.chaine.id %}
+        <option selected="selected" value="{{ ch.id }}">{{ ch.nom }}</option>
+    {% else %}
+        <option value="{{ ch.id }}">{{ ch.nom }}</option>
+    {% endif %}
+{% endfor %}
+
         
         </select>
           </div>
@@ -203,7 +207,7 @@
         <tr>
         {% if ( '.mp4' in box.background ) %}
         {% else %}
-                    <td style="width: 33%;">
+                    <td style="width: 33%;padding-bottom:10px;">
                             <div class="control-label">
                                 <label  class=" control-label">
                                     Fond d'écran:
@@ -215,7 +219,7 @@
                                     <input type="radio"  name="back" checked value="{{box.background}}">
                                     </td>
                                     <td>
-                                    <img  style="width:150px;height:100px;text-align:center;margin-left: 10px;" src="{{ asset('images/'~box.background) }}" alt="..." class="img-rounded img-responsive center-block">
+                                    <img  style="width:150px;height:100px;text-align:center;margin-left: 10px;" src="{{ asset(''~box.background) }}" alt="..." class="img-rounded img-responsive center-block">
                                     </td>
                                     </tr>
                                     </table>
@@ -228,7 +232,7 @@
                                     <input type="radio"  name="back" value="{{back}}">
                                     </td>
                                     <td>
-                                    <img  style="width:150px;height:100px;text-align:center;margin-left: 10px;" src="{{ asset('images/'~back) }}" alt="..." class="img-rounded img-responsive center-block">
+                                    <img  style="width:150px;height:100px;text-align:center;margin-left: 10px;" src="{{ asset(''~back) }}" alt="..." class="img-rounded img-responsive center-block">
                                     </td>
                                     </tr>
                                     </table>
@@ -258,19 +262,15 @@
         
         </table>
         
-        <br><br><br>
-        
-        <button type="submit" class="button btn btn-primary btn-sm" style="margin-left:1px;" name="valider" onclick='return CheckForm();' ><i class="glyphicon glyphicon-floppy-disk" ></i> Enregistrer </button> 
-        
-        
-        
-        
-        
-        </form>
-        
-        <form method="POST" action="{{path('app_chambre')}}">
-        <button  type="submit"   class="button btn btn-danger btn-sm" style="width: 103px;margin-left: 111px;margin-top: -57px;" ><i class="glyphicon glyphicon-remove" ></i> Annuler </button> 
-        </form>
+<br>
+			<div style="float:right;margin-right:20px;">
+    		<a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/chambre">
+        		<i class="glyphicon glyphicon-remove"></i> Annuler
+    		</a>
+    		<button id="submit" type="submit" class="btn btn-primary mt-3" style="width:130px" name="valider" onclick='return CheckForm();'>
+                <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
+            </button>
+			</div>        
         
         
         

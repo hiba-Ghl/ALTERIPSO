@@ -51,7 +51,7 @@
 
 		<div
 			class="btn-group "><!--	<button id="btnExport" type="submit" class=" btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="Exporter EXCEL">
-								<i class="glyphicon glyphicon-save"></i>
+								<i class="glyphicon glyphicon-Sauvegarder"></i>
 							</button>-->
 
 
@@ -78,17 +78,25 @@
 	<div class="panel-body">
 
 
-		<table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column">
+		<table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column" style="width:100%">
 			<thead>
 
 				<tr>
-					<th>Date d'opération</th>
-					<th>
-						Mode de gratuité</th>
-					<th>
-						Date début de gratuité</th>
-					<th>Date fin de gratuité</th>
-					<th>Nb de Tv</th>
+					<th style="text-align: center; width: 215px;height:50px;">
+					Date d'opération
+					</th>
+					<th style="text-align: center; width: 215px;height:50px;">
+						Mode de gratuité
+					</th>
+					<th style="text-align: center; width: 215px;height:50px;">
+						Date début de gratuité
+					</th>
+					<th style="text-align: center; width: 215px;height:50px;">
+					Date fin de gratuité
+					</th>
+					<th style="text-align: center; width: 216px;height:50px;">
+					Nb de Tv
+					</th>
 
 
 				</tr>
@@ -102,15 +110,15 @@
 
 					{% if hg.date|date('Y-m-d', 'Europe/Paris') <= date2|date('Y-m-d', 'Europe/Paris')  and hg.date|date('Y-m-d', 'Europe/Paris') >=  date1|date('Y-m-d', 'Europe/Paris')   %}
 						<tr>
-							<td>{{hg.date}}</td>
-							<td>
+							<td style="text-align: center; width: 215px;height:50px;">{{hg.date}}</td>
+							<td style="text-align: center; width: 215px;height:50px;">
 								{{hg.type}}</td>
-							<td>
+							<td style="text-align: center; width: 215px;height:50px;">
 								{{hg.datein}}</td>
-							<td>{{hg.dateout}}
+							<td style="text-align: center; width: 215px;height:50px;">{{hg.dateout}}
 							</td>
 
-							<td>{{nbbox}}
+							<td style="text-align: center; width: 215px;height:50px;">{{nbbox}}
 							</td>
 
 
