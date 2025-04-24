@@ -8,7 +8,7 @@
         padding: 20px;
         height: auto;
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         background-color:white;
         margin-left: -70px;
     }
@@ -34,13 +34,13 @@
 
 <div id="div2">
      <!-- le formulaire de modification --> 
-    <form name="" method="post" action="" class="form-horizontal" enctype="multipart/form-data" onsubmit="return validateForm()">
+    <form name="" style="width:100%" method="post" action="" class="form-horizontal" enctype="multipart/form-data" onsubmit="return validateForm()">
 
-        <div class="row">
+        <div class="row" style="width:100%">
             <!-- Colonne pour le logo -->
             <div class="col-md-4 text-center">
                 <div class="form-group">
-                    <img src="{{ asset(categorielivreaudio.getLogo()) }}" id="logo-preview" style="width:250px; height:235px; margin-left:10px;" />
+                    <img  src="{{ path('afficher_image', { filename: categorielivreaudio.logo|split('/')|last, directory: 'categorie_livreaudio_directory' }) }}" id="logo-preview" style="width:250px; height:235px; margin-left:10px;" />
                 </div>
             </div>
 
@@ -86,24 +86,26 @@
                     <div class="col-lg-10">
                         <input type="file" class="form-control" id="logo" name="logo" accept=".jpg, .jpeg, .png" onchange="previewLogo(event)">
                         <p class="error-message" id="file-error">La taille maximale du fichier est de 400 Ko.</p>
-                    </div>
+                    
+                      </div>
                 </div>
-            </div>
-        </div>
-        <!-- les langues --> 
-        <div style="width: 1005px; margin-left: 32px; margin-bottom: 15px; margin-top: 20px">
-            <!-- le boutons des langues --> 
-            <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                <span><i class="glyphicon glyphicon-plus"></i></span>
-            </a>
-            <label style="margin-left: 5px;" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Langues</label>
-            <br>
+                <div class="form-group ">
+            <label class="col-lg-2 control-label accordion-toggle"data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Langues</label>
             <!-- le bouton de traduction -->
+            <div class="col-lg-10">
             <button type="button" id="translateBtn" class="btn btn-info btn-sm">
                 <i class="glyphicon glyphicon-globe"></i> Traduire le texte
             </button>
+                <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                <span><i class="glyphicon glyphicon-plus"></i></span>
+            </a>
+            <div>
+            <!-- les langues --> 
+        <div style="width: 800px; margin-left:-50px;margin-bottom: 15px; margin-top: 20px">
+            <!-- le boutons des langues --> 
+            
             <!-- les champs des langues -->
-            <div id="collapseTwo" class="panel-collapse collapse">
+          <div id="collapseTwo" class="panel-collapse collapse">
                 <div class="panel-body">
                     <div id="inputGroup1">
                         <div class="form-row" style="margin-left:27px">
@@ -159,8 +161,14 @@
                 </div>
             </div>
         </div>
+                </div>
+            </div>
+        </div>
+
+        
 
         <br>
+
         <!-- les boutons du formulaire--> 
                  <div style="float:right;margin-left:30px;">
 				<a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/categorielivreaudio">

@@ -21,6 +21,11 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+{% for message in app.flashes('warning') %}
+    <div class="alert alert-warning">
+        {{ message }}
+    </div>
+{% endfor %}
 {# Cette section concerne la conception de modèles pour l'affichage liste des services.#}
 <div style="border-radius: 8px; text-align: left; margin-bottom: 10px; margin-left: -130px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 200px; padding-left: 10px; display: inline-block;">
     <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
@@ -224,17 +229,21 @@ $.fn.dataTable.ext.order['dom-checkbox'] = function (settings, colIndex) {
         form.setAttribute('action', `/update/${id}`);
         data.services.forEach(async (service,index) => {
           let URL = ''
+          const directory = 'services_directory';
+          const imagesrc = service.src.split('/').pop();
           if(service.type === 'URL')
             URL = service.src;
           else if(service.type === 'DIAPO')
-            URL = '/' + service.src;
+            URL = service.src.split('/').pop()
           else
-          URL = '/' + service.src;
+          URL = `images/${imagesrc}/${directory}`;
+         const logo = service.logo.split('/').pop();
+          const imagePath = `/images/${logo}/${directory}`;
             const rowData =  [
                 ` <td >
                 <div class="td1">
                 <div style="width:102px;height: 70px;border-radius:5px;">
-        <img src="{{ asset('${service.logo}') }}" style="width:60px;height:60px;text-align:center;border-radius:5px;" />
+        <img src="${imagePath}"  style="width:60px;height:60px;text-align:center;border-radius:5px;" />
                 </div>
                 </div>
       </td>`,  
@@ -254,7 +263,7 @@ $.fn.dataTable.ext.order['dom-checkbox'] = function (settings, colIndex) {
       `
       <td >
       <div style="text-align: center; width: 123px;height:60px;display:flex;align-items:center;justify-content:center;">
-        <input id="active-${service.Id}" name="active[${service.Id}]" {% if app.user.SauvegarderService == '0' %} disabled {% endif %} type="checkbox" ${service.active === '1' || service.active === 'on' ? 'checked' : ''}>
+        <input id="active-${service.Id}" name="active[${service.Id}]" {% if app.user.SauvegarderService == '0' %} disabled {% endif %} type="checkbox" ${service.active === '1' ? 'checked' : ''} value="1">
         </div>
       </td>`,
       `
@@ -269,7 +278,7 @@ $.fn.dataTable.ext.order['dom-checkbox'] = function (settings, colIndex) {
       <a data-toggle="modal" data-target="#modal-${index}" class="source-link" 
            data-type="${service.type}" 
            data-id="${service.Id}" 
-           data-value="${service.src}"
+           data-value="${URL}"
            style="text-decoration: none; color:#3087ce;font-size:15px;display: inline-block;width:200px; word-wrap:break-word;" id="displayButton">${service.src}</a>
       <div class="modal fade" id="modal-${index}" tabindex="-1" role="dialog" aria-labelledby="modalLabel-${index}" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -284,7 +293,7 @@ $.fn.dataTable.ext.order['dom-checkbox'] = function (settings, colIndex) {
                 </div>
             </div>
             <div class="modal-body" id="modal-body-${index}" >
-              <object data="${URL}" type="application/pdf" width="100%" height="680px">
+              <object data="/${URL}" type="application/pdf" width="100%" height="680px">
                 Votre navigateur ne supporte pas l'affichage du fichier.
               </object>
             </div>
@@ -308,7 +317,7 @@ $.fn.dataTable.ext.order['dom-checkbox'] = function (settings, colIndex) {
       </a>
       </div>
       <div data-toggle="modal" data-target="#modal2-${index}" data-id =${service.Id} data-name=${service.nom} class="arreter-button" >
-  <a  title="Arrêter le service en cours"  class="btn btn-primary btn-xs " {% if app.user.LancerArretService == '0' %} disabled {% endif %}>
+          <a  title="Arrêter le service en cours"  class="btn btn-primary btn-xs " {% if app.user.LancerArretService == '0' %} disabled {% endif %}>
         <i class="glyphicon glyphicon-minus-sign"></i>
       </a>
       </div>
@@ -366,7 +375,10 @@ document.addEventListener('click', async (event) => {
       slideItem.setAttribute('class', `carousel-item ${index === 0 ? 'active' : ''}`);
       slideItem.style.width = '100%';
       slideItem.style.display = index === 0 ? 'block' : 'none';
-      slideItem.innerHTML = `<img src="{{ asset('${value}/${image}') }}" style="width: 100%; height: 540px; object-fit:cover" />`;
+      const imagePath =`${value}/${image}`;
+      const imagesPath = `/images/${imagePath}/services_directory_diapo`
+      {# slideItem.innerHTML = `<img src="{{ asset('${value}/${image}') }}" style="width: 100%; height: 540px; object-fit:cover" />`; #}
+      slideItem.innerHTML = `<img src="${imagesPath}" style="width: 100%; height: 540px; object-fit:cover" />`;
       carouselInner.appendChild(slideItem);
     });
 
@@ -558,7 +570,7 @@ function createModal(index,Id,name) {
     popUP.setAttribute("aria-hidden", "true");
     popUP.innerHTML = `
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="margin:auto;width:800px;height:760px">
+            <div class="modal-content" style="width:800px;height:780px;">
                 <div class="modal-header" style="margin-top:30px;">
                 <button id="close" type="button" class="close close2" data-dismiss="modal-${index}" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -568,7 +580,7 @@ function createModal(index,Id,name) {
                         Lancer le service ${name}
                     </div>
                 </div>
-                <form id="form" method="post" enctype="multipart/form-data" action="/services/lancerService/${Id}">
+                <form style="height:100%;padding-bottom:300px;" id="form" method="post" enctype="multipart/form-data" action="/services/lancerService/${Id}">
                 <div class="modal-body" id="modal-body1-${index}" >
                 <div style="font-size:16px;color:black;">Liste Support connecté à choisir</div>
                 </div>
@@ -731,7 +743,7 @@ document.addEventListener('click', function (event) {
     popUP.setAttribute("aria-hidden", "true");
     popUP.innerHTML = `
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="width:800px;height:760px">
+            <div class="modal-content" style="width:800px;height:780px;">
                 <div class="modal-header" style="margin-top:30px;">
                 <button id="close" type="button" class="close close1" data-dismiss="modal-${index}" aria-label="Close">
                         <span aria-hidden="true">&times;</span>

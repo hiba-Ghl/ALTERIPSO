@@ -2,15 +2,14 @@
 {% block body %}
 
 <style>
-    #div2 {
+    #div4{
         border-radius: 25px;
         border: 2px solid #3087ce;
-        padding: 20px;
+        padding:20px;
         height: auto;
         display: flex;
-        justify-content: center;
         background-color: white;
-        margin: 10px;
+        margin-top: 10px;
         font-size: 18px;
     }
     
@@ -46,34 +45,37 @@
 
 <!--le title header-->
 <p id='p'></p>
-<div style="border-radius: 8px;text-align: left;margin-bottom: 15px;margin-left: -30px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 400px;padding-left: 10px;">
+<div style="border-radius: 8px;text-align: left;margin-bottom: 15px;margin-left: 0px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 400px;padding-left: 10px;">
     <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
     Details de l'annonce : {{annonce.nom}}
 </div>
 
+<div>
 <!--le bouton de retour-->
 <a href="{{ path('app_annonce') }}" class="button btn btn-danger" name="add" id="add" style="margin-bottom: 10px; margin-right: 5px;">
             <i class="glyphicon glyphicon-arrow-left"></i>
             Retour
 </a>
 <a class="btn btn-info" name="visualisation" id="visualisation" style="margin-bottom: 10px; margin-left: 5px;">
-            <i class="glyphicon glyphicon-blackboard"></i>
-            Pré-visualiser votre annonce 
+    <i class="glyphicon glyphicon-blackboard"></i>
+    Pré-visualiser votre annonce 
 </a>
 
-
+</div>
 <!--les details de l'annonce -->
-<div id="div2">
+<div id="div4">
 <div class="container">
            <br>
         <div class="row">
             <div class="col-md-6">
                 <label><strong style="color: #3087ce;">Nom: </strong>&nbsp;{{ annonce.nom|capitalize}}</label>
             </div>
-            <div class="col-md-6">
-                <label><strong style="color: #3087ce;">Thème: </strong>&nbsp;{{ annonce.theme|capitalize}}</label>
-            </div>
-            
+           <div class="col-md-6">
+            <label>
+                <strong style="color: #3087ce;">Active :</strong>&nbsp;
+                {{ annonce.active == 1 ? 'Oui' : 'Non' }}
+            </label>
+        </div>
         </div>
         <br>
         
@@ -130,38 +132,38 @@
         </div>
 
         <!--l'affichage du message en differentes langues-->
-        <div id="translation" >
+        <div id="translation" class="file-display-container">
         <br>
                 <div class="row" style="margin-left:2px">
-                        <label><strong style="color: #3087ce;">Your message: </strong>&nbsp;{{ annonce.en }}</label>
+                        <label><strong style="color: #3087ce;">Your message: </strong>&nbsp;{{ annonce.enMessage }}</label>
                 </div>
                 <br>
                 <div class="row" style="margin-left:2px">
-                        <label><strong style="color: #3087ce;">Vuestro mensaje: </strong>&nbsp;{{ annonce.es }}</label>
+                        <label><strong style="color: #3087ce;">Vuestro mensaje: </strong>&nbsp;{{ annonce.esMessage }}</label>
                 </div>
                 <br>
                 <div class="row" style="margin-left:2px">
-                        <label><strong style="color: #3087ce;">Sua mensagem: </strong>&nbsp;{{ annonce.pt }}</label>
+                        <label><strong style="color: #3087ce;">Sua mensagem: </strong>&nbsp;{{ annonce.ptMessage }}</label>
                 </div>
                 <br>
                 <div class="row" style="margin-left:2px">
-                        <label><strong style="color: #3087ce;">Il tuo messaggio: </strong>&nbsp;{{ annonce.it }}</label>
+                        <label><strong style="color: #3087ce;">Il tuo messaggio: </strong>&nbsp;{{ annonce.itMessage }}</label>
                 </div>
                 <br>
                 <div class="row" style="margin-left:2px">
-                        <label><strong style="color: #3087ce;">ваше сообщение: </strong>&nbsp;{{ annonce.ru }}</label>
+                        <label><strong style="color: #3087ce;">ваше сообщение: </strong>&nbsp;{{ annonce.ruMessage }}</label>
                 </div>
                 <br>
                 <div class="row" style="margin-left:2px">
-                        <label><strong style="color: #3087ce;">Deine Nachricht: </strong>&nbsp;{{ annonce.de }}</label>
+                        <label><strong style="color: #3087ce;">Deine Nachricht: </strong>&nbsp;{{ annonce.deMessage }}</label>
                 </div>
                 <br>
                 <div class="row" style="margin-left:2px">
-                        <label><strong style="color: #3087ce;">你的信息: </strong>&nbsp;{{ annonce.zh }}</label>
+                        <label><strong style="color: #3087ce;">你的信息: </strong>&nbsp;{{ annonce.zhMessage }}</label>
                 </div>
                 <br>
                 <div class="row" style="margin-left:2px">
-                        <label><strong style="color: #3087ce;">: رسالتك  </strong>&nbsp;{{ annonce.ar }}</label>
+                        <label><strong style="color: #3087ce;">: رسالتك  </strong>&nbsp;{{ annonce.arMessage }}</label>
                 </div>
         </div>
     </div>
@@ -170,14 +172,15 @@
     {% if annonce.type == 'Image' or annonce.type == 'Video' or annonce.type == 'PDF' %}
     <div class="file-display-container">
     {% if annonce.type == 'Image' %}
-                        <img src="{{ asset(annonce.url) }}" alt="Image" style="width:350px;height:350px;">
+
+                        <img src="{{ path('afficher_image', { filename: annonce.url|split('/')|last, directory: 'annonce_directory' }) }}" alt="Image" style="width:350px;height:350px;">
                     {% elseif annonce.type == 'Video' %}
                         <video controls style="width:350px;height:300px;">
-                            <source src="{{ asset(annonce.url) }}" type="video/mp4">
+                            <source src="{{ path('afficher_image', { filename: annonce.url|split('/')|last, directory: 'annonce_directory' }) }}"  type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                     {% elseif annonce.type == 'PDF' %}
-                        <embed src="{{ asset(annonce.url) }}" type="application/pdf" width="350px" height="350px" />
+                        <embed src="{{ path('afficher_image', { filename: annonce.url|split('/')|last, directory: 'annonce_directory' }) }}"  type="application/pdf" width="350px" height="350px" />
                     {% else %}
                         <a href="{{ asset(annonce.url) }}" target="_blank">Télécharger le fichier</a>
                     {% endif %}
@@ -199,11 +202,48 @@
         </div>
       <div class="modal-body">
 
-      <div class="form-group ">
-
+      <div class="form-group " style="position:relative">
             <img src="{{ asset('images/aaa.png') }}"  class="frame">
-            <img src="{{ asset('images/etablissement/34b2a7bc7d0b876bf0352e96319ca088.jpg') }}" 
-                class="background-image">
+            {% if annonce.position == "Bas" %}
+                {% if annonce.type == "Image" %}
+                <img style ="position:absolute;left:38%;  bottom:10%;width:150px;height:150px" src="{{ path('afficher_image', { filename: annonce.url|split('/')|last, directory: 'annonce_directory' }) }}" />
+                {% elseif annonce.type == "Message" %}
+                    <p style ="position:absolute;left:38%;  bottom:12%;width:150px;color:white;">{{annonce.url}}</p>
+                {% else %}
+                    <object data="{{ path('afficher_image', { filename: annonce.url|split('/')|last, directory: 'annonce_directory' }) }}" type="application/pdf" style ="position:absolute;left:38%;  bottom:10%;width:150px;height:150px" >
+                    </object>
+                {% endif %}
+            {% elseif annonce.position == "Haut" %}
+             {% if annonce.type == "Image" %}
+                <img style ="position:absolute;right:38%;  top:2%;width:150px;height:150px"> src="{{ path('afficher_image', { filename: annonce.url|split('/')|last, directory: 'annonce_directory' }) }}" />
+                  {% elseif annonce.type == "Message" %}
+                    <p style ="position:absolute;right:38%;  top:2%;width:150px;height:150px;color:white;">{{annonce.url}}</p>
+                {% else %}
+            <object data="{{ path('afficher_image', { filename: annonce.url|split('/')|last, directory: 'annonce_directory' }) }}" type="application/pdf" style ="position:absolute;right:38%;  top:2%;width:150px;height:150px">
+                    </object>
+                {% endif %}
+            {% elseif annonce.position == "Gauche" %}
+             {% if annonce.type == "Image" %}
+                <img style ="position:absolute;left:2%;  top:25%;width:150px;height:150px" src="{{ path('afficher_image', { filename: annonce.url|split('/')|last, directory: 'annonce_directory' }) }}" />
+                   {% elseif annonce.type == "Message" %}
+                    <p style ="position:absolute;left:2%;  top:45%;width:150px;height:150px;color:white;">{{annonce.url}}</p>
+                {% else %}
+            <object data="{{ path('afficher_image', { filename: annonce.url|split('/')|last, directory: 'annonce_directory' }) }}" type="application/pdf" style ="position:absolute;left:2%;  top:25%;width:150px;height:150px">
+                    </object>
+                {% endif %}
+            {% elseif annonce.position == "Droite" %}
+             {% if annonce.type == "Image" %}
+                <img style ="position:absolute;right:10%;  top:25%;width:150px;height:150px" src="{{ path('afficher_image', { filename: annonce.url|split('/')|last, directory: 'annonce_directory' }) }}" />
+                   {% elseif annonce.type == "Message" %}
+                    <p style ="position:absolute;right:5%;  top:45%;width:150px;height:150px;color:white;">{{annonce.url}}</p>
+                {% else %}
+                <object data="{{ path('afficher_image', { filename: annonce.url|split('/')|last, directory: 'annonce_directory' }) }}" type="application/pdf" style ="position:absolute;right:10%;  top:25%;width:150px;height:150px">
+                    </object>
+                {% endif %}
+            {% else %}
+                    <object data="{{ path('afficher_image', { filename: annonce.url|split('/')|last, directory: 'annonce_directory' }) }}" type="application/pdf" style ="position:absolute; top:10%;left:20%;width:350px;height:250px" >
+                    </object>
+            {% endif %}
     </div>
 
 

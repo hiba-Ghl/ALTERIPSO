@@ -1,6 +1,45 @@
 {% extends 'home/index.html.twig' %}
 
 {% block body %}
+{# offline #}
+{% if appConfig.StatusServeur is same as('Offline') %}
+<script src="assets/js/jquery-3.6.0.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/datatables2.min.js"></script>
+{% else %}
+{# online #}
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endif %}
+
+
+ {% if appConfig.StatusServeur is same as('Offline') %}
+  <script src="{{ asset('javascript/jszip.min.js') }}"></script>
+<script src="{{ asset('javascript/pdfmake.min.js') }}"></script>
+<script src="{{ asset('javascript/vfs_fonts.js') }}"></script>
+<script src="{{ asset('javascript/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('javascript/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('javascript/jquery.min.js') }}"></script>
+<script src="{{ asset('javascript/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('javascript/datatables2.min.js') }}"></script>
+<script src="{{ asset('javascript/xlsx.full.min.js') }}"></script> 
+<script src="{{ asset('javascript/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('javascript/clipboard.min.js') }}"></script>
+   {% else %}
+  <script src="{{asset('javascript/jquery.min.js')}}"> </script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+	<style type="text/css" src="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css"></style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="{{ asset('javascript/datatables2.min.js') }}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script> 
+  <script src="https://cdn.datatables.net/buttons/2.3.3/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script> 
+  {% endif %} 
 
 <style>
     table {
@@ -9,7 +48,7 @@
     }
     tbody {
         display: block;
-        max-height: 350px; 
+        height: 100px; 
         overflow-y: auto;
     }
     thead {
@@ -23,20 +62,45 @@
     width: 100%;
     table-layout: fixed;
 }
+{# .header-fixed > tbody {
+    height:500px;
+} #}
+.frame {
+    width: 100%;
+    max-width: 1000px;
+    height: auto;
+}
+.dataTables_filter{
+    float: right;
+    width: 50%;
+    margin-top: -27px;
+}
 
+.dataTables_filter label {
+  color: #3087ce;
+  font-size: 20px;
+}
+.dataTables_filter input {
+  color:black;
+  font-size: 16px;
+}
 
-    
 </style>
 
 
 <!--le title header-->
-<p id='p'></p>
+{% for message in app.flashes('warning') %}
+    <div class="alert alert-warning">
+        {{ message }}
+    </div>
+{% endfor %}
 <div style="border-radius: 8px;text-align: left;margin-bottom: 10px;margin-left: -120px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
     <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
     Gestion des Annonces
 </div>
    
 <!--le tableau-->
+<form id="form" method="post" enctype="multipart/form-data" action="/annonce/update/">
 <div id="div2">
 <!--le bouton d'ajout-->
 <div style="display:flex;align-items:center;justify-content:space-between;gap:3px;">
@@ -55,39 +119,49 @@
     </a>
 </div>
 <!--la barre de recherche-->
-<input id="myInput" type="text" placeholder="Search.." style="float: right;width:200px; padding: 6px; border-radius: 5px;">
 </div>
  <table class="table table-striped table-bordered header-fixed table-hover" id="dataTables-example" style="width: 100%;margin-top:20px;">
     <thead> 
         <tr>
-        <th style="height: 50px;width:150px;text-align:center;">Nom</th>
-        <th style="height: 50px;width:150px;text-align:center;">Type</th>
-        <th style="height: 50px;width:150px;text-align:center;" >Thème</th>
-        <th style="height: 50px;width:150px;text-align:center;" >Position</th>
-        <th style="height: 50px;width:150px;text-align:center;" >Date début</th>
-        <th style="height: 50px;width:150px;text-align:center;" >Date fin</th>
-        <th style="height: 50px;width:150px;text-align:center;" >Durée (secondes)</th>
-        <th style="height: 50px;width:280px;text-align:center;">Actions</th>
+        <th style="height: 30px;width:110px;text-align:center;">Nom</th>
+        <th style="height: 30px;width:110px;text-align:center;">Type</th>
+        <th style="height: 30px;width:110px;text-align:center;" >Active</th>
+        <th style="height: 30px;width:110px;text-align:center;" >Position</th>
+        <th style="height: 30px;width:110px;text-align:center;" >Date début</th>
+        <th style="height: 30px;width:110px;text-align:center;" >Date fin</th>
+        <th style="height: 30px;width:110px;text-align:center;" >Durée (secondes)</th>
+        <th style="height: 30px;width:280px;text-align:center;">Actions</th>
         </tr>
     </thead> 
     <tbody id="myTable">
         {% for annonce in annonces %}
             <tr class="odd gradeX" >
-                <td style="height: 50px;width:150px;text-align:center;">{{annonce.nom|capitalize}}</td>
-                <td style="height: 50px;width:150px;text-align:center;" >{{annonce.type}}</td>
-                <td style="height: 50px;width:150px;text-align:center;">{{annonce.theme|capitalize}}</td>
-                <td style="height: 50px;width:150px;text-align:center;">{{annonce.position|capitalize}}</td>
-                <td style="height: 50px;width:150px;text-align:center;" >{{annonce.datedebut}}</td>
-                <td style="height: 50px;width:150px;text-align:center;">{{annonce.datefin}}</td>
-                <td style="height: 50px;width:150px;text-align:center;">{{annonce.duree}}</td>
+                <td style="height: 30px;width:130px;text-align:center;">{{annonce.nom|capitalize}}</td>
+                <td style="height: 30px;width:130px;text-align:center;" >{{annonce.type}}</td>
+                <td style="height: 30px;width:130px;text-align:center;">        
+                <input id="active-{{annonce.Id}}" name="active[{{annonce.Id}}]" type="checkbox" {% if annonce.active == '1' %} checked {% endif %} value="1">
+</td>
+                <td style="height: 30px;width:130px;text-align:center;">{{annonce.position|capitalize}}</td>
+                <td style="height: 30px;width:130px;text-align:center;" >{{annonce.datedebut}}</td>
+                <td style="height: 30px;width:130px;text-align:center;">{{annonce.datefin}}</td>
+                <td style="height: 30px;width:130px;text-align:center;">{{annonce.duree}}</td>
 
-                <td style="height: 50px;width:280px;text-align:center;">
-                <a   data-toggle="tooltip" data-placement="top" title="Détails de l'annonce" href="{{ path('app_details_annonce', { 'id': annonce.id }) }}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-list-alt"></i></a>
-                
-                    <a   data-toggle="tooltip" data-placement="top" title="Modifier l'annonce " href="{{ path('app_modifier_annonce', { 'id': annonce.id }) }}" class="btn btn-warning btn-xs"  {% if app.user.ModifierAnnonce == '0' %}  disabled {% endif %}><i class="glyphicon glyphicon-edit"></i></a>									
+                <td style="height: 30px;width:280px;text-align:center;display:flex;gap:2px;justify-content:center;">
+                <div>
+                <a   data-toggle="tooltip" data-placement="top" title="Modifier l'annonce " href="{{ path('app_modifier_annonce', { 'id': annonce.id }) }}" class="btn btn-warning btn-xs"  {% if app.user.ModifierAnnonce == '0' %}  disabled {% endif %}><i class="glyphicon glyphicon-edit"></i></a>									
+                </div>
+                <div data-toggle="modal"  data-target="#modal1-{{annonce.id}}" data-position="{{ annonce.position }}" data-url="{{ annonce.url }}" data-type="{{ annonce.type }}" class="visualiser">
+                    <a data-toggle="tooltip"  data-placement="top" title="Pré-visualiser l'annonce"   class="ida btn btn-primary btn-xs" ><i class="glyphicon glyphicon-blackboard"></i></a>
+                </div>
+                <div data-toggle="modal" data-target="#modal2-{{annonce.id}}" data-id ="{{annonce.id}}"  data-name="{{annonce.nom}}" class="lancer-button">
+                    <a   data-toggle="tooltip" data-placement="top" title="Lancer l'annonce"  class="ida btn btn-info btn-xs" ><i class="glyphicon glyphicon-play-circle"></i></a>
+                </div>
+                <div data-toggle="modal" data-target="#modal3-{{annonce.id}}" data-id ="{{annonce.id}}" data-name="{{annonce.nom}}" class="arreter-button">
+                    <a   data-toggle="tooltip" data-placement="top" title="Arreter l'annonce" class="ida btn btn-primary btn-xs" ><i class="glyphicon glyphicon-minus-sign"></i></a>
+                </div>
+                <div>
                 <a   data-toggle="tooltip" data-placement="top" title="Supprimer l'annonce" href="{{ path('app_supprimer_annonce', { 'id': annonce.id }) }}" class="ida btn btn-danger btn-xs" onClick="return(confirm('voullez vous vraiment supprimer cette annonce ?'));" {% if app.user.SuppAnnonce == '0' %} disabled {% endif %}><i class="glyphicon glyphicon-trash"></i></a>
-                <a   data-toggle="tooltip" data-placement="top" title="Journal"  href="" class=" ida btn btn-success btn-xs" ><i class="glyphicon glyphicon-list" ></i></a>
-                <a   data-toggle="tooltip" data-placement="top" title="Envoyer l'annonce" id="" href="" class="ida btn btn-primary btn-xs" ><i class="glyphicon glyphicon-send"></i></a>
+                </div>
                 </td>
             </tr>
         {% else %}
@@ -98,28 +172,469 @@
     </tbody>
 
 </table>
+
 </div>
+</form>
 
 
 
-<!--Initialize tooltips for all buttons-->
 <script>
- $(document).ready(function(){
-        
-        $('[data-toggle="tooltip"]').tooltip();
-    });
+  const chambre = {{chembre | raw }};
+document.addEventListener('click', function (event) {
+  const PrevisualiserButton = event.target.closest('.visualiser');
+  if (!PrevisualiserButton) return;
+  const position = PrevisualiserButton.getAttribute('data-position');
+  const type = PrevisualiserButton.getAttribute('data-type');
+  const url = PrevisualiserButton.getAttribute('data-url');
+  const filename = url.split('/').pop();
+    const finalUrl = `/images/${filename}/annonce_directory`;
+  console.log("url: ",url,finalUrl,type);
+  let content = '';
+if (position === "Bas") {
+  if (type === "Image") {
+    content = `<img style="position:absolute;left:38%;bottom:10%;width:150px;height:150px" src="${finalUrl}" />`;
+  } else if (type === "Message") {
+    content = `<p style="position:absolute;right:48%;bottom:8%;color:white;background-color:red;">${url}</p>`;
+  } else {
+    content = `<object data="${finalUrl}" type="application/pdf" style="position:absolute;left:38%;bottom:10%;width:150px;height:150px"></object>`;
+  }
+} else if (position === "Haut") {
+  if (type === "Image") {
+    content = `<img style="position:absolute;right:38%;top:2%;width:150px;height:150px" src="${finalUrl}" />`;
+  } else if (type === "Message") {
+    content = `<p style="position:absolute;right:48%;top:4%;color:white;background-color:red;">${url}</p>`;
+  } else {
+    content = `<object data="${finalUrl}" type="application/pdf" style="position:absolute;right:38%;top:2%;width:150px;height:150px"></object>`;
+  }
+}
+ else if (position === "Gauche") {
+  if (type === "Image") {
+    content = `<img style ="position:absolute;left:2%;  top:25%;width:150px;height:150px" src="${finalUrl}" />`;
+  } else if (type === "Message") {
+    content = `<p style="position:absolute;left:2%;top:45%;color:white;background-color:red;">${url}</p>`;
+  } else {
+    content = `<object data="${finalUrl}" type="application/pdf" style ="position:absolute;left:2%;  top:25%;width:150px;height:150px"></object>`;
+  }
+}
+ else if (position === "Droite") {
+  if (type === "Image") {
+    content = `<img style ="position:absolute;right:2%;  top:25%;width:150px;height:150px" src="${finalUrl}" />`;
+  } else if (type === "Message") {
+        content = `<p style ="position:absolute;right:5%;  top:45%;color:white;background-color:red;">${url}</p>`;
+
+  } else {
+    content = `<object data="${finalUrl}" type="application/pdf" style ="position:absolute;right:10%;  top:25%;width:150px;height:150px"></object>`;
+  }
+}
+else 
+{
+    content = `<object data="${finalUrl}" type="application/pdf" style ="position:absolute; top:10%;left:20%;width:350px;height:250px" >
+                    </object>`;
+
+}
+  if (PrevisualiserButton.getAttribute("data-target")) {
+    const index = PrevisualiserButton.getAttribute("data-target").split('-')[1];
+    const body = document.getElementById('div2');
+
+    const popUP = document.createElement('div');
+    popUP.setAttribute("class", "modal fade");
+    popUP.setAttribute("tabindex", "-1");
+    popUP.style.marginLeft = "-200px";
+    popUP.setAttribute("role", "dialog");
+    popUP.setAttribute("id", `modal1-${index}`);
+    popUP.setAttribute("aria-labelledby", "modalLabel1");
+    popUP.setAttribute("aria-hidden", "true");
+
+    popUP.innerHTML = `
+    <div class="modal-dialog modal-md" style="width:600px" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+            <button id="close" type="button" class="close" data-dismiss="modal-${index}" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div class="col-md-4">
+            <h4 class="modal-title" style="line-height: 3;">Pré-visualisation</h4>
+          </div>
+        </div>
+        <div class="modal-body" id="modal-body1-${index}" >
+          <div class="form-group" style="position:relative">
+          <img src="{{ asset('images/aaa.png') }}"  class="frame">
+            ${content}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Fermer</button>
+        </div>
+      </div>
+    </div>
+    `;
+
+    body.appendChild(popUP);
+  }
+});
+
+</script>
+<script>
+   $(document).ready(function () {
+      $('#dataTables-example').DataTable({
+         language: {
+            search: "Recherche:",
+            emptyTable: "Aucun Annonce disponible."
+         },
+         paging: false,
+         searching: true,
+         ordering: true,
+         info: false,
+         columnDefs: [{ orderable: false, targets: 3 }]
+      });
+   });
 </script>
 
-<!--pour la recherche-->
-<script type="text/javascript">
-    $(document).ready(function() {
-        $("#myInput").on("keyup", function() {
-            var value = $(this).val().toLowerCase();
-            $("#myTable tr").filter(function() {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
+
+<script>
+function createModal(index,Id,name) {
+    const popUP = document.createElement('div');
+    popUP.setAttribute("class", "modal fade");
+    popUP.setAttribute("tabindex", "-1");
+    popUP.style.marginLeft="-200px";
+    popUP.setAttribute("role", "dialog");
+    popUP.setAttribute("id", `modal2-${index}`);
+    popUP.setAttribute("aria-labelledby", "modalLabel1");
+    popUP.setAttribute("aria-hidden", "true");
+    popUP.innerHTML = `
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="width:800px;height:780px;">
+                <div class="modal-header" style="margin-top:30px;">
+                <button id="close" type="button" class="close close2" data-dismiss="modal-${index}" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 220px; padding: 5px 10px;">
+                    <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+                        Lancer l'annonce ${name}
+                    </div>
+                </div>
+                <form style="height:100%" id="form" method="post" enctype="multipart/form-data" action="/annonce/LancerAnnonce/${Id}">
+                <div class="modal-body" id="modal-body2-${index}" >
+                <div style="font-size:16px;color:black;">Liste Support connecté à choisir</div>
+                </div>
+                <div class="modal-footer">
+                  <button id="envoyervod" type="submit" class="btn btn-primary conf" name="envoyervod"> <i class="glyphicon glyphicon-send"></i> Lancer l'annonce</button>
+                  <a class="btn btn-danger " style="width: 139px;" href="/annonce/" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a>                </div>
+            </div>
+            </form>
+        </div>    
+    `;
+    return popUP;
+}
+
+document.addEventListener('click', function (event) {
+    const lancerButton = event.target.closest('.lancer-button');
+    console.log(lancerButton);
+    if(!lancerButton)
+      return ;
+    const Id = lancerButton.getAttribute('data-id');
+    const name = lancerButton.getAttribute('data-name');
+    const active = document.getElementById(`active-${Id}`);
+    let index = -1;
+    if (lancerButton.getAttribute("data-target")) {
+      index = lancerButton.getAttribute("data-target").split('-')[1];
+      if(index >= 0)
+      {
+        if (active && !active.checked) {
+        confirm("Attention, l'annonce n'est pas actif, donc non présent sur la box. Merci de le cocher.Faites dans un premier temps la mise à jour sur la BOX.Enfin, vous pouvez lancer l'annonce avec l'icône bleue.");
+        event.preventDefault(); 
+        return false;
+      }
+      else{
+        const body = document.getElementById('div2');
+        const modal = createModal(index,Id,name);
+        body.appendChild(modal);
+    const modalBody1 = document.querySelector(`#modal-body2-${index}`);
+    if (modalBody1 && Array.isArray(chambre)) {
+      const existeTable = document.getElementById(`table-${index}`);
+      if(!existeTable)
+      {
+      const table = document.createElement('table');
+      table.style.width = "100%";
+      table.setAttribute("class","table table-striped header-fixed table-bordered table-hover table-checkable order-column dataTable no-footer");
+      table.id = `table-${index}`;
+      const thead = document.createElement('thead');
+      thead.style.width = "100%";
+      thead.innerHTML = `
+        <tr style="width:100%;display:flex;justify-content:space-between">
+          <th style="width:120px;height:60px;display:flex;align-items: center;gap:5px"><input type="checkbox" id="checkAllboxn"/><p style="color:red">Selectionner / Désélectionner</p></th>
+          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Chambre</th>
+          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Adresse IP</th>
+          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Adresse MAC</th> 
+        </tr>`;
+      table.appendChild(thead);
+      const tbody = document.createElement('tbody');
+      tbody.style.width = "100%";
+      let i = 0;
+      chambre.forEach(chbr => {
+    const tr1 = document.createElement('tr');
+    tr1.style.width = "100%";
+    tr1.style.height = "50px";
+    tr1.style.display = "flex";
+    tr1.style.justifyContent = 'space-between';
+    tr1.innerHTML = `
+        <td style="width:120px;height:40px;"><input type="checkbox" value=${chbr.id} name="checked[${i}]" class="boxcheck"/><input style="display:none" type="text" value=${chbr.id} name="chambre[${i}]"></td>
+        <td style="width:120px;height:40px;text-align:center;">${capitalize(chbr.nom)}</td>
+        <td style="width:120px;height:40px;text-align:center;">${chbr.ip}</td>
+        <td style="width:120px;height:40px;text-align:center;">${chbr.Mac}</td>`;
+    tbody.appendChild(tr1);
+    i++;
+});
+      table.appendChild(tbody);
+      modalBody1.appendChild(table);
+      const modal = document.getElementById(`modal2-${index}`);
+      modal.classList.remove('fade');
+      modal.classList.add('show'); 
+      modal.style.display = 'block';
+      if (!$.fn.dataTable.isDataTable(`#table-${index}`)) {
+      $(`#table-${index}`).DataTable({
+        language: {
+        emptyTable: "Aucune chambre disponible."
+    },
+        oLanguage: {"sSearch": "Recherche:"},
+        paging: false,
+        searching: true,
+        ordering: false,
+        info: false,
+        columnDefs: [{ orderable: false, targets: 0 }]
+      });
+    }
+    }
+      }
+      }
+      }
+    }
+  const checkAll = document.getElementById('checkAllboxn');
+const checkboxes = document.querySelectorAll('.boxcheck');
+
+if (checkAll) {
+    checkAll.addEventListener('change', () => {
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = checkAll.checked;
         });
-    });    
+    });
+}
+
+if (checkboxes) {
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            if (!checkbox.checked) {
+                checkAll.checked = false;
+            } else if (Array.from(checkboxes).every(cb => cb.checked)) {
+                checkAll.checked = true;
+            }
+        });
+    });
+}
+})
+
+document.addEventListener('click', function (event) {
+    const CloseButton = event.target.closest('.close2');
+    if(!CloseButton)
+        return;
+  const dataDismiss = CloseButton.getAttribute("data-dismiss");
+   if (dataDismiss) {
+    const index = dataDismiss.split('-')[1]; 
+    const modal = document.getElementById(`modal1-${index}`); 
+    const modalBackdrop = document.getElementsByClassName("modal-backdrop");
+    if (modal) {
+      modal.classList.remove('show');
+      modal.classList.add('fade');
+      modal.style.display = 'none';
+      modal.remove();
+    }
+    if (modalBackdrop[0]) {
+      modalBackdrop[0].remove();
+      if(modalBackdrop[0]);
+      modalBackdrop[0].remove();
+    }
+  }
+
+})
+
+
 </script>
+
+
+
+<script>
+
+  function createModal1(index,Id,name) {
+    const popUP = document.createElement('div');
+    popUP.setAttribute("class", "modal fade");
+    popUP.setAttribute("tabindex", "-1");
+    popUP.style.marginLeft="-200px";
+    popUP.setAttribute("role", "dialog");
+    popUP.setAttribute("id", `modal2-${index}`);
+    popUP.setAttribute("aria-labelledby", "modalLabel2");
+    popUP.setAttribute("aria-hidden", "true");
+    popUP.innerHTML = `
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="width:800px;height:780px;">
+                <div class="modal-header" style="margin-top:30px;">
+                <button id="close" type="button" class="close close1" data-dismiss="modal-${index}" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 220px; padding: 5px 10px;">
+                    <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+                        Arrêter l'annonce ${name}
+                    </div>
+                </div>
+            <form id="form" method="post" enctype="multipart/form-data" action="/annonce/ArreteAnnonce/${Id}">
+                <div class="modal-body" id="modal-body3-${index}">
+                <div style="font-size:16px;color:black;">Liste Support connecté à choisir</div>
+                </div>
+                <div class="modal-footer">
+                  <button id="envoyervod" type="submit" class="btn btn-primary conf"name="envoyervod"> <i class="glyphicon glyphicon-send" style="margin-right:3px"></i>Arrêt l'annonce en cours</button>
+                  <a class="btn btn-danger " style="width: 139px;" href="/annonce/" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a>                </div>
+            </div>
+            </form>
+        </div>    
+    `;
+    return popUP;
+}
+const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
+document.addEventListener('click', async function (event) {
+    const arreterbutton = event.target.closest('.arreter-button');
+    if(!arreterbutton)
+      return ;
+    const Id = arreterbutton.getAttribute('data-id');
+    const name = arreterbutton.getAttribute('data-name');
+
+    const response = await fetch(`/annonce/GetAllchambreLancerAnnance/${Id}`);
+if (!response.ok) {
+    console.error(`HTTP error! Status: ${response.status}`);
+    return;
+}
+    const data = await response.json();
+    const active = document.getElementById(`active-${Id}`);
+    let index = -1;
+   if (arreterbutton.getAttribute("data-target")) {
+      index = arreterbutton.getAttribute("data-target").split('-')[1];
+      if(index >= 0)
+      {
+         if (active && !active.checked) {
+        confirm("Attention, l'annonce n'est pas actif, Donc, aucune vidéo à arrêter. Merci de le cocher.Faites dans un premier temps la mise à jour sur la BOX.Enfin, vous pouvez lancer l'annonce avec l'icône bleue.");
+        event.preventDefault(); 
+        return false;
+      }
+      else{
+        const body = document.getElementById('div2');
+        const modal = createModal1(index,Id,name);
+        body.appendChild(modal);
+    const modalBody1 = document.querySelector(`#modal-body3-${index}`);
+    if (modalBody1 && Array.isArray(chambre)) {
+      const existeTable = document.getElementById(`table1-${index}`);
+      if(!existeTable)
+      {
+      const table = document.createElement('table');
+      table.style.width = "100%";
+      table.setAttribute("class","table table-striped header-fixed table-bordered table-hover table-checkable order-column dataTable no-footer");
+      table.id = `table1-${index}`;
+      const thead = document.createElement('thead');
+      thead.style.width = "100%";
+      thead.innerHTML = `
+        <tr style="width:100%;display:flex;justify-content:space-between">
+          <th style="width:120px;height:60px;display:flex;align-items: center;gap:5px"><input type="checkbox" id="checkAllboxn1" checked/> <p style="color:red">Selectionner / Désélectionner</p></th>
+          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Chambre</th>
+          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Adresse IP</th>
+          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Adresse MAC</th> 
+        </tr>`;
+      table.appendChild(thead);
+      const tbody = document.createElement('tbody');
+      tbody.style.width = "100%";
+      let i = 0;
+      data.AnnonceLancer.forEach(chbr => {
+    const tr1 = document.createElement('tr');
+    tr1.style.width = "100%";
+    tr1.style.height = "50px";
+    tr1.style.display = "flex";
+    tr1.style.justifyContent = 'space-between';
+    tr1.innerHTML = `
+        <td style="width:120px;height:40px;"><input type="checkbox" value=${chbr.id} name="checked[${i}]" class="boxcheck1" checked/><input style="display:none" type="text" value=${chbr.id} name="chambre[${i}]"></td>
+        <td style="width:120px;height:40px;text-align:center;">${capitalize(chbr.nom)}</td>
+        <td style="width:120px;height:40px;text-align:center;">${chbr.ip}</td>
+        <td style="width:120px;height:40px;text-align:center;">${chbr.Mac}</td>`;
+    tbody.appendChild(tr1);
+    i++;
+});
+      table.appendChild(tbody);
+      modalBody1.appendChild(table);
+      const modal = document.getElementById(`modal2-${index}`);
+      modal.classList.remove('fade');
+      modal.classList.add('show'); 
+      modal.style.display = 'block';
+      if (!$.fn.dataTable.isDataTable(`#table1-${index}`)) {
+      $(`#table1-${index}`).DataTable({
+          language: {
+        emptyTable: "Cette annonce ne pas lancer dans aucune chambre."
+    },
+        oLanguage: {
+   "sSearch": "Recherche du support :"
+ },
+        paging: false,
+        searching: true,
+        ordering: false,
+        info: false,
+        columnDefs: [{ orderable: false, targets: 0 }]
+      });
+    }
+    }
+      }
+      }
+      }
+    }
+     const checkAll = document.getElementById('checkAllboxn1');
+const checkboxes = document.querySelectorAll('.boxcheck1');
+
+if (checkAll) {
+    checkAll.addEventListener('change', () => {
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = checkAll.checked;
+        });
+    });
+}
+if (checkboxes) {
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            if (!checkbox.checked) {
+                checkAll.checked = false;
+            } else if (Array.from(checkboxes).every(cb => cb.checked)) {
+                checkAll.checked = true;
+            }
+        });
+    });
+}
+})
+
+document.addEventListener('click', function (event) {
+  const closeButton = event.target.closest('.close1');
+  if (!closeButton) return; 
+  const dataDismiss = closeButton.getAttribute("data-dismiss");
+  if (dataDismiss) {
+    const index = dataDismiss.split('-')[1]; 
+    const modal = document.getElementById(`modal3-${index}`); 
+    const modalBackdrop = document.getElementsByClassName("modal-backdrop");
+    if (modal) {
+      modal.classList.remove('show');
+      modal.classList.add('fade');
+      modal.style.display = 'none';
+      modal.remove();
+    }
+    if (modalBackdrop[0]) {
+      modalBackdrop[0].remove();
+      if(modalBackdrop[0]);
+      modalBackdrop[0].remove();
+    }
+  }
+});
+</script>
+
 
 {% endblock %}

@@ -6,13 +6,19 @@ use App\Entity\Annonce;
 use App\Entity\Chambre;
 use App\Entity\ConfigApp;
 use App\Entity\HistoriqueAnnonce;
+use App\Entity\LancerAnnonce;
+use App\Entity\LancerRadio;
+use App\Entity\Lancerservice;
+use App\Entity\LancerTV;
+use App\Push\PushRabbit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\DBAL\Exception\IntegrityConstraintViolationException;
-
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AnnonceController extends AbstractController
 {
@@ -32,9 +38,19 @@ class AnnonceController extends AbstractController
             return $this->redirectToRoute('home');        }
         //affichage des annonces liees a l'etablissement selon l'ordre croissant de leur champ nom
         $annonce =  $entityManager->getRepository(Annonce::class)->findBy(['etablissement' => $etablissement],['nom' => 'ASC']);
+        $chembre = $entityManager->getRepository(Chambre::class)->findBy(['etablissement' =>$etablissement]);
+        $chembreArray = [];
+        foreach ($chembre as $chambre) {
+            $chembreArray[] = ['id'=>$chambre->getId(),'nom' => $chambre->getNom(),
+                        'ip' => $chambre->getIp(),
+                        'Mac' => $chambre->getMac(),
+        ];
+        }
+        $chembreJson = json_encode($chembreArray);
         return $this->render('annonce/index.html.twig', [
             'annonces' => $annonce,
             'appConfig' => $configApp,
+            'chembre' => $chembreJson,
         ]);
     }
 
@@ -73,18 +89,20 @@ class AnnonceController extends AbstractController
         $datedebut = $request->get("datedebut");
         $datefin = $request->get("datefin");
         $duree = $request->get("duree");
-        $fr = $request->get("FR");
-        $en = $request->get("EN");
-        $es = $request->get("ES");
-        $pt = $request->get("PT");
-        $it = $request->get("IT");
-        $ru = $request->get("RU");
-        $de = $request->get("DE");
-        $zh = $request->get("ZH");
-        $ar = $request->get("AR");
+        $frMessage = $request->get("FRMessage");
+        $enMessage = $request->get("ENMessage");
+        $esMessage = $request->get("ESMessage");
+        $ptMessage = $request->get("PTMessage");
+        $itMessage = $request->get("ITMessage");
+        $ruMessage = $request->get("RUMessage");
+        $deMessage = $request->get("DEMessage");
+        $zhMessage = $request->get("ZHMessage");
+        $arMessage = $request->get("ARMessage");
         $police = $request->get("font");
         $taille = $request->get("fontSize");
         $style = $request->get("style");
+        $active = $request->get("active");
+
 
         
         $taille = !empty($taille) ? (int) $taille : null; //convert the string to int
@@ -115,30 +133,30 @@ class AnnonceController extends AbstractController
                     $file1->move($this->getParameter('annonce_directory'), $fileName);
                     $file = 'annonce/' . $fileName;
                 }
-            }
-
-            $annonce->setEtablissement($etablissement);
+            }            $annonce->setEtablissement($etablissement);
 
             $annonce->setNom($nom);
             $annonce->setType($type);
             $annonce->setDatedebut($datedebut);
             $annonce->setDatefin($datefin);
             $annonce->setDuree($duree);
-            $annonce->setFr($fr);
-            $annonce->setEn($en);
-            $annonce->setEs($es);
-            $annonce->setPt($pt);
-            $annonce->setIt($it);
-            $annonce->setRu($ru);
-            $annonce->setDe($de);
-            $annonce->setZh($zh);
-            $annonce->setAr($ar);
+           
+            $annonce->setFrMessage($frMessage);
+            $annonce->setEnMessage($enMessage);
+            $annonce->setEsMessage($esMessage);
+            $annonce->setPtMessage($ptMessage);
+            $annonce->setItMessage($itMessage);
+            $annonce->setRuMessage($ruMessage);
+            $annonce->setDeMessage($deMessage);
+            $annonce->setZhMessage($zhMessage);
+            $annonce->setArMessage($arMessage);
             $annonce->setTheme($theme);
             $annonce->setPosition($position);
             $annonce->setUrl($file);
             $annonce->setPolice($police);
             $annonce->setTaille($taille);
             $annonce->setStyle($style);
+            $annonce->setActive($active);
 
 
             //la persistance de l'entite et l'enregistrement dans la base dee donnees     
@@ -253,18 +271,22 @@ class AnnonceController extends AbstractController
         $datedebut = $request->get("datedebut");
         $datefin = $request->get("datefin");
         $duree = $request->get("duree");
-        $fr = $request->get("FR");
-        $en = $request->get("EN");
-        $es = $request->get("ES");
-        $pt = $request->get("PT");
-        $it = $request->get("IT");
-        $ru = $request->get("RU");
-        $de = $request->get("DE");
-        $zh = $request->get("ZH");
-        $ar = $request->get("AR");
+  
+
+        $frMessage = $request->get("FRMessage");
+        $enMessage = $request->get("ENMessage");
+        $esMessage = $request->get("ESMessage");
+        $ptMessage = $request->get("PTMessage");
+        $itMessage = $request->get("ITMessage");
+        $ruMessage = $request->get("RUMessage");
+        $deMessage = $request->get("DEMessage");
+        $zhMessage = $request->get("ZHMessage");
+        $arMessage = $request->get("ARMessage");
         $police = $request->get("font");
         $taille = $request->get("fontSize");
         $style = $request->get("style");
+        $active = $request->get("active");
+
 
 
         $taille = !empty($taille) ? (int) $taille : null;//conversion vert type int
@@ -275,22 +297,23 @@ class AnnonceController extends AbstractController
         else
             $theme = $themee;
 
-
+        // $file = null;
         if (isset($valider)) {
 
 
                 // cette partie est pour la colonne URL 
             if ($type == 'Localtv') {
-                $file = $request->get("ip");
-            } else if ($type == 'Message'){
-                $file = $request->get("text");
+                    $annonce->setUrl($request->get("ip"));
+                }
+            else if ($type == 'Message'){
+                $annonce->setUrl($request->get("text"));
             } else {
                 $fileName = ' ';
                 $file1 = $request->files->get('file');
                 if ($file1) {
                     $fileName = md5(uniqid()) . '.' . $file1->guessExtension();
                     $file1->move($this->getParameter('annonce_directory'), $fileName);
-                    $file = 'annonce/' . $fileName;
+                    $annonce->setUrl('annonce/' . $fileName);
                 }
             }
             
@@ -302,21 +325,22 @@ class AnnonceController extends AbstractController
             $annonce->setDatedebut($datedebut);
             $annonce->setDatefin($datefin);
             $annonce->setDuree($duree);
-            $annonce->setFr($fr);
-            $annonce->setEn($en);
-            $annonce->setEs($es);
-            $annonce->setPt($pt);
-            $annonce->setIt($it);
-            $annonce->setRu($ru);
-            $annonce->setDe($de);
-            $annonce->setZh($zh);
-            $annonce->setAr($ar);
+            $annonce->setFrMessage($frMessage);
+            $annonce->setEnMessage($enMessage);
+            $annonce->setEsMessage($esMessage);
+            $annonce->setPtMessage($ptMessage);
+            $annonce->setItMessage($itMessage);
+            $annonce->setRuMessage($ruMessage);
+            $annonce->setDeMessage($deMessage);
+            $annonce->setZhMessage($zhMessage);
+            $annonce->setArMessage($arMessage);
             $annonce->setTheme($theme);
             $annonce->setPosition($position);
-            $annonce->setUrl($file);
             $annonce->setPolice($police);
             $annonce->setTaille($taille);
             $annonce->setStyle($style);
+            $annonce->setActive($active);
+
 
 
 
@@ -382,9 +406,242 @@ class AnnonceController extends AbstractController
     }
 
 
+    #[Route('/annonce/journal/{id}',name:'app_journal_annonce')]
+    public function journalAnnonce(EntityManagerInterface $entityManager,int $id):Response
+    {
+    if( !$this->getUser())
+    return $this->redirectToRoute('app_login');
+    $etablissement = $this->getUser()->getEtablissement();
+    $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement'=>$etablissement]);
+    $Acce = $this->getUser()->getANNONCES() && $configApp->getEnableANNONCES() == '1';
+    if (!$Acce) {
+        $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+        return $this->redirectToRoute('home');        }
+    // //recuperation de l'etablissement de l'utilisateur actuellement connecte 
+    //affichage des annonces liees a l'etablissement selon l'ordre croissant de leur champ nom
+    $annonce = $entityManager->getRepository(Annonce::class)->findById($id)[0];
+    
+    
+    return $this->render('annonce/journal.html.twig', [
+        'annonce' => $annonce,
+        'appConfig' => $configApp,
+    ]);
+    }
 
 
 
+
+
+    #[Route('/annonce/update/', name:'update_annonce')]
+    public function update_annonce(EntityManagerInterface $entityManager,Request $request){
+        if( !$this->getUser())
+       return $this->redirectToRoute('app_login');
+        $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        $Acce = $this->getUser()->getSauvegarderService() && $this->getUser()->getSERVICE() && $configApp->getEnableSERVICE() === '1';
+        if (!$Acce) {
+            $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+            return $this->redirectToRoute('home');    } 
+        $repository = $entityManager->getRepository(Annonce::class);
+        $Annonce  = $repository->findBy(['etablissement' => $etablissement]);
+        $request = Request::createFromGlobals();
+        foreach ($Annonce as $ann) {
+            $ann->setActive(0);
+            $entityManager->persist($ann);
+            $entityManager->flush();
+          }
+        $active = $request->get("active");
+                 if (isset($active) and !empty($active)) {
+                    foreach ($active as $key => $k) {
+                        $active_annonce  = $repository->findById($key);
+                         $active_annonce[0]->setActive($k);
+                         $entityManager->persist($active_annonce[0]);
+                         $entityManager->flush();
+                    }
+                 }
+            return $this->redirectToRoute('app_annonce');
+        }
+
+
+
+ private function entityToArray($entity) {
+    $getterMethods = get_class_methods($entity);
+    $data = [];
+    foreach ($getterMethods as $method) {
+        if (strpos($method, 'get') === 0 && $method !== 'getId') {
+            $property = lcfirst(substr($method, 3));
+            $value = $entity->$method();
+            $data[$property] = $value instanceof \DateTimeInterface ? $value->format('Y-m-d H:i:s') : $value;
+        }
+    }
+    $data['id'] = $entity->getId();
+    return $data;
+ }        
+    #[Route('/annonce/LancerAnnonce/{idAnnonce}', name: 'LancerAnnonce')]
+    public function lancerAnnonce(EntityManagerInterface $entityManager, int $idAnnonce)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        if( !$this->getUser())
+            return $this->redirectToRoute('app_login');
+        $etablissement = $this->getUser()->getEtablissement();
+        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+    //     $Acce = $this->getUser()->getSERVICE() && $this->getUser()->getLancerArretService() && $configApp->getEnableSERVICE() === '1';
+    //  if (!$Acce) {
+    //      $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+    //      return $this->redirectToRoute('home');
+    //  }
+        $repository = $entityManager->getRepository(Chambre::class);
+        $queues = array();
+        $annonce = $entityManager->getRepository(Annonce::class)
+            ->findOneBy(['etablissement' => $etablissement, 'id' => $idAnnonce]);
+        if (!$annonce) {
+            return new JsonResponse(['error' => 'Service not found'], Response::HTTP_NOT_FOUND);
+        }
+        $request = Request::createFromGlobals();
+        $chambre = $request->get("chambre");
+        $check = $request->get("checked");
+        $chembreNonVide = [];
+        foreach($check as $key1 => $k1)
+        {
+            $lancerService = $entityManager->getRepository(Lancerservice::class)->findOneBy(['idChembre' => $k1]);
+            $lancerService1 = $entityManager->getRepository(LancerTV::class)->findOneBy(['idChembre' => $k1]);
+            $lancerService2 = $entityManager->getRepository(LancerRadio::class)->findOneBy(['idChembre' => $k1]);
+            if($lancerService)
+                $chembreNonVide[$key1] = $lancerService;
+            if($lancerService1)
+                $chembreNonVide[$key1] = $lancerService1;
+            if($lancerService2)
+                $chembreNonVide[$key1] = $lancerService2;
+        }
+        if(!$chembreNonVide )
+        {
+        if (isset($chambre) and !empty($chambre) and isset($check) and !empty($check)) {
+            foreach ($chambre as $key => $k) {
+                foreach($check as $key1 => $k1)
+                {
+                    if($k == $k1)
+                    {
+                        $lancer = $entityManager->getRepository(LancerAnnonce::class)->findOneBy(['idChembre' => $k]);
+                        if($lancer)
+                        {
+                            $entityManager->remove($lancer);
+                            $entityManager->flush();
+                        }
+                        $lancer = new LancerAnnonce();
+                        $lancer->setIdChembre($k);
+                        $lancer->setIdAnnonce($idAnnonce);
+                        $entityManager->persist($lancer);
+                        $entityManager->flush();
+                        $boxs  = $repository->findById($k);
+                        $chambre= $boxs[0]->getNom();
+                        $queue = $etablissement->getId() . '.' . $chambre . '.service';
+                        array_push($queues,$queue);
+                        $arrayAnnonce = [];
+                        $arrayAnnonce[] = $this->entityToArray($annonce);
+                        $AnnonceJson = json_encode($arrayAnnonce);
+                        $message = "lancer_annonce%%".$AnnonceJson."%%".$k;
+                        $Manager = new PushRabbit();
+                        $Manager->MakeRabbitCall($queues, $message); 
+                } 
+            }
+        }
+    }
+        return $this->redirectToRoute('app_annonce');
+}
+else{
+    $chembreIds = array_map(function($service) use ($entityManager) {
+        $name_chambre = $entityManager->getRepository(Chambre::class)->findOneBy(['id'=>$service->getIdChembre()])->getNom();
+        return $name_chambre ;
+    }, $chembreNonVide);
+    $this->addFlash('warning','Les chambres suivantes ne sont pas vides, elles ont d\'autres services à lancer. S\'il vous plaît, arrêtez les services en cours sur les chembres suivant : ' . implode(', ', $chembreIds));
+    return $this->redirectToRoute('app_annonce');
+}
+}
+
+
+#[Route('/annonce/ArreteAnnonce/{idAnnonce}',name:'Arreteannonce')]
+public function RemoveAnnonce(EntityManagerInterface $entityManager, int $idAnnonce)
+{
+    $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+    if( !$this->getUser())
+     return $this->redirectToRoute('app_login');
+    $etablissement = $this->getUser()->getEtablissement();
+    $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+//     $Acce = $this->getUser()->getSERVICE() && $this->getUser()->getLancerArretService() && $configApp->getEnableSERVICE() === '1';
+//  if (!$Acce) {
+//      $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+//      return $this->redirectToRoute('home');
+//  }
+    $repository = $entityManager->getRepository(Chambre::class);
+    $queues = array();
+    $annonce = $entityManager->getRepository(Annonce::class)
+        ->findOneBy(['etablissement' => $etablissement, 'id' => $idAnnonce]);
+    if (!$annonce) {
+        return new JsonResponse(['error' => 'annonce not found'], Response::HTTP_NOT_FOUND);
+    }
+    $request = Request::createFromGlobals();
+    $chambre = $request->get("chambre");
+    $check = $request->get("checked");
+    if (isset($chambre) and !empty($chambre) and isset($check) and !empty($check)) {
+        foreach ($chambre as $key => $k) {
+            foreach($check as $key1 => $k1)
+            {
+                if($k == $k1)
+                {
+                $lancer = $entityManager->getRepository(LancerAnnonce::class)->findOneBy(['idAnnonce'=>$idAnnonce,'idChembre' => $k]);
+                if($lancer)
+                {
+                $entityManager->remove($lancer);
+                $entityManager->flush();
+                $boxs  = $repository->findById($k);
+                $chambre= $boxs[0]->getNom();
+                $queue = $etablissement->getId() . '.' . $chambre . '.service';
+                array_push($queues,$queue);  
+                $message = "arreter_annonce%%".$idAnnonce."%%".$k;
+;               $Manager = new PushRabbit();
+                $Manager->MakeRabbitCall($queues, $message);
+                }
+
+            }
+    }
+}
+}
+    return $this->redirectToRoute('app_annonce');
+}
+
+
+
+#[Route('/annonce/GetAllchambreLancerAnnance/{idAnnonce}',name:'GetAllchambreLancerAnnonce',methods:'GET')]
+
+public function GetAllchambreLancerAnnonce(EntityManagerInterface $entityManager, int $idAnnonce){
+    $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+    if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
+    $etablissement = $this->getUser()->getEtablissement();
+    $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+//     $Acce = $this->getUser()->getSERVICE() && $configApp->getEnableSERVICE() === '1';
+//  if (!$Acce) {
+//      $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+//      return $this->redirectToRoute('home');
+//  }
+    $annonce = $entityManager->getRepository(Annonce::class)
+        ->findOneBy(['etablissement' => $etablissement, 'id' => $idAnnonce]);
+    if (!$annonce) {
+        return new JsonResponse(['error' => 'Service not found'], Response::HTTP_NOT_FOUND);
+    }
+    $lancer = $entityManager->getRepository(LancerAnnonce::class)->findBy(['idAnnonce'=>$idAnnonce]);
+    $arrayLancerAnnonce = [];
+    foreach ($lancer as $l) {
+        $ex = $entityManager->getRepository(Chambre::class)->findOneBy(["id"=>$l->getIdChembre()]);
+        $arrayLancerAnnonce[] = ['id'=>$ex->getId(),'nom' => $ex->getNom(),
+                        'ip' => $ex->getIp(),
+                        'Mac' => $ex->getMac(),];
+        }
+        $LancerAnnonceJson = json_encode($arrayLancerAnnonce);
+
+    return new JsonResponse(['AnnonceLancer' => $arrayLancerAnnonce]);
+}
 
 }
 

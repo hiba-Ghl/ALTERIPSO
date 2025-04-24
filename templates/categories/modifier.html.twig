@@ -132,14 +132,14 @@
             <td>
                 <div class="form-group" >
                     <label for="logo" class="col-lg-2 control-label">logo</label>
-                    <img src="{{asset(categorie.logo)}}" class="img"/>
+                    <img  src="{{ path('afficher_image', { filename: categorie.logo|split('/')|last, directory: 'categories_directory' }) }}" class="img"/>
                     <input type="file" class="form-control-file" id="logo" name="logo">
                 </div>
             </td>
             <td>
                 <div class="form-group"  style="margin-left: 30px;">
                     <label for="background" class="col-lg-2 control-label" >background</label>
-                    <img src="{{ categorie.background ? asset(categorie.background) : asset('images/no_image.png') }}" class="img"/>
+                    <img src="{{ categorie.background ? path('afficher_image', { filename: categorie.background|split('/')|last, directory: 'categories_directory' }) : asset('images/no_image.png') }}" class="img"/>
                     <input type="file" class="form-control-file" id="background" name="background">
                 </div>
             </td>

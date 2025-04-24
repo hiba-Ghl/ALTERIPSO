@@ -70,7 +70,7 @@ class Etablissement
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $meteoactive = null;
     
-    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: ServiceEtablissement::class)]
+    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: ServiceEtablissement::class,cascade: ['persist'])]
     private Collection $ServiceEtablissement;
     
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Categories::class)]
@@ -127,6 +127,18 @@ class Etablissement
 
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: User::class)]
     private Collection $users;
+
+    #[ORM\Column(length: 255)]
+    private ?string $Typetext = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $Couleurtext = null;
+
+    #[ORM\Column]
+    private ?int $Tailletext = null;
+
+    #[ORM\Column]
+    private ?int $Volumedemarage = null;
     
     public function __construct()
     {
@@ -949,6 +961,54 @@ class Etablissement
                 $vod->setEtablissement(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTypeText(): ?string
+    {
+        return $this->Typetext;
+    }
+
+    public function setTypeText(string $type_text): static
+    {
+        $this->Typetext = $type_text;
+
+        return $this;
+    }
+
+    public function getCouleurText(): ?string
+    {
+        return $this->Couleurtext;
+    }
+
+    public function setCouleurText(string $couleur_text): static
+    {
+        $this->Couleurtext = $couleur_text;
+
+        return $this;
+    }
+
+    public function getTailleText(): ?int
+    {
+        return $this->Tailletext;
+    }
+
+    public function setTailleText(int $taille_text): static
+    {
+        $this->Tailletext = $taille_text;
+
+        return $this;
+    }
+
+    public function getVolumeDemarage(): ?int
+    {
+        return $this->Volumedemarage;
+    }
+
+    public function setVolumeDemarage(int $volume_demarage): static
+    {
+        $this->Volumedemarage = $volume_demarage;
 
         return $this;
     }

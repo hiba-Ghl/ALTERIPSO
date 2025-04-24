@@ -18,8 +18,6 @@ class Chambre
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $etat = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $ip = null;
@@ -64,7 +62,7 @@ class Chambre
     private ?string $langue = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $token = null;
+    private ?string $token = null;  
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $background = null;
@@ -108,19 +106,6 @@ class Chambre
 
         return $this;
     }
-
-    public function getEtat(): ?string
-    {
-        return $this->etat;
-    }
-
-    public function setEtat(?string $etat): static
-    {
-        $this->etat = $etat;
-
-        return $this;
-    }
-
     public function getIp(): ?string
     {
         return $this->ip;

@@ -4,29 +4,106 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-    categories_directory: '%kernel.project_dir%/public/images/categories'
-    etablissement_directory: '%kernel.project_dir%/public/images/etablissement'
-    uploads_directory: '%kernel.project_dir%/public/uploads'
-    chaines_directory: '%kernel.project_dir%/public/images/chaines'
-    radio_directory: '%kernel.project_dir%/public/images/radio'
-    categorie_radio_directory: '%kernel.project_dir%/public/images/categorie_radio'
-    application_directory: '%kernel.project_dir%/public/images/application'
-    jeux_directory: '%kernel.project_dir%/public/images/jeux'
-    categorie_livreaudio_directory: '%kernel.project_dir%/public/images/categorie_livreaudio'
-    livreaudio_directory: '%kernel.project_dir%/public/images/livreaudio'
-    charte_patient_directory: '%kernel.project_dir%/public/pdf/charte_patient'
-    service_payant_directory: '%kernel.project_dir%/public/pdf/service_payant'
-    service_in_room_directory: '%kernel.project_dir%/public/serviceinroom'
-    annonce_directory: '%kernel.project_dir%/public/annonce'
-    vod_directory: '%kernel.project_dir%/public/images/vod'
-    categorie_vod_directory: '%kernel.project_dir%/public/images/categorie_vod'
+  # Répertoire contenent les dossies des images (défini via une variable d'environnement HOME_DIRECTORY)
+    # project_dir: '%env(HOME_DIRECTORY)%'
+    project_dir: '%kernel.project_dir%'
+# Répertoire global contenant toutes les images
+    images_directory: '%project_dir%/public/images/'
+
+# Répertoire contenant les icônes utilisées dans l'application
+    icone_directory: '%project_dir%/public/images/imageIcone'
+
+# Répertoire des images de catégories
+    categories_directory: '%project_dir%/public/images/categories'
+
+# Répertoire des images des établissements
+    etablissement_directory: '%project_dir%/public/images/etablissement'
+
+# Répertoire de destination des fichiers uploadés (par ex : fichiers envoyés par l’utilisateur)
+    uploads_directory: '%project_dir%/public/uploads'
+
+# Répertoire des images des services
+    services_directory: '%project_dir%/public/images/services'
+
+# Répertoire des diaporamas pour les services
+    services_directory_diapo: '%project_dir%/public/images/services/diapo'
+
+# Répertoire des chaînes TV
+    chaines_directory: '%project_dir%/public/images/chaines'
+
+# Répertoire des radios
+    radio_directory: '%project_dir%/public/images/radio'
+
+# Répertoire des catégories de radios
+    categorie_radio_directory: '%project_dir%/public/images/categorie_radio'
+
+# Répertoire des images de l'application
+    application_directory: '%project_dir%/public/images/application'
+
+# Répertoire des images de jeux
+    jeux_directory: '%project_dir%/public/images/jeux'
+
+# Répertoire des catégories de livres audio
+    categorie_livreaudio_directory: '%project_dir%/public/images/categorie_livreaudio'
+
+# Répertoire des livres audio
+    livreaudio_directory: '%project_dir%/public/images/livreaudio'
+
+# Répertoire contenant le fichier PDF de la charte du patient
+    charte_patient_directory: '%project_dir%/public/pdf/charte_patient'
+
+# Répertoire contenant les PDF des services payants
+    service_payant_directory: '%project_dir%/public/pdf/service_payant'
+
+# Répertoire contenant les images ou fichiers liés aux services en chambre
+    service_in_room_directory: '%project_dir%/public/serviceinroom'
+
+# Répertoire contenant les fichiers des annonces
+    annonce_directory: '%project_dir%/public/annonce'
+
+# Répertoire contenant les images de la VOD (vidéo à la demande)
+    vod_directory: '%project_dir%/public/images/vod'
+
+# Répertoire contenant les catégories de VOD
+    categorie_vod_directory: '%project_dir%/public/images/categorie_vod'
+
+# Ancienne version 
+    # categories_directory: '%kernel.project_dir%/public/images/categories'
+    # etablissement_directory: '%kernel.project_dir%/public/images/etablissement'
+    # uploads_directory: '%kernel.project_dir%/public/uploads'
+    # services_directory: '%kernel.project_dir%/public/services'
+    # chaines_directory: '%kernel.project_dir%/public/images/chaines'
+    # radio_directory: '%kernel.project_dir%/public/images/radio'
+    # categorie_radio_directory: '%kernel.project_dir%/public/images/categorie_radio'
+    # application_directory: '%kernel.project_dir%/public/images/application'
+    # jeux_directory: '%kernel.project_dir%/public/images/jeux'
+    # categorie_livreaudio_directory: '%kernel.project_dir%/public/images/categorie_livreaudio'
+    # livreaudio_directory: '%kernel.project_dir%/public/images/livreaudio'
+    # charte_patient_directory: '%kernel.project_dir%/public/pdf/charte_patient'
+    # service_payant_directory: '%kernel.project_dir%/public/pdf/service_payant'
+    # service_in_room_directory: '%kernel.project_dir%/public/serviceinroom'
+    # annonce_directory: '%kernel.project_dir%/public/annonce'
+    # vod_directory: '%kernel.project_dir%/public/images/vod'
+    # categorie_vod_directory: '%kernel.project_dir%/public/images/categorie_vod'
+    # Configuration des paramètres SMTP pour l'envoi des e-mails
+
+    # Nom d'utilisateur utilisé pour l'authentification SMTP
     smtp_username: '%env(SMTP_USERNAME)%'
+
+    # Mot de passe associé au nom d'utilisateur SMTP
     smtp_password: '%env(SMTP_PASSWORD)%'
-    smtp_host: '%env(SMTP_HOST)%' 
-    smtp_port: '%env(SMTP_PORT)%' 
+
+    # Hôte du serveur SMTP (par exemple : smtp.gmail.com)
+    smtp_host: '%env(SMTP_HOST)%'
+
+    # Port utilisé pour la connexion SMTP (souvent 587 ou 465)
+    smtp_port: '%env(SMTP_PORT)%'
+
     
 
-
+twig:
+    globals:
+        my_custom_var: '%project_dir%/public'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -47,3 +124,4 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    Symfony\Bridge\Doctrine\Security\RememberMe\DoctrineTokenProvider: ~

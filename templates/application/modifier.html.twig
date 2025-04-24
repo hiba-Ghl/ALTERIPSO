@@ -27,7 +27,7 @@
       
         <div style="width: 100%;">
             <div style="float: left; width: 25%;height:100%;">
-                <img src="{{ asset(application.logo) }}" alt="..." class="img-rounded img-responsive" style="width: 90%;height: 100%;">
+                <img src="{{ path('afficher_image', { filename: application.logo|split('/')|last, directory: 'application_directory' }) }}" alt="..." class="img-rounded img-responsive" style="width: 90%;height: 100%;">
             </div>
             <div style="float: left; width: 75%;">
                 <table style="width: 100%;">

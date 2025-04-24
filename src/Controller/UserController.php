@@ -110,6 +110,11 @@ class UserController extends AbstractController
         $etablissement->setDescription('Hôtel');
         $etablissement->setVille($ville);
         $etablissement->setPays($pays);
+        $etablissement->setTypeText("Times New Roman, serif");
+        $etablissement->setCouleurText("#ffffff");
+        $etablissement->setTailleText(26);
+        $etablissement->setVolumeDemarage(10);
+
         
         
         
@@ -311,12 +316,12 @@ class UserController extends AbstractController
         $user->setPassword($hashedPassword);
         $user->setEtablissement($etablissement);
         // Sauvegarder tous dans la base de données
+        $this->importPreFilledData($entityManager, $etablissement);
         $entityManager->persist($user);
         $entityManager->persist($etablissement);
         $entityManager->flush();
     
         // Importation des données pré-remplies
-        $this->importPreFilledData($entityManager, $etablissement);
 
          // Ajouter un message de succès
         $this->addFlash('success', 'L\'établissement a été créé avec succès.');
@@ -328,7 +333,7 @@ class UserController extends AbstractController
     {
         // Trouver le service général pour la source
         $serviceGeneralSource = $entityManager->getRepository(ServiceEtablissement::class)
-            ->findOneBy(['nom' => 'Géneral', 'etablissement' => 27268]);
+            ->findOneBy(['nom' => 'Géneral', 'etablissement' => 87371]);
     
         if ($serviceGeneralSource) {
             // Trouver ou créer le service général pour le nouvel établissement
@@ -369,7 +374,7 @@ class UserController extends AbstractController
     
         foreach ($tables as $entityClass) {
             $repository = $entityManager->getRepository($entityClass);
-            $sourceItems = $repository->findBy(['etablissement' => 27268]);
+            $sourceItems = $repository->findBy(['etablissement' => 87371]);
             foreach ($sourceItems as $sourceItem) {
                 $newItem = clone $sourceItem;
                 $newItem->setEtablissement($etablissement);
@@ -378,7 +383,7 @@ class UserController extends AbstractController
                 $entityManager->persist($newItem);
                 if ($sourceItem instanceof CategorieRadio) {
                     $repositoryRadio = $entityManager->getRepository(Radio::class);
-                    $sourceItemsRadio = $repositoryRadio->findBy(['etablissement' => 27268,'categorie' => $sourceItem]);
+                    $sourceItemsRadio = $repositoryRadio->findBy(['etablissement' => 87371,'categorie' => $sourceItem]);
                     foreach ($sourceItemsRadio as $radio) {
                         $newRadio = clone $radio;
                         $newRadio->setEtablissement($etablissement);
@@ -388,7 +393,7 @@ class UserController extends AbstractController
                 }
                 if ($sourceItem instanceof CategorieLivreAudio) {
                     $repository = $entityManager->getRepository(LivreAudio::class);
-                    $sourceItems = $repository->findBy(['etablissement' => 27268,'categorie' => $sourceItem]);
+                    $sourceItems = $repository->findBy(['etablissement' => 87371,'categorie' => $sourceItem]);
                     foreach($sourceItems as $item)
                     {
                         $newItem1 = clone $item;
@@ -399,7 +404,7 @@ class UserController extends AbstractController
                 }
                 if ($sourceItem instanceof CategorieVod) {
                     $repository = $entityManager->getRepository(Vod::class);
-                    $sourceItems = $repository->findBy(['etablissement' => 27268,'categorie' => $sourceItem]);
+                    $sourceItems = $repository->findBy(['etablissement' => 87371,'categorie' => $sourceItem]);
                     foreach($sourceItems as $item)
                     {
                         $newItem1 = clone $item;
@@ -411,7 +416,7 @@ class UserController extends AbstractController
                 }
                 if ($sourceItem instanceof Categories) {
                     $repository = $entityManager->getRepository(Services::class);
-                    $sourceItems = $repository->findBy(['etablissement' => 27268,'categories' => $sourceItem]);
+                    $sourceItems = $repository->findBy(['etablissement' => 87371,'categories' => $sourceItem]);
                     foreach($sourceItems as $item)
                     {
                         $newItem1 = clone $item;
@@ -424,7 +429,7 @@ class UserController extends AbstractController
         }
         }
         // Importer les champs spécifiques
-        $sourceEtablissement = $entityManager->getRepository(Etablissement::class)->find(27268);
+        $sourceEtablissement = $entityManager->getRepository(Etablissement::class)->find(87371);
         if ($sourceEtablissement) {
             $etablissement->setLogo($sourceEtablissement->getLogo());
             $etablissement->setLogoactive($sourceEtablissement->getLogoactive());
@@ -464,6 +469,7 @@ class UserController extends AbstractController
         }
     
         $tables = [
+            Television::class,
             Chambre::class,
             ServiceEnChambre::class,
             ResultatQuestionnaire::class,
@@ -485,7 +491,6 @@ class UserController extends AbstractController
             HistoriqueAnnonce::class,
             Jeux::class,
             ConfigApp::class,
-            Television::class,
             ServiceEtablissement::class,
             User::class,
         ];

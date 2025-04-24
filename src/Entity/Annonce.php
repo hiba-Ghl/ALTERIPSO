@@ -42,32 +42,7 @@ class Annonce
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $position = null;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $fr = null;
-
-    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $en = null;
-
-    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $es = null;
-
-    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $pt = null;
-
-    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $it = null;
-
-    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $ru = null;
-
-    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $de = null;
-
-    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $zh = null;
-
-    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $ar = null;
+    
 
     #[ORM\OneToMany(mappedBy: 'annonce', targetEntity: HistoriqueAnnonce::class)]
     private Collection $historiqueAnnonces;
@@ -80,6 +55,36 @@ class Annonce
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $style = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $esMessage = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $ptMessage = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $itMessage = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $ruMessage = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $deMessage = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $zhMessage = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $arMessage = null;
+
+    #[ORM\Column]
+    private ?bool $active = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $frMessage = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $enMessage = null;
 
     public function __construct()
     {
@@ -199,114 +204,6 @@ class Annonce
         return $this;
     }
 
-    public function getFr(): ?string
-    {
-        return $this->fr;
-    }
-
-    public function setFr(?string $fr): static
-    {
-        $this->fr = $fr;
-
-        return $this;
-    }
-
-    public function getEn(): ?string
-    {
-        return $this->en;
-    }
-
-    public function setEn(?string $en): static
-    {
-        $this->en = $en;
-
-        return $this;
-    }
-
-    public function getEs(): ?string
-    {
-        return $this->es;
-    }
-
-    public function setEs(?string $es): static
-    {
-        $this->es = $es;
-
-        return $this;
-    }
-
-    public function getPt(): ?string
-    {
-        return $this->pt;
-    }
-
-    public function setPt(?string $pt): static
-    {
-        $this->pt = $pt;
-
-        return $this;
-    }
-
-    public function getIt(): ?string
-    {
-        return $this->it;
-    }
-
-    public function setIt(?string $it): static
-    {
-        $this->it = $it;
-
-        return $this;
-    }
-
-    public function getRu(): ?string
-    {
-        return $this->ru;
-    }
-
-    public function setRu(?string $ru): static
-    {
-        $this->ru = $ru;
-
-        return $this;
-    }
-
-    public function getDe(): ?string
-    {
-        return $this->de;
-    }
-
-    public function setDe(?string $de): static
-    {
-        $this->de = $de;
-
-        return $this;
-    }
-
-    public function getZh(): ?string
-    {
-        return $this->zh;
-    }
-
-    public function setZh(?string $zh): static
-    {
-        $this->zh = $zh;
-
-        return $this;
-    }
-
-    public function getAr(): ?string
-    {
-        return $this->ar;
-    }
-
-    public function setAr(?string $ar): static
-    {
-        $this->ar = $ar;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, HistoriqueAnnonce>
      */
@@ -369,6 +266,127 @@ class Annonce
     public function setStyle(?string $style): static
     {
         $this->style = $style;
+
+        return $this;
+    }
+
+
+    public function getEsMessage(): ?string
+    {
+        return $this->esMessage;
+    }
+
+    public function setEsMessage(?string $esMessage): static
+    {
+        $this->esMessage = $esMessage;
+
+        return $this;
+    }
+
+    public function getPtMessage(): ?string
+    {
+        return $this->ptMessage;
+    }
+
+    public function setPtMessage(?string $ptMessage): static
+    {
+        $this->ptMessage = $ptMessage;
+
+        return $this;
+    }
+
+    public function getItMessage(): ?string
+    {
+        return $this->itMessage;
+    }
+
+    public function setItMessage(?string $itMessage): static
+    {
+        $this->itMessage = $itMessage;
+
+        return $this;
+    }
+
+    public function getRuMessage(): ?string
+    {
+        return $this->ruMessage;
+    }
+
+    public function setRuMessage(?string $ruMessage): static
+    {
+        $this->ruMessage = $ruMessage;
+
+        return $this;
+    }
+
+    public function getDeMessage(): ?string
+    {
+        return $this->deMessage;
+    }
+
+    public function setDeMessage(?string $deMessage): static
+    {
+        $this->deMessage = $deMessage;
+
+        return $this;
+    }
+
+    public function getZhMessage(): ?string
+    {
+        return $this->zhMessage;
+    }
+
+    public function setZhMessage(?string $zhMessage): static
+    {
+        $this->zhMessage = $zhMessage;
+
+        return $this;
+    }
+
+    public function getArMessage(): ?string
+    {
+        return $this->arMessage;
+    }
+
+    public function setArMessage(?string $arMessage): static
+    {
+        $this->arMessage = $arMessage;
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): static
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    public function getFrMessage(): ?string
+    {
+        return $this->frMessage;
+    }
+
+    public function setFrMessage(?string $frMessage): static
+    {
+        $this->frMessage = $frMessage;
+
+        return $this;
+    }
+
+    public function getEnMessage(): ?string
+    {
+        return $this->enMessage;
+    }
+
+    public function setEnMessage(?string $enMessage): static
+    {
+        $this->enMessage = $enMessage;
 
         return $this;
     }

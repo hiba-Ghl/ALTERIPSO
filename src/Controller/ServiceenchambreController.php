@@ -288,7 +288,7 @@ class ServiceenchambreController extends AbstractController
         $serviceEnChambresdetails = $serviceEnChambreRepository->find($service->getId());
         $serviceId = $service->getId();
         if ($typeServiceEnChambre && mb_strtolower($typeServiceEnChambre->getNom()) === "menu") {
-                $publicDirectory = __DIR__ . '/../../public/MenuServiceEnChambre';
+                $publicDirectory = $this->getParameter('project_dir')  .  '/public/MenuServiceEnChambre';
                 $filePath = $publicDirectory . '/' . $serviceId . '.txt';
             if (file_exists($filePath)) {
                 $fileContent = file_get_contents($filePath);
@@ -311,6 +311,14 @@ class ServiceenchambreController extends AbstractController
             $typeserviceEnChambreRepository = $this->entityManager->getRepository(TypeServiceEnChambre::class);
             $typeserviceEnChambres = $typeserviceEnChambreRepository->findAll();
             // Rediriger vers la page listservice.html.twig
+            $appConfig = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+            if ($appConfig) {
+                $configArray = ['Status'=>$appConfig->getStatusServeur()];
+            } 
+            else{
+                $configArray = ['Status'=>'online'];
+            }           
+            $configJson = json_encode($configArray);
             $formatContenu = 'format1';
             return $this->render('service_en_chambre/modifier.html.twig', [
                 'user' => $user,
@@ -322,6 +330,7 @@ class ServiceenchambreController extends AbstractController
                 'typeserviceEnChambres'=>$typeserviceEnChambres,
                 'formatContenu' => $formatContenu,
                 'appConfig' => $configApp,
+                'configApp' =>$configJson,
                 'user' => $this->getUser(),
 
 
@@ -358,7 +367,7 @@ class ServiceenchambreController extends AbstractController
 
         $serviceEnChambres = $serviceEnChambreRepository->find($id);
         $ancienLogo = $serviceEnChambres->getLogo() ?? 'valeur_par_defaut.jpg';
-        $publicDirectory = __DIR__ . '/../../public/MenuServiceEnChambre';
+        $publicDirectory = $this->getParameter('project_dir')  .  '/public/MenuServiceEnChambre';
         $filePath = $publicDirectory . '/' . $id . '.txt';
         if (file_exists($filePath)) {
             $fileContent = file_get_contents($filePath);
@@ -444,7 +453,7 @@ class ServiceenchambreController extends AbstractController
         // Recherche du service en chambre spécifié par l'ID
         $serviceEnChambres = $serviceEnChambreRepository->find($id);
         // Assurez-vous que le répertoire 'MenuServiceEnChambre' existe
-        $publicDirectory = __DIR__ . '/../../public/MenuServiceEnChambre'; // direction du fichier MenuServiceEnChambre
+        $publicDirectory =$this->getParameter('project_dir')  .  '/public/MenuServiceEnChambre'; // direction du fichier MenuServiceEnChambre
         // Utilisez le nom obtenu à partir de getNom() comme nom de fichier
         $fileName = $serviceEnChambres->getId() . '.txt';
         $filePath = $publicDirectory . '/' . $fileName;
@@ -453,7 +462,7 @@ class ServiceenchambreController extends AbstractController
         $nomAEnregistrer = $nom . "\n";
         // Ajout du nom de catégorie au fichier avec FILE_APPEND pour ajouter à la fin du fichier existant
         file_put_contents($filePath, $nomAEnregistrer, FILE_APPEND | LOCK_EX);
-                $publicDirectory = __DIR__ . '/../../public/MenuServiceEnChambre';
+                $publicDirectory =$this->getParameter('project_dir')  .  '/public/MenuServiceEnChambre';
                 $filePath = $publicDirectory . '/' . $id . '.txt';
         if (file_exists($filePath)) {
             $fileContent = file_get_contents($filePath);
@@ -514,7 +523,7 @@ class ServiceenchambreController extends AbstractController
             return $this->redirectToRoute('home');
         }
         // Définition du chemin vers le répertoire public contenant les fichiers de MenuServiceEnChambre
-        $publicDirectory = __DIR__ . '/../../public/MenuServiceEnChambre'; // direction du fichier MenuServiceEnChambre
+        $publicDirectory =$this->getParameter('project_dir')  .  '/public/MenuServiceEnChambre'; // direction du fichier MenuServiceEnChambre
          // Construction du chemin complet vers le fichier en fonction du nom fourni en paramètre
         $filePath = $publicDirectory . '/' . $id . '.txt';
         // Vérification de l'existence du fichier
@@ -694,6 +703,7 @@ class ServiceenchambreController extends AbstractController
             $serviceEnChambre->setContenu($desc);
             
         }
+
         // Récupérer l'entité TypeServiceEnChambre
         // Gérer le fichier logo s'il est envoyé
         $logoFile = $request->files->get('logo');
@@ -721,7 +731,7 @@ class ServiceenchambreController extends AbstractController
         $serviceEnChambreRepository = $this->entityManager->getRepository(ServiceEnChambre::class);
             // Recherche du service en chambre spécifié par l'ID
         $serviceEnChambres = $serviceEnChambreRepository->find($id);
-        $publicDirectory = __DIR__ . '/../../public/MenuServiceEnChambre';
+        $publicDirectory =$this->getParameter('project_dir')  .  '/public/MenuServiceEnChambre';
         $filePath = $publicDirectory . '/' . $id . '.txt';
         if (file_exists($filePath)) {
             $fileContent = file_get_contents($filePath);

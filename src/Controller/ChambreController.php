@@ -397,6 +397,7 @@ class ChambreController extends AbstractController
        if($nom)
        {
           $service = new ServiceEtablissement();
+          $service->setId(mt_rand(1, 9999));
           $service->setEtablissement($etablissement);
           $service->setNom($nom);
         //  dd($service);

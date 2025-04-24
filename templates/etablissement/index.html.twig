@@ -11,12 +11,14 @@
 			margin-top: 10px;
 
 		}
-		#div2 {
+		#div4 {
 			border-radius: 25px;
 			border: 2px solid #3087ce;
+			background-color:white;
 			padding: 20px;
+			padding-bottom:50px;
 			width: 1091px;
-			height: 1180px;
+			height: auto;
 			margin-left: 10px;
 			margin-top: 10px;
 		}
@@ -27,7 +29,7 @@
 		Infos Etablissement
 	</div>
 	<div
-		id="div2">
+		id="div4">
 		<!--  -->
 		<form name="" method="post" action="{{ path('modifieretablissement', {'id': app.user.etablissement.id}) }}" class="form-horizontal" enctype="multipart/form-data">
 
@@ -54,7 +56,7 @@
 				</label>
 				<div class="col-lg-10">
 					<label class="radio-inline">
-						<input type="radio" name="description" id="description" value="Hôtel" {% if app.user.etablissement.description == 'Hôtel' %} checked {% endif %}>Hôtel</label>
+						<input type="radio" name="description" id="description" value="Hôtel" checked>Hôtel</label>
 					<label class="radio-inline">
 						<input type="radio" name="description" id="description" value="hopital" {% if app.user.etablissement.description == 'hopital' %} checked {% endif %}>Hopital</label>
 					<label class="radio-inline">
@@ -108,19 +110,6 @@
 
 				</div>
 			</div>
-			<!-- ville  -->
-			<div class="form-group">
-				<label for="ville" class="col-lg-2 control-label">
-				<p style="width:100%;text-align:left;padding-left:20px;">
-				Ville
-				</p>
-				</label>
-				<div class="col-lg-10">
-
-					<input type="text" id="ville" name="ville" class="form-control" value="{{ app.user.etablissement.ville}}"/>
-
-				</div>
-			</div>
 			<!-- pays  -->
 			<div class="form-group">
 				<label for="pays" class="col-lg-2 control-label">
@@ -134,6 +123,20 @@
 
 				</div>
 			</div>
+			<!-- ville  -->
+			<div class="form-group">
+				<label for="ville" class="col-lg-2 control-label">
+				<p style="width:100%;text-align:left;padding-left:20px;">
+				Ville
+				</p>
+				</label>
+				<div class="col-lg-10">
+
+					<input type="text" id="ville" name="ville" class="form-control" value="{{ app.user.etablissement.ville}}"/>
+  <ul id="ville-options" class="list-group mt-2" style="font-size:16px;display:none; position: absolute; width: 97%;z-index: 1000; background-color: white; border: 1px solid #ccc;"></ul> <!-- List for options -->
+				</div>
+			</div>
+			
 			<!-- addresse  -->
 			<div class="form-group">
 				<label for="adresse" class="col-lg-2 control-label">
@@ -195,7 +198,7 @@
 			<div class="form-group">
 				<label for="logo" class="col-lg-2 control-label"></label>
 				{% if app.user.etablissement.logo is not null %}
-					<img src="{{ asset(app.user.etablissement.logo) }}" class="img" style="width:auto; height: 100px;"/>
+					<img  src="{{ path('afficher_image', { filename: app.user.etablissement.logo|split('/')|last, directory: 'etablissement_directory' }) }}" class="img" style="width:auto; height: 100px;"/>
 				{% else %}
 					<p>Aucun logo n'a été téléchargé.</p>
 				{% endif %}
@@ -287,12 +290,111 @@
 				</div>
 			</div>
 
+	<div class="form-group">
+		<div class="col-lg-10">
+			<h4 style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 400px;padding: 10px;">Mise en forme page principale TV</h4>         
+		</div>
+	</div>	
+	<div class="form-group">
+		<label for="type_text" class="col-lg-2 control-label">
+		<p style="width:100%;text-align:left;padding-left:20px;">
+		Type d’écriture
+		</p>
+		</label>
+		<div class="col-lg-10">
+			<select id="type_text" name="type_text" class="form-control" value="{{app.user.etablissement.Typetext}}">
+					<option value="Times New Roman, serif" selected>Times New Roman, serif</option>
+					<option value="Arial, sans-serif" {% if app.user.etablissement.Typetext == 'Arial, sans-serif' %} selected{% endif %}>Arial, sans-serif</option>
+					<option value="Georgia,serif" {% if app.user.etablissement.Typetext == 'Georgia,serif' %} selected{% endif %}>Georgia,serif</option>
+					<option value="Courier New, monospace" {% if app.user.etablissement.Typetext == 'Courier New, monospace' %} selected{% endif %}>Courier New, monospace </option>
+					<option value="Verdana, sans-serif " {% if app.user.etablissement.Typetext == 'Verdana, sans-serif' %} selected{% endif %}>Verdana, sans-serif </option>
+					<option value="Tahoma, sans-serif" {% if app.user.etablissement.Typetext == 'Tahoma, sans-serif' %} selected{% endif %}>Tahoma, sans-serif </option>
+					<option value="Trebuchet MS, sans-serif" {% if app.user.etablissement.Typetext == 'Trebuchet MS, sans-serif' %} selected{% endif %}>Trebuchet MS, sans-serif </option>
+					<option value="Lucida Console, monospace" {% if app.user.etablissement.Typetext == 'Lucida Console, monospace' %} selected{% endif %}>Lucida Console, monospace </option>
+					<option value="Helvetica, sans-serif" {% if app.user.etablissement.Typetext == 'Helvetica, sans-serif' %} selected{% endif %}>Helvetica, sans-serif </option>
+					<option value="Comic Sans MS, cursive" {% if app.user.etablissement.Typetext == 'Comic Sans MS, cursive' %} selected{% endif %}>Comic Sans MS, cursive </option>
+			</select>
+		</div>
+	</div>
+	<div class="form-group">
+  <label for="colorPicker" class="col-lg-2 control-label">
+    <p style="width:100%;text-align:left;padding-left:20px;">
+      Couleur du texte (catégorie)
+    </p>
+  </label>
+  <div class="col-lg-10" style="display:flex;align-items:center">
+    <input type="color" id="colorPicker" value="{{app.user.etablissement.Couleurtext}}" style="width:50px;height:50px;outline:none;border:none"/>
+    <input type="text" id="colorCode" name="color_text" class="form-control" style="margin-left: 10px;" value={{app.user.etablissement.Couleurtext}}></span>
+  </div>
+</div>
 
-			<div style="float:right;margin-left:30px;">
+<script>
+  const picker = document.getElementById('colorPicker');
+  const colorCode = document.getElementById('colorCode');
+  picker.addEventListener('input', () => {
+    colorCode.value = picker.value;
+  });
+   colorCode.addEventListener('input', () => {
+     picker.value = colorCode.value;
+  });
+</script>
+	<div class="form-group">
+		<label for="type_text" class="col-lg-2 control-label">
+		<p style="width:100%;text-align:left;padding-left:20px;">
+		Taille du texte (catégorie)
+		</p>
+		</label>
+		<div class="col-lg-10">
+			<select id="taille_text" name="taille_text" class="form-control" value="{{app.user.etablissement.Tailletext}}">
+			</select>
+		</div>
+	</div>
+	<script>
+		const taille_text= document.getElementById('taille_text');
+		const array = Array.from({ length: 65 }, (_, i) => i + 16);
+		  const selectedValue = taille_text.getAttribute("value");
+		array.forEach(value=>{
+			const option = document.createElement("option");
+			option.value = value;
+			option.textContent = value;
+			if(value == selectedValue)
+			{
+				option.selected = true;
+			}
+			taille_text.appendChild(option);
+		})
+	</script>
+	<div class="form-group">
+		<label for="volume_demarage" class="col-lg-2 control-label">
+		<p style="width:100%;text-align:left;padding-left:20px;">
+		Volume au démarrage
+		</p>
+		</label>
+		<div class="col-lg-10">
+			<select id="volume_demarage" name="volume_demarage" class="form-control" value="{{app.user.etablissement.Volumedemarage}}">
+			</select>
+		</div>
+	</div>
+	<script>
+		const volume_demarage= document.getElementById('volume_demarage');
+		const array1 = Array.from({ length: 61 }, (_, i) => i);
+		const selectedValue1 = volume_demarage.getAttribute("value");
+		array1.forEach(value=>{
+			const option = document.createElement("option");
+			option.value = value;
+			option.textContent = value;
+			if(value == selectedValue1)
+			{
+				option.selected = true;
+			}
+			volume_demarage.appendChild(option);
+		})
+	</script>
+	<div style="float:right;margin-left:30px;">
     <a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/home">
         <i class="glyphicon glyphicon-remove"></i> Annuler
     </a>
-<button type="submit" class="btn btn-primary btn-md" style="width:130px;" {% if not is_granted('ROLE_ADMIN') %} disabled {% endif %}>
+<button type="submit" class="btn btn-primary btn-md" style="width:130px;" {% if not is_granted('ROLE_ADMIN') and not is_granted('ROLE_SUPER_ADMIN')%} disabled {% endif %}>
         <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
     </button>
 </div>
@@ -300,4 +402,61 @@
 
 	</div>
 	<br>
+
+	<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const input1 = document.getElementById('ville');
+    const optionsList = document.getElementById('ville-options');
+
+    input1.addEventListener('input', async function (e) {
+      const text = e.target.value;
+
+	const country = document.getElementById('pays').value;
+	console.log(country);
+      if (text.length < 1) {
+        optionsList.style.display = 'none';
+        optionsList.innerHTML = ""; 
+        return;
+      }
+      const url = `https://nominatim.openstreetmap.org/search?city=${text}&country=${country}&format=json`;
+      try {
+        const response = await fetch(url, {
+          headers: {
+            "User-Agent": "MyApp/1.0"
+          }
+        });
+
+        const data = await response.json();
+     if (data && data.length > 0) {
+          optionsList.innerHTML = "";
+          optionsList.style.display = 'block';
+		optionsList.style.marginRight = '30px';
+          data.slice(0, 5).forEach(item => {
+            const li = document.createElement("li");
+            li.classList.add("list-group-item");
+            li.textContent = item.name; 
+            li.addEventListener('click', function () {
+              input1.value = item.name; 
+              optionsList.style.display = 'none';
+            });
+            optionsList.appendChild(li);
+          });
+        } else {
+          optionsList.style.display = 'none';
+        }
+      } catch (error) {
+        console.error("Error fetching city data:", error);
+        optionsList.style.display = 'none';
+      }
+    });
+    document.addEventListener('click', function (e) {
+      if (!input1.contains(e.target) && !optionsList.contains(e.target)) {
+        optionsList.style.display = 'none';
+      }
+    });
+  });
+</script>
+
+   
+
 {% endblock %}

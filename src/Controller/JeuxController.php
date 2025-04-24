@@ -9,12 +9,16 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Support;
 use App\Entity\Jeux;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+
 class JeuxController extends AbstractController
 {
     #[Route('/jeux', name: 'app_jeux')]
     public function index(EntityManagerInterface $entityManager): Response
     {
+      // dd($this->getParameter('jeux_directory'));
       if( !$this->getUser())
       return $this->redirectToRoute('app_login');
       $etablissement = $this->getUser()->getEtablissement();

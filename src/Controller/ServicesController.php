@@ -6,7 +6,10 @@ use App\Entity\Categories;
 use App\Entity\Chambre;
 use App\Entity\ConfigApp;
 use App\Entity\Etablissement;
-use App\Entity\LancerService;
+use App\Entity\LancerAnnonce;
+use App\Entity\LancerRadio;
+use App\Entity\Lancerservice;
+use App\Entity\LancerTV;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -40,13 +43,7 @@ class ServicesController extends AbstractController
     #[Route('/services', name: 'app_services')]
     public function index(Security $security): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-        
-        // dd($security->getUser());
-        // if (!$security->getUser()) {
-        //     $this->addFlash('warning', 'Votre session a expiré. Veuillez vous reconnecter.');
-        //     return $this->redirectToRoute('app_login');
-        // }     
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');     
         if( !$this->getUser())
           return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
@@ -117,7 +114,7 @@ public function ajouterService(Request $request): Response
         return $this->redirectToRoute('home');    }   
     $this->denyAccessUnlessGranted('IS_AUTHENTICATED'); 
     $service = new Services();
-    $directory = $this->getParameter('kernel.project_dir') . '/public/images/services';
+    $directory = $this->getParameter('services_directory');
 
     $service->setEtablissement($etablissement);
     if($request)
@@ -258,7 +255,7 @@ private function handleDiapoFiles($files, $tempDisplays, $orderDisplays, $direct
             $configArray = ['Status'=>'online'];
         }
         $configJson = json_encode($configArray);     
-        $directory = $this->getParameter('kernel.project_dir') . '/public/images/imageIcone';
+        $directory = $this->getParameter('project_dir') . '/public/images/imageIcone';
         if (!is_dir($directory)) {
             return new JsonResponse(['error' => 'Image directory not found'], 500);
         }
@@ -430,7 +427,7 @@ public function update_services(int $id,Request $request){
             $configArray = ['Status'=>'online'];
         }
         $configJson = json_encode($configArray);
-        $directory = $this->getParameter('kernel.project_dir') . '/public/images/imageIcone';
+        $directory = $this->getParameter('project_dir') . '/public/images/imageIcone';
         if (!is_dir($directory)) {
             throw new \Exception( 'Image directory not found');
         }
@@ -445,7 +442,7 @@ public function update_services(int $id,Request $request){
         $ImagesArray = [];
         if($service->getType() === 'DIAPO')
         {
-        $dir_nom = $this->getParameter('kernel.project_dir') . '/public/' . $service->getSrc();
+        $dir_nom = $this->getParameter('project_dir') . '/public/' . $service->getSrc();
 
         if (!file_exists($dir_nom)) {
             throw new \Exception( 'Path does not exist: ' . $dir_nom);
@@ -535,10 +532,10 @@ public function update_services(int $id,Request $request){
             throw $this->createNotFoundException('Service not found');
         }
     
-        $directory = $this->getParameter('kernel.project_dir') . '/public/images/services';
+        $directory = $this->getParameter('services_directory');
         $oldDirectory = '';
         if($service->getType() === 'DIAPO')
-        $oldDirectory = $this->getParameter('kernel.project_dir') . '/public/' . $service->getSrc();
+        $oldDirectory = $this->getParameter('project_dir') . '/public/' . $service->getSrc();
     
         if ($request->isMethod('POST')) {
             try{
@@ -557,7 +554,7 @@ public function update_services(int $id,Request $request){
             $orderDisplays = $request->get('numberInput', []);
             
             // dump($tempDisplays,$orderDisplays).die();
-            $dir_nom = $this->getParameter('kernel.project_dir') . '/public/' . $service->getSrc();
+            $dir_nom = $this->getParameter('project_dir') . '/public/' . $service->getSrc();
             // dump($dir_nom);
             if ($type === 'DIAPO'){
             $this->handleDiapoFiles1( $file3,$oldDirectory, $tempDisplays, $orderDisplays, $directory, $service);
@@ -565,7 +562,7 @@ public function update_services(int $id,Request $request){
                 unlink($dir_nom); 
         }
             if ($file1) {
-                    $logo= $this->getParameter('kernel.project_dir') . '/public/' . $service->getLogo();
+                    $logo= $this->getParameter('project_dir') . '/public/' . $service->getLogo();
                     if(file_exists($logo)) 
                             unlink($logo); 
                     $extension = $file1->guessExtension() ?: pathinfo($file1->getClientOriginalName(), PATHINFO_EXTENSION) ?: 'bin';
@@ -714,8 +711,6 @@ public function update_services(int $id,Request $request){
         if (!$filesystem->exists($diapoDirectory)) {
             $filesystem->mkdir($diapoDirectory, 0755);
         }
-        // dump($Olddirectory);
-        // dump($ImagesArray).die();
         foreach ($ImagesArray as $index => $newFile) {
             if ($newFile instanceof UploadedFile) {
                 if (!isset($orderDisplays[$index], $tempDisplays[$index])) {
@@ -783,8 +778,8 @@ public function delete_service(int $id,int $id_service)
         {
             throw new Exception();
         }
-    $dir_nom = $this->getParameter('kernel.project_dir') . '/public/' . $service->getSrc();
-    $logo= $this->getParameter('kernel.project_dir') . '/public/' . $service->getLogo();
+    $dir_nom = $this->getParameter('project_dir') . '/public/' . $service->getSrc();
+    $logo= $this->getParameter('project_dir') . '/public/' . $service->getLogo();
     if($dir_nom)
     {
         if($service->getType() === 'DIAPO' ){
@@ -886,13 +881,14 @@ return $this->redirectToRoute('services_Categorie',['id' =>$id_service]);
     {    
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
         if( !$this->getUser())
-            return $this->redirectToRoute('app_login');
+        return new JsonResponse(['error' => 'etablissement not found'], Response::HTTP_NOT_FOUND);
         $etablissement = $this->getUser()->getEtablissement();
         $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
         $Acce = $this->getUser()->getSERVICE() && $configApp->getEnableSERVICE() === '1';
      if (!$Acce) {
          $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
-         return $this->redirectToRoute('home');
+         return new JsonResponse(['error' => 'Vous n\'avez pas le droit d\'accéder à cette page.'], Response::HTTP_NOT_FOUND);
+
      }
         $service = $this->entityManager->getRepository(Services::class)
             ->findOneBy(['etablissement' => $etablissement, 'id' => $id]);
@@ -901,7 +897,7 @@ return $this->redirectToRoute('services_Categorie',['id' =>$id_service]);
             return new JsonResponse(['error' => 'Service not found'], Response::HTTP_NOT_FOUND);
         }
     
-        $dir_nom = $this->getParameter('kernel.project_dir') . '/public/' . $service->getSrc();
+        $dir_nom = $this->getParameter('project_dir') . '/public/' . $service->getSrc();
 
         if (!file_exists($dir_nom)) {
             return new JsonResponse(['error' => 'Path does not exist: ' . $dir_nom], Response::HTTP_NOT_FOUND);
@@ -923,13 +919,13 @@ return $this->redirectToRoute('services_Categorie',['id' =>$id_service]);
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
         if( !$this->getUser())
-          return $this->redirectToRoute('app_login');
+            return new JsonResponse(['error' => 'etablissement not found'], Response::HTTP_NOT_FOUND);
         $etablissement = $this->getUser()->getEtablissement();
         $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
         $Acce = $this->getUser()->getSERVICE() && $configApp->getEnableSERVICE() === '1';
      if (!$Acce) {
          $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
-         return $this->redirectToRoute('home');
+         return new JsonResponse(['error' => 'Vous n\'avez pas le droit d\'accéder à cette page.'], Response::HTTP_NOT_FOUND);
      }
         $service = $this->entityManager->getRepository(Services::class)
             ->findOneBy(['etablissement' => $etablissement, 'id' => $id]);
@@ -938,7 +934,7 @@ return $this->redirectToRoute('services_Categorie',['id' =>$id_service]);
             return new JsonResponse(['error' => 'Service not found'], Response::HTTP_NOT_FOUND);
         }
     
-        $directory = $this->getParameter('kernel.project_dir') . '/public/' . $service->getSrc();
+        $directory = $this->getParameter('project_dir') . '/public/' . $service->getSrc();
     
         if (!is_dir($directory)) {
             return new JsonResponse(['error' => 'Invalid directory: ' . $directory], Response::HTTP_BAD_REQUEST);
@@ -975,14 +971,14 @@ return $this->redirectToRoute('services_Categorie',['id' =>$id_service]);
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
         if( !$this->getUser())
-          return $this->redirectToRoute('app_login');
+        return new JsonResponse(['error' => 'Etablissement not found'], Response::HTTP_NOT_FOUND);
         $etablissement = $this->getUser()->getEtablissement();
         $configApp = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
         $Acce = $this->getUser()->getSERVICE() && $configApp->getEnableSERVICE() === '1';
      if (!$Acce) {
          $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
-         return $this->redirectToRoute('home');
-     }
+         return new JsonResponse(['error' => 'Vous n\'avez pas le droit d\'accéder à cette page.'], Response::HTTP_NOT_FOUND);
+        }
         $service = $this->entityManager->getRepository(Services::class)
             ->findOneBy(['etablissement' => $etablissement, 'id' => $id]);
     
@@ -990,7 +986,7 @@ return $this->redirectToRoute('services_Categorie',['id' =>$id_service]);
             return new JsonResponse(['error' => 'Service not found'], Response::HTTP_NOT_FOUND);
         }
     
-        $directory = $this->getParameter('kernel.project_dir') . '/public/' . $service->getSrc();
+        $directory = $this->getParameter('project_dir') . '/public/' . $service->getSrc();
     
         if (!is_dir($directory)) {
             return new JsonResponse(['error' => 'Invalid directory: ' . $directory], Response::HTTP_BAD_REQUEST);
@@ -1021,7 +1017,19 @@ return $this->redirectToRoute('services_Categorie',['id' =>$id_service]);
             'files' => $files,
         ]);
     }   
-    
+    private function entityToArray($entity) {
+        $getterMethods = get_class_methods($entity);
+        $data = [];
+        foreach ($getterMethods as $method) {
+            if (strpos($method, 'get') === 0 && $method !== 'getId') {
+                $property = lcfirst(substr($method, 3));
+                $value = $entity->$method();
+                $data[$property] = $value instanceof \DateTimeInterface ? $value->format('Y-m-d H:i:s') : $value;
+            }
+        }
+        $data['id'] = $entity->getId();
+        return $data;
+     }    
     #[Route('/services/lancerService/{idService}', name: 'lancerService')]
     public function lancerService(int $idService)
     {
@@ -1045,13 +1053,28 @@ return $this->redirectToRoute('services_Categorie',['id' =>$id_service]);
         $request = Request::createFromGlobals();
         $chambre = $request->get("chambre");
         $check = $request->get("checked");
+        $chembreNonVide = [];
+        foreach($check as $key1 => $k1)
+        {
+            $lancerService = $this->entityManager->getRepository(LancerAnnonce::class)->findOneBy(['idChembre' => $k1]);
+            $lancerService1 = $this->entityManager->getRepository(LancerTV::class)->findOneBy(['idChembre' => $k1]);
+            $lancerService2 = $this->entityManager->getRepository(LancerRadio::class)->findOneBy(['idChembre' => $k1]);
+            if($lancerService)
+                $chembreNonVide[$key1] = $lancerService;
+            if($lancerService1)
+                $chembreNonVide[$key1] = $lancerService1;
+            if($lancerService2)
+                $chembreNonVide[$key1] = $lancerService2;
+        }
+        if(!$chembreNonVide )
+        {
         if (isset($chambre) and !empty($chambre) and isset($check) and !empty($check)) {
             foreach ($chambre as $key => $k) {
                 foreach($check as $key1 => $k1)
                 {
                     if($k == $k1)
                     {
-                    $lancer = $this->entityManager->getRepository(LancerService::class)->findOneBy(['idChembre' => $k]);
+                    $lancer = $this->entityManager->getRepository(Lancerservice::class)->findOneBy(['idChembre' => $k]);
                     if($lancer)
                     {
                         $this->entityManager->remove($lancer);
@@ -1065,8 +1088,11 @@ return $this->redirectToRoute('services_Categorie',['id' =>$id_service]);
                     $boxs  = $repository->findById($k);
                     $chambre= $boxs[0]->getNom();
                     $queue = $etablissement->getId() . '.' . $chambre . '.service';
-                    array_push($queues,$queue);  
-                    $message = "lancer_service%%".$service->getType()."%%".$service->getId()."%%".$service->getSrc()."%%".$k;
+                    array_push($queues,$queue);
+                    $arrayService = [];
+                    $arrayService[] = $this->entityToArray($service);
+                    $ServiceJson = json_encode($arrayService);  
+                    $message = "lancer_service%%".$ServiceJson."%%".$k;
 ;                   $Manager = new PushRabbit();
                     $Manager->MakeRabbitCall($queues, $message); 
             } 
@@ -1075,16 +1101,16 @@ return $this->redirectToRoute('services_Categorie',['id' =>$id_service]);
 }
         return $this->redirectToRoute('services_Categorie',['id' =>$service->getCategories()->getId()]);
 }
+else{
+        $chembreIds = array_map(function($service) {
+            $name_chambre = $this->entityManager->getRepository(Chambre::class)->findOneBy(['id'=>$service->getIdChembre()])->getNom();
+            return $name_chambre ;
+        }, $chembreNonVide);
+        $this->addFlash('warning','Les chambres suivantes ne sont pas vides, elles ont d\'autres annonces à lancer. S\'il vous plaît, arrêtez les annonces en cours sur les chembres suivant : ' . implode(', ', $chembreIds));
+        return $this->redirectToRoute('services_Categorie',['id' =>$service->getCategories()->getId()]);
+    }
+}
 
-
-// public function stop_service($id_organisation, $room)
-// {
-//     foreach ($room as $box) {
-//         require_once "rabbit/push.php";
-//         $rm = $box->getBoxId();
-//         pushIt("shell%%input keyevent 3", $id_organisation, $id_organisation . "." . $rm . ".service");
-//     }
-// }
 
 #[Route('/services/RemoveService/{idService}',name:'RemoveService')]
 public function RemoveService(int $idService)

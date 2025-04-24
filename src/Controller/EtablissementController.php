@@ -159,6 +159,10 @@ class EtablissementController extends AbstractController
         $accessTvInCheckout = $request->get('accessTvInCheckout');
         $logoactive = $request->get('logoactive');
         $msgbienvenu = $request->get('msgbienvenu');
+        $type_text = $request->get('type_text');
+        $color_text = $request->get('color_text');
+        $taille_text = $request->get('taille_text');
+        $volume_demarage = $request->get('volume_demarage');
 
         $etablissement->setNometablissement($nometablissement);
         $etablissement->setNom($nom);
@@ -173,6 +177,11 @@ class EtablissementController extends AbstractController
         $etablissement->setLogoactive($logoactive);
         $etablissement->setAccessTvInCheckout($accessTvInCheckout);
         $etablissement->setMsgbienvenu($msgbienvenu);
+
+        $etablissement->setTypeText($type_text);
+        $etablissement->setCouleurText($color_text);
+        $etablissement->setTailleText($taille_text);
+        $etablissement->setVolumeDemarage($volume_demarage);
 
         //logo
 

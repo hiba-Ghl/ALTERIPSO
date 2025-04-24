@@ -97,7 +97,7 @@ Liste Catégorie VOD
                     <tr class="odd gradeX">
                         <td style="height: 50px;width:251px;text-align:center;">{{ catvod.nom|capitalize}}</td>
                         <td style="height: 50px;width:251px;text-align:center;">
-                            <img style="width:40px;height:40px;text-align:center" src="{{ asset(catvod.logo) }}" alt="..." class="img-rounded img-responsive center-block">
+                            <img style="width:40px;height:40px;text-align:center" src="{{ path('afficher_image', { filename: catvod.logo|split('/')|last, directory: 'categorie_vod_directory' }) }}" alt="..." class="img-rounded img-responsive center-block">
                         </td>
                         <!-- checkbox -->
                         {% set ch = '' %}

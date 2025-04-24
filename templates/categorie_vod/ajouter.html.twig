@@ -9,7 +9,7 @@
 			padding: 20px;
             height: auto;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             background-color:white;
             margin: 10px;
 
@@ -36,15 +36,15 @@
 
     
 
-    <form name="" method="post" action="{{path('app_ajouter_categorievod')}}" class="form-horizontal" enctype="multipart/form-data"  onsubmit="return validateForm()">
+    <form name="" style="width:100%;" method="post" action="{{path('app_ajouter_categorievod')}}" class="form-horizontal" enctype="multipart/form-data"  onsubmit="return validateForm()">
 
 
-    <div class="row">
+    <div class="row" style="width:100%;display:flex;gap:20px;">
 
         <!-- Colonne pour le logo -->
         <div class="col-md-4 text-center">
                 <div class="form-group">
-                        <img id="logo-preview" style="width:250px;height:235px; margin-left:10px;" />
+                        <img id="logo-preview" style="width:250px;height:235px;" />
             </div>
         </div>
 
@@ -83,87 +83,87 @@
                 <div class="col-lg-10">
                     <input type="file" class="form-control-file" id="logo" name="logo" accept=".jpg, .jpeg, .png" onchange="previewLogo(event)">
                     <p class="error-message" id="file-error">La taille maximale du fichier est de 400 Ko.</p>
-
+  </div>
+                </div>
+                <div class="form-group ">
+            <label class="col-lg-2 control-label accordion-toggle" style="text-align:left;" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Langues</label>
+            <!-- le bouton de traduction -->
+            <div class="col-lg-10">
+            <button type="button" id="translateBtn" class="btn btn-info btn-sm">
+                <i class="glyphicon glyphicon-globe"></i> Traduire le texte
+            </button>
+                <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                <span><i class="glyphicon glyphicon-plus"></i></span>
+            </a>
+            <div>
+            <!-- les langues --> 
+        <div style="width: 760px; margin-left:-50px;margin-bottom: 15px; margin-top: 20px">
+            <!-- le boutons des langues --> 
+            
+            <!-- les champs des langues -->
+            <div id="collapseTwo" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div id="inputGroup1">
+                        <div class="form-row" style="margin-left:27px">
+                            <div class="form-group col-md-6">
+                                <img style="width: 30px" src="{{ asset('images/eng.png') }}">
+                                <label for="EN">English</label>
+                                <input type="text" class="form-control" id="EN" name="EN">
+                            </div>
+                            <div class="form-group col-md-6" style="margin-left:27px">
+                                <img style="width: 30px" src="{{ asset('images/es.png') }}">
+                                <label for="ES">Espagnol</label>
+                                <input type="text" class="form-control" id="ES" name="ES">
+                            </div>
+                        </div>
+                        <div class="form-row" style="margin-left:27px">
+                            <div class="form-group col-md-6">
+                                <img style="width: 30px" src="{{ asset('images/pt.png') }}">
+                                <label for="PT">Portugues</label>
+                                <input type="text" class="form-control" id="PT" name="PT">
+                            </div>
+                            <div class="form-group col-md-6" style="margin-left:27px">
+                                <img style="width: 30px" src="{{ asset('images/ita.png') }}">
+                                <label for="IT">Italiano</label>
+                                <input type="text" class="form-control" id="IT" name="IT">
+                            </div>
+                        </div>
+                        <div class="form-row" style="margin-left:27px">
+                            <div class="form-group col-md-6">
+                                <img style="width: 30px" src="{{ asset('images/rus.png') }}">
+                                <label for="RU">Russian</label>
+                                <input type="text" class="form-control" id="RU" name="RU">
+                            </div>
+                            <div class="form-group col-md-6" style="margin-left:27px">
+                                <img style="width: 30px" src="{{ asset('images/deu.png') }}">
+                                <label for="DE">Deutsch</label>
+                                <input type="text" class="form-control" id="DE" name="DE">
+                            </div>
+                        </div>
+                        <div class="form-row" style="margin-left:27px">
+                            <div class="form-group col-md-6">
+                                <img style="width: 30px" src="{{ asset('images/ch.png') }}">
+                                <label for="ZH">China</label>
+                                <input type="text" class="form-control" id="ZH" name="ZH">
+                            </div>
+                            <div class="form-group col-md-6" style="margin-left:27px">
+                                <img style="width: 30px" src="{{ asset('images/ma.png') }}">
+                                <label for="AR">العربية</label>
+                                <input type="text" class="form-control" id="AR" name="AR">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
-
-
-
-        <!-- languages part -->
-
-        <div  style="width:1005px;margin-left:32px;margin-bottom:15px;margin-top:20px">
-                    <!-- le bouton des langues-->
-                  <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" >
-                  <span > <i class="glyphicon glyphicon-plus"></i></span>
-                  </a>
-                  <label style="margin-left: 5px;"; class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Langues</label>
-                   <br>
-                   <!-- le bouton de traduction-->
-                    <button type="button" id="translateBtn" class="btn btn-info btn-sm">
-                    <i class="glyphicon glyphicon-globe"></i>  Traduire le texte</button>
-              
-              <!-- le champ des langues-->
-              <div id="collapseTwo" class="panel-collapse collapse">
-                <div class="panel-body">
-                  <div id="inputGroup1" >
-                    <div class="form-row" style="margin-left:27px">
-                        <div class="form-group col-md-6">
-                            <img style="width: 30px" src=" {{asset('images/eng.png')}}">
-                        <label for="EN">English</label>
-                        <input type="text" class="form-control" id="EN" name="EN">
-                        </div>
-                        <div class="form-group col-md-6" style="margin-left:27px">
-                            <img style="width: 30px" src="{{asset('images/es.png')}}">
-                        <label for="ES">Espagnol</label>
-                        <input type="text" class="form-control" id="ES" name="ES">
-                        </div>
-                    </div>
-              
-                    <div class="form-row" style="margin-left:27px">
-                        <div class="form-group col-md-6">
-                            <img style="width: 30px" src=" {{asset('images/pt.png')}}">
-                        <label for="PT">Portugues</label>
-                        <input type="text" class="form-control" id="PT" name="PT">
-                        </div>
-                        <div class="form-group col-md-6" style="margin-left:27px">
-                            <img style="width: 30px" src=" {{asset('images/ita.png')}}">
-                        <label for="IT">Italiano</label>
-                        <input type="text" class="form-control" id="IT" name="IT">
-                        </div>
-                    </div>
-                    <div class="form-row" style="margin-left:27px">
-                        <div class="form-group col-md-6">
-                            <img style="width: 30px" src=" {{asset('images/rus.png')}}">
-                        <label for="RU">Russian</label>
-                        <input type="text" class="form-control" id="RU" name="RU">
-                        </div>
-                        <div class="form-group col-md-6" style="margin-left:27px">
-                          <img style="width: 30px" src=" {{asset('images/deu.png')}}">
-                        <label for="DE">Deutsch</label>
-                        <input type="text" class="form-control" id="DE" name="DE">
-                        </div>
-                    </div>
-                    <div class="form-row" style="margin-left:27px">
-                        <div class="form-group col-md-6">
-                            <img style="width: 30px" src=" {{asset('images/ch.png')}}">
-                        <label for="ZH">China</label>
-                        <input type="text" class="form-control" id="ZH" name="ZH">
-                        </div>
-                        <div class="form-group col-md-6" style="margin-left:27px">
-                            <img style="width: 30px" src=" {{asset('images/ma.png')}}">
-                        <label for="AR">العربية</label>
-                        <input type="text" class="form-control" id="AR" name="AR">
-                        </div>
-                    </div>
-                  </div>
                 </div>
-              </div>
             </div>
+        </div>
+
+        
 
         <br>
+
          <!-- les boutons du formulaire-->
         <div style="float:right;margin-left:30px;">
          <a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/categorie/vod">

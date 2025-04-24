@@ -40,7 +40,7 @@
       <!--champ des donnees-->
       <div class="container">
         <div class="element1">
-          <img src="{{ asset('serviceinroom/' ~ serviceEnChambresdetails.getLogo()) }}" style="width:350px;height:250px"/>
+          <img  src="{{ path('afficher_image', { filename: serviceEnChambresdetails.logo|split('/')|last, directory: 'service_in_room_directory' }) }}" style="width:350px;height:250px"/>
         </div>
         <div class="element2" style="margin-left:35px">
           <div class="form-group" >

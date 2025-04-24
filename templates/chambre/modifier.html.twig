@@ -219,7 +219,7 @@
                                     <input type="radio"  name="back" checked value="{{box.background}}">
                                     </td>
                                     <td>
-                                    <img  style="width:150px;height:100px;text-align:center;margin-left: 10px;" src="{{ asset(''~box.background) }}" alt="..." class="img-rounded img-responsive center-block">
+                                    <img  style="width:150px;height:100px;text-align:center;margin-left: 10px;" src="{{ path('afficher_image', { filename: box.background|split('/')|last, directory: 'etablissement_directory' }) }}" alt="..." class="img-rounded img-responsive center-block">
                                     </td>
                                     </tr>
                                     </table>
@@ -232,7 +232,9 @@
                                     <input type="radio"  name="back" value="{{back}}">
                                     </td>
                                     <td>
-                                    <img  style="width:150px;height:100px;text-align:center;margin-left: 10px;" src="{{ asset(''~back) }}" alt="..." class="img-rounded img-responsive center-block">
+                                    src="{{ path('afficher_image', { filename: box.background|split('/')|last, directory: 'etablissement_directory' }) }}"
+                                    <img  style="width:150px;height:100px;text-align:center;margin-left: 10px;" src="{{ path('afficher_image', { filename: back|split('/')|last, directory: 'etablissement_directory' }) }}" alt="..." class="img-rounded img-responsive center-block">
+                                    {# <img  style="width:150px;height:100px;text-align:center;margin-left: 10px;" src="{{ asset(''~back) }}" alt="..." class="img-rounded img-responsive center-block"> #}
                                     </td>
                                     </tr>
                                     </table>

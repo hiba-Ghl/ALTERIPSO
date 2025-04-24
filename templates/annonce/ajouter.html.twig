@@ -5,12 +5,10 @@
     #div2 {
         border-radius: 25px;
         border: 2px solid #3087ce;
-        padding: 20px;
         height: auto;
         display: flex;
-        justify-content: center;
         background-color: white;
-        margin: 10px;
+        margin-top: 10px;
     }
     .accordion-toggle {
         cursor: pointer;
@@ -28,7 +26,7 @@
 
 <!-- le header de la page-->
 
-<div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 300px;padding-left: 10px;">
+<div style="border-radius: 8px;text-align: left;margin-left: -130px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 300px;padding-left: 10px;">
     <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
     Ajouter une annonce
 </div>
@@ -36,7 +34,7 @@
 <div id="div2">
 
 <!-- leformulaire contenant les informations -->
-    <form id="annonceForm" name="" method="post" action="{{ path('app_ajouter_annonce') }}" class="form-horizontal"  enctype="multipart/form-data">
+    <form id="annonceForm" name="" style="width:100%" method="post" action="{{ path('app_ajouter_annonce') }}" class="form-horizontal"  enctype="multipart/form-data">
         <div class="form-group row">
             <label for="nom" class="col-lg-2 col-form-label">Nom:</label>
             <div class="col-lg-10">
@@ -69,7 +67,7 @@
 
                 <!-- File upload section -->
                 <div id="fileUpload" style="display: none;">
-                    <label for="file" class="control-label here">Télécharger un fichier :</label>
+                    <label for="file" class="control-label here" style="width:100%">Télécharger un fichier :</label>
                 </div>
 
                 <!-- les messages d'erreurs -->
@@ -121,32 +119,79 @@
                                             </div>
                                         </div>
 
+                            
+                                    <div >
+        {# <div id="languagesPart" style="width:1005px;margin-left:32px;margin-bottom:15px;margin-top:20px"> #}
+            <!--le bouton langues-->
+                <label  class="accordion-toggle col-form-label" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo1">Langues: </label>
+                    <!--le bouton de traduction-->
+            <div>
+                <button type="button" id="translateBtn1" class="btn btn-info btn-sm">
+                    <i class="glyphicon glyphicon-globe"></i> Traduire le texte
+                </button>
+                <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo1">
+                    <span><i class="glyphicon glyphicon-plus"></i></span>
+                </a>            <!--les champs des langues-->
+                <div style="width: 100%;margin-bottom: 15px; margin-top: 20px" id ="languagesPart">
+                <div id="collapseTwo1" class="panel-collapse collapse" style="width:100%">
+                        <div  class="form-row" style="width:1180px;">
+                            <div class="form-group col-md-6" style="width:50%">
+                                <img style="width: 30px" src="{{ asset('images/eng.png') }}">
+                                <label for="EN">English</label>
+                                <textarea type="text" class="form-control" id="ENMessage" name="ENMessage"></textarea>
                             </div>
-      
-            </div>
-            </div>
-            
-             
+                            <div class="form-group col-md-6" style="width:49%;margin-left:4px;">
+                                <img style="width: 30px" src="{{ asset('images/es.png') }}">
+                                <label for="ES">Espagnol</label>
+                                <textarea type="text" class="form-control" id="ESMessage" name="ESMessage"></textarea>
+                            </div>
+                        </div>
 
-        <div class="form-group row">
-            <label for="theme" class="col-lg-2 col-form-label">Thème proposé:</label>
-            <div class="col-lg-10">
-                <select class="form-control" name="themee" id="themee" > 
-                {% for t in themes %}    
-                 <option value ='{{t}}'>{{t}}</option>
-                {% endfor %} 
-                <option value ='autre'>Autre (renseignez dans le champ thème)</option>
-        </select> 
-                <div class="e" >
-                <label class=" control-label">Thème: </label>
-                <input type="text" name="theme"  class="form-control" >
+                        <div class="form-row" style="width:1180px;">
+                            <div class="form-group col-md-6" style="width:50%">
+                                <img style="width: 30px" src="{{ asset('images/pt.png') }}">
+                                <label for="PT">Portugues</label>
+                                <textarea type="text" class="form-control" id="PTMessage" name="PTMessage"></textarea>
+                            </div>
+                            <div class="form-group col-md-6" style="width:49%;margin-left:4px;">
+                                <img style="width: 30px" src="{{ asset('images/ita.png') }}">
+                                <label for="IT">Italiano</label>
+                                <textarea type="text" class="form-control" id="ITMessage" name="ITMessage"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-row" style="width:1180px;" >
+                            <div class="form-group col-md-6" style="width:50%">
+                                <img style="width: 30px" src="{{ asset('images/rus.png') }}">
+                                <label for="RU">Russian</label>
+                                <textarea type="text" class="form-control" id="RUMessage" name="RUMessage"></textarea>
+                            </div>
+                            <div class="form-group col-md-6" style="width:49%;margin-left:4px;">
+                                <img style="width: 30px" src="{{ asset('images/deu.png') }}">
+                                <label for="DE">Deutsch</label>
+                                <textarea type="text" class="form-control" id="DEMessage" name="DEMessage"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-row" style="width:1180px;">
+                            <div class="form-group col-md-6" style="width:50%">
+                                <img style="width: 30px" src="{{ asset('images/ch.png') }}">
+                                <label for="ZH">China</label>
+                                <textarea type="text" class="form-control" id="ZHMessage" name="ZHMessage"></textarea>
+                            </div>
+                            <div class="form-group col-md-6" style="width:49%;margin-left:4px;">
+                                <img style="width: 30px" src="{{ asset('images/ma.png') }}">
+                                <label for="AR">العربية</label>
+                                <textarea type="text" class="form-control" id="ARMessage" name="ARMessage"></textarea>
+                            </div>
+                        </div>
+                     </div>
                 </div>
-
             </div>
         </div>
-
-        <div class="form-group row">
-        <div style="margin-bottom: 5px;margin-left: 200px; color: red">
+    </div>
+ </div>
+</div>
+      <div class="form-group row">
+        <div style="margin-bottom: 5px;margin-left: 250px; color: red">
             <p style="margin-bottom: 0;">Veuillez cliquer sur le bouton en bas "Photo Dimensions" pour visualiser les positions possibles</p>
         </div>
             <label for="position" class="col-lg-2 col-form-label">Position:</label>
@@ -157,105 +202,53 @@
                     <option value="Gauche">Gauche</option>
                     <option value="Droite">Droite</option>
                     <option value="Milieu">Milieu</option>
-                    <option value="Fullscreen">Fullscreen</option>
                 </select>
             </div>
         </div>
-
+         <div class="form-group row">
+             <label for="active" class="col-lg-2 col-form-label">Active:</label>
+             <div class="col-lg-10">
+                <select id="active" name="active" class="form-control" >
+                    <option value='1'>Oui</option>
+                    <option value='0'>Non</option>
+                </select>
+            </div>
+        </div>
         <div class="form-group row">
             <label for="datedebut" class="col-lg-2 col-form-label">Date de Début:</label>
             <div class="col-lg-10">
-                <input type="date" id="datedebut" name="datedebut" class="form-control"/>
+                <input type="datetime-local" id="datedebut" name="datedebut" class="form-control"/>
             </div>
         </div>
 
         <div class="form-group row">
             <label for="datefin" class="col-lg-2 col-form-label">Date de Fin:</label>
             <div class="col-lg-10">
-                <input type="date" id="datefin" name="datefin" class="form-control"/>
+                <input type="datetime-local" id="datefin" name="datefin" class="form-control"/>
             </div>
         </div>
+        <script>
+        window.addEventListener('DOMContentLoaded', () => {
+        const now = new Date();
+        const localNow = now.toISOString().slice(0, 16);
+        const datedebut = document.getElementById('datedebut');
+        const datefin = document.getElementById('datefin');
+        datedebut.min = localNow;
+        datefin.min = localNow;
+        datedebut.addEventListener('change', () => {
+        datefin.min = datedebut.value;
+        });
+        });
 
+        </script>
         <div class="form-group row">
             <label for="duree" class="col-lg-2 col-form-label">Durée (en secondes):</label>
             <div class="col-lg-10">
-                <input type="number" id="duree" name="duree" class="form-control" min="1" step="1" required/>
+                <input type="number" id="duree" name="duree" class="form-control" value="10" min="1" step="1" required/>
             </div>
         </div>
 
-        <!-- languages part -->
-        <div id="languagesPart" style="width:1005px;margin-left:32px;margin-bottom:15px;margin-top:20px">
-            <!--le bouton langues-->
-            
-            <label style="margin-left: 5px;" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Langues</label>
-            
-            <br>
-            <!--le bouton de traduction-->
-            <button type="button" id="translateBtn" class="btn btn-info btn-sm">
-                <i class="glyphicon glyphicon-globe"></i> Traduire le texte
-            </button>
-            <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                <span><i class="glyphicon glyphicon-plus"></i></span>
-            </a>
-            <!--les champs des langues-->
-            <div id="collapseTwo" class="panel-collapse collapse">
-                <div class="panel-body">
-                    <div id="inputGroup1">
-                        <div class="form-row" style="margin-left:27px">
-                            <div class="form-group col-md-6">
-                                <img style="width: 30px" src="{{ asset('images/eng.png') }}">
-                                <label for="EN">English</label>
-                                <textarea type="text" class="form-control" id="EN" name="EN"></textarea>
-                            </div>
-                            <div class="form-group col-md-6" style="margin-left:27px">
-                                <img style="width: 30px" src="{{ asset('images/es.png') }}">
-                                <label for="ES">Espagnol</label>
-                                <textarea type="text" class="form-control" id="ES" name="ES"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="form-row" style="margin-left:27px">
-                            <div class="form-group col-md-6">
-                                <img style="width: 30px" src="{{ asset('images/pt.png') }}">
-                                <label for="PT">Portugues</label>
-                                <textarea type="text" class="form-control" id="PT" name="PT"></textarea>
-                            </div>
-                            <div class="form-group col-md-6" style="margin-left:27px">
-                                <img style="width: 30px" src="{{ asset('images/ita.png') }}">
-                                <label for="IT">Italiano</label>
-                                <textarea type="text" class="form-control" id="IT" name="IT"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-row" style="margin-left:27px">
-                            <div class="form-group col-md-6">
-                                <img style="width: 30px" src="{{ asset('images/rus.png') }}">
-                                <label for="RU">Russian</label>
-                                <textarea type="text" class="form-control" id="RU" name="RU"></textarea>
-                            </div>
-                            <div class="form-group col-md-6" style="margin-left:27px">
-                                <img style="width: 30px" src="{{ asset('images/deu.png') }}">
-                                <label for="DE">Deutsch</label>
-                                <textarea type="text" class="form-control" id="DE" name="DE"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-row" style="margin-left:27px">
-                            <div class="form-group col-md-6">
-                                <img style="width: 30px" src="{{ asset('images/ch.png') }}">
-                                <label for="ZH">China</label>
-                                <textarea type="text" class="form-control" id="ZH" name="ZH"></textarea>
-                            </div>
-                            <div class="form-group col-md-6" style="margin-left:27px">
-                                <img style="width: 30px" src="{{ asset('images/ma.png') }}">
-                                <label for="AR">العربية</label>
-                                <textarea type="text" class="form-control" id="AR" name="AR"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <br>
+       
         <!-- les boutons du formulaire -->
 		<div style="float:right;">
             <a type="button" class="btn-primary btn btn-md" id="dim" style="background-color:  #ED7F10; border:2px solid   #ED7F10;">
@@ -356,29 +349,58 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 });
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+	const traduireButton1 = document.getElementById('translateBtn1');
+	 const languageInputs = {
+            en: document.getElementById("ENMessage"),
+            es: document.getElementById("ESMessage"),
+            pt: document.getElementById("PTMessage"),
+            it: document.getElementById("ITMessage"),
+            ru: document.getElementById("RUMessage"),
+            de: document.getElementById("DEMessage"),
+            zh: document.getElementById("ZHMessage"),
+            ar: document.getElementById("ARMessage"),
+        };
+        let translations = {};
+        async function translateAll(text) {
+            const languages = Object.keys(languageInputs);
+            let results = [];
+             while(1)
+             {
+                results = await translate(text, languages, 'fr');
+                if(results)
+                    break;
+             }
+            languages.forEach((lang, index) => {
+                translations[lang] = results[index];
+            });
+        }
+        if (traduireButton1) {
+            traduireButton1.addEventListener('click', async(event) => {
+                const textInput1 = document.getElementById("text");
+                const text = textInput1.value.trim() ;
+                if (text === '') {
+                    alert("Veuillez entrer un message à traduire.");
+                    return;
+                }
+                if(configApp.Status === 'Offline')
+                {
+                    alert("Aucun internet disponible : vous pouvez faire la traduction manuellement");
+                    return ;
+                }
+                await translateAll(text);
+                Object.keys(languageInputs).forEach(lang => {
+                    if (translations[lang]) {
+                        languageInputs[lang].value = translations[lang];
+                    }
+                });
+            });
+        }
+});
 
 </script>
-{# <script>
-    document.getElementById('translateBtn').addEventListener('click', function() {
-        const Fr = document.getElementById('text').value.trim();
-        if (Fr === '') {
-            alert('Veuillez entrer le message de votre annonce.');
-            return;
-        }
-
-        const baseUrl = 'https://translate.google.com/?sl=fr&tl=';
-        const languages = {
-            'EN': 'en', 'ES': 'es', 'PT': 'pt',
-            'IT': 'it', 'RU': 'ru', 'DE': 'de',
-            'ZH': 'zh-CN', 'AR': 'ar'
-        };
-
-        for (const [key, lang] of Object.entries(languages)) {
-            const translationUrl = `${baseUrl}${lang}&text=${encodeURIComponent(Fr)}`;
-            window.open(translationUrl, '_blank');
-        }
-    });
-</script> #}
 
 <!--for photo dimensions modal-->
 <script>
@@ -524,11 +546,11 @@ document.addEventListener('DOMContentLoaded', function () {
         container.innerHTML = '';
 
         if (type === 'Video') {
-            container.innerHTML = '<input type="file" id="file" accept=".mp4" name="file">';
+            container.innerHTML = '<input type="file" id="file" accept=".mp4" name="file" class="form-control" style="width:100%">';
         } else if (type === 'Image') {
-            container.innerHTML = '<input type="file" id="file" accept=".jpg, .jpeg, .png" name="file">';
+            container.innerHTML = '<input type="file" id="file" accept=".jpg, .jpeg, .png" name="file" class="form-control" style="width:100%">';
         } else {
-            container.innerHTML = '<input type="file" id="file" accept=".pdf" name="file">';
+            container.innerHTML = '<input type="file" id="file" accept=".pdf" name="file" class="form-control" style="width:100%">';
         }
     });
 
@@ -538,8 +560,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const type = this.value;
         const positionSelect = document.getElementById('position');
         const positions = type === 'Video' || type === 'Localtv' || type === 'PDF'
-            ? ['Fullscreen']
-            : ['Haut', 'Bas', 'Gauche', 'Droite', 'Milieu', 'Fullscreen'];
+            ? ['Milieu']
+            : ['Haut', 'Bas', 'Gauche', 'Droite', 'Milieu'];
 
         // Clear previous options
         positionSelect.innerHTML = '';

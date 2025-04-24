@@ -20,7 +20,7 @@
     <form id="form" class="form" action="{{ path('update_service', {'id': service.id}) }}" onsubmit="return validateForm(false)" method="post" enctype="multipart/form-data">
         <div class="div1">
             <div class="col-md-4">
-                <img src="{{ asset(service.logo)}}" class="img image-thumbnail" alt="Aucune image disponible" id="img"/>
+                <img src="{{ path('afficher_image', { filename: service.logo|split('/')|last, directory: 'services_directory' }) }}" class="img image-thumbnail" alt="Aucune image disponible" id="img"/>
             </div>
             <div class="col-md-4 div">
                 <div id="divNom">
@@ -41,7 +41,7 @@
                     <div>
                     <label class="control-label">Active</label>
                     <select id="service_active" class="form-control test" name="active" value="{{service.active}}">
-                        <option value='1' {% if service.active == 'on' or service.active == '1' %}selected{% endif %}>Oui</option>
+                        <option value='1' {% if service.active == '1' %}selected{% endif %}>Oui</option>
                         <option value='0' {% if service.active == '0' %}selected {% endif %}>Non</option>
                     </select>
                     </div>
@@ -672,11 +672,15 @@ function oldImage() {
     const durationValue = str[1] ? str[1].split(".")[0] : "";
     input1.push(parseInt(orderValue, 10));
     orderIn.push(parseInt(orderValue, 10));
+    const URL = src.src.split('/').pop();
+    console.log("src: ",src.src,image);
+    const imagePath =`${URL}/${image}`;
+    const imagesPath = `/images/${imagePath}/services_directory_diapo`
     DivImg.innerHTML = `
             <p style="width: 100%;text-align: end;cursor: pointer;"  class="btn btn-xs" onclick="deleteOldImage(${i})"   data-toggle="tooltip" data-placement="top" title="Supprimer l'image" >
                 <i class="glyphicon glyphicon-trash" style="color:red"></i>
             </p>
-            <img src="{{ asset('${src.src}/${image}') }}" 
+            <img src="${imagesPath}" 
                  alt="Image ${i}" class="img1">
         `;
     let divInputs = document.createElement("div");

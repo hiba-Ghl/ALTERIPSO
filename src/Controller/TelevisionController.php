@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Chambre;
 use App\Entity\ConfigApp;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,8 +11,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Etablissement;
 use App\Entity\Historiquegratuite;
-
+use App\Entity\LancerAnnonce;
+use App\Entity\LancerRadio;
+use App\Entity\Lancerservice;
+use App\Entity\LancerTV;
 use App\Entity\Television;
+use App\Push\PushRabbit;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class TelevisionController extends AbstractController
 {
@@ -45,10 +51,22 @@ class TelevisionController extends AbstractController
             $df = '10-09-1990 13:35:00';
             $typegratuite = '0';
         }
+
+        $chembre = $entityManager->getRepository(Chambre::class)->findBy(['etablissement' =>$etablissement]);
+        
+        $chembreArray = [];
+        foreach ($chembre as $chambre) {
+            $chembreArray[] = ['id'=>$chambre->getId(),'nom' => $chambre->getNom(),
+                        'ip' => $chambre->getIp(),
+                        'Mac' => $chambre->getMac(),
+        ];
+        }
+        $chembreJson = json_encode($chembreArray);
         //var_dump($dd);die();  
         return $this->render('television/index.html.twig', [
             'television' => $television,'typegratuite' => $typegratuite, 'dd' => $dd, 'df' => $df,'appConfig' => $configApp,       
              'user' => $this->getUser(),
+             'chembre' => $chembreJson,
 
         ]);
     }
@@ -319,7 +337,7 @@ class TelevisionController extends AbstractController
                    $ch = curl_init();
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                     curl_setopt($ch, CURLOPT_TIMEOUT, 1);
-                    curl_setopt($ch, CURLOPT_URL, "http://localhost:1111/package/dauntless_logger/libs/rabbitajax.php?AsyncUpdate=true");
+                    curl_setopt($ch, CURLOPT_URL, "http://localhost:1111/package/dauntless_logger/libs/rabbitajax.php?AsyncUpdate=true&idetablissement=$idetablissement");
                     $json_as_string = curl_exec($ch);
                     curl_close($ch);
                     $msg = 1;
@@ -327,10 +345,10 @@ class TelevisionController extends AbstractController
                     $msg = 2;
                 }*/
             
-             // $box = $em->getRepository('EPSOBundle:box')->findBy(array('etab' => $idetab, 'Support' => 'R-PH'));
-              //  $nbbox = count($box);
-                //var_dump($nbbox);die();  
-                $nbbox = 50;
+             
+                $chambres = $entityManager->getRepository(Chambre::class)->findBy(['etablissement' =>$etablissement]);
+                $nbbox = count($chambres);
+                
       switch ($typegratuite) {
         case 'r_defini':
           $typeg = 'Gratuité avec date début et fin';
@@ -391,7 +409,7 @@ class TelevisionController extends AbstractController
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT, 1);
-        curl_setopt($ch, CURLOPT_URL, "http://localhost:1111/package/dauntless_logger/libs/rabbitajax.php?AsyncUpdate=true");
+        curl_setopt($ch, CURLOPT_URL, "http://localhost:1111/package/dauntless_logger/libs/rabbitajax.php?AsyncUpdate=true&idetablissement=$idetablissement");
         $json_as_string = curl_exec($ch);
         curl_close($ch);
   
@@ -402,12 +420,8 @@ class TelevisionController extends AbstractController
         $msg = 2;
       }
   
-     /* $em = $this->getDoctrine()->getManager();
-      $idetab = $this->get('security.token_storage')->getToken()->getUser()->getEtab()->getId();
-      $boxs = $em->getRepository('EPSOBundle:box')->findBy(array('etab' => $idetab, 'Support' => 'R-PH'));
-      $etab = $em->getRepository('EPSOBundle:etab')->findById($idetab);
-      $nbbox = count($boxs);*/
-      $nbbox = 60;
+      $chambres = $entityManager->getRepository(Chambre::class)->findBy(['etablissement' =>$etablissement]);
+                $nbbox = count($chambres);
       //var_dump($nbbox);die();
       $typeg = 'Gratuité arrêtée';
       $df = date("d-m-Y H:i:s");
@@ -441,9 +455,8 @@ class TelevisionController extends AbstractController
         $idetablissement = $etablissement->getId();
         $repository = $entityManager->getRepository(Historiquegratuite::class);
         $historiquegratuite  = $repository->findBy(['etablissement' => $etablissement]);
-        //    $box = $em->getRepository('EPSOBundle:box')->findBy(array('etab' => $idetab, 'Support' => 'R-PH'));
-        //$nbbox = count($box);
-        $nbbox = 70;
+        $chambres = $entityManager->getRepository(Chambre::class)->findBy(['etablissement' =>$etablissement]);
+        $nbbox = count($chambres);
         //var_dump($historiquegratuite);die();
         $date2 = $request->request->get('date2');
         $date1 = $request->request->get('date1');
@@ -508,6 +521,159 @@ class TelevisionController extends AbstractController
 
 
 
+
+    private function entityToArray($entity) {
+        $getterMethods = get_class_methods($entity);
+        $data = [];
+        foreach ($getterMethods as $method) {
+            if (strpos($method, 'get') === 0 && $method !== 'getId') {
+                $property = lcfirst(substr($method, 3));
+                $value = $entity->$method();
+                $data[$property] = $value instanceof \DateTimeInterface ? $value->format('Y-m-d H:i:s') : $value;
+            }
+        }
+        $data['id'] = $entity->getId();
+        return $data;
+     }        
+        #[Route('/televesion/LancerTv/{idtele}', name: 'LancerTV')]
+        public function lancerTV(EntityManagerInterface $entityManager, int $idtele)
+        {
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+            if( !$this->getUser())
+                return $this->redirectToRoute('app_login');
+            $etablissement = $this->getUser()->getEtablissement();
+            $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        //     $Acce = $this->getUser()->getSERVICE() && $this->getUser()->getLancerArretService() && $configApp->getEnableSERVICE() === '1';
+        //  if (!$Acce) {
+        //      $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+        //      return $this->redirectToRoute('home');
+        //  }
+            $repository = $entityManager->getRepository(Chambre::class);
+            $queues = array();
+            $television = $entityManager->getRepository(Television::class)
+                ->findOneBy(['etablissement' => $etablissement, 'id' => $idtele]);
+            if (!$television) {
+                return new JsonResponse(['error' => 'Service not found'], Response::HTTP_NOT_FOUND);
+            }
+            $request = Request::createFromGlobals();
+            $chambre = $request->get("chambre");
+            $check = $request->get("checked");
+            if (isset($chambre) and !empty($chambre) and isset($check) and !empty($check)) {
+                foreach ($chambre as $key => $k) {
+                    foreach($check as $key1 => $k1)
+                    {
+                        if($k == $k1)
+                        {
+                            $lancer = $entityManager->getRepository(LancerTV::class)->findOneBy(['idChembre' => $k]);
+                            if($lancer)
+                            {
+                                $entityManager->remove($lancer);
+                                $entityManager->flush();
+                            }
+                            $lancer = new LancerTV();
+                            $lancer->setIdChembre($k);
+                            $lancer->setIdTV($idtele);
+                            $entityManager->persist($lancer);
+                            $entityManager->flush();
+                            $boxs  = $repository->findById($k);
+                            $chambre= $boxs[0]->getNom();
+                            $queue = $etablissement->getId() . '.' . $chambre . '.service';
+                            array_push($queues,$queue);
+                            $arrayTV = [];
+                            $arrayTV[] = $this->entityToArray($television);
+                            $TVJson = json_encode($arrayTV);
+                            $numChan = $television->getNumero();
+                            $message = "channel%%".$numChan."%%";
+                            $Manager = new PushRabbit();
+                            $Manager->MakeRabbitCall($queues, $message); 
+                    } 
+                }
+            }
+        }
+            return $this->redirectToRoute('app_television');
+    }
+
+#[Route('/television/ArreteTV/{idTV}',name:'ArretTV')]
+public function RemoveTV(EntityManagerInterface $entityManager, int $idTV)
+{
+    $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+    if( !$this->getUser())
+     return $this->redirectToRoute('app_login');
+    $etablissement = $this->getUser()->getEtablissement();
+    $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+//     $Acce = $this->getUser()->getSERVICE() && $this->getUser()->getLancerArretService() && $configApp->getEnableSERVICE() === '1';
+//  if (!$Acce) {
+//      $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+//      return $this->redirectToRoute('home');
+//  }
+    $repository = $entityManager->getRepository(Chambre::class);
+    $queues = array();
+    $annonce = $entityManager->getRepository(Television::class)
+        ->findOneBy(['etablissement' => $etablissement, 'id' => $idTV]);
+    if (!$annonce) {
+        return new JsonResponse(['error' => 'annonce not found'], Response::HTTP_NOT_FOUND);
+    }
+    $request = Request::createFromGlobals();
+    $chambre = $request->get("chambre");
+    $check = $request->get("checked");
+    if (isset($chambre) and !empty($chambre) and isset($check) and !empty($check)) {
+        foreach ($chambre as $key => $k) {
+            foreach($check as $key1 => $k1)
+            {
+                if($k == $k1)
+                {
+                $lancer = $entityManager->getRepository(LancerTV::class)->findOneBy(['idTV'=>$idTV,'idChembre' => $k]);
+                if($lancer)
+                {
+                $entityManager->remove($lancer);
+                $entityManager->flush();
+                $boxs  = $repository->findById($k);
+                $chambre= $boxs[0]->getNom();
+                $queue = $etablissement->getId() . '.' . $chambre . '.service';
+                array_push($queues,$queue);  
+                $message = "arreter_radio%%".$idTV."%%".$k;
+;               $Manager = new PushRabbit();
+                $Manager->MakeRabbitCall($queues, $message);
+                }
+
+            }
+    }
+}
+}
+    return $this->redirectToRoute('app_annonce');
 }
 
 
+
+#[Route('/television/GetAllchambreLancerTV/{idTV}',name:'GetAllchambreLancerTV',methods:'GET')]
+
+public function GetAllchambreLancerTV(EntityManagerInterface $entityManager, int $idTV){
+    $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+    if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
+    $etablissement = $this->getUser()->getEtablissement();
+    $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+//     $Acce = $this->getUser()->getSERVICE() && $configApp->getEnableSERVICE() === '1';
+//  if (!$Acce) {
+//      $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+//      return $this->redirectToRoute('home');
+//  }
+    $television = $entityManager->getRepository(Television::class)
+        ->findOneBy(['etablissement' => $etablissement, 'id' => $idTV]);
+    if (!$television) {
+        return new JsonResponse(['error' => 'Service not found'], Response::HTTP_NOT_FOUND);
+    }
+    $lancer = $entityManager->getRepository(LancerTV::class)->findBy(['idTV'=>$idTV]);
+    $arrayLancerTV = [];
+    foreach ($lancer as $l) {
+        $ex = $entityManager->getRepository(Chambre::class)->findOneBy(["id"=>$l->getIdChembre()]);
+        $arrayLancerTV[] = ['id'=>$ex->getId(),'nom' => $ex->getNom(),
+                        'ip' => $ex->getIp(),
+                        'Mac' => $ex->getMac(),];
+        }
+        $LancerTVJson = json_encode($arrayLancerTV);
+
+    return new JsonResponse(['TVLancer' => $arrayLancerTV]);
+}
+
+}

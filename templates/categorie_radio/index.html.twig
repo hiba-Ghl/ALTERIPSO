@@ -79,7 +79,7 @@
 					<tr class="odd gradeX">
 						<td style="height: 50px;width:250px;text-align:center;">{{catradio.nom}}</td>
 						<td style="height: 50px;width:250px;text-align:center;">
-							<img style="width:50px;height:50px;text-align:center" src="{{ asset(catradio.logo) }}" alt="..." class="img-rounded img-responsive center-block">
+							<img style="width:50px;height:50px;text-align:center" src="{{ path('afficher_image', { filename: catradio.logo|split('/')|last, directory: 'categorie_radio_directory' }) }}" alt="..." class="img-rounded img-responsive center-block">
 						</td>
 
 						<td style="height: 50px; width: 250px; text-align: center;">

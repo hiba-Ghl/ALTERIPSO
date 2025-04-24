@@ -56,16 +56,16 @@
                 <tr >
                     <th style="text-align: center;width:300px;">ID établissement</th>
                     <th style="text-align: center;width:430px;">Nom établissement</th>
-                    <th style="text-align: center;width:530px;">Actions</th>
+                    <th style="text-align: center;width:500px;">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {% for etablissement in etablissements %}
-                        {% if app.user.getEtablissement() and etablissement.id != app.user.getEtablissement().id and etablissement.id != 87371 and etablissement.id != 69911 %}
+                        {% if app.user.getEtablissement() and etablissement.id != app.user.getEtablissement().id and etablissement.id != 87371 and etablissement.id != 69911 and etablissement.id != 83213 %}
                         <tr>
                             <td style="text-align: center;width:300px;">{{ etablissement.id }}</td>
                             <td style="text-align: center;width:480px;">{{ etablissement.getNomEtablissement() | capitalize }}</td>
-                            <td style="text-align: center;width:520px;display:flex;gap:5px;justify-content:center;">
+                            <td style="text-align: center;width:500px;display:flex;gap:5px;justify-content:center;">
                                 <a data-toggle="tooltip" title="Supprimer l'etablissement" href="/delateEtablissement/{{etablissement.id}}" class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer cet etablissement ?');">
                                     <i class="glyphicon glyphicon-trash"></i>
                                 </a>
@@ -243,6 +243,7 @@ document.addEventListener('click', function (event) {
     window.location.href = `/super/admin`
 });
 
+var erreur1 = 1;
 // Gestion du formulaire dynamiquement
 document.addEventListener('submit', async function(event) {
     if (event.target.id === 'passwordForm') {
@@ -359,6 +360,7 @@ document.addEventListener('submit', async function(event) {
 				divConfirmPassword.appendChild(p);
                 }
         }
+       
         return false;
         }
         else{
@@ -374,13 +376,15 @@ document.addEventListener('submit', async function(event) {
                 }
                 return false;
             }
+        if(erreur1 == 0)
+            return false;
             if(password !== Confirmpassword)
             {
                 const erreur = document.getElementById('erreurExport3');
                 if(!erreur)
                 {
 				const p = document.createElement('p');
-				p.textContent="Entrez le meme mot de passe s'il vous plaît";
+				p.textContent="Veuillez entrer le même mot de passe, s'il vous plaît.";
 				p.setAttribute('id','erreurExport3');
 				p.style.color = "red";
 				divConfirmPassword.appendChild(p);
@@ -457,6 +461,7 @@ function togglePasswordVisibility(inputId, iconElement) {
                 p.style.color ='red';
                 document.getElementById('divNom').appendChild(p);
             }
+            erreur1 = 0;
 		    } 
         }
     }
@@ -492,6 +497,7 @@ function togglePasswordVisibility(inputId, iconElement) {
                 p.style.color ='red';
                 document.getElementById('divEmail').appendChild(p);
             }
+            erreur1 = 0;
 		} 
         }
     }    	
@@ -506,6 +512,7 @@ function togglePasswordVisibility(inputId, iconElement) {
    const erreur = document.getElementById('erreurExport');
 		if(erreur){
 			erreur.remove();
+            erreur1 = 1;
 		}
     }
     const removeNomErreur = event.target.closest('.nomInput');
@@ -513,6 +520,7 @@ function togglePasswordVisibility(inputId, iconElement) {
    const erreur = document.getElementById('erreurExport');
 		if(erreur){
 			erreur.remove();
+            erreur1 = 1;
 		}
     }
     const removeEmailErreur = event.target.closest('.emailInput');
@@ -520,6 +528,7 @@ function togglePasswordVisibility(inputId, iconElement) {
         const erreur = document.getElementById('erreurExport1');
 		if(erreur){
 			erreur.remove();
+            erreur1 = 1;
 		}
     }
     const removePasswordIErreur = event.target.closest('.passwordInput');

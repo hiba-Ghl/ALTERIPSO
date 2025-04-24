@@ -46,6 +46,9 @@
               justify-content: center;
               flex-wrap: wrap;
               margin-top: 50px;
+              overflow-y:scroll;
+              position:relative;
+              height:80%;
           }
           /* Styles pour chaque carte */
           .card{
@@ -239,7 +242,7 @@
           <div class="card">
               
               <!-- Affichage image du service en chambre-->
-              <img src="{{ asset('serviceinroom/' ~ serviceEnChambre.getLogo()) }}" style="position: relative;display: inline-block;"/>
+              <img src="{{ path('afficher_image', { filename: serviceEnChambre.logo|split('/')|last, directory: 'service_in_room_directory' }) }}" style="position: relative;display: inline-block;"/>
               <div class="card-content">
                   <!-- Affichage le nom de service en chambre -->
                   <h3 style="text-align: center; margin-left: auto; margin-right: auto;margin-top:5px">{{ serviceEnChambre.getNom()}}</h3>

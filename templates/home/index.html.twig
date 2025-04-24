@@ -636,7 +636,7 @@ submenu.style.display = 'none';
 								{% endif %}
 								{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN')  %}
 								<li>
-									<a	href="http://localhost:1111/r-import/Page_accueil.php?etab={{ app.user.etablissement.id }}"	target="_blank">
+									<a	href="http://localhost:8001/Page_accueil.php?etab={{ app.user.etablissement.id }}"	target="_blank">
 										<i	class="glyphicon glyphicon-import "></i>
 										Import données
 									</a>
@@ -802,7 +802,7 @@ submenu.style.display = 'none';
 					{% if etablissement.type == 'video' %}
 						{% set background='images/videoBAckground.png' %}
 					{% else %}
-						{% set background=asset(etablissement.background) %}
+						{% set background= path('afficher_image', { filename: etablissement.background|split('/')|last, directory: 'etablissement_directory' })%}
 					{% endif %}
 					<div	class="col-md-12"	style="background:url('{{ background }}');height: 555px;background-size: cover!important;">
 
@@ -814,12 +814,12 @@ submenu.style.display = 'none';
 							{% endif %}
 
 							<div	class="col-sm-5"	style="padding: 0px ; margin-top: 10px;">
-								<a	href="{{ path('home') }}">
+								<a	href="{{ path('app_etablissement') }}#logo">
 									<h4	style="color: #fff;text-shadow: 2px 2px #000000;">
 										<input	name="logoactive"	{% if app.user.CocherLogo == '0' %} disabled {% endif %}  class=""	type="checkbox"	{{ ch }}>
 									<!--Logo de votre société-->
 									</h4>
-									<img	alt=""	src="{{ asset(etablissement.logo) }}"	style="width: 150px;margin-top: -41px;    height: 60px;float: left;margin-right: 8px">
+									<img src="{{ path('afficher_image', { filename: etablissement.logo|split('/')|last, directory: 'etablissement_directory' }) }}" style="width: 150px;margin-top: -41px;    height: 60px;float: left;margin-right: 8px">
 
 								</a>
 							</div>
@@ -830,17 +830,17 @@ submenu.style.display = 'none';
 									{% set ch='checked' %}
 								{% endif %}
 
-								<a	href="{{ path('home') }}">
+								<a	href="{{ path('app_etablissement') }}#ville">
 
 									<div	id="meteo2"	class="col-sm-6 pull-right"></div>
 
 									<div	id="meteo3"	class="col-sm-12 pull-right"></div>
 
-								</a>
 								<h4	style="color: #fff;text-shadow: 2px 2px #000000;">
 									<input	name="meteoactive"	{% if app.user.CocherMeteo == '0' %} disabled {% endif %} class=""	type="checkbox"	{{ ch }}	style="margin-left: 255px;position: absolute !important;">
 								<!--Logo de votre société-->
 								</h4>
+								</a>
 							</div>
 
 						</div>
@@ -868,7 +868,9 @@ submenu.style.display = 'none';
 												</div>
 
 												<!--<img	src="{#{ asset(categorie.logo) }#}"	style="width: 80px; height: 80px; border-radius: 9px;">-->
-												<img src="{{ categorie.logo ? asset(categorie.logo) : asset('images/no_image.png') }}" style="width: 80px; height: 80px; border-radius: 9px;">
+												<img src="{{ categorie.logo ? path('afficher_image', { filename: categorie.logo|split('/')|last, directory: 'categories_directory' }) : path('afficher_image', { filename: 'no_image.png', directory: 'images_directory' }) }}" style="width: 80px; height: 80px; border-radius: 9px;">
+
+												{# <img src="{{ categorie.logo ? asset(categorie.logo) : asset('images/no_image.png') }}" style="width: 80px; height: 80px; border-radius: 9px;"> #}
 
 												<div class="caption">
 													<a	href="categories/{{ categorie.Id }}"  {% if app.user.ChangeCat == '0' %} style="pointer-events: none; opacity: 0.5; cursor: default;" {% endif %}>
@@ -901,7 +903,7 @@ submenu.style.display = 'none';
 													<input	name="cat[{{ categorie.Id }}]"	class="caf"	style="width: 100%;"	{% if app.user.ChangeCat == '0' %} disabled {% endif %} type="checkbox"	{{ ch }}>
 												</div>
 
-												<img	src="{{ asset(categorie.logo) }}"	style="width: 80px; height: 80px; border-radius: 9px;">
+												<img src="{{ path('afficher_image', { filename: categorie.logo|split('/')|last, directory: 'categories_directory' }) }}"	style="width: 80px; height: 80px; border-radius: 9px;">
 												<div	class="caption">
 													<a	 {% if app.user.ChangeCat == '0' %} style="pointer-events: none; opacity: 0.5; cursor: default;" {% endif %} href="categories/{{ categorie.Id }}">
 														<label	name="titre"	 class="center-block"	style="margin-top: -34px; font-size: 11px; color: white; text-align: center;">
@@ -984,7 +986,7 @@ submenu.style.display = 'none';
 											</tr>
 										</thead>
 										<tbody	id="myTable">
-{{ dump(boxs) }}											{% for box in boxs %}
+											{% for box in boxs %}
 												<tr>
 													<td>
 														<label	class="labelbox">
@@ -1451,7 +1453,7 @@ submenu.style.display = 'none';
 		<!-- Modal changement position categories -->
 		{% for categorie in categories %}
 			<div	class="modal fade"	id="changeposition{{ categorie.id }}"	tabindex="-1"	role="dialog"	aria-labelledby="exampleModalLabel"	aria-hidden="true">
-				<div	class="modal-dialog"	role="document"	style="width:300px">
+				<div	class="modal-dialog"	role="document"	style="width:400px">
 					<div	class="modal-content">
 						<form	action="{{ path('modifierposition', {'id': categorie.id}) }}"	id="modifierposition{{ categorie.id }}"	name="modifierposition{{ categorie.id }}"	method="post"	enctype="multipart/form-data">
 							<div	class="modal-header">
@@ -1478,13 +1480,15 @@ submenu.style.display = 'none';
 							<div	class="modal-footer">
 								
 								<button	type="submit"	class="btn btn-primary btn-sm">
+									<i class="glyphicon glyphicon-floppy-disk"></i>
 									Enregistrer
 								</button>
 								<a	data-toggle="tooltip"	data-placement="top"	href="{{ path('app_supprimer_categories', {'id': categorie.id}) }}"	class="btn btn-danger btn-sm"	onclick="return(confirm('voulez vous vraiment supprimer cette categorie ?'));">
-									
+									<i class="glyphicon glyphicon-trash"></i>
 									Supprimer
 								</a>
 								<button	type="button"	class="btn btn-secondary btn-sm"	data-dismiss="modal">
+									<i class="glyphicon glyphicon-remove"></i>
 									Fermer
 								</button>
 							</div>
@@ -1661,7 +1665,7 @@ document.addEventListener('DOMContentLoaded',  function () {
 
 		v ='{{ app.user.etablissement.ville }}';
 
-$.getJSON('http://localhost:1111/Package/apis/meteo/v1/index.php?city=' + v, function (obj) {
+$.getJSON('http://192.168.1.53:1111/Package/apis/meteo/v1/index.php?city=' + v, function (obj) {
 
 var TempC = obj.current_observation.condition.temperature;
 var City = obj.location.city;
@@ -1669,7 +1673,7 @@ var code = obj.current_observation.condition.code;
 var img = obj.current_observation.condition.icon;
 
 var imageWeather;
-imageWeather = "<img  class='pull-right'  style='height:50px' src='http://localhost:1111/Package/apis/meteo/images/" + img + ".png'>"
+imageWeather = "<img  class='pull-right'  style='height:50px' src='http://192.168.1.53:1111/Package/apis/meteo/images/" + img + ".png'>"
 document.getElementById("meteo2").innerHTML = imageWeather;
 document.getElementById("meteo3").innerHTML = '<p class="pull-right" id="met" >' + Math.round(TempC) + " °" + '  ' + City + '</p>';
 

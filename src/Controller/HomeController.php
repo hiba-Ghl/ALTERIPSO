@@ -6,15 +6,39 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use App\Entity\Etablissement;
 use App\Entity\Categories;
 use App\Entity\ServiceEtablissement;
 use App\Entity\Chambre;
 use App\Entity\ConfigApp;
-use App\Entity\User;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class HomeController extends AbstractController
 {
+
+
+// Route permettant d'afficher une image depuis un répertoire spécifique
+#[Route('/images/{filename}/{directory}', name: 'afficher_image', requirements: ['filename' => '.+'])]
+public function image(string $filename, string $directory)
+{
+    // Récupère le chemin de base du répertoire à partir des paramètres définis dans services.yaml
+    $baseDir = $this->getParameter($directory);
+
+    // Construit le chemin absolu de l'image
+    $fullPath = realpath($baseDir . '/' . $filename);
+
+    // Vérifie si le fichier existe et qu'il est bien situé dans le répertoire autorisé
+    // if (!$fullPath || !str_starts_with($fullPath, $baseDir)) {
+        if (!$fullPath) {
+        // Si le fichier est introuvable ou en dehors du répertoire, une erreur 404 est lancée
+        throw $this->createNotFoundException('Image not found.');
+    }
+    // Retourne la réponse contenant l'image en mode inline (affichée dans le navigateur)
+    return new BinaryFileResponse($fullPath, 200, [
+        'Content-Disposition' => ResponseHeaderBag::DISPOSITION_INLINE
+    ]);
+}
+
     #[Route('/home', name: 'app_home')]
     public function index(EntityManagerInterface $entityManager): Response
     {

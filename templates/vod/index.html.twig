@@ -99,7 +99,7 @@
                     {% for video in videos %}
                         <tr>
                             <td style="height: 50px;width:190px;text-align:center;">
-                                <img style="width:40px;height:40px;text-align:center" src="{{ asset(video.logo) }}" alt="..." class="img-rounded img-responsive center-block">
+                                <img style="width:40px;height:40px;text-align:center" src="{{ path('afficher_image', { filename: video.logo|split('/')|last, directory: 'vod_directory' }) }}" alt="..." class="img-rounded img-responsive center-block">
                             </td>
                             <td style="height: 50px;width:190px;text-align:center;">{{ video.nom|capitalize }}</td>
                             <td class="scrollable" style="height: 50px;width:190px;text-align:center;">{{ video.description }}</td>

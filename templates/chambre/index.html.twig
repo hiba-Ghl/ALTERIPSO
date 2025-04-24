@@ -115,7 +115,7 @@
 		<div class="modnt"></div>
 		<div id="myDiv" style="margin-buttom:25px">
 
-		<div class="dataTables_filter" style="width:50%;display:flex;gap:10px;margin-left: 600px;position:absolute;margin-top: 0px;height:30px;">
+		<div class="dataTables_filter" style="width:25%;display:flex;gap:10px;margin-left: 600px;position:absolute;margin-top: 0px;height:30px;">
 		<label style="font-weight:normal">Recherche par service:</label>
 		<select  style="height:100%;width: 200px;"onchange="getval2(this)" id="form_Active" name="selectservices">
 			{% for s in serviceetablissement %}
@@ -208,7 +208,7 @@
 								{% elseif ( '.mp4' in box.background ) %}
 									Vidéo
 								{% else %}
-																	<img style="width:50px;height:50px;text-align:center" src="{{ asset(box.background) }}"alt="..." class="img-rounded img-responsive center-block">
+								<img style="width:50px;height:50px;text-align:center" src="{{ path('afficher_image', { filename: box.background|split('/')|last, directory: 'etablissement_directory' }) }}" alt="..." class="img-rounded img-responsive center-block">
 
 									{# <img style="width:50px;height:50px;text-align:center" src="{{ asset('images/'~box.background) }}" alt="..." class="img-rounded img-responsive center-block"> #}
 								{% endif %}
@@ -432,7 +432,7 @@
               const f_date = (m_ca, m_it) => Object({...m_ca, [m_it.type]: m_it.value});
               const m_date = o_date.formatToParts().reduce(f_date, {});
               //console.log(m_date.day + '-' + m_date.month + '-' + m_date.year);
-                                doc['footer'] = (function(page, pages) {
+                    doc['footer'] = (function(page, pages) {
                     return {
                       columns: [
                         {
