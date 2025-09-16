@@ -66,7 +66,6 @@ public function image(string $filename, string $directory)
             $configArray = ['Status'=>'online'];
         }
         $configJson = json_encode($configArray);
-        //var_dump($categories);die();
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
             'etablissement' => $etablissement,
@@ -86,7 +85,6 @@ public function image(string $filename, string $directory)
         $request = Request::createFromGlobals();
         $a = $entityManager->getRepository(Categories::class)->find($id);
         
-        //var_dump($a);die();
         if (!$a) {
             throw $this->createNotFoundException(
                 'No Category found for id '.$id
@@ -95,13 +93,11 @@ public function image(string $filename, string $directory)
         $selectedcat = $request->get("selectedcat");
         $b = $entityManager->getRepository(Categories::class)->find($selectedcat);
       
-       // var_dump($categoriesa);die();
         $posa=$a->getPosition();
         $posb=$b->getPosition();
         $posc=$posa;
         $posa=$posb;
         $posb=$posc;
-        //var_dump($posa,$posb);die();
         $a->setPosition($posa);
         $b->setPosition($posb);
         $entityManager->flush();
@@ -121,7 +117,6 @@ public function image(string $filename, string $directory)
         $meteoactive = $request->get('meteoactive');
         $etablissement->setLogoactive(0);
         $etablissement->setMeteoactive(0);
-        //var_dump($logoactive);die();
         $categories = $repository->findBy(
             ['etablissement' => $etablissement],
             ['position' => 'ASC']

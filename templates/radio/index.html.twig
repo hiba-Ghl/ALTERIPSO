@@ -572,8 +572,8 @@
 
 
 							<div class="fileUpload " id="mainform0">
-								<img id="preview-0" style="width:50px;height:50px;text-align:center" src="{{ asset('images/no_image.png') }}" alt="..." class="img-rounded img-responsive center-block">
-								<input id="0" {% if app.user.AjoutRadio == '0' %} disabled {% endif %} type="file" class="upload" name="logo" accept=".jpg, .jpeg, .png" style="width:50px;height:50px;text-align:center"/>
+								<img id="preview-0" style="width:50px;height:50px;text-align:center;position:relative;" src="{{ asset('images/no_image.png') }}" alt="..." class="img-rounded img-responsive center-block">
+								<input id="0" {% if app.user.AjoutRadio == '0' %} disabled {% endif %} type="file" class="upload" name="logo" accept=".jpg, .jpeg, .png" style="position:absolute;width:100%;height:100%;text-align:center"/>
 
 
 							</div>
@@ -1065,21 +1065,21 @@ magazines.prop('checked', false);
 
 
 <script>
-  const chambre = {{chembre | raw }};
+  const chambre = {{chambre | raw }};
 function createModal(index,Id,name) {
     const popUP = document.createElement('div');
     popUP.setAttribute("class", "modal fade");
     popUP.setAttribute("tabindex", "-1");
     popUP.style.marginLeft="-200px";
     popUP.setAttribute("role", "dialog");
-    popUP.setAttribute("id", `modal2-${index}`);
+    popUP.setAttribute("id", `modal1-${index}`);
     popUP.setAttribute("aria-labelledby", "modalLabel1");
     popUP.setAttribute("aria-hidden", "true");
     popUP.innerHTML = `
         <div class="modal-dialog" role="document">
             <div class="modal-content" style="width:800px;height:780px;">
                 <div class="modal-header" style="margin-top:30px;">
-                <button id="close" type="button" class="close close2" data-dismiss="modal-${index}" aria-label="Close">
+                <button id="close" type="button" class="close close2" data-dismiss="modal1-${index}" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 220px; padding: 5px 10px;">
@@ -1088,7 +1088,7 @@ function createModal(index,Id,name) {
                     </div>
                 </div>
                 <form style="height:100%" id="form" method="post" enctype="multipart/form-data" action="/radio/LancerRadio/${Id}">
-                <div class="modal-body" id="modal-body2-${index}" >
+                <div class="modal-body" id="modal-body1-${index}" >
                 <div style="font-size:16px;color:black;">Liste Support connecté à choisir</div>
                 </div>
                 <div class="modal-footer">
@@ -1123,7 +1123,7 @@ document.addEventListener('click', function (event) {
         const body = document.getElementById('div2');
         const modal = createModal(index,Id,name);
         body.appendChild(modal);
-    const modalBody1 = document.querySelector(`#modal-body2-${index}`);
+    const modalBody1 = document.querySelector(`#modal-body1-${index}`);
     if (modalBody1 && Array.isArray(chambre)) {
       const existeTable = document.getElementById(`table-${index}`);
       if(!existeTable)
@@ -1161,10 +1161,13 @@ document.addEventListener('click', function (event) {
 });
       table.appendChild(tbody);
       modalBody1.appendChild(table);
-      const modal = document.getElementById(`modal2-${index}`);
+      const modal = document.getElementById(`modal1-${index}`);
       modal.classList.remove('fade');
       modal.classList.add('show'); 
       modal.style.display = 'block';
+		document.body.style.overflow = 'hidden';
+      modal.style.overflowY = 'auto';
+      modal.style.maxHeight = '90vh';
       if (!$.fn.dataTable.isDataTable(`#table-${index}`)) {
       $(`#table-${index}`).DataTable({
         language: {
@@ -1214,12 +1217,14 @@ document.addEventListener('click', function (event) {
   const dataDismiss = CloseButton.getAttribute("data-dismiss");
    if (dataDismiss) {
     const index = dataDismiss.split('-')[1]; 
-    const modal = document.getElementById(`modal2-${index}`); 
+    const modal = document.getElementById(`modal1-${index}`); 
     const modalBackdrop = document.getElementsByClassName("modal-backdrop");
     if (modal) {
       modal.classList.remove('show');
       modal.classList.add('fade');
       modal.style.display = 'none';
+	   document.body.style.overflow = '';
+      modal.style.overflowY = '';
       modal.remove();
     }
     if (modalBackdrop[0]) {
@@ -1253,7 +1258,7 @@ document.addEventListener('click', function (event) {
         <div class="modal-dialog" role="document">
             <div class="modal-content" style="width:800px;height:780px;">
                 <div class="modal-header" style="margin-top:30px;">
-                <button id="close" type="button" class="close close1" data-dismiss="modal-${index}" aria-label="Close">
+                <button id="close" type="button" class="close close1" data-dismiss="modal2-${index}" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 220px; padding: 5px 10px;">
@@ -1262,7 +1267,7 @@ document.addEventListener('click', function (event) {
                     </div>
                 </div>
             <form id="form" method="post" enctype="multipart/form-data" action="/radio/ArreteRadio/${Id}">
-                <div class="modal-body" id="modal-body3-${index}">
+                <div class="modal-body" id="modal-body2-${index}">
                 <div style="font-size:16px;color:black;">Liste Support connecté à choisir</div>
                 </div>
                 <div class="modal-footer">
@@ -1304,7 +1309,7 @@ if (!response.ok) {
         const body = document.getElementById('div2');
         const modal = createModal1(index,Id,name);
         body.appendChild(modal);
-    const modalBody1 = document.querySelector(`#modal-body3-${index}`);
+    const modalBody1 = document.querySelector(`#modal-body2-${index}`);
     if (modalBody1 && Array.isArray(chambre)) {
       const existeTable = document.getElementById(`table1-${index}`);
       if(!existeTable)
@@ -1346,13 +1351,16 @@ if (!response.ok) {
       modal.classList.remove('fade');
       modal.classList.add('show'); 
       modal.style.display = 'block';
+	    document.body.style.overflow = 'hidden';
+      modal.style.overflowY = 'auto';
+      modal.style.maxHeight = '90vh';
       if (!$.fn.dataTable.isDataTable(`#table1-${index}`)) {
       $(`#table1-${index}`).DataTable({
           language: {
         emptyTable: "Cette Radio ne pas lancer dans aucune chambre."
     },
         oLanguage: {
-   "sSearch": "Recherche du support :"
+   "sSearch": "Recherche:"
  },
         paging: false,
         searching: true,
@@ -1395,12 +1403,14 @@ document.addEventListener('click', function (event) {
   const dataDismiss = closeButton.getAttribute("data-dismiss");
   if (dataDismiss) {
     const index = dataDismiss.split('-')[1]; 
-    const modal = document.getElementById(`modal3-${index}`); 
+    const modal = document.getElementById(`modal2-${index}`); 
     const modalBackdrop = document.getElementsByClassName("modal-backdrop");
     if (modal) {
       modal.classList.remove('show');
       modal.classList.add('fade');
       modal.style.display = 'none';
+	   document.body.style.overflow = '';
+      modal.style.overflowY = '';
       modal.remove();
     }
     if (modalBackdrop[0]) {

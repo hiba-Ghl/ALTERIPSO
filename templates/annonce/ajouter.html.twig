@@ -98,12 +98,7 @@
                                                 <label for="fontSize">Choisir une taille:</label>
                                                 <select id="fontSize" name="fontSize" class="form-control" style="width:100%; ">
                                                     <option value="">Sélectionner une taille (px)</option>
-                                                    <option value="12">12</option>
-                                                    <option value="14">14</option>
-                                                    <option value="16">16</option>
-                                                    <option value="18">18</option>
-                                                    <option value="20">20</option>
-                                                    <option value="22">22</option>
+                                                  
                                                 </select>
                                             </div>
                                              <!-- le style -->
@@ -298,6 +293,21 @@
   </div>
 </div>
 
+<script>
+		const array1 = Array.from({ length: 21 }, (_, i) => i + 20);
+        const selectTaille = document.getElementById('fontSize');
+		const selectedValue1 = selectTaille.getAttribute("value");
+		array1.forEach(value=>{
+			const option = document.createElement("option");
+			option.value = value;
+			option.textContent = value;
+			if(value == selectedValue1)
+			{
+				option.selected = true;
+			}
+			selectTaille.appendChild(option);
+		})
+	</script>
 <!--for translation part in the form -->
 <script>
     const configApp = {{configApp | raw}}

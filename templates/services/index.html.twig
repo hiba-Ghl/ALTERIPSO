@@ -5,6 +5,7 @@
     float: right;
     width: 50%;
     margin-top: -27px;
+
 }
 
 .dataTables_filter label {
@@ -15,6 +16,10 @@
   color:black;
   font-size: 16px;
 }
+	  .dt-buttons .btn {
+    margin-right: 5px;
+  }
+
 </style>
 {# ce fichier contenent l'affichage de liste des services #}
 	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -31,7 +36,6 @@
     <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
    Liste des services
 </div>
-{# {{ dump(app.user) }} #}
 
 <form id="form" method="post" enctype="multipart/form-data" onsubmit="return validateUpdate(`{{path('update_services',{'id': id})}}`)">
 <div id="div2">
@@ -53,7 +57,6 @@
     <div id="categorie">
     </div>
     <div style="color: red; font-size: 14px;">Choisissez le modèle d'extraction de données :</div>
-    <br>
   <div id="myDiv" >
     <table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column" id="dataTables-example" role="none" style="width:100%;height: 200px;">
            <thead>
@@ -140,8 +143,6 @@ const interval = '';
             }
           });
           clipboard.on('success', function(e) {
-            {# console.log('Text copied to clipboard:', e.text); #}
-            {# alert('Data copied'); #}
             clipboard.destroy();
           });
           clipboard.on('error', function(e) {
@@ -219,8 +220,7 @@ $.fn.dataTable.ext.order['dom-checkbox'] = function (settings, colIndex) {
     });
 };
 {# fetch les services a partir de ID de categorie et afficher les dans le tableau #}
-
-    async function fetchData(id) {
+async function fetchData(id) {
         const response = await fetch(`/services/getService/${id}`);
         const data = await response.json();
         table.clear().draw();
@@ -235,8 +235,11 @@ $.fn.dataTable.ext.order['dom-checkbox'] = function (settings, colIndex) {
             URL = service.src;
           else if(service.type === 'DIAPO')
             URL = service.src.split('/').pop()
+          else if(service.type === 'PDF')
+            URL = `/images/${imagesrc}/${directory}`;
           else
           URL = `images/${imagesrc}/${directory}`;
+
          const logo = service.logo.split('/').pop();
           const imagePath = `/images/${logo}/${directory}`;
             const rowData =  [
@@ -293,7 +296,7 @@ $.fn.dataTable.ext.order['dom-checkbox'] = function (settings, colIndex) {
                 </div>
             </div>
             <div class="modal-body" id="modal-body-${index}" >
-              <object data="/${URL}" type="application/pdf" width="100%" height="680px">
+              <object data="${URL}" type="application/pdf" width="100%" height="680px">
                 Votre navigateur ne supporte pas l'affichage du fichier.
               </object>
             </div>
@@ -377,6 +380,7 @@ document.addEventListener('click', async (event) => {
       slideItem.style.display = index === 0 ? 'block' : 'none';
       const imagePath =`${value}/${image}`;
       const imagesPath = `/images/${imagePath}/services_directory_diapo`
+      console.log(imagesPath);
       {# slideItem.innerHTML = `<img src="{{ asset('${value}/${image}') }}" style="width: 100%; height: 540px; object-fit:cover" />`; #}
       slideItem.innerHTML = `<img src="${imagesPath}" style="width: 100%; height: 540px; object-fit:cover" />`;
       carouselInner.appendChild(slideItem);
@@ -550,7 +554,7 @@ annulerButton.addEventListener('click',async (event) => {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-  const chambre = {{chembre | raw }};
+  const chambre = {{chambre | raw }};
   document.addEventListener('DOMContentLoaded', function () {
     $(function () {
       $('[data-toggle="tooltip"]').tooltip();
@@ -657,6 +661,9 @@ document.addEventListener('click', function (event) {
       modal.classList.remove('fade');
       modal.classList.add('show'); 
       modal.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+modal.style.overflowY = 'auto';
+modal.style.maxHeight = '90vh';
       if (!$.fn.dataTable.isDataTable(`#table-${index}`)) {
       $(`#table-${index}`).DataTable({
         language: {
@@ -712,6 +719,8 @@ document.addEventListener('click', function (event) {
       modal.classList.remove('show');
       modal.classList.add('fade');
       modal.style.display = 'none';
+      document.body.style.overflow = ''; 
+modal.style.overflowY = '';
       modal.remove();
     }
     if (modalBackdrop[0]) {
@@ -742,7 +751,7 @@ document.addEventListener('click', function (event) {
     popUP.setAttribute("aria-labelledby", "modalLabel2");
     popUP.setAttribute("aria-hidden", "true");
     popUP.innerHTML = `
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" role="document" >
             <div class="modal-content" style="width:800px;height:780px;">
                 <div class="modal-header" style="margin-top:30px;">
                 <button id="close" type="button" class="close close1" data-dismiss="modal-${index}" aria-label="Close">
@@ -838,13 +847,16 @@ if (!response.ok) {
       modal.classList.remove('fade');
       modal.classList.add('show'); 
       modal.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+      modal.style.overflowY = 'auto';
+      modal.style.maxHeight = '90vh';
       if (!$.fn.dataTable.isDataTable(`#table1-${index}`)) {
       $(`#table1-${index}`).DataTable({
           language: {
         emptyTable: "Ce service ne pas lancer dans aucune chambre."
     },
         oLanguage: {
-   "sSearch": "Recherche du support :"
+   "sSearch": "Recherche:"
  },
         paging: false,
         searching: true,
@@ -893,6 +905,8 @@ document.addEventListener('click', function (event) {
       modal.classList.remove('show');
       modal.classList.add('fade');
       modal.style.display = 'none';
+      document.body.style.overflow = '';
+      modal.style.overflowY = '';
       modal.remove();
     }
     if (modalBackdrop[0]) {
@@ -919,14 +933,25 @@ document.addEventListener('click', function (event) {
 <script src="{{ asset('javascript/dataTables.buttons.min.js') }}"></script>
 <script src="{{ asset('javascript/clipboard.min.js') }}"></script>
    {% else %}
-  <script src="{{asset('javascript/jquery.min.js')}}"> </script>
+  {# <script src="{{asset('javascript/jquery.min.js')}}"> </script> #}
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 	<style type="text/css" src="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css"></style>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-  <script src="{{ asset('javascript/datatables2.min.js') }}"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<!-- DataTables -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<!-- DataTables Buttons -->
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+
+  {# <script src="{{ asset('javascript/datatables2.min.js') }}"></script> #}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script> 
   <script src="https://cdn.datatables.net/buttons/2.3.3/js/dataTables.buttons.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script> 

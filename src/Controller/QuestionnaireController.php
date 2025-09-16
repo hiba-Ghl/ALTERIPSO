@@ -107,7 +107,8 @@ class QuestionnaireController extends AbstractController
             $firstFreePosition++;
         }
         $firstFreePositionByService[$serviceId] = $firstFreePosition;
-        }
+        };
+        
     
         // Retrieve existing questions by service
         $questionsByService = [];
@@ -186,7 +187,6 @@ class QuestionnaireController extends AbstractController
             $this->entityManager->flush();
             return $this->redirectToRoute('app_questionnaire', ['serviceId' => $serviceId]);
         }
-    
         return $this->render('questionnaire/ajouter.html.twig', [
             'user' => $user,
             'etablissement' => $etablissement,

@@ -150,7 +150,7 @@
                 <div>
                 <a   data-toggle="tooltip" data-placement="top" title="Modifier l'annonce " href="{{ path('app_modifier_annonce', { 'id': annonce.id }) }}" class="btn btn-warning btn-xs"  {% if app.user.ModifierAnnonce == '0' %}  disabled {% endif %}><i class="glyphicon glyphicon-edit"></i></a>									
                 </div>
-                <div data-toggle="modal"  data-target="#modal1-{{annonce.id}}" data-position="{{ annonce.position }}" data-url="{{ annonce.url }}" data-type="{{ annonce.type }}" class="visualiser">
+                <div data-toggle="modal"  data-target="#modal-{{annonce.id}}" data-position="{{ annonce.position }}" data-url="{{ annonce.url }}" data-type="{{ annonce.type }}" class="visualiser">
                     <a data-toggle="tooltip"  data-placement="top" title="Pré-visualiser l'annonce"   class="ida btn btn-primary btn-xs" ><i class="glyphicon glyphicon-blackboard"></i></a>
                 </div>
                 <div data-toggle="modal" data-target="#modal2-{{annonce.id}}" data-id ="{{annonce.id}}"  data-name="{{annonce.nom}}" class="lancer-button">
@@ -160,14 +160,14 @@
                     <a   data-toggle="tooltip" data-placement="top" title="Arreter l'annonce" class="ida btn btn-primary btn-xs" ><i class="glyphicon glyphicon-minus-sign"></i></a>
                 </div>
                 <div>
+                     <a data-toggle="tooltip" data-placement="top" title="Journal"  href="{{path('app_journal_annonce', { 'id': annonce.id })}}" class=" ida btn btn-success btn-xs" ><i class="glyphicon glyphicon-list" ></i></a>
+                </div>
+
+                <div>
                 <a   data-toggle="tooltip" data-placement="top" title="Supprimer l'annonce" href="{{ path('app_supprimer_annonce', { 'id': annonce.id }) }}" class="ida btn btn-danger btn-xs" onClick="return(confirm('voullez vous vraiment supprimer cette annonce ?'));" {% if app.user.SuppAnnonce == '0' %} disabled {% endif %}><i class="glyphicon glyphicon-trash"></i></a>
                 </div>
                 </td>
             </tr>
-        {% else %}
-                <tr>
-                    <td colspan="8">No records found</td>
-                </tr>
         {% endfor %}
     </tbody>
 
@@ -175,20 +175,36 @@
 
 </div>
 </form>
+<script>
 
+ $(document).ready(function () {
+      $('#dataTables-example').DataTable({
+         language: {
+            search: "Recherche:",
+            emptyTable: "Aucun Annonce disponible."
+         },
+         paging: false,
+         searching: true,
+         ordering: true,
+         info: false,
+         columnDefs: [{ orderable: false, targets: 3 }]
+      });
+   });
+
+</script>
 
 
 <script>
-  const chambre = {{chembre | raw }};
+  const chambre = {{chambre | raw }};
 document.addEventListener('click', function (event) {
   const PrevisualiserButton = event.target.closest('.visualiser');
+  console.log(PrevisualiserButton);
   if (!PrevisualiserButton) return;
   const position = PrevisualiserButton.getAttribute('data-position');
   const type = PrevisualiserButton.getAttribute('data-type');
   const url = PrevisualiserButton.getAttribute('data-url');
   const filename = url.split('/').pop();
     const finalUrl = `/images/${filename}/annonce_directory`;
-  console.log("url: ",url,finalUrl,type);
   let content = '';
 if (position === "Bas") {
   if (type === "Image") {
@@ -241,7 +257,7 @@ else
     popUP.setAttribute("tabindex", "-1");
     popUP.style.marginLeft = "-200px";
     popUP.setAttribute("role", "dialog");
-    popUP.setAttribute("id", `modal1-${index}`);
+    popUP.setAttribute("id", `modal-${index}`);
     popUP.setAttribute("aria-labelledby", "modalLabel1");
     popUP.setAttribute("aria-hidden", "true");
 
@@ -249,45 +265,60 @@ else
     <div class="modal-dialog modal-md" style="width:600px" role="document">
       <div class="modal-content">
         <div class="modal-header">
-            <button id="close" type="button" class="close" data-dismiss="modal-${index}" aria-label="Close">
+            <button id="close" type="button" class="close close3" data-dismiss="modal-${index}" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
           <div class="col-md-4">
             <h4 class="modal-title" style="line-height: 3;">Pré-visualisation</h4>
           </div>
         </div>
-        <div class="modal-body" id="modal-body1-${index}" >
+        <div class="modal-body" id="modal-body-${index}" >
           <div class="form-group" style="position:relative">
           <img src="{{ asset('images/aaa.png') }}"  class="frame">
             ${content}
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Fermer</button>
+          <a class="btn btn-default btn-sm"  href="/annonce/" role="button"> Fermer</a>    
+              </div>
         </div>
       </div>
     </div>
     `;
 
     body.appendChild(popUP);
+    const modal = document.getElementById(`modal-${index}`);
+    modal.classList.remove('fade');
+    modal.classList.add('show'); 
+    modal.style.display = 'block';
   }
 });
 
 </script>
 <script>
-   $(document).ready(function () {
-      $('#dataTables-example').DataTable({
-         language: {
-            search: "Recherche:",
-            emptyTable: "Aucun Annonce disponible."
-         },
-         paging: false,
-         searching: true,
-         ordering: true,
-         info: false,
-         columnDefs: [{ orderable: false, targets: 3 }]
-      });
-   });
+document.addEventListener('click', function (event) {
+    const CloseButton = event.target.closest('.close3');
+    if(!CloseButton)
+        return;
+  const dataDismiss = CloseButton.getAttribute("data-dismiss");
+   if (dataDismiss) {
+    const index = dataDismiss.split('-')[1]; 
+    const modal = document.getElementById(`modal-${index}`); 
+    const modalBackdrop = document.getElementsByClassName("modal-backdrop");
+    if (modal) {
+      modal.classList.remove('show');
+      modal.classList.add('fade');
+      modal.style.display = 'none';
+      modal.remove();
+    }
+    if (modalBackdrop[0]) {
+      modalBackdrop[0].remove();
+      if(modalBackdrop[0]);
+      modalBackdrop[0].remove();
+    }
+  }
+
+})
 </script>
 
 
@@ -303,9 +334,9 @@ function createModal(index,Id,name) {
     popUP.setAttribute("aria-hidden", "true");
     popUP.innerHTML = `
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="width:800px;height:780px;">
+            <div class="modal-content" style="width:900px;height:780px;padding:10px;">
                 <div class="modal-header" style="margin-top:30px;">
-                <button id="close" type="button" class="close close2" data-dismiss="modal-${index}" aria-label="Close">
+                <button id="close" type="button" class="close close2" data-dismiss="modal2-${index}" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 220px; padding: 5px 10px;">
@@ -329,7 +360,6 @@ function createModal(index,Id,name) {
 
 document.addEventListener('click', function (event) {
     const lancerButton = event.target.closest('.lancer-button');
-    console.log(lancerButton);
     if(!lancerButton)
       return ;
     const Id = lancerButton.getAttribute('data-id');
@@ -391,6 +421,9 @@ document.addEventListener('click', function (event) {
       modal.classList.remove('fade');
       modal.classList.add('show'); 
       modal.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+      modal.style.overflowY = 'auto';
+      modal.style.maxHeight = '90vh';
       if (!$.fn.dataTable.isDataTable(`#table-${index}`)) {
       $(`#table-${index}`).DataTable({
         language: {
@@ -440,12 +473,14 @@ document.addEventListener('click', function (event) {
   const dataDismiss = CloseButton.getAttribute("data-dismiss");
    if (dataDismiss) {
     const index = dataDismiss.split('-')[1]; 
-    const modal = document.getElementById(`modal1-${index}`); 
+    const modal = document.getElementById(`modal2-${index}`); 
     const modalBackdrop = document.getElementsByClassName("modal-backdrop");
     if (modal) {
       modal.classList.remove('show');
       modal.classList.add('fade');
       modal.style.display = 'none';
+      document.body.style.overflow = '';
+      modal.style.overflowY = '';
       modal.remove();
     }
     if (modalBackdrop[0]) {
@@ -456,8 +491,6 @@ document.addEventListener('click', function (event) {
   }
 
 })
-
-
 </script>
 
 
@@ -470,14 +503,14 @@ document.addEventListener('click', function (event) {
     popUP.setAttribute("tabindex", "-1");
     popUP.style.marginLeft="-200px";
     popUP.setAttribute("role", "dialog");
-    popUP.setAttribute("id", `modal2-${index}`);
+    popUP.setAttribute("id", `modal3-${index}`);
     popUP.setAttribute("aria-labelledby", "modalLabel2");
     popUP.setAttribute("aria-hidden", "true");
     popUP.innerHTML = `
         <div class="modal-dialog" role="document">
             <div class="modal-content" style="width:800px;height:780px;">
                 <div class="modal-header" style="margin-top:30px;">
-                <button id="close" type="button" class="close close1" data-dismiss="modal-${index}" aria-label="Close">
+                <button id="close" type="button" class="close close1" data-dismiss="modal3-${index}" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 220px; padding: 5px 10px;">
@@ -566,17 +599,21 @@ if (!response.ok) {
 });
       table.appendChild(tbody);
       modalBody1.appendChild(table);
-      const modal = document.getElementById(`modal2-${index}`);
+      const modal = document.getElementById(`modal3-${index}`);
       modal.classList.remove('fade');
       modal.classList.add('show'); 
       modal.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+      modal.style.overflowY = 'auto';
+      modal.style.maxHeight = '90vh';
+     
       if (!$.fn.dataTable.isDataTable(`#table1-${index}`)) {
       $(`#table1-${index}`).DataTable({
           language: {
         emptyTable: "Cette annonce ne pas lancer dans aucune chambre."
     },
         oLanguage: {
-   "sSearch": "Recherche du support :"
+   "sSearch": "Recherche:"
  },
         paging: false,
         searching: true,
@@ -625,6 +662,8 @@ document.addEventListener('click', function (event) {
       modal.classList.remove('show');
       modal.classList.add('fade');
       modal.style.display = 'none';
+      document.body.style.overflow = '';
+      modal.style.overflowY = '';
       modal.remove();
     }
     if (modalBackdrop[0]) {

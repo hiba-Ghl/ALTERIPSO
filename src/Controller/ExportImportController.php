@@ -2,23 +2,38 @@
 
 namespace App\Controller;
 
+use App\Entity\Annonce;
+use App\Entity\Application;
 use App\Entity\CategorieLivreaudio;
 use App\Entity\CategorieRadio;
 use App\Entity\Categories;
 use App\Entity\CategorieVod;
 use App\Entity\Chambre;
 use App\Entity\ConfigApp;
+use App\Entity\Configmobile;
 use App\Entity\Etablissement;
+use App\Entity\HistoriqueAnnonce;
+use App\Entity\Historiquegratuite;
+use App\Entity\Jeux;
+use App\Entity\LancerAnnonce;
+use App\Entity\LancerRadio;
+use App\Entity\Lancerservice;
+use App\Entity\LancerTV;
 use App\Entity\Livreaudio;
 use App\Entity\Questionnaire;
 use App\Entity\Radio;
+use App\Entity\ResultatQuestionnaire;
+use App\Entity\ServiceEnChambre;
 use App\Entity\ServiceEtablissement;
 use App\Entity\Services;
+use App\Entity\Support;
 use App\Entity\Television;
+use App\Entity\TypeServiceEnChambre;
 use App\Entity\User;
 use App\Entity\Vod;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use PDO;
 use PHPMailer\PHPMailer\PHPMailer;
 use SimpleXMLElement;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,6 +49,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 use ZipArchive;
+use Doctrine\DBAL\Connection;
+
 
 
 class ExportImportController extends AbstractController
@@ -186,7 +203,6 @@ private function copyDirectory($source, $destinationBase) {
     if (!file_exists($destinationBase)) {
         mkdir($destinationBase, 0777, true);
     }
-
     $files = scandir($source);
     foreach ($files as $file) {
         if ($file === '.' || $file === '..') {
@@ -197,14 +213,13 @@ private function copyDirectory($source, $destinationBase) {
 
         // Créer le chemin relatif à partir de la racine "images/services/diapo"
         $relativePath = str_replace(realpath("images/services/diapo"), "", realpath($source));
-        $destDir = $destinationBase . $relativePath;
-
-        // S'assurer que les séparateurs sont standard
+         $lastSlashPos1 = str_replace(['\\', '//'], '/', $relativePath);
+        $lastSlashPos = strrpos($lastSlashPos1, "/");
+        $extracted = substr($lastSlashPos1, $lastSlashPos);
+        $destDir = $destinationBase . $extracted;
         $destDir = str_replace(['\\', '//'], '/', $destDir);
-
         $destPath = $destDir . '/' . $file;
-        // dd($destDir);
-
+        
         if (is_dir($srcPath)) {
             $this->copyDirectory($srcPath, $destinationBase);
         } else {
@@ -218,8 +233,100 @@ private function copyDirectory($source, $destinationBase) {
 }
 
 
+public function exportToSql(EntityManagerInterface $entityManager, Etablissement $etablissement): string
+{
+    $tables = [
+        Television::class,
+        Chambre::class,
+        ServiceEnChambre::class,
+        ResultatQuestionnaire::class,
+        Questionnaire::class,
+        LivreAudio::class,
+        Vod::class,
+        Radio::class,
+        Services::class,
+        TypeServiceEnChambre::class,
+        Categories::class,
+        CategorieLivreAudio::class,
+        CategorieVod::class,
+        CategorieRadio::class,
+        Support::class,
+        Annonce::class,
+        Application::class,
+        Configmobile::class,
+        Historiquegratuite::class,
+        HistoriqueAnnonce::class,
+        Jeux::class,
+        ConfigApp::class,
+        ServiceEtablissement::class,
+        User::class,
+    ];
+
+    // Helper function to escape SQL strings manually
+    $escapeSqlString = function(string $value): string {
+        $search  = ["\\",   "\x00",  "\n",  "\r",  "'",  '"',  "\x1a"];
+        $replace = ["\\\\", "\\0", "\\n", "\\r", "\\'", '\\"', "\\Z"];
+        return str_replace($search, $replace, $value);
+    };
+
+    $sql = "SET FOREIGN_KEY_CHECKS=0;\n";
+    $conn = $entityManager->getConnection();
+
+    // Export 'etablissement' table first
+    $tableName = 'etablissement';
+    $stmt = $conn->prepare("SELECT * FROM `$tableName` WHERE id = :etabId");
+    $result = $stmt->executeQuery(['etabId' => $etablissement->getId()]);
+    $rows = $result->fetchAllAssociative();
+
+    if (count($rows) > 0) {
+        $columns = array_map(fn($col) => "`$col`", array_keys($rows[0]));
+        $sql .= "INSERT INTO `$tableName` (" . implode(", ", $columns) . ") VALUES\n";
+        $valuesLines = [];
+        foreach ($rows as $row) {
+            $values = array_map(function ($val) use ($escapeSqlString) {
+                if ($val === null) {
+                    return 'NULL';
+                }
+                return "'" . $escapeSqlString($val) . "'";
+            }, array_values($row));
+            $valuesLines[] = "(" . implode(", ", $values) . ")";
+        }
+        $sql .= implode(",\n", $valuesLines) . ";\n\n";
+    }
+
+    // Export related tables
+    foreach ($tables as $entityClass) {
+        $meta = $entityManager->getClassMetadata($entityClass);
+        $tableName = $meta->getTableName();
+
+        $stmt = $conn->prepare("SELECT * FROM `$tableName` WHERE etablissement_id = :etabId");
+        $result = $stmt->executeQuery(['etabId' => $etablissement->getId()]);
+        $rows = $result->fetchAllAssociative();
+
+        if (count($rows) > 0) {
+            $columns = array_map(fn($col) => "`$col`", array_keys($rows[0]));
+            $sql .= "INSERT INTO `$tableName` (" . implode(", ", $columns) . ") VALUES\n";
+            $valuesLines = [];
+            foreach ($rows as $row) {
+                $values = array_map(function ($val) use ($escapeSqlString) {
+                    if ($val === null) {
+                        return 'NULL';
+                    }
+                    return "'" . $escapeSqlString($val) . "'";
+                }, array_values($row));
+                $valuesLines[] = "(" . implode(", ", $values) . ")";
+            }
+            $sql .= implode(",\n", $valuesLines) . ";\n\n";
+        }
+    }
+
+    $sql .= "SET FOREIGN_KEY_CHECKS=1;\n";
+
+    return $sql;
+}
+
 // fonction pour ajouter toute les donnees sur un fichier xml et apres je l'ajoute sur un dossier zip
-    private function exportData(object $nameEntity, object $metaData, \SimpleXMLElement $rowNode, EntityManagerInterface $entityManager, ZipArchive $zip)
+    private function exportDataFiles(object $nameEntity, object $metaData, EntityManagerInterface $entityManager, ZipArchive $zip)
     {
         foreach ($metaData->getFieldNames() as $field) {
             $getter = 'get' . ucfirst($field);
@@ -227,21 +334,9 @@ private function copyDirectory($source, $destinationBase) {
             $value = null;
             if (method_exists($nameEntity, $getter)) {
                 $value = $nameEntity->$getter();
-            } elseif (method_exists($nameEntity, $boolGetter)) {
-                $value = $nameEntity->$boolGetter();
             }
-            
-            if ($value === null || $value === false) {
-                $value = "0";
-            } elseif ($value instanceof \DateTime) {
-                $value = $value->format('Y-m-d H:i:s');
-            } elseif (is_array($value)) {
-                $value = implode(', ', $value);
-            }
-            
             if ($field === 'logo' || $field === 'background' || $field === "src") {
                 $file = $this->getParameter('project_dir') . '/public/' . $value;
-
                 if ($value && file_exists($file)) {
                     $directoryPath = dirname($value);
                     $newFolder = 'folderZip/' . $directoryPath;
@@ -259,30 +354,21 @@ private function copyDirectory($source, $destinationBase) {
                             copy($file, $destinationPath);
                         }
                     }
-                
                     $this->addFolderToZip($newFolder, $zip);
+                  
+
                 }
             }
-    
-            $rowNode->addChild($field, htmlspecialchars((string)$value, ENT_XML1, 'UTF-8'));
         }
-    
+        
         foreach ($metaData->getAssociationNames() as $field) {
             $getter = 'get' . ucfirst($field);
             if (method_exists($nameEntity, $getter)) {
                 $value = $nameEntity->$getter();
                 if ($value instanceof \Doctrine\Common\Collections\Collection) {
-                    $childNode = $rowNode->addChild($field);
                     foreach ($value as $item) {
-                        $itemNode = $childNode->addChild(strtolower((new \ReflectionClass($item))->getShortName()));
                         $metadata = $entityManager->getClassMetadata(get_class($item));
-                        $this->exportData($item, $metadata, $itemNode, $entityManager, $zip);
-                    }
-                }
-                elseif (is_object($value)) {
-                    $getterId = 'getId';
-                    if (method_exists($value, $getterId)) {
-                        $rowNode->addChild($field, (string) $value->$getterId());
+                        $this->exportDataFiles($item, $metadata,$entityManager, $zip);
                     }
                 }
             }
@@ -290,26 +376,17 @@ private function copyDirectory($source, $destinationBase) {
     }
     
     // route pour exporter les donnes d'etablissements
-    #[Route('/export', name: 'app_export')]
-    public function export(EntityManagerInterface $entityManager): Response
+    #[Route('/export/{id}', name: 'app_export')]
+    public function export(EntityManagerInterface $entityManager,int $id): Response
     {
+        $filesystem = new Filesystem();
         $user = $this->getUser();
         if (!$user) {
             return $this->redirectToRoute('app_login');
         }
-        $etablissement = $user->getEtablissement();
+        $etablissement = $entityManager->getRepository(Etablissement::class)->findOneById(['id' => $id]);
         $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
         // Créer la racine du fichier XML avec la déclaration de version et d'encodage
-        $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><database></database>');
-
-        // Ajoute le premier élément enfant dans le fichier XML
-        $newEtablissementNode = $xml->addChild('etablissement');
-        // Ajoute le deuxième élément enfant dans le fichier XML
-        $newAppConfigNode = $xml->addChild('AppConfig');
-    
-        $rowNode = $newEtablissementNode->addChild('row');
-        $rowNode1 = $newAppConfigNode->addChild('row');
-    
         $metaData = $entityManager->getClassMetadata(Etablissement::class);
         $metaDataConfigApp = $entityManager->getClassMetadata(ConfigApp::class);
         // Crée un fichier ZIP pour exporter les données sous forme de fichier
@@ -323,16 +400,23 @@ private function copyDirectory($source, $destinationBase) {
         }
 
         // Appel de la fonction pour exporter les données de l'établissement
-        $this->exportData($etablissement, $metaData, $rowNode, $entityManager, $zip);
+        // dd($metaData);
+        $this->exportDataFiles($etablissement, $metaData, $entityManager, $zip);
 
         // Appel de la fonction pour exporter les données de la configuration de l'application
-        $this->exportData($appConfig, $metaDataConfigApp, $rowNode1, $entityManager, $zip);
+        $this->exportDataFiles($appConfig, $metaDataConfigApp, $entityManager, $zip);
+        // dd("newFolder");
 
         // Ajoute le fichier XML dans l'archive ZIP
-        $zip->addFromString('database_export.xml', $xml->asXML());
+        $sql = $this->exportToSql($entityManager,$etablissement);
+        // file_put_contents("export_$table.sql", );
+
+        $zip->addFromString('database_export.sql', $sql);
 
         // Ferme le fichier ZIP
         $zip->close();
+        $old = $this->getParameter('kernel.project_dir') . '/public/folderZip';
+        $filesystem->remove($old);
         // Télécharge le fichier ZIP
         return new BinaryFileResponse($zipFilePath, Response::HTTP_OK, [
             'Content-Type' => 'application/zip',
@@ -341,14 +425,55 @@ private function copyDirectory($source, $destinationBase) {
     }
 
     
+public function importSqlFile(EntityManagerInterface $entityManager, string $pathToSqlFile): void
+{
+    $conn = $entityManager->getConnection();
+
+    $sql = file_get_contents($pathToSqlFile);
+
+    $conn->beginTransaction(); //DÉBUT TRANSACTION
+    try {
+        $conn->executeStatement('SET FOREIGN_KEY_CHECKS=0;');
+
+        // ICI tu modifies dynamiquement les valeurs (ex: logo/src)
+        $sql = preg_replace(
+            "#'https://rsmarttv-app-storage\.s3\.eu-west-1\.amazonaws\.com/uploads/([^']+)'#",
+            "'$1'",
+            $sql
+        );
+        $sql = preg_replace(
+            "#'https://rsmarttv.cloud/([^']+)'#",
+            "'$1'",
+            $sql
+        );
+        $conn->executeStatement($sql);
+
+        $conn->executeStatement('SET FOREIGN_KEY_CHECKS=1;');
+
+        $conn->commit(); // TOUT EST BON → COMMIT
+    } catch (\Throwable $e) {
+        $conn->rollBack(); // ERREUR → ROLLBACK
+        throw $e; // relancer l'erreur si besoin
+    }
+}
+
 // Cette route permet d'importer les données depuis un fichier ZIP dans un autre serveur
 #[Route('/import', name: 'app_import')]
 public function import(Request $request, EntityManagerInterface $entityManager, TokenGeneratorInterface $tokenGenerator): Response
 {
-    // Récupération du fichier téléchargé depuis la requête
-    $uploadedFile = $request->files->get('fileData');
+    $user = $this->getUser();
+    if (!$user) {
+        return $this->redirectToRoute('app_login'); // Redirige vers la page de connexion si l'utilisateur n'est pas connecté
+    }
 
-    // Vérification si un fichier a été fourni
+    // Récupère l'établissement de l'utilisateur
+    $etablissement = $user->getEtablissement();
+    
+    // Récupération du fichier téléchargé depuis la requête
+  /** @var UploadedFile|null $uploadedFile */
+  $uploadedFile = $request->files->get('fileData');
+
+    
     if (!$uploadedFile instanceof UploadedFile) {
         return new Response('Aucun fichier fourni', Response::HTTP_BAD_REQUEST);
     }
@@ -375,25 +500,25 @@ public function import(Request $request, EntityManagerInterface $entityManager, 
     $this->mergeFolders($extractDir, $destinationDir);
 
     // Vérification de l'existence du fichier XML
-    $xmlFilePath = $extractDir . 'database_export.xml';
+    $xmlFilePath = $extractDir . 'database_export.sql';
     if (!file_exists($xmlFilePath)) {
         return new Response('Fichier XML non trouvé', Response::HTTP_INTERNAL_SERVER_ERROR);
     }
-
-    // Chargement du fichier XML
-    $xml = simplexml_load_file($xmlFilePath);
-    // try {
+    // $this->importSqlFile($entityManager,$xmlFilePath,$etablissement->getId());
+    try {
         // Importation des données dans la base de données
-        $this->importEtablissement($xml, $tokenGenerator, $entityManager);
-    // } catch (\Exception $e) {
-    //     // En cas d'erreur, affichage d'un message d'erreur et redirection
-    //     $this->addFlash('danger', 'L’établissement que vous tentez d’importer existe déjà dans la base de données. Veuillez vérifier les informations ou utiliser un autre identifiant.');
-    //     return $this->redirectToRoute('home');
-    // }
+        // dd("test");
+        $this->importSqlFile($entityManager,$xmlFilePath,$etablissement->getId());
+        $filesystem->remove($zipFilePath);
+        $filesystem->remove($extractDir);
+      
+    } catch (\Exception $e) {
+        // En cas d'erreur, affichage d'un message d'erreur et redirection
+        $this->addFlash('danger', 'L’établissement que vous tentez d’importer existe déjà dans la base de données. Veuillez vérifier les informations ou utiliser un autre identifiant.');
+        return $this->redirectToRoute('home');
+    }
 
     // Suppression des fichiers temporaires après l'importation
-    $filesystem->remove($zipFilePath);
-    $filesystem->remove($extractDir);
 
     // Affichage d'un message de succès et redirection
     $this->addFlash('changerPassword', 'Les données ont été importées avec succès.');
@@ -435,171 +560,40 @@ private function extractZip(string $zipFilePath, string $extractPath): bool
     return true;
 }
 
-// Fonction pour importer les données de l'établissement à partir du fichier XML
-private function importEtablissement(\SimpleXMLElement $xml, TokenGeneratorInterface $tokenGenerator, EntityManagerInterface $entityManager): void
-{
-    // Parcours des lignes pour importer les établissements
-    foreach ($xml->etablissement->row as $row) {
-        $etablissement = new Etablissement();
-        // Importation de chaque champ du fichier XML vers l'entité
-        foreach ($row->children() as $field => $value) {
-            $this->setProperty($etablissement, $tokenGenerator, $field, (string) $value, $etablissement);
-        }
-        $entityManager->persist($etablissement);
-
-        // Importation des relations (si elles existent) pour chaque ligne
-        foreach ($row->children() as $field => $childNode) {
-            if ($childNode->count() > 0) {
-                $this->importRelation($childNode, $tokenGenerator, $etablissement, $field, $entityManager);
-            }
-        }
-    }
-
-    // Importation des configurations de l'application
-    foreach ($xml->AppConfig->row as $row) {
-        $AppConfig = new ConfigApp();
-        foreach ($row->children() as $field => $value) {
-            if (!$value) {
-                $value = ""; // Valeur vide par défaut
-            }
-            $this->setProperty($AppConfig, $tokenGenerator, $field, (string) $value, $etablissement);
-        }
-        $AppConfig->setEtablissement($etablissement);
-        $entityManager->persist($AppConfig);
-    }
-
-    $entityManager->flush(); // Enregistrement des données dans la base
-}
-
-// Fonction pour importer les relations de l'entité
-private function importRelation(\SimpleXMLElement $node, TokenGeneratorInterface $tokenGenerator, Etablissement $etablissement, string $relationName, EntityManagerInterface $entityManager): void
-{
-    // Parcours des éléments enfants pour importer des relations
-    foreach ($node->children() as $itemNode) {
-        $relationClass = 'App\\Entity\\' . ucfirst($itemNode->getName());
-        if (!class_exists($relationClass)) {
-            continue; // Si la classe de relation n'existe pas, on passe à l'élément suivant
-        }
-
-        $relatedEntity = new $relationClass();
-        // Importation des champs pour la relation
-        foreach ($itemNode->children() as $field => $value) {
-            $this->setProperty($relatedEntity, $tokenGenerator, $field, (string) $value, $etablissement);
-        }
-        $entityManager->persist($relatedEntity); // Persist de la relation
-        $entityManager->flush(); // Enregistrement dans la base
-    }
-}
-
-// Fonction pour définir une propriété de l'entité (générique pour différents types d'entités)
-private function setProperty(object $entity, TokenGeneratorInterface $tokenGenerator, string $field, mixed $value, object $etablissement): void
-{
-    $setter = 'set' . ucfirst($field); // Recherche du setter de la propriété
-    $firstTwo = substr($etablissement->getId(), 0, 2); // Récupération des deux premiers caractères de l'ID de l'établissement
-
-    // Si la méthode setter n'existe pas, on arrête l'exécution
-    if (!method_exists($entity, $setter)) {
-        return;
-    }
-
-    // Traitement spécifique pour certains champs (par exemple, les IDs et catégories)
-    if ($field === "id" && ($entity instanceof CategorieRadio || $entity instanceof CategorieLivreAudio || $entity instanceof CategorieVod ||  $entity instanceof ServiceEtablissement || $entity instanceof Categories || $entity instanceof Television)) {
-        $value = (int)($firstTwo . $value); // Préfixe l'ID avec les deux premiers caractères de l'établissement
-        $exEntity = $this->entityManager->getRepository($entity::class)->findOneBy(['etablissement' => $etablissement, 'id' => $value]);
-        if ($exEntity) {
-            return; // Si l'entité existe déjà, on ne l'ajoute pas
-        }
-    }
-    if ($field === 'categorie' && $entity instanceof \App\Entity\Radio) {
-        $value = (int)($firstTwo . $value); 
-        $value = $this->entityManager->getRepository(\App\Entity\CategorieRadio::class)->find($value);
-        if (!$value) {
-            return; // si la catégorie n'existe pas, on arrête
-        }
-
-    }
-    if ($field === 'chaine' && $entity instanceof \App\Entity\Chambre) {
-        $value = (int)($firstTwo . $value); 
-        $value = $this->entityManager->getRepository(\App\Entity\Television::class)->find($value);
-        if (!$value) {
-            return; // si la catégorie n'existe pas, on arrête
-        }
-
-    }
-    if ($field === 'categorie' && $entity instanceof \App\Entity\Vod) {
-        $value = (int)($firstTwo . $value); 
-        $value = $this->entityManager->getRepository(\App\Entity\CategorieVod::class)->find($value);
-        if (!$value) {
-            return; // si la catégorie n'existe pas, on arrête
-        }
-
-    }
-    if ($field === 'categorie' && $entity instanceof \App\Entity\Livreaudio) {
-        $value = (int)($firstTwo . $value); 
-        $value = $this->entityManager->getRepository(\App\Entity\CategorieLivreaudio::class)->find($value);
-        if (!$value) {
-            return; // si la catégorie n'existe pas, on arrête
-        }
-
-    }
-    if ($field === 'categories' && $entity instanceof \App\Entity\Services) {
-        $value = (int)($firstTwo . $value); 
-        $value = $this->entityManager->getRepository(\App\Entity\Categories::class)->find($value);
-        if (!$value) {
-            return; // si la catégorie n'existe pas, on arrête
-        }
-
-    }
-    if ($field === 'service' && $entity instanceof \App\Entity\Chambre) {
-        $value = (int)($firstTwo . $value); 
-        $value = $this->entityManager->getRepository(\App\Entity\ServiceEtablissement::class)->find($value);
-        if (!$value) {
-            return; // si la catégorie n'existe pas, on arrête
-        }
-
-    }
-    if ($field === 'service' && $entity instanceof \App\Entity\Questionnaire) {
-        $value = (int)($firstTwo . $value); 
-        $value = $this->entityManager->getRepository(\App\Entity\ServiceEtablissement::class)->find($value);
-        if (!$value) {
-            return; // si la catégorie n'existe pas, on arrête
-        }
-
-    }
-    // Traitements pour différents champs spécifiques (comme les catégories, services, etc.)
-    if ($field === 'etablissement') {
-        $value = $etablissement; // Associe l'établissement à la propriété
-    }
-
-    // Gestion des rôles et des tokens
-    if ($field === 'roles') {
-        $value = is_array($value) ? $value : json_decode($value, true) ?? [$value];
-    }
-    if ($field === 'resetToken') {
-        $value = $tokenGenerator->generateToken(); // Génère un token pour le champ resetToken
-    }
-
-    // Conversion des dates si nécessaire
-    if ($field === 'dernierTemp' || $field === 'derniertempExport') {
-        try {
-            $value = new \DateTime($value); // Conversion de la valeur en objet DateTime
-        } catch (\Exception $e) {
-            $value = new \DateTime('2025-02-24 12:30:00'); // Valeur par défaut en cas d'erreur
-        }
-    }
-
-    // Appel du setter pour définir la propriété
-    $entity->$setter($value);
-}
-
-
 // ////////////////////////////////////////////// Route pour exporter la télévision ////////////////////////////////
 
+
+
+public function exportSqlData(EntityManagerInterface $entityManager,string $table, Object $etablissement){
+    $sql = "SET FOREIGN_KEY_CHECKS=0;\n";
+    $conn = $entityManager->getConnection();
+    $tableName = $table;
+    $stmt = $conn->prepare("SELECT * FROM `$tableName` WHERE etablissement_id = :etabId");
+    $result = $stmt->executeQuery(['etabId' => $etablissement->getId()]);
+    $rows = $result->fetchAllAssociative();
+    
+    $sql = ''; // Initialise la variable une seule fois pour accumuler toutes les requêtes
+    
+    if (count($rows) > 0) {
+        $columns = array_map(fn($col) => "`$col`", array_keys($rows[0]));
+        $sql .= "INSERT INTO `$tableName` (" . implode(", ", $columns) . ") VALUES\n";
+        $valuesLines = [];
+        foreach ($rows as $row) {
+            $values = array_map(function ($val) use ($conn) {
+                return $val === null ? 'NULL' : $conn->quote($val);
+            }, array_values($row));
+            $valuesLines[] = "(" . implode(", ", $values) . ")";
+        }
+        $sql .= implode(",\n", $valuesLines) . ";\n\n";
+    }
+    return $sql;
+}
 // Route pour l'exportation des données relatives à la télévision
 #[Route('/export_tv', name: 'app_export_tv')]
 public function exportDataCh(EntityManagerInterface $entityManager): Response
 {
     // Vérifie si un utilisateur est connecté
+    $filesystem = new Filesystem();
     $user = $this->getUser();
     if (!$user) {
         return $this->redirectToRoute('app_login'); // Redirige vers la page de connexion si l'utilisateur n'est pas connecté
@@ -612,30 +606,30 @@ public function exportDataCh(EntityManagerInterface $entityManager): Response
     $televisions = $entityManager->getRepository(Television::class)->findBy(['etablissement' => $etablissement]);
 
     // Crée un fichier XML
-    $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><database></database>');
-    $newTele = $xml->addChild('television');
 
     // Parcourt chaque télévision et ajoute les données dans le fichier XML
     foreach($televisions as $television)
     {
-        $rowNode = $newTele->addChild('row');
         $metaDataTele = $entityManager->getClassMetadata(Television::class);
 
         // Crée un fichier ZIP pour l'exportation
         $zip = new ZipArchive();
-        $zipFilePath = $this->getParameter('kernel.project_dir') . '/var/exportDataTv.zip';
+        $zipFilePath = $this->getParameter('project_dir') . 'exportDataTv.zip';
         if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
             return new Response('Erreur lors de la création du fichier ZIP', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         // Exporte les données dans le ZIP
-        $this->exportData($television, $metaDataTele, $rowNode, $entityManager, $zip);
+        $this->exportDataFiles($television, $metaDataTele, $entityManager, $zip);
     }
 
     // Ajoute le fichier XML dans l'archive ZIP
-    $zip->addFromString('database_export.xml', $xml->asXML());
+    $sql = "";
+    $sql .= $this->exportSqlData($entityManager,'television',$etablissement);
+    $zip->addFromString('database_export.sql', $sql);
     $zip->close();
-
+    $old = $this->getParameter('kernel.project_dir') . '/public/folderZip';
+    $filesystem->remove($old);
     // Retourne le fichier ZIP en réponse pour le téléchargement
     return new BinaryFileResponse($zipFilePath, Response::HTTP_OK, [
         'Content-Type' => 'application/zip',
@@ -673,19 +667,25 @@ public function exportDataRadio(EntityManagerInterface $entityManager): Response
 
         // Crée un fichier ZIP pour l'exportation
         $zip = new ZipArchive();
-        $zipFilePath = $this->getParameter('kernel.project_dir') . '/var/exportDataTv.zip';
+        $zipFilePath = $this->getParameter('project_dir') . 'exportDataTv.zip';
         if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
             return new Response('Erreur lors de la création du fichier ZIP', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         // Exporte les données dans le ZIP
-        $this->exportData($categorie, $metaDatacategorie, $rowNode, $entityManager, $zip);
+        $this->exportDataFiles($categorie, $metaDatacategorie, $entityManager, $zip);
     }
+    $sql = "";
+    $sql .= $this->exportSqlData($entityManager,'categorie_radio',$etablissement);
+    $sql .= $this->exportSqlData($entityManager,'radio',$etablissement);
 
     // Ajoute le fichier XML dans l'archive ZIP
-    $zip->addFromString('database_export.xml', $xml->asXML());
+    $zip->addFromString('database_export.sql', $sql);
     $zip->close();
+    $filesystem = new Filesystem();
 
+    $old = $this->getParameter('kernel.project_dir') . '/public/folderZip';
+    $filesystem->remove($old);
     // Retourne le fichier ZIP en réponse pour le téléchargement
     return new BinaryFileResponse($zipFilePath, Response::HTTP_OK, [
         'Content-Type' => 'application/zip',
@@ -693,68 +693,133 @@ public function exportDataRadio(EntityManagerInterface $entityManager): Response
     ]);
 }
 
-// Fonction pour importer des données d'une télévision ou d'une radio
-private function importchamp(int $id, Bool $object, \SimpleXMLElement $xml, TokenGeneratorInterface $tokenGenerator, EntityManagerInterface $entityManager): void
+public function importSqlFile1(EntityManagerInterface $entityManager, string $pathToSqlFile, int $newEtabId,string $tvOuRd): void
 {
-    // Si l'objet est une télévision
-    if ($object)
-    {
-        // Parcourt chaque ligne de télévision dans le fichier XML et importe les données
-        foreach ($xml->television->row as $row) {
-            $television = new Television();
-            $etablissement = $entityManager->getRepository(Etablissement::class)->findOneBy(['id'=>$id]);
+    $conn = $entityManager->getConnection();
+    $sql = file_get_contents($pathToSqlFile);
+    $conn->executeStatement('SET FOREIGN_KEY_CHECKS=0;');
 
-            // Attribue les valeurs aux propriétés de l'objet télévision
-            foreach ($row->children() as $field => $value) {
-                $this->setProperty($television, $tokenGenerator, $field, (string) $value, $etablissement);
-            }
-            $entityManager->persist($television);
+     $sql = preg_replace(
+            "#'https://rsmarttv-app-storage\.s3\.eu-west-1\.amazonaws\.com/uploads/([^']+)'#",
+            "'$1'",
+            $sql
+        );
+    $categorieIdMap = [];
 
-            // Vérifie s'il y a des relations à importer
-            foreach ($row->children() as $field => $childNode) {
-                if ($childNode->count() > 0) {
-                    $this->importRelation($childNode, $tokenGenerator, $etablissement, $field, $entityManager);
-                }
-            }
-        }
+    $existingRadios = $conn->fetchOne('SELECT COUNT(*) FROM radio WHERE etablissement_id = :etab', [
+    'etab' => $newEtabId
+    ]);
+    if ($existingRadios > 0 && $tvOuRd === 'radio') {
+        throw new \Exception();
     }
-    // Si l'objet est une station radio
-    else {
-        // Parcourt chaque ligne de radio dans le fichier XML et importe les données
-        foreach ($xml->CategorieRadio->row as $row) {
-            $CategorieRadio = new CategorieRadio();
-            $etablissement = $entityManager->getRepository(Etablissement::class)->findOneBy(['id'=>$id]);
+    $existingTV = $conn->fetchOne('SELECT COUNT(*) FROM television WHERE etablissement_id = :etab', [
+    'etab' => $newEtabId
+    ]);
+    if ($existingTV > 0 && $tvOuRd === 'tv') {
+        throw new \Exception();
+    }
+    preg_match_all('/INSERT INTO\s+[`"]?(\w+)[`"]?\s*\((.*?)\)\s*VALUES\s*(.*?);(?=\s*INSERT INTO|\s*$)/is', $sql, $matches, PREG_SET_ORDER);
+    foreach ($matches as $match) {
+        $table = strtolower($match[1]);
+        $columns = array_map('trim', explode(',', $match[2]));
+        $valuesPart = trim($match[3]);
 
-            // Attribue les valeurs aux propriétés de l'objet catégorie de radio
-            foreach ($row->children() as $field => $value) {
-                $this->setProperty($CategorieRadio, $tokenGenerator, $field, (string) $value, $etablissement);
+        try {
+            // CATEGORIE RADIO
+            if ($table === 'categorie_radio') {
+                $valuesPart = preg_replace_callback('/\(([^)]+)\)/', function ($valueMatch) use ($newEtabId, &$categorieIdMap, $conn) {
+                    $fields = array_map('trim', explode(',', $valueMatch[1]));
+
+                    $oldId = trim($fields[0], "' ");
+                    $nom = trim($fields[2], "' ");
+
+                    $existing = $conn->fetchAssociative(
+                        'SELECT id FROM categorie_radio WHERE etablissement_id = :etab AND nom = :nom LIMIT 1',
+                        ['etab' => $newEtabId, 'nom' => $nom]
+                    );
+
+                    if ($existing) {
+                        $newId = $existing['id'];
+                    } else {
+                        $newId = mt_rand(100000, 999999);
+                        $fields[0] = $newId;
+                        $fields[1] = "'" . $newEtabId . "'";
+
+                        $sqlInsert = "INSERT INTO categorie_radio (" .
+                            "id, etablissement_id, nom, position, logo, active, fr, en, es, pt, it, ru, de, zh, ar" .
+                            ") VALUES (" . implode(', ', $fields) . ")";
+                        $conn->executeStatement($sqlInsert);
+                    }
+
+                    $categorieIdMap[$oldId] = $newId;
+                    return ''; // on a déjà inséré manuellement
+                }, $valuesPart);
+
+                continue;
             }
 
-            // Si un identifiant est trouvé, persiste l'entité
-            if ($CategorieRadio->getId())
-            {
-                $entityManager->persist($CategorieRadio);        
-                $entityManager->flush();
-            }
+            // RADIO
+            if ($table === 'radio') {
+                $valueStrings = [];
 
-            // Vérifie s'il y a des relations à importer
-            foreach ($row->children() as $field => $childNode) {
-                if ($childNode->count() > 0) {
-                    $this->importRelation($childNode, $tokenGenerator, $etablissement, $field, $entityManager);
+                preg_match_all('/\(([^)]+)\)/', $valuesPart, $radioMatches);
+                foreach ($radioMatches[1] as $radioValue) {
+                    
+                    $fields = array_map('trim', explode(',', $radioValue));
+                    $fields[1] = "'" . $newEtabId . "'";
+                    $oldCatId = trim($fields[2], "' ");
+                    if (isset($categorieIdMap[$oldCatId])) {
+                        $fields[2] = "'" . $categorieIdMap[$oldCatId] . "'";
+                    }
+
+                    $valueStrings[] = '(' . implode(', ', $fields) . ')';
                 }
+
+                if (!empty($valueStrings)) {
+                $query = "INSERT INTO radio (" . implode(', ', $columns) . ") VALUES " . implode(', ', $valueStrings);
+                $conn->executeStatement($query);
             }
+                continue;
         }
+
+     if ($table === 'television') {
+    preg_match_all('/\(([^)]+)\)/', $valuesPart, $tvMatches);
+    foreach ($tvMatches[1] as $tvValue) {
+        $fields = array_map('trim', explode(',', $tvValue));
+        $newId = mt_rand(100000, 999999);
+        $fields[0] = $newId;
+        $fields[1] = "'" . $newEtabId . "'";
+        $valueStrings[] = '(' . implode(', ', $fields) . ')';
     }
 
-    // Effectue la sauvegarde des modifications dans la base de données
-    $entityManager->flush();
+    if (!empty($valueStrings)) {
+        $query = "INSERT INTO television (" . implode(', ', $columns) . ") VALUES " . implode(', ', $valueStrings);
+        $conn->executeStatement($query);
+    }
+
+    continue;
 }
+        } catch (\Exception $e) {
+            dump($e->getMessage());
+        }
+    }
+
+    $conn->executeStatement('SET FOREIGN_KEY_CHECKS=1;');
+}
+
 
 // Route pour importer des données de télévision
 #[Route('/importTv/{id}', name: 'app_import_tv')]
 public function importDataTv(int $id, Request $request, EntityManagerInterface $entityManager, TokenGeneratorInterface $tokenGenerator): Response
 {
     // Récupère le fichier téléchargé
+    $user = $this->getUser();
+    if (!$user) {
+        return $this->redirectToRoute('app_login'); // Redirige vers la page de connexion si l'utilisateur n'est pas connecté
+    }
+
+    // Récupère l'établissement de l'utilisateur
+    $etablissement = $user->getEtablissement();
     $uploadedFile = $request->files->get('fileData');
     if (!$uploadedFile instanceof UploadedFile) {
         return new Response('Aucun fichier fourni', Response::HTTP_BAD_REQUEST);
@@ -763,7 +828,7 @@ public function importDataTv(int $id, Request $request, EntityManagerInterface $
     // Crée les répertoires nécessaires pour le téléchargement et l'extraction des fichiers
     $filesystem = new Filesystem();
     $uploadDir = $this->getParameter('kernel.project_dir') . '/var/uploads/';
-    $destinationDir = $this->getParameter('kernel.project_dir') . '/public/images/';
+    $destinationDir = $this->getParameter('project_dir') . '/public/images/';
     $extractDir = $uploadDir . 'extracted/';
     $filesystem->mkdir([$uploadDir, $extractDir, $destinationDir], 0777);
 
@@ -780,18 +845,17 @@ public function importDataTv(int $id, Request $request, EntityManagerInterface $
     $this->mergeFolders($extractDir, $destinationDir);
 
     // Charge et parse le fichier XML
-    $xmlFilePath = $extractDir . 'database_export.xml';
+    $xmlFilePath = $extractDir . 'database_export.sql';
     if (!file_exists($xmlFilePath)) {
         return new Response('Fichier XML non trouvé', Response::HTTP_INTERNAL_SERVER_ERROR);
     }
-    $xml = simplexml_load_file($xmlFilePath);
-
+    
     // Tente d'importer les données et capture les exceptions
     try{
-        $this->importchamp($id, true, $xml, $tokenGenerator, $entityManager);
+        $this->importSqlFile1($entityManager,$xmlFilePath,$etablissement->getId(),'tv');
     } catch(\Exception $e) {
         // Affiche un message d'erreur si l'importation échoue
-        $this->addFlash('danger', 'Le fichier TV que vous tentez d’importer contient des données déjà existantes. Veuillez vérifier les informations avant de continuer.');
+        $this->addFlash('danger', 'Le fichier TV que vous tentez d’importer contient des données déjà existantes. Veuillez supprimer les televisions existantes.');
         return $this->redirectToRoute('app_television');
     }
 
@@ -809,6 +873,13 @@ public function importDataTv(int $id, Request $request, EntityManagerInterface $
 public function importDataRadio(int $id, Request $request, EntityManagerInterface $entityManager, TokenGeneratorInterface $tokenGenerator): Response
 {
     // Récupère le fichier téléchargé
+    $user = $this->getUser();
+    if (!$user) {
+        return $this->redirectToRoute('app_login'); // Redirige vers la page de connexion si l'utilisateur n'est pas connecté
+    }
+
+    // Récupère l'établissement de l'utilisateur
+    $etablissement = $user->getEtablissement();
     $uploadedFile = $request->files->get('fileData');
     if (!$uploadedFile instanceof UploadedFile) {
         return new Response('Aucun fichier fourni', Response::HTTP_BAD_REQUEST);
@@ -834,18 +905,17 @@ public function importDataRadio(int $id, Request $request, EntityManagerInterfac
     $this->mergeFolders($extractDir, $destinationDir);
 
     // Charge et parse le fichier XML
-    $xmlFilePath = $extractDir . 'database_export.xml';
+    $xmlFilePath = $extractDir . 'database_export.sql';
     if (!file_exists($xmlFilePath)) {
         return new Response('Fichier XML non trouvé', Response::HTTP_INTERNAL_SERVER_ERROR);
     }
-    $xml = simplexml_load_file($xmlFilePath);
-
+    
     // Tente d'importer les données et capture les exceptions
     try{
-        $this->importchamp($id, false, $xml, $tokenGenerator, $entityManager);
+        $this->importSqlFile1($entityManager,$xmlFilePath,$etablissement->getId(),'radio');
     } catch(\Exception $e) {
         // Affiche un message d'erreur si l'importation échoue
-        $this->addFlash('danger', 'La station radio que vous tentez d’importer existe déjà ou un problème a été détecté dans la base de données. Veuillez utiliser un autre identifiant ou vérifier les informations.');
+        $this->addFlash('danger', 'La station radio que vous tentez d’importer existe déjà ou un problème a été détecté dans la base de données. Veuillez supprimer les radios et les catégories existantes');
         return $this->redirectToRoute('app_radio');
     }
 
@@ -896,5 +966,7 @@ public function Reinisialiser_password(int $id, EntityManagerInterface $entityMa
         ], Response::HTTP_OK);
         }
     }
-
 }
+
+
+

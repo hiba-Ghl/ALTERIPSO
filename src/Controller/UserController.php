@@ -333,7 +333,7 @@ class UserController extends AbstractController
     {
         // Trouver le service général pour la source
         $serviceGeneralSource = $entityManager->getRepository(ServiceEtablissement::class)
-            ->findOneBy(['nom' => 'Géneral', 'etablissement' => 87371]);
+            ->findOneBy(['nom' => 'Géneral', 'etablissement' => 27268]);
     
         if ($serviceGeneralSource) {
             // Trouver ou créer le service général pour le nouvel établissement
@@ -368,13 +368,16 @@ class UserController extends AbstractController
             CategorieVod::class,
             Television::class,
             Categories::class,
+            Jeux::class,
+            Application::class,
             ConfigApp::class,
+            Configmobile::class,
             TypeServiceEnChambre::class,
         ];
     
         foreach ($tables as $entityClass) {
             $repository = $entityManager->getRepository($entityClass);
-            $sourceItems = $repository->findBy(['etablissement' => 87371]);
+            $sourceItems = $repository->findBy(['etablissement' => 27268]);
             foreach ($sourceItems as $sourceItem) {
                 $newItem = clone $sourceItem;
                 $newItem->setEtablissement($etablissement);
@@ -383,7 +386,7 @@ class UserController extends AbstractController
                 $entityManager->persist($newItem);
                 if ($sourceItem instanceof CategorieRadio) {
                     $repositoryRadio = $entityManager->getRepository(Radio::class);
-                    $sourceItemsRadio = $repositoryRadio->findBy(['etablissement' => 87371,'categorie' => $sourceItem]);
+                    $sourceItemsRadio = $repositoryRadio->findBy(['etablissement' => 27268,'categorie' => $sourceItem]);
                     foreach ($sourceItemsRadio as $radio) {
                         $newRadio = clone $radio;
                         $newRadio->setEtablissement($etablissement);
@@ -393,7 +396,7 @@ class UserController extends AbstractController
                 }
                 if ($sourceItem instanceof CategorieLivreAudio) {
                     $repository = $entityManager->getRepository(LivreAudio::class);
-                    $sourceItems = $repository->findBy(['etablissement' => 87371,'categorie' => $sourceItem]);
+                    $sourceItems = $repository->findBy(['etablissement' => 27268,'categorie' => $sourceItem]);
                     foreach($sourceItems as $item)
                     {
                         $newItem1 = clone $item;
@@ -404,7 +407,7 @@ class UserController extends AbstractController
                 }
                 if ($sourceItem instanceof CategorieVod) {
                     $repository = $entityManager->getRepository(Vod::class);
-                    $sourceItems = $repository->findBy(['etablissement' => 87371,'categorie' => $sourceItem]);
+                    $sourceItems = $repository->findBy(['etablissement' => 27268,'categorie' => $sourceItem]);
                     foreach($sourceItems as $item)
                     {
                         $newItem1 = clone $item;
@@ -416,7 +419,7 @@ class UserController extends AbstractController
                 }
                 if ($sourceItem instanceof Categories) {
                     $repository = $entityManager->getRepository(Services::class);
-                    $sourceItems = $repository->findBy(['etablissement' => 87371,'categories' => $sourceItem]);
+                    $sourceItems = $repository->findBy(['etablissement' => 27268,'categories' => $sourceItem]);
                     foreach($sourceItems as $item)
                     {
                         $newItem1 = clone $item;
@@ -429,7 +432,7 @@ class UserController extends AbstractController
         }
         }
         // Importer les champs spécifiques
-        $sourceEtablissement = $entityManager->getRepository(Etablissement::class)->find(87371);
+        $sourceEtablissement = $entityManager->getRepository(Etablissement::class)->find(27268);
         if ($sourceEtablissement) {
             $etablissement->setLogo($sourceEtablissement->getLogo());
             $etablissement->setLogoactive($sourceEtablissement->getLogoactive());
@@ -564,7 +567,7 @@ class UserController extends AbstractController
                     $mail->addAddress($params->get('smtp_username'));
                     $mail->addAddress($user->getEmailAdmin());
                     $mail->CharSet = 'UTF-8';
-                    $mail->Subject = 'Un utilisateur change son mot de passe';
+                    $mail->Subject = 'L\'utilisateur ' . $user->getUsername() . '  change son mot de passe';
                     $bodyContent = $this->renderView('email/change_password.html.twig', [
                                 'user' => $user,
                                 'admin' => $Admin,

@@ -42,8 +42,8 @@
     </a>
 </div>
 <div style="display:flex;justify-content:center;width:100%;height:530px">
-    <object data="{{ asset(package)}}" type="application/pdf" width="50%" height="100%" style="border-radius:5px;">
-        <p>Impossible d'afficher le fichier PDF. Vous pouvez le <a href="{{ asset(package)}}">télécharger ici</a>.</p>
+    <object data="{{path('afficher_image',{ filename: package |split('/')|last, directory: 'service_payant_directory' })}}" type="application/pdf" width="50%" height="100%" style="border-radius:5px;">
+        <p>Impossible d'afficher le fichier PDF. Vous pouvez le <a href="{{path('afficher_image',{ filename: package |split('/')|last, directory: 'service_payant_directory' })}}">télécharger ici</a>.</p>
     </object>
 </div>
 

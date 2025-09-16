@@ -230,9 +230,12 @@ function get_AllPosition() {
 // La fonction retourne les images de diapo de chaque service de type Diapo.
 async function getImages(id) {
   try {
+    console.log("id: ",id);
     const response = await fetch(`/services/getImage/${id}`);
+    console.log(response);
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
     const data = await response.json();
+    console.log("data: ",data);
     return data;
   } catch (error) {
     console.error("Error fetching image:", error);

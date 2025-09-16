@@ -47,7 +47,7 @@
         <div class="form-group row">
             <label for="type" class="col-lg-2 col-form-label">Type:</label>
             <div class="col-lg-10">
-                <select id="type" name="type" class="form-control" onchange="handleTypeChange()">
+                <select id="type" name="type" class="form-control" oldvalue="{{ann.type}}">
                     <option value="">Choisir un type</option>
                     <option value="Image" {% if ann.type == 'Image' %}selected {% endif %}>Image</option>
                     <option value="Video" {% if ann.type == 'Video' %}selected {% endif %}>Video</option>
@@ -66,10 +66,8 @@
 
 
                 <!-- File upload section -->
-                <div id="fileUpload" style="display: none;">
-                    <label for="file" class="control-label here">Télécharger un fichier:</label>
-                    <input type="file" name="file" style="display:none" value={{ann.url}}/>
-                    <span id="annUrl">{{ann.url}}</span>
+                <div id="fileUpload" style="display: none; margin-top:10px;">
+                    <input type="file" id= 'file' name="file" style="display:block" class="form-control"/>
                 </div>
 
                 <div id="error-message" style="color: red;"></div>
@@ -85,39 +83,45 @@
                                     <div class="form-group col-md-4">
                                         <label for="font">Choisir une police:</label>
                                         <select id="font" name="font" class="form-control"  style="width:100%;" >
-                                            <option value="{{ann.police}}">{{ann.police}}</option>
                                             <option value="">Sélectionner une police</option>
-                                            <option value="Arial">Arial</option>
-                                            <option value="Helvetica">Helvetica</option>
-                                            <option value="Times New Roman">Times New Roman</option>
-                                            <option value="Courier New">Courier New</option>
-                                            <option value="Verdana">Verdana</option>
+                                            <option value="Arial" {% if ann.police == 'Arial' %} selected {% endif %}>Arial</option>
+                                            <option value="Helvetica" {% if ann.police == 'Helvetica' %} selected {% endif %} >Helvetica</option>
+                                            <option value="Times New Roman" {% if ann.police == 'Times New Roman' %} selected {% endif %} >Times New Roman</option>
+                                            <option value="Courier New" {% if ann.police == 'Courier New' %} selected {% endif %} >Courier New</option>
+                                            <option value="Verdana" {% if ann.police == 'Verdana' %} selected {% endif %}>Verdana</option>
                                         </select>
                                     </div>
                                     <!-- la taille -->
                                     <div class="form-group col-md-4" style="margin-left:30px">
                                         <label for="fontSize">Choisir une taille:</label>
-                                        <select id="fontSize" name="fontSize" class="form-control"  style="width:100%;" >
-                                            <option value="{{ann.taille}}">{{ann.taille}}</option>
+                                        <select id="fontSize" name="fontSize" class="form-control"  style="width:100%;" value="{{ann.taille}}">
                                             <option value="">Sélectionner une taille (px)</option>
-                                            <option value="12">12</option>
-                                            <option value="14">14</option>
-                                            <option value="16">16</option>
-                                            <option value="18">18</option>
-                                            <option value="20">20</option>
-                                            <option value="22">22</option>
                                         </select>
                                     </div>
+                                    <script>
+		const array1 = Array.from({ length: 21 }, (_, i) => i + 20);
+        const selectTaille = document.getElementById('fontSize');
+		const selectedValue1 = selectTaille.getAttribute("value");
+		array1.forEach(value=>{
+			const option = document.createElement("option");
+			option.value = value;
+			option.textContent = value;
+			if(value == selectedValue1)
+			{
+				option.selected = true;
+			}
+			selectTaille.appendChild(option);
+		})
+	</script>
                                     <!-- le style -->
                                     <div class="form-group col-md-4" style="margin-left:30px"> 
                                             <label for="style">Choisir un style:</label>
                                             <select id="style" name="style" class="form-control" style="width:100%; ">
-                                                    <option value="{{ann.style}}">{{ann.style}}</option>
                                                     <option value="">Sélectionner un style</option>
-                                                    <option value="Gras">Gras</option>
-                                                    <option value="Italique">Italique</option>
-                                                    <option value="Souligné">Souligné</option>
-                                                    <option value="Barré">Barré</option>
+                                                    <option value="Gras" {% if ann.style == 'Gras' %} selected {% endif %} >Gras</option>
+                                                    <option value="Italique" {% if ann.style == 'Italique' %} selected {% endif %}>Italique</option>
+                                                    <option value="Souligné" {% if ann.style == 'Souligné' %} selected {% endif %}>Souligné</option>
+                                                    <option value="Barré" {% if ann.style == 'Barré' %} selected {% endif %}>Barré</option>
                                             </select>
                                     </div>
                                 </div>
@@ -208,7 +212,7 @@
              <div class="col-lg-10">
                 <select id="active" name="active" class="form-control" >
                     <option value='1' {% if ann.active == '1' %}selected{% endif %}>Oui</option>
-                    <option value='0' {% if ann.active == '1' %}selected{% endif %}>Non</option>
+                    <option value='0' {% if ann.active == '0' %}selected{% endif %}>Non</option>
                 </select>
             </div>
         </div>
@@ -225,19 +229,6 @@
                 <input type="datetime-local" id="datefin" name="datefin" class="form-control" value="{{ann.datefin}}"/>
             </div>
         </div>
-         <script>
-               window.addEventListener('DOMContentLoaded', () => {
-                const now = new Date();
-                const localNow = now.toISOString().slice(0, 16);
-                const datedebut = document.getElementById('datedebut');
-                const datefin = document.getElementById('datefin');
-                datedebut.min = localNow;
-                datefin.min = localNow;
-                {# datedebut.addEventListener('change', () => {
-                datefin.min = datedebut.value;
-                }); #}
-            });
-        </script>
         <div class="form-group row">
             <label for="duree" class="col-lg-2 col-form-label">Durée (en secondes):</label>
             <div class="col-lg-10">
@@ -464,6 +455,16 @@ document.addEventListener('DOMContentLoaded', function () {
             fontSelection.style.display = 'none';
             languagesPart.style.display = 'none';
             ipAddress.style.display = 'none';
+            const file = document.getElementById('file');
+            if(type === 'Image')
+                file.setAttribute('accept','.png, .jpeg, .jpg');
+            if(type === 'Video')
+                file.setAttribute('accept','.mp4');
+            if(type === 'PDF')
+            {
+                console.log(file);
+                file.setAttribute('accept','.pdf');
+            }
         } else if (type === 'Localtv'){
             fileUpload.style.display = 'none';
             textInput.style.display = 'none';
@@ -502,6 +503,8 @@ document.addEventListener('DOMContentLoaded', function () {
 <script>
     document.getElementById('annonceForm').addEventListener('submit', function(event) {
         const type = document.getElementById('type').value;
+        const oldType = document.getElementById('type').getAttribute('oldvalue');
+
         const fileInput = document.getElementById('file');
         const errorMessage = document.getElementById('error-message');
 
@@ -510,10 +513,16 @@ document.addEventListener('DOMContentLoaded', function () {
     
 
         const file = fileInput.files[0];
+        if (!file && oldType != type && (type === 'Image' || type === 'Video' || type === 'PDF')) {
+        console.log(type,oldType,fileInput.value);
+            errorMessage.textContent = 'Veuillez sélectionner un fichier s\'il vous plait .';
+            event.preventDefault();
+            return;
+        }
+
         const fileSize = file.size;
 
         let valid = true;
-
         if (type === 'Image') {
             const maxSize = 400 * 1024; // 400 KB            
             if (  fileSize > maxSize) {
@@ -537,13 +546,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (!valid) {
+            console.log("test");
             event.preventDefault(); // pas de submission si la validation echoue
         }
     });
 </script>
 
 <!-- extension du fichier a telecharger controllee in html  -->
-<script>
+{# <script>
     document.getElementById('type').addEventListener('change', function() {
         const type = this.value;
         const fileInput = document.getElementById('file');
@@ -559,20 +569,19 @@ document.addEventListener('DOMContentLoaded', function () {
             container.innerHTML = '<input type="file" id="file" accept=".pdf" name="file">';
         }
     });
-</script>
+</script> #}
  
 <!------------------------------ le control des champs et position apres le changement de type ------------------------------------------------>
 
 <!--files or texts to appear in case type was changed -->
 <script>
-    document.getElementById('type').addEventListener('change', function() {
-        var type = this.value;
+    document.getElementById('type').addEventListener('change', function(e) {
+        var type = e.target.value;
         var fileUpload = document.getElementById('fileUpload');
         var textInput = document.getElementById('textInput');
         var fontSelection = document.getElementById('fontSelection');
         var ipAddress = document.getElementById('ipAddress');
         var languagesPart = document.getElementById('languagesPart');
-        var annUrl = document.getElementById('annUrl');
         
         // Hide the file path
         fileUpload.style.display = 'none'; 
@@ -580,19 +589,30 @@ document.addEventListener('DOMContentLoaded', function () {
         fontSelection.style.display = 'none'; 
         ipAddress.style.display = 'none'; 
         languagesPart.style.display = 'none'; 
-        annUrl.style.display = 'none'; 
 
         // Clear input values
-        document.getElementById('ip').value = '';
-        document.getElementById('file').value = '';
-        document.getElementById('text').value = '';
-
+        const ip = document.getElementById('ip');
+        if(ip)
+            ip.value= '';
+        const file = document.getElementById('file');
+        if(file)
+            file.value= '';
+        const text = document.getElementById('text');
+        if(text)
+            text.value= '';
+        console.log(fileUpload,type);
         if (type === 'Message') {
             textInput.style.display = 'block';
             fontSelection.style.display = 'block';
             languagesPart.style.display = 'block';
         } else if (type === 'Image' || type === 'Video' || type === 'PDF') {
             fileUpload.style.display = 'block';
+            if(type === 'Image')
+                file.setAttribute('accept','.png, .jpeg, .jpg');
+            if(type === 'Video')
+                file.setAttribute('accept','.mp4');
+            if(type === 'PDF')
+                file.setAttribute('accept','.pdf');
         } else if (type === 'Localtv'){
             ipAddress.style.display = 'block';
         }

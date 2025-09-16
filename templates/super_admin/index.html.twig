@@ -56,22 +56,30 @@
                 <tr >
                     <th style="text-align: center;width:300px;">ID établissement</th>
                     <th style="text-align: center;width:430px;">Nom établissement</th>
-                    <th style="text-align: center;width:500px;">Actions</th>
+                    <th style="text-align: center;width:200px;">Utilisateur</th>
+                    <th style="text-align: center;width:200px;">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {% for etablissement in etablissements %}
-                        {% if app.user.getEtablissement() and etablissement.id != app.user.getEtablissement().id and etablissement.id != 87371 and etablissement.id != 69911 and etablissement.id != 83213 %}
+                        {% if app.user.getEtablissement() and etablissement["etablissement"].id != app.user.getEtablissement().id %}
                         <tr>
-                            <td style="text-align: center;width:300px;">{{ etablissement.id }}</td>
-                            <td style="text-align: center;width:480px;">{{ etablissement.getNomEtablissement() | capitalize }}</td>
-                            <td style="text-align: center;width:500px;display:flex;gap:5px;justify-content:center;">
-                                <a data-toggle="tooltip" title="Supprimer l'etablissement" href="/delateEtablissement/{{etablissement.id}}" class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer cet etablissement ?');">
+                            <td style="text-align: center;width:300px;">{{ etablissement["etablissement"].id }}</td>
+                            <td style="text-align: center;width:480px;">{{ etablissement["etablissement"].getNomEtablissement() | capitalize }}</td>
+                            <td style="text-align: center;width:200px;">{{ etablissement["user"].getUsername()| capitalize }}</td>
+                            <td style="text-align: center;width:200px;display:flex;gap:5px;justify-content:center;">
+                                <a data-toggle="tooltip" title="Supprimer l'etablissement" href="/delateEtablissement/{{etablissement["etablissement"].id}}" class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer cet etablissement ?');">
                                     <i class="glyphicon glyphicon-trash"></i>
                                 </a>
-                                <div data-toggle="modal" data-target="#modal1-{{etablissement.id}}"  name="modalCopier" id="modalCopier"  data-id="{{app.user.id}}" class="modalCopier"> 
+                                <div data-toggle="modal" data-target="#modal1-{{etablissement["etablissement"].id}}"  name="modalCopier" id="modalCopier"  data-id="{{app.user.id}}" class="modalCopier"> 
                                 <a title="Copier l'établissement" class="btn btn-info btn-xs">
                                     <i class="fa fa-copy"></i>
+                                </a>
+                                </div>
+
+                             <div data-toggle="modal" data-target="#modal3-{{etablissement["etablissement"].id}}"  name="modalExport" id="modalExport" data-id="{{app.user.id}}" class="modalExport"> 
+                                <a title="Export l'établissement" class="btn btn-success btn-xs">
+                                    <i class="fa-solid fa-clone"></i>
                                 </a>
                                 </div>
 
@@ -83,6 +91,171 @@
         </table>
     </div>
 </div>
+
+
+
+
+<script>
+function createModal2(Id,IdEt) {
+    if (document.getElementById(`modal3-${IdEt}`)) return;
+    const popUP = document.createElement('div');
+      popUP.setAttribute("class", "modal fade in");
+    popUP.setAttribute("tabindex", "-1");
+    {# popUP.style.marginLeft="-100px"; #}
+    popUP.setAttribute("role", "dialog");
+    popUP.setAttribute("id", `modal3-${IdEt}`);
+    popUP.setAttribute("aria-labelledby", "modalLabel1");
+    popUP.setAttribute("aria-hidden", "true");
+
+    popUP.innerHTML = `
+            <div class="modal-dialog" role="document" style="width:1000px">
+                <div class="modal-content" style="margin-left:80px;">
+                    <div class="modal-header" style="margin-top:30px">
+                        <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding: 5px 10px; display: inline-block;">
+                            <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+                            Exporter un établissement
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+        <form id="passwordForm1" method="post" enctype="multipart/form-data">
+                    <div class="modal-body" id="modal-body">
+                        <div>
+                            <label>Entrez votre mot de passe :</label>
+                            <input type="password" class="form-control passwordAdmin" name="password2" autocomplete="new-password"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="close1 btn btn-danger" data-dismiss="modal" style="width:130px;"><i class="glyphicon glyphicon-remove"></i> Annuler</button>
+                        <button	type="submit" id ="submit" class="btn btn-primary" style="width:130px;" data-user-id="${IdEt}" data-id="${Id}">
+				        <i class="glyphicon glyphicon-floppy-disk"></i>
+					        Enregistrer
+				        </button>
+                    </div>
+            </form>
+            </div>
+            </div>
+        `;
+    document.body.appendChild(popUP);
+    $(`#modal3-${IdEt}`).modal('show');
+}
+
+
+document.addEventListener('click', function (event) {
+    const submitButton = event.target.closest('.modalExport');
+    if(!submitButton)
+      return ;
+    const Id = submitButton.getAttribute('data-id');
+    let index = -1;
+    if (submitButton.getAttribute('data-target')) {
+      index = submitButton.getAttribute("data-target").split('-')[1];
+    createModal2(Id,index);
+    setTimeout(() => $(`#modal3-${Id}`).modal({ backdrop: 'static', keyboard: false }).modal('show'), 100);
+    }
+})
+
+
+
+
+</script>
+
+
+
+<script>
+	const password = document.querySelector('input[name="password2"]');
+    if(password)
+    {
+	password.addEventListener('click',(e)=>{
+		const erreur = document.getElementById('erreurExport');
+		if(erreur){
+			erreur.remove();
+		}
+
+	})
+    }
+
+
+
+    document.addEventListener('DOMContentLoaded',  function () {
+    const submitButton = document.getElementById('modalExport'); 
+    if (submitButton) {
+    const id = submitButton.getAttribute('data-id')
+        submitButton.addEventListener('click', async function () {
+				const response = await fetch(`/app_Reinisialiser_password/${id}`);
+        		if (!response.ok) throw new Error(`Erreur serveur: ${response.status}`);
+        		const data = await response.json();
+                $('#exampleModal3').modal('show');
+        });
+    }
+});
+</script>
+{# fonction pour verifier le mot de passe pour exporter les donnes d'etablissement #}
+<script>
+   document.addEventListener('submit', async function(event) {
+    if (event.target.id === 'passwordForm1') {
+        event.preventDefault();
+        const password = document.querySelector('input[name="password2"]').value;
+        const userId = document.getElementById("submit").getAttribute('data-id');
+        const EtablissementId = document.getElementById("submit").getAttribute('data-user-id');
+		const modalBody = document.getElementById("modal-body");
+        if (password === "") {
+            	if(modalBody)
+					{
+						const erreur = document.getElementById('erreurExport');
+                		if(!erreur)
+                		{
+							const p = document.createElement('p');
+							p.textContent="Entrez votre mot de passe s'il vous plaît";
+							p.setAttribute('id','erreurExport');
+							p.style.color = "red";
+							modalBody.appendChild(p);
+						}
+					}
+            		return false;
+        } else {
+            try {
+                const response = await fetch(`/app_Confirme_export/${userId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ password: password }) 
+                });
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                if (data.passwordValid) {
+                $('.modal').modal('hide');
+					window.location.href =`/export/${EtablissementId}`;
+                } else {
+					if(modalBody)
+					{
+						const erreur = document.getElementById('erreurExport');
+                		if(!erreur)
+                		{
+							const p = document.createElement('p');
+							if(data.message)
+								p.textContent = data.message;
+							else 
+								p.textContent="Le mot de passe est invalide. Merci de réessayer avec un mot de passe correct.";
+							p.setAttribute('id','erreurExport');
+							p.style.color = "red";
+							modalBody.appendChild(p);
+						}
+					}
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert("There was an error processing your request.");
+            }
+        }
+        return true;
+    }
+    });
+    
+</script>
 <!-- DataTables Core -->
 
 
@@ -97,7 +270,7 @@
          searching: true,
          ordering: true,
          info: false,
-         columnDefs: [{ orderable: false, targets: 2 }]
+         columnDefs: [{ orderable: false, targets: 3 }]
       });
    });
 </script>
@@ -276,7 +449,6 @@ document.addEventListener('submit', async function(event) {
             });
 
             const data = await response.json();
-            console.log(data);
             if (data.passwordValid) {
                 $('.modal').modal('hide');
                 createModal1(etablissementId);

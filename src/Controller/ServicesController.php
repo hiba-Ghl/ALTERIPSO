@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Annonce;
 use App\Entity\Categories;
 use App\Entity\Chambre;
 use App\Entity\ConfigApp;
@@ -66,15 +67,15 @@ class ServicesController extends AbstractController
         foreach ($services as $service1) {
             $serviceArray[] = $service1->getPosition();
         }
-        $chembre = $this->entityManager->getRepository(Chambre::class)->findBy(['etablissement' =>$etablissement]);
-        $chembreArray = [];
-        foreach ($chembre as $chambre) {
-            $chembreArray[] = ['id'=>$chambre->getId(),'nom' => $chambre->getNom(),
+        $chambre = $this->entityManager->getRepository(Chambre::class)->findBy(['etablissement' =>$etablissement]);
+        $chambreArray = [];
+        foreach ($chambre as $chambre) {
+            $chambreArray[] = ['id'=>$chambre->getId(),'nom' => $chambre->getNom(),
                         'ip' => $chambre->getIp(),
                         'Mac' => $chambre->getMac(),
         ];
         }
-        $chembreJson = json_encode($chembreArray);
+        $chambreJson = json_encode($chambreArray);
         $serviceJson = json_encode($serviceArray);
         $categories = $this->entityManager->getRepository(Categories::class)
         ->findBy([
@@ -91,7 +92,7 @@ class ServicesController extends AbstractController
         'categorie' =>$categorieJson,
         'id' => $categorie->getId(),
         'id_slected' => $id_slectedJson,
-        'chembre' => $chembreJson,
+        'chambre' => $chambreJson,
         'appConfig' => $configApp,
         'user' => $this->getUser(),
         
@@ -294,16 +295,16 @@ public function display_service(string $id){
     $id = (int) $id; 
     $this->denyAccessUnlessGranted('IS_AUTHENTICATED'); 
     $services  = $this->entityManager->getRepository(Services::class)->findBy(['etablissement' => $etablissement,'categories' => $id],['position' => 'ASC']);
-    $chembre = $this->entityManager->getRepository(Chambre::class)->findBy(['etablissement' =>$etablissement]);
-    $chembreArray = [];
+    $chambre = $this->entityManager->getRepository(Chambre::class)->findBy(['etablissement' =>$etablissement]);
+    $chambreArray = [];
     $serviceArray = [];
-    foreach ($chembre as $chambre) {;  
-        $chembreArray[] = ['id'=>$chambre->getId(),'nom' => $chambre->getNom(),
+    foreach ($chambre as $chambre) {;  
+        $chambreArray[] = ['id'=>$chambre->getId(),'nom' => $chambre->getNom(),
         'ip' => $chambre->getIp(),
         'Mac' => $chambre->getMac(),
     ];
 }
-    $chembreJson = json_encode($chembreArray) ;
+    $chambreJson = json_encode($chambreArray) ;
     $serviceJson = json_encode($serviceArray);
     $categories = $this->entityManager->getRepository(Categories::class)
     ->findBy([
@@ -324,7 +325,7 @@ public function display_service(string $id){
     'categorie' =>$categorieJson,
     'id' =>$id,
     'id_slected'=>$id_slectedJson,
-    'chembre' => $chembreJson,
+    'chambre' => $chambreJson,
     'appConfig' => $configApp,
     'user' => $this->getUser(),
 
@@ -553,9 +554,7 @@ public function update_services(int $id,Request $request){
             $tempDisplays = $request->get('timeInput', []);
             $orderDisplays = $request->get('numberInput', []);
             
-            // dump($tempDisplays,$orderDisplays).die();
             $dir_nom = $this->getParameter('project_dir') . '/public/' . $service->getSrc();
-            // dump($dir_nom);
             if ($type === 'DIAPO'){
             $this->handleDiapoFiles1( $file3,$oldDirectory, $tempDisplays, $orderDisplays, $directory, $service);
             if($service->getType() !== 'DIAPO' && file_exists($dir_nom))
@@ -897,8 +896,10 @@ return $this->redirectToRoute('services_Categorie',['id' =>$id_service]);
             return new JsonResponse(['error' => 'Service not found'], Response::HTTP_NOT_FOUND);
         }
     
-        $dir_nom = $this->getParameter('project_dir') . '/public/' . $service->getSrc();
-
+        $url = $service->getSrc();
+        $parts = explode('https://rsmarttv.cloud/', $url);
+        $path = end($parts);
+        $dir_nom = $this->getParameter('project_dir') . '/public/' . $path ;
         if (!file_exists($dir_nom)) {
             return new JsonResponse(['error' => 'Path does not exist: ' . $dir_nom], Response::HTTP_NOT_FOUND);
         }
@@ -1051,64 +1052,34 @@ return $this->redirectToRoute('services_Categorie',['id' =>$id_service]);
             return new JsonResponse(['error' => 'Service not found'], Response::HTTP_NOT_FOUND);
         }
         $request = Request::createFromGlobals();
-        $chambre = $request->get("chambre");
         $check = $request->get("checked");
-        $chembreNonVide = [];
-        foreach($check as $key1 => $k1)
-        {
-            $lancerService = $this->entityManager->getRepository(LancerAnnonce::class)->findOneBy(['idChembre' => $k1]);
-            $lancerService1 = $this->entityManager->getRepository(LancerTV::class)->findOneBy(['idChembre' => $k1]);
-            $lancerService2 = $this->entityManager->getRepository(LancerRadio::class)->findOneBy(['idChembre' => $k1]);
-            if($lancerService)
-                $chembreNonVide[$key1] = $lancerService;
-            if($lancerService1)
-                $chembreNonVide[$key1] = $lancerService1;
-            if($lancerService2)
-                $chembreNonVide[$key1] = $lancerService2;
-        }
-        if(!$chembreNonVide )
-        {
-        if (isset($chambre) and !empty($chambre) and isset($check) and !empty($check)) {
-            foreach ($chambre as $key => $k) {
-                foreach($check as $key1 => $k1)
+        if (isset($check) and !empty($check)) {
+                foreach($check as $key1 => $k)
                 {
-                    if($k == $k1)
-                    {
-                    $lancer = $this->entityManager->getRepository(Lancerservice::class)->findOneBy(['idChembre' => $k]);
+                    $lancer = $this->entityManager->getRepository(Lancerservice::class)->findOneBy(['idchambre' => $k]);
+                    $lancer1 = $this->entityManager->getRepository(LancerAnnonce::class)->findOneBy(['idchambre' => $k]);
                     if($lancer)
-                    {
                         $this->entityManager->remove($lancer);
-                        $this->entityManager->flush();
-                    }
+                    if($lancer1)
+                        $this->entityManager->remove($lancer1);
                     $lancer = new LancerService();
-                    $lancer->setIdChembre($k);
+                    $lancer->setIdchambre($k);
                     $lancer->setIdService($idService);
                     $this->entityManager->persist($lancer);
-                    $this->entityManager->flush();
                     $boxs  = $repository->findById($k);
                     $chambre= $boxs[0]->getNom();
                     $queue = $etablissement->getId() . '.' . $chambre . '.service';
-                    array_push($queues,$queue);
-                    $arrayService = [];
-                    $arrayService[] = $this->entityToArray($service);
-                    $ServiceJson = json_encode($arrayService);  
-                    $message = "lancer_service%%".$ServiceJson."%%".$k;
+                } 
+                $this->entityManager->flush();
+                array_push($queues,$queue);
+                $arrayService = [];
+                $arrayService[] = $this->entityToArray($service);
+                $ServiceJson = json_encode($arrayService);  
+                $message = "lancer_service%%".$ServiceJson."%%".$k;
 ;                   $Manager = new PushRabbit();
-                    $Manager->MakeRabbitCall($queues, $message); 
-            } 
+                $Manager->MakeRabbitCall($queues, $message); 
         }
-    }
-}
         return $this->redirectToRoute('services_Categorie',['id' =>$service->getCategories()->getId()]);
-}
-else{
-        $chembreIds = array_map(function($service) {
-            $name_chambre = $this->entityManager->getRepository(Chambre::class)->findOneBy(['id'=>$service->getIdChembre()])->getNom();
-            return $name_chambre ;
-        }, $chembreNonVide);
-        $this->addFlash('warning','Les chambres suivantes ne sont pas vides, elles ont d\'autres annonces à lancer. S\'il vous plaît, arrêtez les annonces en cours sur les chembres suivant : ' . implode(', ', $chembreIds));
-        return $this->redirectToRoute('services_Categorie',['id' =>$service->getCategories()->getId()]);
-    }
 }
 
 
@@ -1133,31 +1104,24 @@ public function RemoveService(int $idService)
         return new JsonResponse(['error' => 'Service not found'], Response::HTTP_NOT_FOUND);
     }
     $request = Request::createFromGlobals();
-    $chambre = $request->get("chambre");
     $check = $request->get("checked");
-    if (isset($chambre) and !empty($chambre) and isset($check) and !empty($check)) {
-        foreach ($chambre as $key => $k) {
-            foreach($check as $key1 => $k1)
+    if (isset($check) and !empty($check)) {
+            foreach($check as $key1 => $k)
             {
-                if($k == $k1)
-                {
-                $lancer = $this->entityManager->getRepository(LancerService::class)->findOneBy(['idService'=>$idService,'idChembre' => $k]);
+                $lancer = $this->entityManager->getRepository(LancerService::class)->findOneBy(['idService'=>$idService,'idchambre' => $k]);
                 if($lancer)
                 {
                 $this->entityManager->remove($lancer);
-                $this->entityManager->flush();
                 $boxs  = $repository->findById($k);
                 $chambre= $boxs[0]->getNom();
                 $queue = $etablissement->getId() . '.' . $chambre . '.service';
-                array_push($queues,$queue);  
-                $message = "arreter_service%%".$idService."%%".$k;
-;               $Manager = new PushRabbit();
-                $Manager->MakeRabbitCall($queues, $message);
-                }
-
             }
-    }
-}
+        }
+        $this->entityManager->flush();
+        array_push($queues,$queue);  
+        $message = "arreter_service%%".$idService."%%".$k;
+        $Manager = new PushRabbit();
+        $Manager->MakeRabbitCall($queues, $message);
 }
     return $this->redirectToRoute('services_Categorie',['id' =>$service->getCategories()->getId()]);
 }
@@ -1183,7 +1147,7 @@ public function GetAllchambreLancerService(int $idService){
     $lancer = $this->entityManager->getRepository(LancerService::class)->findBy(['idService'=>$idService]);
     $arrayLancerService = [];
     foreach ($lancer as $l) {
-        $ex = $this->entityManager->getRepository(Chambre::class)->findOneBy(["id"=>$l->getIdChembre()]);
+        $ex = $this->entityManager->getRepository(Chambre::class)->findOneBy(["id"=>$l->getIdchambre()]);
         $arrayLancerService[] = ['id'=>$ex->getId(),'nom' => $ex->getNom(),
                         'ip' => $ex->getIp(),
                         'Mac' => $ex->getMac(),];

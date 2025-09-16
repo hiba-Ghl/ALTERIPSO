@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Etablissement;
 use App\Entity\Categories;
 use App\Entity\ConfigApp;
+use App\Entity\Services;
 
 class CategoriesController extends AbstractController
 {
@@ -75,7 +76,6 @@ class CategoriesController extends AbstractController
         $file1 = $request->files->get('logo');
         $file2 = $request->files->get('background');
 
-        //dump($file2);die();
 
 
         // Vérifiez si au moins un des fichiers a été téléchargé
@@ -93,7 +93,7 @@ class CategoriesController extends AbstractController
                         // Mettre à jour le logo uniquement si un fichier a été téléchargé
                         $categories->setLogo($fileName);
                     } catch (\Exception $e) {
-                        dump('Erreur lors du déplacement du fichier logo : ' . $e->getMessage());
+                        $this->addFlash('warning','Erreur lors du déplacement du fichier logo : ' . $e->getMessage());
                         die();
                     }
                 }
@@ -110,7 +110,7 @@ class CategoriesController extends AbstractController
                         // Mettre à jour le background uniquement si un fichier a été téléchargé
                         $categories->setBackground($fileNamebackground);
                     } catch (\Exception $e) {
-                        dump('Erreur lors du déplacement du fichier background : ' . $e->getMessage());
+                        $this->addFlash('warning','Erreur lors du déplacement du fichier background : ' . $e->getMessage());
                         die();
                     }
                 }
@@ -246,28 +246,37 @@ class CategoriesController extends AbstractController
         $entityManager->flush();
     
         // Redirection après la mise à jour
-        return $this->redirectToRoute('categories', [
-            'id' => $categories->getId(),
-            'user' => $this->getUser(),
-        ]);
+        return $this->redirectToRoute('home');
+
+        // return $this->redirectToRoute('categories', [
+        //     'id' => $categories->getId(),
+        //     'user' => $this->getUser(),
+        // ]);
     }
     
 
 
     #[Route('/categories/supprimer/{id}', name: 'app_supprimer_categories')]
     public function supprimercategories(EntityManagerInterface $entityManager, int $id): Response
-    {
-        $chambre = $entityManager->getRepository(Categories::class)->find($id);
-
-        if (!$chambre) {
+    {        
+        if( !$this->getUser())
+        return $this->redirectToRoute('app_login');
+        $categorie = $entityManager->getRepository(Categories::class)->find($id);
+        if (!$categorie) {
             throw $this->createNotFoundException(
                 'No room found for id ' . $id
             );
         }
-
-        $entityManager->remove($chambre);
+        $service = $entityManager->getRepository(Services::class)->findBy(['categories' => $categorie]);
+        
+        if (count($service) > 0) {
+            $this->addFlash('error', 'Suppression Non Autorisée: La suppression de cette catégorie n\'est pas possible car elle est actuellement associée à des services dans notre système.');
+            return $this->redirectToRoute('home');
+        }
+        $entityManager->remove($categorie);
         $entityManager->flush();
 
-        return $this->redirectToRoute('home');
-    }
+            return $this->redirectToRoute('home');
+    } 
+    
 }

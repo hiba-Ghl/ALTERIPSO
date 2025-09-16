@@ -6,8 +6,7 @@
 {# offline #}
 {% if appConfig.StatusServeur is same as('Offline') %}
 
-<script src="assets/js/all.min.js"></script>
-{% else %}
+<script src="{{ asset('javascript/all.min.js') }}"></script>{% else %}
 {# online #}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 
@@ -19,7 +18,6 @@
 <div>
 <div style="background-color:white;padding-bottom:100px;width:1400px;margin-left:-50px;">
 <h3 style=" color:#3087ce;margin-left:-50px;">Informations personnelles</h3>
-{# {{ dump(user) }} #}
 <div style=" display:flex;flex-direction:column;gap:20px;border-radius: 25px;border: 2px solid #3087ce;padding: 20px; width: 1400px;margin-left:-50px;background-color: white;margin-bottom: 20px;">
 			<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
 			<label for="inputEmail">Identifiant:</label>
@@ -635,7 +633,7 @@
 					</div>	
 				</div>
 				<div style="">
-				<label>Service En Chembre </label>
+				<label>Service En chambre </label>
 					{% if user is defined and user.ServiceEnChambre %}
 					<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
 					{% else %}

@@ -40,7 +40,7 @@ class CategorieLivreaudioController extends AbstractController
         }
 
 
-         // Check si la actegorie est une cle etrangere dans la table des livres audios
+         // Check si la categorie est une cle etrangere dans la table des livres audios
          $livresAudio = $entityManager->getRepository(LivreAudio::class)->findBy(['categorie' => $CategorieLivreaudio]);
 
          if (count($livresAudio) > 0) {
@@ -75,9 +75,9 @@ class CategorieLivreaudioController extends AbstractController
             $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
             return $this->redirectToRoute('home');
         }
-        $catlivreaudios = $etablissement->getCategorieLivreaudios();
+        $catlivreaudios = $entityManager->getRepository(CategorieLivreaudio::class)->findBy(['etablissement' => $etablissement],['position' => 'ASC']);;
+        
         $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement'=>$etablissement]);
-        //var_dump($catlivreaudios);die();
 
         return $this->render('categorie_livreaudio/index.html.twig', [
             'catlivreaudios' => $catlivreaudios,

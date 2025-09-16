@@ -3,14 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\CategorieVod;
+use App\Entity\Chambre;
 use App\Entity\ConfigApp;
 use App\Entity\Vod;
+use App\Push\PushRabbit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class VodController extends AbstractController
 {
@@ -31,9 +33,20 @@ class VodController extends AbstractController
             return $this->redirectToRoute('home');        }
 
         $vod  = $repository->findBy(['etablissement' => $etablissement],['nom' => 'ASC']); 
+         $chambre = $entityManager->getRepository(Chambre::class)->findBy(['etablissement' =>$etablissement]);
+        
+        $chambreArray = [];
+        foreach ($chambre as $chambre) {
+            $chambreArray[] = ['id'=>$chambre->getId(),'nom' => $chambre->getNom(),
+                        'ip' => $chambre->getIp(),
+                        'Mac' => $chambre->getMac(),
+        ];
+        }
+        $chambreJson = json_encode($chambreArray);
         return $this->render('vod/index.html.twig', [
             'videos' => $vod,'appConfig' => $configApp,
             'user' => $this->getUser(),
+            'chambre' => $chambreJson,
         ]);
     }
 
@@ -174,7 +187,6 @@ class VodController extends AbstractController
         $valider = $request->get("valider");
         $nom = $request->get("nom");
         $description = $request->get("description"); 
-        //var_dump($description);die();
         $file1 = $request->files->get("logo");
         $url = $request->get("url");
         $categorieId = $request->get("categorie");
@@ -266,5 +278,59 @@ class VodController extends AbstractController
             }
             return $this->redirectToRoute('app_vod');
         }
+
+
+
+
+    private function entityToArray($entity) {
+        $getterMethods = get_class_methods($entity);
+        $data = [];
+        foreach ($getterMethods as $method) {
+            if (strpos($method, 'get') === 0 && $method !== 'getId') {
+                $property = lcfirst(substr($method, 3));
+                $value = $entity->$method();
+                $data[$property] = $value instanceof \DateTimeInterface ? $value->format('Y-m-d H:i:s') : $value;
+            }
+        }
+        $data['id'] = $entity->getId();
+        return $data;
+     }        
+        #[Route('/vod/LancerVod/{idVod}', name: 'LancerVod')]
+        public function lancerTV(EntityManagerInterface $entityManager, int $idVod)
+        {
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+            if( !$this->getUser())
+                return $this->redirectToRoute('app_login');
+            $etablissement = $this->getUser()->getEtablissement();
+            $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+            $repository = $entityManager->getRepository(Chambre::class);
+            $queues = array();
+            $vod = $entityManager->getRepository(Vod::class)
+                ->findOneBy(['etablissement' => $etablissement, 'id' => $idVod]);
+            if (!$vod) {
+                return new JsonResponse(['error' => 'Service not found'], Response::HTTP_NOT_FOUND);
+            }
+            $request = Request::createFromGlobals();
+            $check = $request->get("checked");
+            if (isset($check) and !empty($check)) {
+                    foreach($check as $key1 => $k)
+                    {
+                            $boxs  = $repository->findById($k);
+                            $chambre= $boxs[0]->getNom();
+                            $queue = $etablissement->getId() . '.' . $chambre . '.service';
+                           
+            }
+            array_push($queues,$queue);
+            $entityManager->flush();
+            $arrayvod = [];
+            $arrayvod[] = $this->entityToArray($vod);
+            $vodJson = json_encode($arrayvod);
+            $message = "vod%%".$vodJson."%%";
+            $Manager = new PushRabbit();
+            $Manager->MakeRabbitCall($queues, $message); 
+        }
+            return $this->redirectToRoute('app_vod');
+    }
+
 
 }

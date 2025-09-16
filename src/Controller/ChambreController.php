@@ -60,11 +60,11 @@ class ChambreController extends AbstractController
         $request = Request::createFromGlobals();
         $repository = $entityManager->getRepository(Chambre::class);
         $etatcheckin = $request->get("etatcheckin");
+       // dd($etatcheckin);die();
         $idetablissement = $this->getUser()->getEtablissement()->getId();
         $box = $request->get('box');
         $queues = array();
 
-       // var_dump($box);//die();
        if (isset($box) and !empty($box)) {
 
            foreach ($box as $key => $k) {
@@ -72,7 +72,9 @@ class ChambreController extends AbstractController
             $boxs  = $repository->findById($key);
                $chambre= $boxs[0]->getNom();
                $queue = $idetablissement . '.' . $chambre . '.service';
-               array_push($queues,$queue);          
+               array_push($queues,$queue);  
+               
+             //  dd($etatcheckin.'   '.$queue);die();
                if($etatcheckin=="checkin"){
                $boxs[0]->setCheckval('1');
                $boxs[0]->setDrois('1/1/1/1/1/1/1/1/1/1');
@@ -82,12 +84,14 @@ class ChambreController extends AbstractController
                   $boxs[0]->setDrois('0/0/0/0/0/0/0/0/0/0');
                   }
 
+                  $entityManager->persist($boxs[0]);
+                  $entityManager->flush();
+
         }
      
                  $message = 'update_categories';  
                 $Manager = new PushRabbit();
                 $Manager->MakeRabbitCall($queues, $message);         
-               // var_dump($queues);die();     
            
        }
 
@@ -116,10 +120,9 @@ class ChambreController extends AbstractController
             $queue = $idetablissement . '.' . $chambre . '.service';
             array_push($queues,$queue);          
         }
-                $message = 'shell%%reboot';  
+                $message = 'logger_refresh';  
                 $Manager = new PushRabbit();
                 $Manager->MakeRabbitCall($queues, $message);         
-              // var_dump($queues);die();     
        return $this->redirectToRoute('app_chambre');
    }
    
@@ -202,24 +205,16 @@ class ChambreController extends AbstractController
 
       if ($type == 'Samsung') {
          $support = 'R-TV';
-         
-        
-       
+ 
             } elseif ($type == 'Samsung Tizen') {
                $support = 'R-TV';
-               
-               
-               
+          
             } elseif ($type == 'LG') {
                $support = 'R-LG';
-               
-               
-              
+             
             } elseif ($type == 'Philips') {
                $support = 'R-PH';
-               
-               
-              
+         
             } elseif ($type == 'Box-Ip') {
          $support = 'R-BoxIp';
         
@@ -229,7 +224,6 @@ class ChambreController extends AbstractController
       }
 
       $valider = $request->get("valider");
-      //var_dump($sq);die();
       $date ='29/02/2024 11:00:00';
     //   dd($valider);
 
@@ -253,7 +247,6 @@ class ChambreController extends AbstractController
          $box->setClient(' ');
          $box->setBackground($back);
          $box->settypeaffichage($typeaffichage);
-         //var_dump($chaine);
          if ($typeaffichage == "2") {
             $ch  =  $entityManager->getRepository(Television::class)->findById($chaine);
             $box->setchaine($ch[0]);
@@ -289,7 +282,6 @@ class ChambreController extends AbstractController
       $box = $entityManager->getRepository(chambre::class)->findById($id)[0];
       $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
 
-      //var_dump($box);die();
       $listback = [];
       foreach ($chambres as $ch) {
       $background = $ch->getBackground();
@@ -339,7 +331,11 @@ class ChambreController extends AbstractController
          $box->setService($servicex[0]);
          $box->setBackground($back);
          $box->settypeaffichage($typeaffichage);
-         if ($typeaffichage == "2") {
+         if ($typeaffichage == "1") {
+         
+          $box->setchaine(NULL);
+       }
+         else if ($typeaffichage == "2") {
             $ch  =  $entityManager->getRepository(Television::class)->findById($chaine);
             $box->setchaine($ch[0]);
          }

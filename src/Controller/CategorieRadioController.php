@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\CategorieRadio;
 use App\Entity\ConfigApp;
+use App\Entity\Radio;
 use Doctrine\DBAL\Exception\IntegrityConstraintViolationException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException; // Importez également cette classe si nécessaire
 
@@ -37,7 +38,12 @@ class CategorieRadioController extends AbstractController
                 'No product found for id '.$id
             );
         }
+          $radio = $entityManager->getRepository(Radio::class)->findBy(['categorie' => $CategorieRadio]);
 
+         if (count($radio) > 0) {
+             $this->addFlash('error', 'Suppression Non Autorisée: La suppression de cette catégorie n\'est pas possible car elle est actuellement associée à des radios dans notre système.');
+             return $this->redirectToRoute('app_categorie_radio');
+         }
         $entityManager->remove($CategorieRadio);
         $entityManager->flush();
 
@@ -48,8 +54,6 @@ class CategorieRadioController extends AbstractController
             $errorMessage = "Erreur : Impossible de supprimer ou de mettre à jour une ligne parente en raison d'une contrainte de clé étrangère.";
             return $this->redirectToRoute('app_categorie_radio');
         } catch (\PDOException $e) {
-            // Gérer l'exception parente ici (PDOException)
-            $errorMessage = $e->getMessage(); // Obtenez le message d'erreur PDO
             // Faites quelque chose avec l'erreur, par exemple, journalisez-la
             return $this->redirectToRoute('app_categorie_radio');
         }
@@ -71,8 +75,7 @@ class CategorieRadioController extends AbstractController
             $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
             return $this->redirectToRoute('home');
         }
-        $catradios = $etablissement->getCategorieRadios();
-        //var_dump($catradios);die();
+        $catradios = $entityManager->getRepository(CategorieRadio::class)->findBy(['etablissement' => $etablissement],['position' => 'ASC']);
         $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement'=>$etablissement]);
         return $this->render('categorie_radio/index.html.twig', [
             'catradios' => $catradios,

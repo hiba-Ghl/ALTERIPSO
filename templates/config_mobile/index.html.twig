@@ -5,7 +5,7 @@
  {# offline #}
 {% if appConfig.StatusServeur is same as('Offline') %}
 
-<script src="assets/js/all.min.js"></script>
+<script src="{{ asset('javascript/all.min.js') }}"></script>
 {% else %}
 {# online #}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>

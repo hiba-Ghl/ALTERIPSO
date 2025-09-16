@@ -24,7 +24,7 @@ class TypeServiceEnChambre
     #[ORM\OneToMany(mappedBy: 'type_service_en_chambre', targetEntity: ServiceEnChambre::class)]
     private Collection $serviceEnChambres;
 
-    #[ORM\ManyToOne(inversedBy: 'typeServiceEnChambres')]
+    #[ORM\ManyToOne(inversedBy: 'typeServiceEnChambre')]
     private ?Etablissement $etablissement = null;
 
     public function __construct()

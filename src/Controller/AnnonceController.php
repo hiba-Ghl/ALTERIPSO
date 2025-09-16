@@ -10,7 +10,9 @@ use App\Entity\LancerAnnonce;
 use App\Entity\LancerRadio;
 use App\Entity\Lancerservice;
 use App\Entity\LancerTV;
+use App\Entity\Services;
 use App\Push\PushRabbit;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,19 +40,19 @@ class AnnonceController extends AbstractController
             return $this->redirectToRoute('home');        }
         //affichage des annonces liees a l'etablissement selon l'ordre croissant de leur champ nom
         $annonce =  $entityManager->getRepository(Annonce::class)->findBy(['etablissement' => $etablissement],['nom' => 'ASC']);
-        $chembre = $entityManager->getRepository(Chambre::class)->findBy(['etablissement' =>$etablissement]);
-        $chembreArray = [];
-        foreach ($chembre as $chambre) {
-            $chembreArray[] = ['id'=>$chambre->getId(),'nom' => $chambre->getNom(),
+        $chambre = $entityManager->getRepository(Chambre::class)->findBy(['etablissement' =>$etablissement]);
+        $chambreArray = [];
+        foreach ($chambre as $chambre) {
+            $chambreArray[] = ['id'=>$chambre->getId(),'nom' => $chambre->getNom(),
                         'ip' => $chambre->getIp(),
                         'Mac' => $chambre->getMac(),
         ];
         }
-        $chembreJson = json_encode($chembreArray);
+        $chambreJson = json_encode($chambreArray);
         return $this->render('annonce/index.html.twig', [
             'annonces' => $annonce,
             'appConfig' => $configApp,
-            'chembre' => $chembreJson,
+            'chambre' => $chambreJson,
         ]);
     }
 
@@ -131,7 +133,7 @@ class AnnonceController extends AbstractController
                 if ($file1) {
                     $fileName = md5(uniqid()) . '.' . $file1->guessExtension();
                     $file1->move($this->getParameter('annonce_directory'), $fileName);
-                    $file = 'annonce/' . $fileName;
+                    $file = 'images/annonce/' . $fileName;
                 }
             }            $annonce->setEtablissement($etablissement);
 
@@ -313,7 +315,7 @@ class AnnonceController extends AbstractController
                 if ($file1) {
                     $fileName = md5(uniqid()) . '.' . $file1->guessExtension();
                     $file1->move($this->getParameter('annonce_directory'), $fileName);
-                    $annonce->setUrl('annonce/' . $fileName);
+                    $annonce->setUrl('images/annonce/' . $fileName);
                 }
             }
             
@@ -420,11 +422,22 @@ class AnnonceController extends AbstractController
     // //recuperation de l'etablissement de l'utilisateur actuellement connecte 
     //affichage des annonces liees a l'etablissement selon l'ordre croissant de leur champ nom
     $annonce = $entityManager->getRepository(Annonce::class)->findById($id)[0];
-    
-    
+    $lancerAnnonce = $entityManager->getRepository(LancerAnnonce::class)->findBy(["idAnnonce" => $id]);
+    $arrayLancerAnnonce= [];
+    foreach ($lancerAnnonce as $l) {
+        $annonce_name = $entityManager->getRepository(Annonce::class)->find($id);
+        $chambre_name = $entityManager->getRepository(Chambre::class)->find($l->getIdchambre());
+        $arrayLancerAnnonce[] = [
+            'nom_chambre' => $chambre_name,
+            'nom_annonce' => $annonce_name,
+            'date' => $l->getDateEnvoie()
+        ];
+    }
+    // dd($arrayLancerAnnonce);
     return $this->render('annonce/journal.html.twig', [
         'annonce' => $annonce,
         'appConfig' => $configApp,
+        'annonceHistorique' => $arrayLancerAnnonce
     ]);
     }
 
@@ -485,12 +498,6 @@ class AnnonceController extends AbstractController
         if( !$this->getUser())
             return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
-        $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
-    //     $Acce = $this->getUser()->getSERVICE() && $this->getUser()->getLancerArretService() && $configApp->getEnableSERVICE() === '1';
-    //  if (!$Acce) {
-    //      $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
-    //      return $this->redirectToRoute('home');
-    //  }
         $repository = $entityManager->getRepository(Chambre::class);
         $queues = array();
         $annonce = $entityManager->getRepository(Annonce::class)
@@ -499,64 +506,40 @@ class AnnonceController extends AbstractController
             return new JsonResponse(['error' => 'Service not found'], Response::HTTP_NOT_FOUND);
         }
         $request = Request::createFromGlobals();
-        $chambre = $request->get("chambre");
         $check = $request->get("checked");
-        $chembreNonVide = [];
-        foreach($check as $key1 => $k1)
-        {
-            $lancerService = $entityManager->getRepository(Lancerservice::class)->findOneBy(['idChembre' => $k1]);
-            $lancerService1 = $entityManager->getRepository(LancerTV::class)->findOneBy(['idChembre' => $k1]);
-            $lancerService2 = $entityManager->getRepository(LancerRadio::class)->findOneBy(['idChembre' => $k1]);
-            if($lancerService)
-                $chembreNonVide[$key1] = $lancerService;
-            if($lancerService1)
-                $chembreNonVide[$key1] = $lancerService1;
-            if($lancerService2)
-                $chembreNonVide[$key1] = $lancerService2;
-        }
-        if(!$chembreNonVide )
-        {
-        if (isset($chambre) and !empty($chambre) and isset($check) and !empty($check)) {
-            foreach ($chambre as $key => $k) {
-                foreach($check as $key1 => $k1)
-                {
-                    if($k == $k1)
-                    {
-                        $lancer = $entityManager->getRepository(LancerAnnonce::class)->findOneBy(['idChembre' => $k]);
+        $queues = array();
+
+        if (isset($check) and !empty($check)) {
+            foreach ($check as $key1 => $k1) {            
+                        $lancer = $entityManager->getRepository(LancerAnnonce::class)->findOneBy(['idchambre' => $k1]);
+                        $lancer1 = $entityManager->getRepository(Lancerservice::class)->findOneBy(['idchambre' => $k1]);
                         if($lancer)
-                        {
                             $entityManager->remove($lancer);
-                            $entityManager->flush();
-                        }
+                        if($lancer1)
+                            $entityManager->remove($lancer1);
+                        $dateNow = new DateTime();
                         $lancer = new LancerAnnonce();
-                        $lancer->setIdChembre($k);
+                        $lancer->setIdchambre($k1);
                         $lancer->setIdAnnonce($idAnnonce);
+                        $lancer->setDateEnvoie($dateNow);
                         $entityManager->persist($lancer);
-                        $entityManager->flush();
-                        $boxs  = $repository->findById($k);
+                        $boxs  = $repository->findById($k1);
+                        $chambre= $boxs[0]->getNom();
+                        $boxs  = $repository->findById($k1);
                         $chambre= $boxs[0]->getNom();
                         $queue = $etablissement->getId() . '.' . $chambre . '.service';
-                        array_push($queues,$queue);
-                        $arrayAnnonce = [];
-                        $arrayAnnonce[] = $this->entityToArray($annonce);
-                        $AnnonceJson = json_encode($arrayAnnonce);
-                        $message = "lancer_annonce%%".$AnnonceJson."%%".$k;
-                        $Manager = new PushRabbit();
-                        $Manager->MakeRabbitCall($queues, $message); 
-                } 
-            }
-        }
-    }
-        return $this->redirectToRoute('app_annonce');
+                        array_push($queues,$queue); 
+                    }
+                    $entityManager->flush();
+                    $arrayAnnonce = [];
+                    $arrayAnnonce[] = $this->entityToArray($annonce);
+                    $AnnonceJson = json_encode($arrayAnnonce);
+                    $message = "lancer_annonce%%".$AnnonceJson;
+                    $Manager = new PushRabbit();
+                    $Manager->MakeRabbitCall($queues, $message); 
 }
-else{
-    $chembreIds = array_map(function($service) use ($entityManager) {
-        $name_chambre = $entityManager->getRepository(Chambre::class)->findOneBy(['id'=>$service->getIdChembre()])->getNom();
-        return $name_chambre ;
-    }, $chembreNonVide);
-    $this->addFlash('warning','Les chambres suivantes ne sont pas vides, elles ont d\'autres services à lancer. S\'il vous plaît, arrêtez les services en cours sur les chembres suivant : ' . implode(', ', $chembreIds));
-    return $this->redirectToRoute('app_annonce');
-}
+return $this->redirectToRoute('app_annonce');
+
 }
 
 
@@ -567,12 +550,6 @@ public function RemoveAnnonce(EntityManagerInterface $entityManager, int $idAnno
     if( !$this->getUser())
      return $this->redirectToRoute('app_login');
     $etablissement = $this->getUser()->getEtablissement();
-    $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
-//     $Acce = $this->getUser()->getSERVICE() && $this->getUser()->getLancerArretService() && $configApp->getEnableSERVICE() === '1';
-//  if (!$Acce) {
-//      $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
-//      return $this->redirectToRoute('home');
-//  }
     $repository = $entityManager->getRepository(Chambre::class);
     $queues = array();
     $annonce = $entityManager->getRepository(Annonce::class)
@@ -581,31 +558,24 @@ public function RemoveAnnonce(EntityManagerInterface $entityManager, int $idAnno
         return new JsonResponse(['error' => 'annonce not found'], Response::HTTP_NOT_FOUND);
     }
     $request = Request::createFromGlobals();
-    $chambre = $request->get("chambre");
     $check = $request->get("checked");
-    if (isset($chambre) and !empty($chambre) and isset($check) and !empty($check)) {
-        foreach ($chambre as $key => $k) {
+    if (isset($check) and !empty($check)) {
             foreach($check as $key1 => $k1)
             {
-                if($k == $k1)
-                {
-                $lancer = $entityManager->getRepository(LancerAnnonce::class)->findOneBy(['idAnnonce'=>$idAnnonce,'idChembre' => $k]);
+                $lancer = $entityManager->getRepository(LancerAnnonce::class)->findOneBy(['idAnnonce'=>$idAnnonce,'idchambre' => $k1]);
                 if($lancer)
                 {
                 $entityManager->remove($lancer);
-                $entityManager->flush();
-                $boxs  = $repository->findById($k);
+                $boxs  = $repository->findById($k1);
                 $chambre= $boxs[0]->getNom();
                 $queue = $etablissement->getId() . '.' . $chambre . '.service';
-                array_push($queues,$queue);  
-                $message = "arreter_annonce%%".$idAnnonce."%%".$k;
-;               $Manager = new PushRabbit();
-                $Manager->MakeRabbitCall($queues, $message);
-                }
-
             }
-    }
-}
+            }
+            $entityManager->flush();
+            array_push($queues,$queue);  
+            $message = "arreter_annonce%%".$idAnnonce;          
+            $Manager = new PushRabbit();
+            $Manager->MakeRabbitCall($queues, $message);
 }
     return $this->redirectToRoute('app_annonce');
 }
@@ -620,11 +590,6 @@ public function GetAllchambreLancerAnnonce(EntityManagerInterface $entityManager
         return $this->redirectToRoute('app_login');
     $etablissement = $this->getUser()->getEtablissement();
     $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
-//     $Acce = $this->getUser()->getSERVICE() && $configApp->getEnableSERVICE() === '1';
-//  if (!$Acce) {
-//      $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
-//      return $this->redirectToRoute('home');
-//  }
     $annonce = $entityManager->getRepository(Annonce::class)
         ->findOneBy(['etablissement' => $etablissement, 'id' => $idAnnonce]);
     if (!$annonce) {
@@ -633,7 +598,7 @@ public function GetAllchambreLancerAnnonce(EntityManagerInterface $entityManager
     $lancer = $entityManager->getRepository(LancerAnnonce::class)->findBy(['idAnnonce'=>$idAnnonce]);
     $arrayLancerAnnonce = [];
     foreach ($lancer as $l) {
-        $ex = $entityManager->getRepository(Chambre::class)->findOneBy(["id"=>$l->getIdChembre()]);
+        $ex = $entityManager->getRepository(Chambre::class)->findOneBy(["id"=>$l->getIdchambre()]);
         $arrayLancerAnnonce[] = ['id'=>$ex->getId(),'nom' => $ex->getNom(),
                         'ip' => $ex->getIp(),
                         'Mac' => $ex->getMac(),];

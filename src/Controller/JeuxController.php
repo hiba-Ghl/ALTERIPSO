@@ -40,7 +40,7 @@ class JeuxController extends AbstractController
         return $this->render('jeux/index.html.twig', [
             'supports' => $support,
             'jeuxs' => $jeuxsArray,
-            'appConfig' => $appConfig,
+            'appConfig' => $appConfig,  
             'user' => $this->getUser(),
         ]);
     }
@@ -60,10 +60,35 @@ class JeuxController extends AbstractController
      if (!$Acce) {
       $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
       return $this->redirectToRoute('home');      }
-     $support =  $etablissement->getSupports();
+    //  $support =  $etablissement->getSupports();
      $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
  
-     
+      $supports = $entityManager->getRepository(Support::class)->findBy(['etablissement' => $etablissement], ['nom' => 'ASC']);
+
+    $positionsBySupport = [];
+    $firstFreePositionBySupport = [];
+
+    foreach ($supports as $support) {
+        $protocole = $support->getProtocole();
+
+        $jeuxes = $entityManager->getRepository(Jeux::class)->findBy([
+            'protocole' => $protocole,
+            'etablissement' => $etablissement
+        ]);
+
+        $positions = array_map(function ($app) {
+            return $app->getPosition();
+        }, $jeuxes);
+
+        $positionsBySupport[$protocole] = $positions;
+
+        $firstFreePosition = 1;
+        while (in_array($firstFreePosition, $positions)) {
+            $firstFreePosition++;
+        }
+
+        $firstFreePositionBySupport[$protocole] = $firstFreePosition;
+    }
       $valider = $request->get("valider");
 
        if (isset($valider)) {
@@ -89,14 +114,16 @@ class JeuxController extends AbstractController
           $jeux->setPosition($position);
           $jeux->setProtocole($protocole);
           $jeux->setLogo($fileName);
-         
+          $supportId = $entityManager->getRepository(Support::class)->findOneBy(['etablissement'=>$etablissement,'protocole' => $protocole]);
+
           $entityManager->persist($jeux);
           $entityManager->flush();
           //return $this->redirectToRoute('app_jeux');
-          return $this->redirectToRoute('app_jeux', ['ongletActif' => $protocole]);
+          return $this->redirectToRoute('app_jeux', ['ongletActif' => $supportId->getId()]);
        }
  
-       return $this->render('jeux/ajouter.html.twig', array('supports' => $support,'appConfig' => $appConfig));
+       return $this->render('jeux/ajouter.html.twig', array('supports' => $supports,'appConfig' => $appConfig,'positionsBySupport' => $positionsBySupport,
+        'firstFreePositionBySupport' => $firstFreePositionBySupport,));
     }
 
     #[Route('/jeux/modifier/{id}', name: 'app_modifier_jeux')]
@@ -131,7 +158,8 @@ class JeuxController extends AbstractController
          $fileName = 'images/jeux/' . $fileName1;
  
          }
-          
+         $supportId = $entityManager->getRepository(Support::class)->findOneBy(['etablissement'=>$etablissement,'protocole' => $protocole]);
+
           $jeux->setEtablissement($etablissement);
           $jeux->setNom($nom);
           //$jeux->setActive($active);
@@ -143,7 +171,7 @@ class JeuxController extends AbstractController
           $entityManager->persist($jeux);
           $entityManager->flush();
           //return $this->redirectToRoute('app_jeux');
-          return $this->redirectToRoute('app_jeux', ['ongletActif' => $protocole]);
+          return $this->redirectToRoute('app_jeux', ['ongletActif' => $supportId->getId()]);
      
        }
  
@@ -191,7 +219,7 @@ class JeuxController extends AbstractController
       if (!$Acce) {
         $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
         return $this->redirectToRoute('home');       }
-      $jeuxs =  $this->getUser()->getEtablissement()->getApplications();
+      $jeuxs =  $this->getUser()->getEtablissement()->getJeuxes();
   
       foreach ($jeuxs as $jeux) {
         $jeux->setActive('0');
@@ -215,7 +243,6 @@ class JeuxController extends AbstractController
       }
   
       $listeposition = $request->get('listeposition');
-      //  var_dump($box2);die();
   
       if (isset($listeposition) and !empty($listeposition)) {
         foreach ($listeposition as $key => $k) {
@@ -235,7 +262,6 @@ class JeuxController extends AbstractController
      //$ongletActif = $request->query->get('ongletActif');
      $ongletActif = $request->request->get('ongletActif');
 
-     //var_dump($ongletActif);die();
 
      // Ajouter l'onglet actif comme paramètre de la redirection
      return $this->redirectToRoute('app_jeux', ['ongletActif' => $ongletActif]);

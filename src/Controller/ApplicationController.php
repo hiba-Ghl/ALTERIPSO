@@ -46,7 +46,6 @@ class ApplicationController extends AbstractController
         usort($applicationsArray, function($a, $b) {
             return $a->getPosition() <=> $b->getPosition();
         });
-    
         return $this->render('application/index.html.twig', [
             'supports' => $support,
             'applications' => $applicationsArray,
@@ -56,57 +55,94 @@ class ApplicationController extends AbstractController
     
 
 
-    #[Route('/application/ajouter', name: 'app_ajouter_application')]
-    public function ajouterapplication(EntityManagerInterface $entityManager): Response
-    {
-     $request = Request::createFromGlobals();
-     if( !$this->getUser())
-     return $this->redirectToRoute('app_login');
-     $etablissement = $this->getUser()->getEtablissement();
-     $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
-      $Acce = $this->getUser()->getAjoutApp() && $this->getUser()->getAPPLICATION() && $configApp->getEnableAPPLICATION() == "1";
-     if (!$Acce) {
-        $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
+ #[Route('/application/ajouter', name: 'app_ajouter_application')]
+public function ajouterapplication(EntityManagerInterface $entityManager): Response
+{
+    $request = Request::createFromGlobals();
+
+    if (!$this->getUser()) {
+        return $this->redirectToRoute('app_login');
+    }
+
+    $etablissement = $this->getUser()->getEtablissement();
+    $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+
+    $Acce = $this->getUser()->getAjoutApp() && $this->getUser()->getAPPLICATION() && $configApp?->getEnableAPPLICATION() == "1";
+    if (!$Acce) {
+        $this->addFlash('success', "Vous n'avez pas le droit d'accéder à cette page.");
         return $this->redirectToRoute('home');
-     }
-     $support =  $etablissement->getSupports();
-     $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement'=>$etablissement]);
+    }
+    $supports = $entityManager->getRepository(Support::class)->findBy(['etablissement' => $etablissement], ['nom' => 'ASC']);
 
-      $valider = $request->get("valider");
+    $positionsBySupport = [];
+    $firstFreePositionBySupport = [];
 
-       if (isset($valider)) {
+    foreach ($supports as $support) {
+        $protocole = $support->getProtocole();
 
+        $Applicationes = $entityManager->getRepository(Application::class)->findBy([
+            'protocole' => $protocole,
+            'etablissement' => $etablissement
+        ]);
+
+        $positions = array_map(function ($app) {
+            return $app->getPosition();
+        }, $Applicationes);
+
+        $positionsBySupport[$protocole] = $positions;
+
+        $firstFreePosition = 1;
+        while (in_array($firstFreePosition, $positions)) {
+            $firstFreePosition++;
+        }
+
+        $firstFreePositionBySupport[$protocole] = $firstFreePosition;
+    }
+
+    $valider = $request->get("valider");
+
+    if (isset($valider)) {
         $fileName = 'images/no_image.png';
         $nom = $request->get("nom");
         $package = $request->get("package");
         $active = $request->get("active");
         $position = $request->get("position");
         $protocole = $request->get("protocole");
+
         $file1 = $request->files->get('logo');
         if ($file1) {
-         $fileName1 = md5(uniqid()) . '.' . $file1->guessExtension();   
-         $file1->move($this->getParameter('application_directory'), $fileName1);
-         $fileName = 'images/application/' . $fileName1;
- 
-         }
-          $application = new Application();
-          $application->setEtablissement($etablissement);
-          $application->setNom($nom);
-          $application->setActive($active);
-          $application->setPackage($package);
-          $application->setPosition($position);
-          $application->setProtocole($protocole);
-          $application->setLogo($fileName);
-         
-          $entityManager->persist($application);
-          $entityManager->flush();
-          //return $this->redirectToRoute('app_application');
-          return $this->redirectToRoute('app_application', ['ongletActif' => $protocole
+            $fileName1 = md5(uniqid()) . '.' . $file1->guessExtension();   
+            $file1->move($this->getParameter('application_directory'), $fileName1);
+            $fileName = 'images/application/' . $fileName1;
+        }
+
+        $application = new Application();
+        $application->setEtablissement($etablissement);
+        $application->setNom($nom);
+        $application->setActive($active);
+        $application->setPackage($package);
+        $application->setPosition($position);
+        $application->setProtocole($protocole);
+        $application->setLogo($fileName);
+
+        $supportId = $entityManager->getRepository(Support::class)->findOneBy([
+            'etablissement' => $etablissement,
+            'protocole' => $protocole
         ]);
-       }
- 
-       return $this->render('application/ajouter.html.twig', array('supports' => $support,'appConfig' =>$appConfig));
+
+        $entityManager->persist($application);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_application', ['ongletActif' => $supportId->getId()]);
     }
+
+    return $this->render('application/ajouter.html.twig', [
+        'supports' => $supports,
+        'appConfig' => $configApp,
+        'positionsBySupport' => $positionsBySupport,
+        'firstFreePositionBySupport' => $firstFreePositionBySupport,
+    ]);
+}
 
     #[Route('/application/modifier/{id}', name: 'app_modifier_application')]
     public function modifierapplication(EntityManagerInterface $entityManager, int $id): Response
@@ -147,12 +183,14 @@ class ApplicationController extends AbstractController
           $application->setPackage($package);
           //$application->setPosition($position);
           $application->setProtocole($protocole);
+          $supportId = $entityManager->getRepository(Support::class)->findOneBy(['etablissement'=>$etablissement,'protocole' => $protocole]);
+
           $application->setLogo($fileName);
          
           $entityManager->persist($application);
           $entityManager->flush();
           //return $this->redirectToRoute('app_application');
-          return $this->redirectToRoute('app_application', ['ongletActif' => $protocole]);
+          return $this->redirectToRoute('app_application', ['ongletActif' => $supportId->getId()]);
      
        }
  
@@ -221,7 +259,6 @@ class ApplicationController extends AbstractController
       }
   
       $listeposition = $request->get('listeposition');
-      //  var_dump($box2);die();
   
       if (isset($listeposition) and !empty($listeposition)) {
         foreach ($listeposition as $key => $k) {
@@ -241,7 +278,6 @@ class ApplicationController extends AbstractController
      //$ongletActif = $request->query->get('ongletActif');
      $ongletActif = $request->request->get('ongletActif');
 
-     //var_dump($ongletActif);die();
 
      // Ajouter l'onglet actif comme paramètre de la redirection
      return $this->redirectToRoute('app_application', ['ongletActif' => $ongletActif]);

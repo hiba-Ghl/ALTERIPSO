@@ -5,13 +5,11 @@
 {# offline #}
 {% if appConfig.StatusServeur is same as('Offline') %}
 
-<script src="assets/js/all.min.js"></script>
-{% else %}
+<script src="{{ asset('javascript/all.min.js') }}"></script>{% else %}
 {# online #}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 
 {% endif %}
-<script src="assets/js/all.min.js"></script>
 <div style="border-radius: 8px;  margin-top:10px;text-align: left; margin-bottom: 10px; margin-left: -130px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 200px; padding-left: 10px; display: inline-block;">
     <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
     Ajouter un service
@@ -306,8 +304,6 @@ document.addEventListener('DOMContentLoaded', function () {
         submitButton.addEventListener('click', function () {
                 $('#exampleModal').modal('show');
         });
-    } else {
-        console.error("One or more elements are missing in the DOM.");
     }
 });
 </script>

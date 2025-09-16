@@ -91,6 +91,9 @@ class Configmobile
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $prix_casque = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $idcloud = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -404,6 +407,18 @@ class Configmobile
     public function setPrixCasque(?string $prix_casque): static
     {
         $this->prix_casque = $prix_casque;
+
+        return $this;
+    }
+
+    public function getIdcloud(): ?string
+    {
+        return $this->idcloud;
+    }
+
+    public function setIdcloud(?string $idcloud): static
+    {
+        $this->idcloud = $idcloud;
 
         return $this;
     }

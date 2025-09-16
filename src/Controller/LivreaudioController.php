@@ -139,7 +139,6 @@ class LivreaudioController extends AbstractController
             return $this->redirectToRoute('home');      
         }
        $livreaudio  = $repository->findBy(['etablissement' => $etablissement]);
-       // var_dump($livreaudio);die();
         foreach ($livreaudio as $tele) {
             $tele->setActive('0');
             $entityManager->persist($tele);

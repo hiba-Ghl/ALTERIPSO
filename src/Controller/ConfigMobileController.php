@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\ConfigApp;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -111,9 +112,10 @@ class ConfigMobileController extends AbstractController
             
 
         }
-
+        $appConfig = $this->entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
         return $this->render('config_mobile/index.html.twig', array(
-            'msg' => $msg, 'config' => $config
+            'msg' => $msg, 'config' => $config, 'appConfig' => $appConfig,
+
         ));
     }
 

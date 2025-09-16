@@ -67,7 +67,11 @@
 		.paginate_button {
 			margin-left: 2px;
 		}
+		  .dt-buttons .btn {
+    margin-right: 5px;
+  }
 	</style>
+
 
 	<p id='p'></p>
 <div style="border-radius: 8px; text-align: left; margin-bottom: 10px; margin-left: -130px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding-left: 10px; display: inline-block;">
@@ -75,7 +79,7 @@
 		Liste Support Connecté
 </div>
 	<div id="div2">
-	<div style="display:flex;align-items:center;justify-content:space-between;gap:3px;">
+	<div style="display:flex;justify-content:space-between;gap:3px;">
 	<div>
 		<button type="button" class="btn btn-info btn-sm" {% if app.user.AjouteServiceEtablissement == '0' %} disabled {% endif %} data-toggle="modal" data-target="#exampleModal"><i class="glyphicon glyphicon-plus"></i>
 			Ajouter Service Etablissement
@@ -88,8 +92,7 @@
 				Ajouter support
 			</a>
 			<div style="color: red;font-size: 18px;">
-				<br>
-				<i class="glyphicon glyphicon-warning-sign"></i>-    vous n'avez pas assez de licences, pour ajouter un support merci d'envoyer un email à : contact@alteripso.com
+				<i class="glyphicon glyphicon-warning-sign"></i>-vous n'avez pas assez de licences, pour ajouter un support merci d'envoyer un email à : contact@alteripso.com
 			</div>
 		{% else %}
 				<a href="{{path('app_ajouter_chambre')}}" class="btn btn-info btn-sm" name="add" id="add" {% if app.user.AjouteSupport == '0' %} disabled {% endif %}>
@@ -103,29 +106,27 @@
 		<B>Nombre de Support :
 			{{nb}}
 	</div>
-		<div style="">
-			<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal" {% if not app.user.CheckSupport %} disabled {% endif %}>
-				<i class="glyphicon glyphicon-log-in"></i>
-				Check-in/Check-out</button>
-		</div>
+	<div style="">
+		<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal" {% if not app.user.CheckSupport %} disabled {% endif %}>
+			<i class="glyphicon glyphicon-log-in"></i>
+			Check-in/Check-out
+		</button>
 	</div>
-
+	</div>
 		<div style="color: red; font-size: 14px;">Choisissez le modèle d'extraction de données:</div>
-		<br>
 		<div class="modnt"></div>
 		<div id="myDiv" style="margin-buttom:25px">
 
-		<div class="dataTables_filter" style="width:25%;display:flex;gap:10px;margin-left: 600px;position:absolute;margin-top: 0px;height:30px;">
-		<label style="font-weight:normal">Recherche par service:</label>
+		<div class="dataTables_filter" style="width:400px;display:flex;gap:10px;margin-left: 500px;position:absolute;margin-top: 0px;height:30px;">
+		<label style="font-weight:normal;width:300px;">Recherche par service:</label>
 		<select  style="height:100%;width: 200px;"onchange="getval2(this)" id="form_Active" name="selectservices">
 			{% for s in serviceetablissement %}
 				<option value="{{s.nom}}">{{s.nom|upper}}</option>
 			{% endfor %}
 		</select>
 		</div>
-
 			<!--<table class="table table-striped table-bordered table-hover" id="dataTables-example">-->
-    <table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column" id="dataTables-example" role="none" style="width:100%;height: 200px;">
+    <table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column" id="dataTables-example" role="none" style="width:100%;height: 300px;">
 				<thead>
 
 					<tr>
@@ -156,7 +157,6 @@
 							<td style="text-align: center;  height: 50px;width: 122px;">{{box.nom}}</td>
 
 
-							{#{dump(box)}#}
 
 
 							<!--<td class="{#{i}#}"></td>-->
@@ -232,7 +232,6 @@
 
 						{% endfor %}
 
-						{#{ dump(nb) }#}
 					</tbody>
 				</tbody>
 			</table>
@@ -393,20 +392,27 @@
 <script src="{{ asset('javascript/dataTables.buttons.min.js') }}"></script>
 <script src="{{ asset('javascript/clipboard.min.js') }}"></script>
 {% else %}
-{# online #}
-  <script src="{{asset('javascript/jquery.min.js')}}"> </script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 	<style type="text/css" src="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css"></style>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-  <script src="{{ asset('javascript/datatables2.min.js') }}"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<!-- DataTables -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<!-- DataTables Buttons -->
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+
+  {# <script src="{{ asset('javascript/datatables2.min.js') }}"></script> #}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script> 
   <script src="https://cdn.datatables.net/buttons/2.3.3/js/dataTables.buttons.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script> 
-	{# <style type="text/css" src="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css"></style> #}
-
 {% endif %}
 
     <script>
@@ -419,8 +425,8 @@
  },
            "aaSorting": [[ 1, "dsc" ]],
                 responsive: true,
-                 dom: 'Bfrtip',
-                 info: false, // Masquer les informations sur le tableau
+				dom: 'Bfrtip',
+                info: false, // Masquer les informations sur le tableau
                 paging: false, // Masquer la pagination
         buttons: [
             { extend: 'copy', className: 'btn-info w' ,title: 'Liste Support Connecté'},

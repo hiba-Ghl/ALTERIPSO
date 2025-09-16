@@ -24,7 +24,6 @@ class EtablissementController extends AbstractController
         $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
 
 
-        //var_dump($etablissement);die();
 
         return $this->render('etablissement/index.html.twig', [
             'etablissement' => $etablissement,
@@ -44,7 +43,6 @@ class EtablissementController extends AbstractController
 
 
     //    $file = $request->files->get('background');
-    //var_dump($file);die();
 
     // Vérifiez si les fichiers ont été téléchargés
     //    if ($file) {
@@ -151,7 +149,6 @@ class EtablissementController extends AbstractController
         $ville = $request->get('ville');
         $pays = $request->get('pays');
         $description = $request->get('description');
-        //var_dump($description);die();
         $licence = $request->get('licence');
         $adresse = $request->get('adresse');
         $genre = $request->get('genre');
@@ -216,10 +213,8 @@ class EtablissementController extends AbstractController
         $entityManager->flush();
 
 
+        return $this->redirectToRoute('app_home');
 
         // Redirigez l'utilisateur vers une page de confirmation 
-        return $this->redirectToRoute('app_etablissement', [
-            'id' => $etablissement->getId()
-        ]);
     }
 }

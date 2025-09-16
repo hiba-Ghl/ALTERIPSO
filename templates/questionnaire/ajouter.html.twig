@@ -206,16 +206,7 @@
                     </div>
                 </td>
             </tr>
-            {# <tr>
-                <td colspan="2">
-                    <div class="btn-container">
-                        <div><a class="btn btn-danger" href="{{ path('app_questionnaire') }}" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a></div>
-                        <button type="submit" name="valider" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-Sauvegarderd"></i> Enregistrer</button>
-                    </div>
-                </td>
-            </tr> #}
         </table>
-    </form>
         <div style="float:right;margin-right:10px;margin-top:-10px;">
 				<a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/questionnaire">
 					<i class="glyphicon glyphicon-remove"></i> Annuler
@@ -225,6 +216,7 @@
 					Enregistrer
 				</button>
 				</div>
+    </form>
 </div>
 
 <script>
@@ -306,7 +298,7 @@ $(document).ready(function() {
     const positionsByService = {{ positionsByService|json_encode|raw }};
     const firstFreePositionByService = {{ firstFreePositionByService|json_encode|raw }};
     const positionSelect = document.getElementById('positionSelect');
-
+    console.log(positionsByService,firstFreePositionByService)
     // Clear the position select options
     positionSelect.innerHTML = '<option value=""></option>';
 
@@ -314,7 +306,7 @@ $(document).ready(function() {
     const occupiedPositions = positionsByService[serviceId] || [];
 
     // Add available positions to the select
-    for (let i = 1; i <= 20; i++) {
+    for (let i = 1; i <= 100; i++) {
         if (!occupiedPositions.includes(i)) {
             const option = document.createElement('option');
             option.value = i;

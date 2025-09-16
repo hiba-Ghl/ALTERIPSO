@@ -78,7 +78,17 @@ class Etablissement
 
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Services::class)]
     private Collection $services;
+
+
+    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: ServiceEnChambre::class)]
+    private Collection $serviceEnChambre;
+
+    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: TypeServiceEnChambre::class)]
+    private Collection $typeServiceEnChambre;
     
+    #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: HistoriqueAnnonce::class)]
+    private Collection $historiqueAnnonces;
+
     #[ORM\OneToMany(mappedBy: 'etablissement', targetEntity: Television::class)]
     private Collection $televisions;
     
@@ -148,6 +158,9 @@ class Etablissement
         $this->categorieVods = new ArrayCollection();
         $this->categories = new ArrayCollection();
         $this->services = new ArrayCollection();
+        $this->serviceEnChambre = new ArrayCollection();
+        $this->typeServiceEnChambre = new ArrayCollection();
+        $this->historiqueAnnonces = new ArrayCollection();
         $this->televisions = new ArrayCollection();
         $this->radios = new ArrayCollection();
         $this->livreaudios = new ArrayCollection();
@@ -808,6 +821,94 @@ class Etablissement
             // set the owning side to null (unless already changed)
             if ($Services->getEtablissement() === $this) {
                 $Services->setEtablissement(null);
+            }
+        }
+        return $this;
+    }
+
+
+  /**
+     * @return Collection<int, ServiceEnChambre>
+     */
+    public function getServiceEnChambre(): Collection
+    {
+        return $this->serviceEnChambre;
+    }
+    public function addServiceEnChambre(ServiceEnChambre $ServiceEnChambre): static
+    {
+        if (!$this->serviceEnChambre->contains($ServiceEnChambre)) {
+            $this->serviceEnChambre->add($ServiceEnChambre);
+            $ServiceEnChambre->setEtablissement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeServiceEnChambre(ServiceEnChambre $ServiceEnChambre): static
+    {
+        if ($this->serviceEnChambre->removeElement($ServiceEnChambre)) {
+            // set the owning side to null (unless already changed)
+            if ($ServiceEnChambre->getEtablissement() === $this) {
+                $ServiceEnChambre->setEtablissement(null);
+            }
+        }
+        return $this;
+    }
+
+
+
+    /**
+     * @return Collection<int, TypeServiceEnChambre>
+     */
+    public function getTypeServiceEnChambre(): Collection
+    {
+        return $this->typeServiceEnChambre;
+    }
+    public function addTypeServiceEnChambre(TypeServiceEnChambre $TypeServiceEnChambre): static
+    {
+        if (!$this->typeServiceEnChambre->contains($TypeServiceEnChambre)) {
+            $this->typeServiceEnChambre->add($TypeServiceEnChambre);
+            $TypeServiceEnChambre->setEtablissement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTypeServiceEnChambre(TypeServiceEnChambre $TypeServiceEnChambre): static
+    {
+        if ($this->typeServiceEnChambre->removeElement($TypeServiceEnChambre)) {
+            // set the owning side to null (unless already changed)
+            if ($TypeServiceEnChambre->getEtablissement() === $this) {
+                $TypeServiceEnChambre->setEtablissement(null);
+            }
+        }
+        return $this;
+    }
+
+
+     /**
+     * @return Collection<int, HistoriqueAnnonce>
+     */
+    public function getHistoriqueAnnonce(): Collection
+    {
+        return $this->historiqueAnnonces;
+    }
+    public function addHistoriqueAnnonce(HistoriqueAnnonce $historiqueAnnonces): static
+    {
+        if (!$this->historiqueAnnonces->contains($historiqueAnnonces)) {
+            $this->historiqueAnnonces->add($historiqueAnnonces);
+            $historiqueAnnonces->setEtablissement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistoriqueAnnonce(HistoriqueAnnonce $historiqueAnnonces): static
+    {
+        if ($this->historiqueAnnonces->removeElement($historiqueAnnonces)) {
+            // set the owning side to null (unless already changed)
+            if ($historiqueAnnonces->getEtablissement() === $this) {
+                $historiqueAnnonces->setEtablissement(null);
             }
         }
         return $this;

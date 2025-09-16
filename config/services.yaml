@@ -5,7 +5,9 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
   # Répertoire contenent les dossies des images (défini via une variable d'environnement HOME_DIRECTORY)
+    # get from Public Externe
     # project_dir: '%env(HOME_DIRECTORY)%'
+    # get from public interne
     project_dir: '%kernel.project_dir%'
 # Répertoire global contenant toutes les images
     images_directory: '%project_dir%/public/images/'
@@ -59,14 +61,17 @@ parameters:
     service_in_room_directory: '%project_dir%/public/serviceinroom'
 
 # Répertoire contenant les fichiers des annonces
-    annonce_directory: '%project_dir%/public/annonce'
+    annonce_directory: '%project_dir%/public/images/annonce'
 
 # Répertoire contenant les images de la VOD (vidéo à la demande)
     vod_directory: '%project_dir%/public/images/vod'
 
 # Répertoire contenant les catégories de VOD
     categorie_vod_directory: '%project_dir%/public/images/categorie_vod'
-
+# Répertoire contenant xml
+    xml_directory: '%project_dir%/public/xml'
+# Répertoire contenant logs
+    logs_directory: '%project_dir%/public/logs'
 # Ancienne version 
     # categories_directory: '%kernel.project_dir%/public/images/categories'
     # etablissement_directory: '%kernel.project_dir%/public/images/etablissement'

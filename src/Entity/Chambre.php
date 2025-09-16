@@ -70,6 +70,12 @@ class Chambre
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $typeaffichage = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $login = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $mdp= null;
+
     #[ORM\ManyToOne]
     private ?Television $chaine = null;
 
@@ -85,9 +91,14 @@ class Chambre
     #[ORM\OneToMany(mappedBy: 'chambre', targetEntity: ResultatQuestionnaire::class)]
     private Collection $resultatQuestionnaires;
 
+    #[ORM\OneToMany(mappedBy: 'chambre', targetEntity: HistoriqueAnnonce::class)]
+    private Collection $historiqueAnnonces;
+
     public function __construct()
     {
         $this->resultatQuestionnaires = new ArrayCollection();
+        $this->historiqueAnnonces = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -333,6 +344,29 @@ class Chambre
 
         return $this;
     }
+    public function getLogin(): ?string
+    {
+        return $this->login;
+    }
+
+    public function setLogin(?string $login): static
+    {
+        $this->login = $login;
+
+        return $this;
+    }
+
+    public function getMdp(): ?string
+    {
+        return $this->mdp;
+    }
+
+    public function setMdp(?string $mdp): static
+    {
+        $this->mdp = $mdp;
+
+        return $this;
+    }
 
     public function getEtablissement(): ?Etablissement
     {
@@ -394,6 +428,36 @@ class Chambre
             // set the owning side to null (unless already changed)
             if ($resultatQuestionnaire->getChambre() === $this) {
                 $resultatQuestionnaire->setChambre(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, HistoriqueAnnonce>
+     */
+    public function getHistoriqueAnnonce(): Collection
+    {
+        return $this->historiqueAnnonces;
+    }
+
+    public function addHistoriqueAnnonce(HistoriqueAnnonce $historiqueAnnonces): static
+    {
+        if (!$this->historiqueAnnonces->contains($historiqueAnnonces)) {
+            $this->historiqueAnnonces->add($historiqueAnnonces);
+            $historiqueAnnonces->setChambre($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistoriqueAnnonce(HistoriqueAnnonce $historiqueAnnonces): static
+    {
+        if ($this->historiqueAnnonces->removeElement($historiqueAnnonces)) {
+            // set the owning side to null (unless already changed)
+            if ($historiqueAnnonces->getChambre() === $this) {
+                $historiqueAnnonces->setChambre(null);
             }
         }
 

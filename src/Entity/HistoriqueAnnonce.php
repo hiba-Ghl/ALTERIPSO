@@ -19,8 +19,8 @@ class HistoriqueAnnonce
     #[ORM\ManyToOne(inversedBy: 'historiqueAnnonces')]
     private ?Chambre $chambre = null;
 
-    #[ORM\ManyToOne(inversedBy: 'historiqueAnnonces')]
-    private ?Annonce $annonce = null;
+    #[ORM\ManyToOne(inversedBy: 'historiqueAnnonces', targetEntity: Annonce::class)]
+    private ?Annonce $annonce;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $dtenvoie = null;
@@ -77,4 +77,5 @@ class HistoriqueAnnonce
 
         return $this;
     }
+   
 }

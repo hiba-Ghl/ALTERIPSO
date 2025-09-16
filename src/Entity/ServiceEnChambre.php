@@ -34,7 +34,7 @@ class ServiceEnChambre
     #[ORM\ManyToOne(inversedBy: 'serviceEnChambres')]
     private ?TypeServiceEnChambre $type_service_en_chambre = null;
 
-    #[ORM\ManyToOne(inversedBy: 'serviceEnChambres')]
+    #[ORM\ManyToOne(inversedBy: 'serviceEnChambre')]
     private ?Etablissement $etablissement = null;
 
     #[ORM\Column(length: 255, nullable: true)]

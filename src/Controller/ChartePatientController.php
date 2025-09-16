@@ -57,7 +57,6 @@ class ChartePatientController extends AbstractController
 
             // $fileName=' ';
             $file = $this->request->files->get('file');
-           // var_dump($file);die();
             if (!empty($file)) {
                 $fileName = md5(uniqid()) . '.' . $file->guessExtension();
                 $file->move($this->getParameter('charte_patient_directory'), $fileName);
@@ -79,7 +78,6 @@ class ChartePatientController extends AbstractController
             //header("Refresh:0; url=http://192.168.1.101:1111/ipso/web/app.php/showpdf");
             header("Refresh:0");
         }
-        //var_dump($charte);die();
         return $this->render('charte_patient/index.html.twig', [
             'charte' => $charte,'package'=>$package,
             'appConfig' => $configApp,

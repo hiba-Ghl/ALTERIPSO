@@ -63,9 +63,12 @@
 					<td style="width: 33%;">
 
 						<div class="control-label">
-							<label  class=" control-label">Position:
+							<label  class=" control-label">Position:  
 							</label>
-							<input type="number" name="position" id="position" class="form-control" style="width: 99%;" >
+							<select class="form-control" id="positionSelect" name="Position" >
+                            	<option selected="selected" value=''></option>
+                        	</select>
+							{# <input type="number" name="position" id="position" class="form-control" style="width: 99%;" > #}
 						</div>
 
 					</td>
@@ -73,7 +76,7 @@
 					<td style="width: 33%;">
 						<div class="control-label">
 							<label >logo :</label>
-							<input type="file" class="form-control" id="logo" name="logo" style="width: 99%;" >
+							<input type="file" class="form-control" id="logo" name="logo" style="width: 99%;" required>
 						</div>
 					</td>
 
@@ -83,11 +86,11 @@
 								Protocole:
 							</label>
 							<select class="form-control" name="protocole" id="protocole" style="width: 99%;">
-								{% for support in supports %}
-									<option value="{{support.protocole}}">{{support.nom|upper}}</option>
-								{% endfor %}
+    {% for support in supports %}
+        <option value="{{ support.protocole }}">{{ support.nom|upper }}</option>
+    {% endfor %}
+</select>
 
-							</select>
 						</div>
 
 					</td>
@@ -121,7 +124,46 @@
 
 
 </script>
-	
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const protocoleSelect = document.getElementById('protocole');
+    const positionSelect = document.getElementById('positionSelect');
+
+    const positionsBySupport = {{ positionsBySupport|json_encode|raw }};
+    const firstFreePositionBySupport = {{ firstFreePositionBySupport|json_encode|raw }};
+
+    if (!protocoleSelect || !positionSelect) {
+        console.error("Un des éléments (protocole ou positionSelect) est introuvable.");
+        return;
+    }
+
+    protocoleSelect.addEventListener('change', function () {
+        const protocole = this.value;
+
+        // Efface les anciennes options
+        positionSelect.innerHTML = '<option value=""></option>';
+
+        const occupiedPositions = positionsBySupport[protocole] || [];
+
+        // Ajoute les positions disponibles
+        for (let i = 1; i <= 100; i++) {
+            if (!occupiedPositions.includes(i)) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                positionSelect.appendChild(option);
+            }
+        }
+
+        // Sélectionne la première position libre
+        const firstFree = firstFreePositionBySupport[protocole];
+        if (firstFree) {
+            positionSelect.value = firstFree;
+        }
+    });
+});
+</script>
 
 
 {% endblock %}

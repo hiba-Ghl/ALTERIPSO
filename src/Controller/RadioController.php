@@ -43,18 +43,18 @@ class RadioController extends AbstractController
         $radio  = $repository->findBy(['etablissement' => $etablissement],['nom' => 'ASC']);
         $categorieradio =  $entityManager->getRepository(CategorieRadio::class)->findBy(['etablissement' => $etablissement],['nom' => 'ASC']);
         $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
-        $chembre = $entityManager->getRepository(Chambre::class)->findBy(['etablissement' =>$etablissement]);
-        $chembreArray = [];
-        foreach ($chembre as $chambre) {
-            $chembreArray[] = ['id'=>$chambre->getId(),'nom' => $chambre->getNom(),
+        $chambre = $entityManager->getRepository(Chambre::class)->findBy(['etablissement' =>$etablissement]);
+        $chambreArray = [];
+        foreach ($chambre as $chambre) {
+            $chambreArray[] = ['id'=>$chambre->getId(),'nom' => $chambre->getNom(),
                         'ip' => $chambre->getIp(),
                         'Mac' => $chambre->getMac(),
         ];
         }
-        $chembreJson = json_encode($chembreArray);
+        $chambreJson = json_encode($chambreArray);
         return $this->render('radio/index.html.twig', [
             'radio' => $radio , 'categorieradio' => $categorieradio,'appConfig' => $appConfig,'user' => $this->getUser(),
-            'chembre' => $chembreJson,
+            'chambre' => $chambreJson,
 
         ]);
     }
@@ -172,7 +172,6 @@ class RadioController extends AbstractController
             $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
             return $this->redirectToRoute('home');        }
        $radio  = $repository->findBy(['etablissement' => $etablissement]);
-       // var_dump($radio);die();
         foreach ($radio as $tele) {
             $tele->setActive('0');
             $entityManager->persist($tele);
@@ -296,12 +295,7 @@ class RadioController extends AbstractController
             if( !$this->getUser())
                 return $this->redirectToRoute('app_login');
             $etablissement = $this->getUser()->getEtablissement();
-            $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
-        //     $Acce = $this->getUser()->getSERVICE() && $this->getUser()->getLancerArretService() && $configApp->getEnableSERVICE() === '1';
-        //  if (!$Acce) {
-        //      $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
-        //      return $this->redirectToRoute('home');
-        //  }
+       
             $repository = $entityManager->getRepository(Chambre::class);
             $queues = array();
             $radio = $entityManager->getRepository(Radio::class)
@@ -310,36 +304,27 @@ class RadioController extends AbstractController
                 return new JsonResponse(['error' => 'Service not found'], Response::HTTP_NOT_FOUND);
             }
             $request = Request::createFromGlobals();
-            $chambre = $request->get("chambre");
             $check = $request->get("checked");
-            if (isset($chambre) and !empty($chambre) and isset($check) and !empty($check)) {
-                foreach ($chambre as $key => $k) {
-                    foreach($check as $key1 => $k1)
+            if (isset($check) and !empty($check)) {
+                    foreach($check as $key1 => $k)
                     {
-                        if($k == $k1)
-                        {
-                            $lancer = $entityManager->getRepository(LancerRadio::class)->findOneBy(['idChembre' => $k]);
+                            $lancer = $entityManager->getRepository(LancerRadio::class)->findOneBy(['idchambre' => $k]);
                             if($lancer)
-                            {
                                 $entityManager->remove($lancer);
-                                $entityManager->flush();
-                            }
                             $lancer = new LancerRadio();
-                            $lancer->setIdChembre($k);
+                            $lancer->setIdchambre($k);
                             $lancer->setIdRadio($idRadio);
                             $entityManager->persist($lancer);
-                            $entityManager->flush();
                             $boxs  = $repository->findById($k);
                             $chambre= $boxs[0]->getNom();
                             $queue = $etablissement->getId() . '.' . $chambre . '.service';
-                            array_push($queues,$queue);
-                            $idradio = $radio->getId();
-                            $message = "radio%%".$idradio."%%";
-                            $Manager = new PushRabbit();
-                            $Manager->MakeRabbitCall($queues, $message); 
-                    } 
-                }
-            }
+                        } 
+                        $entityManager->flush();
+                        array_push($queues,$queue);
+                        $idradio = $radio->getId();
+                        $message = "radio%%".$idradio."%%";
+                        $Manager = new PushRabbit();
+                        $Manager->MakeRabbitCall($queues, $message); 
         }
             return $this->redirectToRoute('app_radio');
     }
@@ -350,12 +335,6 @@ public function RemoveRadio(EntityManagerInterface $entityManager, int $idRadio)
     if( !$this->getUser())
      return $this->redirectToRoute('app_login');
     $etablissement = $this->getUser()->getEtablissement();
-    $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
-//     $Acce = $this->getUser()->getSERVICE() && $this->getUser()->getLancerArretService() && $configApp->getEnableSERVICE() === '1';
-//  if (!$Acce) {
-//      $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
-//      return $this->redirectToRoute('home');
-//  }
     $repository = $entityManager->getRepository(Chambre::class);
     $queues = array();
     $annonce = $entityManager->getRepository(Radio::class)
@@ -364,33 +343,27 @@ public function RemoveRadio(EntityManagerInterface $entityManager, int $idRadio)
         return new JsonResponse(['error' => 'annonce not found'], Response::HTTP_NOT_FOUND);
     }
     $request = Request::createFromGlobals();
-    $chambre = $request->get("chambre");
     $check = $request->get("checked");
-    if (isset($chambre) and !empty($chambre) and isset($check) and !empty($check)) {
-        foreach ($chambre as $key => $k) {
-            foreach($check as $key1 => $k1)
+    if (isset($check) and !empty($check)) {
+            foreach($check as $key1 => $k)
             {
-                if($k == $k1)
-                {
-                $lancer = $entityManager->getRepository(LancerRadio::class)->findOneBy(['idRadio'=>$idRadio,'idChembre' => $k]);
+                $lancer = $entityManager->getRepository(LancerRadio::class)->findOneBy(['idRadio'=>$idRadio,'idchambre' => $k]);
                 if($lancer)
                 {
                 $entityManager->remove($lancer);
-                $entityManager->flush();
                 $boxs  = $repository->findById($k);
                 $chambre= $boxs[0]->getNom();
                 $queue = $etablissement->getId() . '.' . $chambre . '.service';
-                array_push($queues,$queue);  
-                $message = "arreter_radio%%".$idRadio."%%".$k;
-;               $Manager = new PushRabbit();
-                $Manager->MakeRabbitCall($queues, $message);
-                }
-
             }
+            
+        }
+        $entityManager->flush();
+        array_push($queues,$queue);  
+        $message = "arreter_radio%%".$idRadio;
+        $Manager = new PushRabbit();
+        $Manager->MakeRabbitCall($queues, $message);
     }
-}
-}
-    return $this->redirectToRoute('app_annonce');
+    return $this->redirectToRoute('app_radio');
 }
 
 
@@ -402,12 +375,7 @@ public function GetAllchambreLancerRadio(EntityManagerInterface $entityManager, 
     if( !$this->getUser())
         return $this->redirectToRoute('app_login');
     $etablissement = $this->getUser()->getEtablissement();
-    $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
-//     $Acce = $this->getUser()->getSERVICE() && $configApp->getEnableSERVICE() === '1';
-//  if (!$Acce) {
-//      $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
-//      return $this->redirectToRoute('home');
-//  }
+
     $annonce = $entityManager->getRepository(Radio::class)
         ->findOneBy(['etablissement' => $etablissement, 'id' => $idRadio]);
     if (!$annonce) {
@@ -416,7 +384,7 @@ public function GetAllchambreLancerRadio(EntityManagerInterface $entityManager, 
     $lancer = $entityManager->getRepository(LancerRadio::class)->findBy(['idRadio'=>$idRadio]);
     $arrayLancerRadio = [];
     foreach ($lancer as $l) {
-        $ex = $entityManager->getRepository(Chambre::class)->findOneBy(["id"=>$l->getIdChembre()]);
+        $ex = $entityManager->getRepository(Chambre::class)->findOneBy(["id"=>$l->getIdchambre()]);
         $arrayLancerRadio[] = ['id'=>$ex->getId(),'nom' => $ex->getNom(),
                         'ip' => $ex->getIp(),
                         'Mac' => $ex->getMac(),];

@@ -57,7 +57,6 @@ class ServicePayantController extends AbstractController
 
             // $fileName=' ';
             $file = $this->request->files->get('file');
-           // var_dump($file);die();
             if (!empty($file)) {
                 $fileName = md5(uniqid()) . '.' . $file->guessExtension();
                 $file->move($this->getParameter('service_payant_directory'), $fileName);
@@ -79,7 +78,6 @@ class ServicePayantController extends AbstractController
             //header("Refresh:0; url=http://192.168.1.101:1111/ipso/web/app.php/showpdf");
             header("Refresh:0");
         }
-        //var_dump($servicepayant);die();
         return $this->render('service_payant/index.html.twig', [
             'servicepayant' => $servicepayant,'package'=>$package,'appConfig' => $configApp,        
             'user' => $this->getUser(),

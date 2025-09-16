@@ -14,7 +14,7 @@ class LancerRadio
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $idChembre = null;
+    private ?int $idchambre = null;
 
     #[ORM\Column]
     private ?int $idRadio = null;
@@ -24,14 +24,14 @@ class LancerRadio
         return $this->id;
     }
 
-    public function getIdChembre(): ?int
+    public function getIdchambre(): ?int
     {
-        return $this->idChembre;
+        return $this->idchambre;
     }
 
-    public function setIdChembre(int $idChembre): static
+    public function setIdchambre(int $idchambre): static
     {
-        $this->idChembre = $idChembre;
+        $this->idchambre = $idchambre;
 
         return $this;
     }

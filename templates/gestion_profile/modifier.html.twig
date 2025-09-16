@@ -11,8 +11,7 @@
 {# offline #}
 {% if appConfig.StatusServeur is same as('Offline') %}
 
-<script src="assets/js/all.min.js"></script>
-{% else %}
+<script src="{{ asset('javascript/all.min.js') }}"></script>{% else %}
 {# online #}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 
@@ -24,7 +23,6 @@
 <form action="{{path('Update',{'id':users.id})}}" onsubmit="return validateUtilisateur()">
 <div style="background-color:white;padding-bottom:100px;width:1400px">
 <h3 style=" color:#3087ce;margin-left:-70px;">Informations personnelles</h3>
-{# {{ dump(users) }} #}
 <div style=" display:flex;flex-direction:column;gap:20px;border-radius: 25px;margin-left:-70px;border: 2px solid #3087ce;padding: 20px; width: 1400px;background-color: white;margin-bottom: 20px;">
 			<div style="width:100%;display:flex;align-items:center">
             <label for="inputNom" class="col-lg-4 control-label required">Identifiant:</label>

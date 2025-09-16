@@ -20,9 +20,9 @@ final class Version20250424083957 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE lancer_annonce (id INT AUTO_INCREMENT NOT NULL, id_chembre INT NOT NULL, id_annonce INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE lancer_radio (id INT AUTO_INCREMENT NOT NULL, id_chembre INT NOT NULL, id_radio INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE lancer_tv (id INT AUTO_INCREMENT NOT NULL, id_chembre INT NOT NULL, id_tv INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE lancer_annonce (id INT AUTO_INCREMENT NOT NULL, id_chambre INT NOT NULL, id_annonce INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE lancer_radio (id INT AUTO_INCREMENT NOT NULL, id_chambre INT NOT NULL, id_radio INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE lancer_tv (id INT AUTO_INCREMENT NOT NULL, id_chambre INT NOT NULL, id_tv INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         // $this->addSql('DROP TABLE bouquetbyroom');
         // $this->addSql('DROP TABLE bouquetprolongation');
         $this->addSql('ALTER TABLE annonce ADD es_message VARCHAR(255) DEFAULT NULL, ADD pt_message VARCHAR(255) DEFAULT NULL, ADD it_message VARCHAR(255) DEFAULT NULL, ADD ru_message VARCHAR(255) DEFAULT NULL, ADD de_message VARCHAR(255) DEFAULT NULL, ADD zh_message VARCHAR(255) DEFAULT NULL, ADD ar_message VARCHAR(255) DEFAULT NULL, ADD active TINYINT(1) NOT NULL, ADD fr_message VARCHAR(255) DEFAULT NULL, ADD en_message VARCHAR(255) DEFAULT NULL, DROP fr, DROP en, DROP es, DROP pt, DROP it, DROP ru, DROP de, DROP zh, DROP ar');

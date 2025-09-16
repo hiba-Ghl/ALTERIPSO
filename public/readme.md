@@ -129,3 +129,12 @@ J'ai fait un appel à l'URL suivante :
          const url = `https://nominatim.openstreetmap.org/search?city=${text}&format=json`;
    ```
 Cette API permet d'obtenir une liste de villes à partir d'un préfixe saisi.
+
+<h1>Les dossiers et les fichiers sont obligatoires dans le dossier public (interne):</h1>
+``` js
+index.php
+/Javascript
+/css
+/font
+/images/imageIcone
+```

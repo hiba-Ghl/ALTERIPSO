@@ -38,10 +38,10 @@ class TelevisionController extends AbstractController
 
         $idetablissement = $etablissement->getId();
         $television  = $repository->findBy(['etablissement' => $etablissement],['numero' => 'ASC']);
-       // var_dump($television);die();
        //////////////// date debut et fin cas gratuité defini  avec type gratuité//////////////////////
-        if (file_exists("xml\chaine_gratuite_".$idetablissement.".xml")) {
-            $fichier = 'xml\chaine_gratuite_'.$idetablissement.'.xml';
+       $directory_xml = $this->getParameter('xml_directory');
+        if (file_exists($directory_xml."\chaine_gratuite_".$idetablissement.".xml")) {
+            $fichier = $directory_xml.'\chaine_gratuite_'.$idetablissement.'.xml';
             $xml = simplexml_load_file($fichier);
             $dd = $xml->date_debut;
             $df = $xml->date_fin;
@@ -51,22 +51,21 @@ class TelevisionController extends AbstractController
             $df = '10-09-1990 13:35:00';
             $typegratuite = '0';
         }
-
-        $chembre = $entityManager->getRepository(Chambre::class)->findBy(['etablissement' =>$etablissement]);
+//dd($directory_xml."chaine_gratuite_".$idetablissement.".xml");
+        $chambre = $entityManager->getRepository(Chambre::class)->findBy(['etablissement' =>$etablissement]);
         
-        $chembreArray = [];
-        foreach ($chembre as $chambre) {
-            $chembreArray[] = ['id'=>$chambre->getId(),'nom' => $chambre->getNom(),
+        $chambreArray = [];
+        foreach ($chambre as $chambre) {
+            $chambreArray[] = ['id'=>$chambre->getId(),'nom' => $chambre->getNom(),
                         'ip' => $chambre->getIp(),
                         'Mac' => $chambre->getMac(),
         ];
         }
-        $chembreJson = json_encode($chembreArray);
-        //var_dump($dd);die();  
+        $chambreJson = json_encode($chambreArray);
         return $this->render('television/index.html.twig', [
             'television' => $television,'typegratuite' => $typegratuite, 'dd' => $dd, 'df' => $df,'appConfig' => $configApp,       
              'user' => $this->getUser(),
-             'chembre' => $chembreJson,
+             'chambre' => $chambreJson,
 
         ]);
     }
@@ -187,7 +186,6 @@ class TelevisionController extends AbstractController
             return $this->redirectToRoute('home');      
       }
         $television  = $repository->findBy(['etablissement' => $etablissement]);
-    //    var_dump($television);
         foreach ($television as $tele) {
             $tele->setActive('0');
             $tele->setGratuite('0');
@@ -306,7 +304,6 @@ class TelevisionController extends AbstractController
           }
         $idetablissement = $etablissement->getId();
       $typegratuite = $request->get('t_gratuite');
-      //var_dump($typegratuite);die();
         if ($typegratuite == 'r_defini') {
             $d_debut = $request->get('d_debut');
             $d_fin = $request->get('d_fin');
@@ -318,7 +315,9 @@ class TelevisionController extends AbstractController
         }
   
         $dt = date("[j/m/y H:i:s]");
-        $fp = fopen('logs/envoyer_date_'.$idetablissement.'.txt', 'a+'); // ouvrir le fichier ou le créer
+        $directory_logs = $this->getParameter('logs_directory');
+
+        $fp = fopen($directory_logs.'/envoyer_date_'.$idetablissement.'.txt', 'a+'); // ouvrir le fichier ou le créer
         fseek($fp, SEEK_END); // poser le point de lecture à la fin du fichier
         $txt = $dt .'  dd:' . $dd . '  df:' . $df . '  type gratuité : ' . $typegratuite;
         $nouverr = $txt . "\r\n"; // ajouter un retour à la ligne au fichier
@@ -326,14 +325,15 @@ class TelevisionController extends AbstractController
         fclose($fp); //fermer le fichier
     
               //if (file_exists("xml\chaine_gratuite_".$idetablissement.".xml")) {
-                        file_put_contents("xml\chaine_gratuite_".$idetablissement.".xml", '<?xml version="1.0" encoding="utf-8"?>
+                $directory_xml = $this->getParameter('xml_directory');
+
+                        file_put_contents($directory_xml ."\chaine_gratuite_".$idetablissement.".xml", '<?xml version="1.0" encoding="utf-8"?>
                     <data><date_debut>' . $dd . '</date_debut> 
                     <date_fin>' . $df . '</date_fin>
                     <typegratuite>' . $typegratuite . '</typegratuite> </data>');
                
             
             
-                    // var_dump($d);
                    $ch = curl_init();
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                     curl_setopt($ch, CURLOPT_TIMEOUT, 1);
@@ -391,21 +391,21 @@ class TelevisionController extends AbstractController
   
   
       $dt = date("[j/m/y H:i:s]");
-      $fp = fopen('logs/envoyer_date_'.$idetablissement.'.txt', 'a+'); // ouvrir le fichier ou le créer
+      $directory_logs = $this->getParameter('logs_directory');
+      $fp = fopen($directory_logs. '/envoyer_date_'.$idetablissement.'.txt', 'a+'); // ouvrir le fichier ou le créer
       fseek($fp, SEEK_END); // poser le point de lecture à la fin du fichier
       $txt = $dt . '  dd:' . $dd . '  df:' . $df . '  type gratuité : stop ';
       $nouverr = $txt . "\r\n"; // ajouter un retour à la ligne au fichier
       fputs($fp, $nouverr); // ecrire ce texte
       fclose($fp); //fermer le fichier
-  
-      if (file_exists("xml\chaine_gratuite_".$idetablissement.".xml")) {
-        file_put_contents("xml\chaine_gratuite_".$idetablissement.".xml", '<?xml version="1.0" encoding="utf-8"?>
+      $directory_xml = $this->getParameter('xml_directory');
+      if (file_exists($directory_xml."\chaine_gratuite_".$idetablissement.".xml")) {
+        file_put_contents($directory_xml."\chaine_gratuite_".$idetablissement.".xml", '<?xml version="1.0" encoding="utf-8"?>
           <data><date_debut>' . $dd . '</date_debut> 
           <date_fin>' . $df . '</date_fin> 
           <typegratuite>stop</typegratuite></data>');
   
   
-        // var_dump($d);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT, 1);
@@ -422,7 +422,6 @@ class TelevisionController extends AbstractController
   
       $chambres = $entityManager->getRepository(Chambre::class)->findBy(['etablissement' =>$etablissement]);
                 $nbbox = count($chambres);
-      //var_dump($nbbox);die();
       $typeg = 'Gratuité arrêtée';
       $df = date("d-m-Y H:i:s");
       $dd = '-';
@@ -457,7 +456,6 @@ class TelevisionController extends AbstractController
         $historiquegratuite  = $repository->findBy(['etablissement' => $etablissement]);
         $chambres = $entityManager->getRepository(Chambre::class)->findBy(['etablissement' =>$etablissement]);
         $nbbox = count($chambres);
-        //var_dump($historiquegratuite);die();
         $date2 = $request->request->get('date2');
         $date1 = $request->request->get('date1');
 
@@ -476,7 +474,9 @@ class TelevisionController extends AbstractController
 
 
         try{
-            $handle = fopen("logs/envoyer_date_".$idetablissement.".txt", "r");
+            $directory_logs = $this->getParameter('logs_directory');
+
+            $handle = fopen($directory_logs."/envoyer_date_".$idetablissement.".txt", "r");
             if ($handle) {
                 while (($line = fgets($handle)) !== false) {
                     // process the line read.
@@ -486,7 +486,6 @@ class TelevisionController extends AbstractController
             } else {
                 // error opening the file.
             }
-            //var_dump($handle);die();
             $data = $handle;
             $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
             
@@ -543,11 +542,6 @@ class TelevisionController extends AbstractController
                 return $this->redirectToRoute('app_login');
             $etablissement = $this->getUser()->getEtablissement();
             $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
-        //     $Acce = $this->getUser()->getSERVICE() && $this->getUser()->getLancerArretService() && $configApp->getEnableSERVICE() === '1';
-        //  if (!$Acce) {
-        //      $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
-        //      return $this->redirectToRoute('home');
-        //  }
             $repository = $entityManager->getRepository(Chambre::class);
             $queues = array();
             $television = $entityManager->getRepository(Television::class)
@@ -556,39 +550,31 @@ class TelevisionController extends AbstractController
                 return new JsonResponse(['error' => 'Service not found'], Response::HTTP_NOT_FOUND);
             }
             $request = Request::createFromGlobals();
-            $chambre = $request->get("chambre");
             $check = $request->get("checked");
-            if (isset($chambre) and !empty($chambre) and isset($check) and !empty($check)) {
-                foreach ($chambre as $key => $k) {
-                    foreach($check as $key1 => $k1)
+            if (isset($check) and !empty($check)) {
+                    foreach($check as $key1 => $k)
                     {
-                        if($k == $k1)
-                        {
-                            $lancer = $entityManager->getRepository(LancerTV::class)->findOneBy(['idChembre' => $k]);
+                            $lancer = $entityManager->getRepository(LancerTV::class)->findOneBy(['idchambre' => $k]);
                             if($lancer)
-                            {
                                 $entityManager->remove($lancer);
-                                $entityManager->flush();
-                            }
                             $lancer = new LancerTV();
-                            $lancer->setIdChembre($k);
+                            $lancer->setIdchambre($k);
                             $lancer->setIdTV($idtele);
                             $entityManager->persist($lancer);
-                            $entityManager->flush();
                             $boxs  = $repository->findById($k);
                             $chambre= $boxs[0]->getNom();
                             $queue = $etablissement->getId() . '.' . $chambre . '.service';
-                            array_push($queues,$queue);
-                            $arrayTV = [];
-                            $arrayTV[] = $this->entityToArray($television);
-                            $TVJson = json_encode($arrayTV);
-                            $numChan = $television->getNumero();
-                            $message = "channel%%".$numChan."%%";
-                            $Manager = new PushRabbit();
-                            $Manager->MakeRabbitCall($queues, $message); 
-                    } 
-                }
+                           
             }
+            array_push($queues,$queue);
+            $entityManager->flush();
+            $arrayTV = [];
+            $arrayTV[] = $this->entityToArray($television);
+            $TVJson = json_encode($arrayTV);
+            $numChan = $television->getNumero();
+            $message = "channel%%".$numChan."%%";
+            $Manager = new PushRabbit();
+            $Manager->MakeRabbitCall($queues, $message); 
         }
             return $this->redirectToRoute('app_television');
     }
@@ -600,12 +586,6 @@ public function RemoveTV(EntityManagerInterface $entityManager, int $idTV)
     if( !$this->getUser())
      return $this->redirectToRoute('app_login');
     $etablissement = $this->getUser()->getEtablissement();
-    $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
-//     $Acce = $this->getUser()->getSERVICE() && $this->getUser()->getLancerArretService() && $configApp->getEnableSERVICE() === '1';
-//  if (!$Acce) {
-//      $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
-//      return $this->redirectToRoute('home');
-//  }
     $repository = $entityManager->getRepository(Chambre::class);
     $queues = array();
     $annonce = $entityManager->getRepository(Television::class)
@@ -614,33 +594,27 @@ public function RemoveTV(EntityManagerInterface $entityManager, int $idTV)
         return new JsonResponse(['error' => 'annonce not found'], Response::HTTP_NOT_FOUND);
     }
     $request = Request::createFromGlobals();
-    $chambre = $request->get("chambre");
     $check = $request->get("checked");
-    if (isset($chambre) and !empty($chambre) and isset($check) and !empty($check)) {
-        foreach ($chambre as $key => $k) {
-            foreach($check as $key1 => $k1)
+    if (isset($check) and !empty($check)) {
+            foreach($check as $key1 => $k)
             {
-                if($k == $k1)
-                {
-                $lancer = $entityManager->getRepository(LancerTV::class)->findOneBy(['idTV'=>$idTV,'idChembre' => $k]);
+                $lancer = $entityManager->getRepository(LancerTV::class)->findOneBy(['idTV'=>$idTV,'idchambre' => $k]);
                 if($lancer)
                 {
                 $entityManager->remove($lancer);
-                $entityManager->flush();
                 $boxs  = $repository->findById($k);
                 $chambre= $boxs[0]->getNom();
                 $queue = $etablissement->getId() . '.' . $chambre . '.service';
-                array_push($queues,$queue);  
-                $message = "arreter_radio%%".$idTV."%%".$k;
-;               $Manager = new PushRabbit();
-                $Manager->MakeRabbitCall($queues, $message);
-                }
 
-            }
-    }
+                    }
 }
+$entityManager->flush();
+array_push($queues,$queue);  
+$message = "arreter_radio%%".$idTV."%%".$k;
+;               $Manager = new PushRabbit();
+$Manager->MakeRabbitCall($queues, $message);
 }
-    return $this->redirectToRoute('app_annonce');
+return $this->redirectToRoute('app_television');
 }
 
 
@@ -666,7 +640,7 @@ public function GetAllchambreLancerTV(EntityManagerInterface $entityManager, int
     $lancer = $entityManager->getRepository(LancerTV::class)->findBy(['idTV'=>$idTV]);
     $arrayLancerTV = [];
     foreach ($lancer as $l) {
-        $ex = $entityManager->getRepository(Chambre::class)->findOneBy(["id"=>$l->getIdChembre()]);
+        $ex = $entityManager->getRepository(Chambre::class)->findOneBy(["id"=>$l->getIdchambre()]);
         $arrayLancerTV[] = ['id'=>$ex->getId(),'nom' => $ex->getNom(),
                         'ip' => $ex->getIp(),
                         'Mac' => $ex->getMac(),];

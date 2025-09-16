@@ -1,1 +1,0 @@
-baseDir:D:\/public/images/jeux fullPath : D:\public\images\jeux\4ca767c7f352e4ca7b99155dbf5b2de4.png str:

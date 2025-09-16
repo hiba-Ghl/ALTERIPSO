@@ -44,11 +44,20 @@ class SuperAdminController extends AbstractController
 
         // Récupération de tous les établissements enregistrés
         $etablissements =  $this->entityManager->getRepository(Etablissement::class)->findAll();
-
+        $etablissementUser = [];
+        foreach($etablissements as $et  )
+        {
+            $users = $this->entityManager->getRepository(User::class)->findBy(["etablissement"=> $et]);
+            foreach ($users as $user) {
+                if (in_array('ROLE_ADMIN', $user->getRoles())) {
+                    $etablissementUser[] = ['etablissement' => $et,'user' => $user ];
+                }
+            }
+        }
         // Affichage de la vue du tableau de bord avec les données récupérées
         return $this->render('super_admin/index.html.twig', [
             'appConfig' => $appConfig,
-            'etablissements' => $etablissements,
+            'etablissements' => $etablissementUser,
             'user' => $this->getUser(),
         ]);
     }

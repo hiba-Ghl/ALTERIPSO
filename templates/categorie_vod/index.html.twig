@@ -36,23 +36,21 @@ tr {
 
 </style>
 
+<!-- Gestion des flash messages -->
+{% for message in app.flashes('error') %}
+<div class="alert alert-danger" role="alert" >
+    {{ message }}   
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
 <div style="border-radius: 8px; text-align: left; margin-bottom: 10px; margin-left: -130px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding-left: 10px; display: inline-block;">
     <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
 Liste Catégorie VOD
 </div>
 
 
-
-
-<!-- la gestion des flash -->
- {% for label, messages in app.flashes %}
-        <div class="alert alert-danger" role="alert" >
-        {{ message }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    {% endfor %}
     <form name="form" action="{{ path('app_update_active_categorie_vod')}}" method="post" enctype="multipart/form-data">
       <div id="div2">
         <div style="display:flex;align-items:center;justify-content:space-between;gap:3px;">
