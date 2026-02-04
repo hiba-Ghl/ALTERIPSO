@@ -1,0 +1,99 @@
+/* Responsive styles for desktop, tablet, and mobile */
+
+/* General responsive adjustments */
+@media (max-width: 1200px) {
+    /* Desktop adjustments */
+    #logo {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+@media (max-width: 992px) {
+    /* Tablet adjustments */
+    #responsive{
+        margin-left: 40px;
+    }
+    .container {
+        width: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    .navbar-header{
+        line-height: normal;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Mobile adjustments */
+    body {
+        font-size: 14px;
+    }
+    .navbar-nav li a {
+        padding: 5px 5px;
+    }
+    .form-horizontal .control-label {
+        text-align: left;
+        width: 100%;
+    }
+    .form-horizontal .form-group {
+        margin-bottom: 15px;
+    }
+    .form-horizontal .form-control {
+        width: 100%;
+    }
+    .table {
+        width: 100%;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    .table th, .table td {
+        white-space: nowrap;
+    }
+    #footer p {
+        font-size: 11px !important;
+    }
+    .center-block {
+        max-width: 100px;
+        width: 100%;
+        height: auto;
+    }
+    /* Adjust fixed widths */
+    [style*="width:"] {
+        max-width: 100% !important;
+        width: auto !important;
+    }
+    /* For images with fixed width */
+    img[style*="width:"] {
+        max-width: 100%;
+        height: auto;
+    }
+    /* Buttons */
+    .btn {
+        width: auto !important;
+        margin-bottom: 5px;
+    }
+    /* Modals */
+    .modal-dialog {
+        margin: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    /* Small mobile */
+    body {
+        font-size: 12px;
+    }
+    .navbar-brand {
+        font-size: 16px;
+    }
+    .navbar-nav li a {
+        padding: 5px 5px;
+    }
+    #logo {
+        width: 50px;
+        height: 50px;
+    }
+    /* Minimize buttons */
+}

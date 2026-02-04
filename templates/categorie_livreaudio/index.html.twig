@@ -1,77 +1,8 @@
 {% extends 'home/index.html.twig' %}
 
 {% block body %}
-<style>
-    .table-container {
-        max-height: 400px; 
-        margin-top: 10px;
-    }
+<link rel="stylesheet" href="{{ asset('css/design.css') }}" />
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    tbody {
-        display: block;
-        max-height: 360px; 
-        overflow-y: auto;
-    }
-
-    thead, th {
-        background-color: #f2f2f2;
-        position: sticky;
-        top: 0;
-        z-index: 2;
-    }
-
-    th, td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
-
-    tr {
-        display: table;
-        width: 100%;
-        table-layout: fixed;
-    }
-
-    thead tr {
-        display: table;
-        width: 100%;
-        table-layout: fixed;
-    }
-
-    .header-title {
-        border-radius: 8px;
-        text-align: left;
-        margin-bottom: 10px;
-        margin-left: -30px;
-        color: white;
-        font-style: oblique;
-        font-size: 20px;
-        background-color: #3087ce;
-        padding-left: 10px;
-		display: inline-block;
-		width: 300px;
-
-    }
-
-    .header-title img {
-        margin-top: -51px;
-        margin-left: -10px;
-        width: 45px;
-        float: left;
-    }
-
-
-    .alert{
-        color: white;
-        border-radius: 5px;
-    }
-    
-    </style>
     <!-- Gestion des flash messages -->
 {% for message in app.flashes('error') %}
     <div class="alert alert-danger" role="alert" >
@@ -82,7 +13,7 @@
     </div>
 {% endfor %}
    
-<div style="border-radius: 8px;text-align: left;margin-bottom: 10px;margin-left: -120px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 300px;padding-left: 10px;">
+<div id="titre">
     <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
     Liste Catégorie livre audio
 </div>
@@ -117,17 +48,17 @@
  <table class="table table-striped table-bordered header-fixed table-hover" id="dataTables-example" style="width: 100%;margin-top:20px;">
                 <thead>
                     <tr>
-                        <th style="height: 50px;width:250px;text-align:center;">Titre</th>
-                        <th style="height: 50px;width:250px;text-align:center;">Icon</th>
-                        <th style="height: 50px;width:250px;text-align:center;" > 
+                        <th>Titre</th>
+                        <th>Icon</th>
+                        <th> 
                         <p style="display:flex;gap:10px;justify-content:center">
                         <span>
                             Active
                         </span>
                         <input type="checkbox" id="checklist" style="margin-top:-1px;"></th>
                         </p>
-                        <th style="height: 50px;width:250px;text-align:center;">Position</th>
-                        <th style="height: 50px;width:250px;text-align:center;" style="width:245px">Actions</th>
+                        <th>Position</th>
+                        <th style="width:245px">Actions</thle=>
                     </tr>
                 </thead>
 
@@ -135,29 +66,29 @@
                     {% for catlivre in catlivreaudios %}
                         <tr class="odd gradeX">
                             <!-- le nom -->
-                            <td style="height: 50px;width:250px;text-align:center;">{{ catlivre.nom|capitalize }}</td>
-                            <td style="height: 50px;width:250px;text-align:center;">
+                            <td>{{ catlivre.nom|capitalize }}</tdle=>
+                            <td>
                                 <img style="width:45px;height:45px;text-align:center" src="{{ path('afficher_image', { filename: catlivre.logo|split('/')|last, directory: 'categorie_livreaudio_directory' }) }}"  alt="..." class="img-rounded img-responsive center-block">
-                            </td>
+                            </tde=>
                             <!-- checkbox -->
                             {% set ch = '' %}
                             {% if catlivre.active == 1 %}
                                 {% set ch = 'checked' %}
                             {% endif %}
-                            <td style="height: 50px;width:250px;text-align:center;">
+                            <td>
                                 <label><input {% if app.user.SauvegarderCatLivreAudio == '0' %} disabled {% endif %} name="listeactive[{{ catlivre.id }}]" type="checkbox" {{ ch }} class="jpCheckbox"></label>
                             </td>
                             <!-- la position -->
-                            <td style="height: 50px;width:250px;text-align:center;">{{ catlivre.position }}</td>
+                            <td>{{ catlivre.position }}</td>
                             <!-- les actions -->
-                            <td style="height: 50px;width:250px;text-align:center;">
+                            <td>>
                                 <a data-toggle="tooltip" {% if app.user.ModifierCatLivreAudio == '0' %} disabled {% endif %} data-placement="top" title="Modifier Catégorie livre audio" href="{{ path('app_modifier_categorielivreaudio', { 'id': catlivre.id }) }}" class="btn btn-warning btn-xs">
                                     <i class="glyphicon glyphicon-pencil"></i>
                                 </a>
                                 <a data-toggle="tooltip"  {% if app.user.SuppCatLivreAudio == '0' %} disabled {% endif %} data-placement="top" title="Supprimer Catégorie livre audio" href="{{ path('app_supprimer_categorielivreaudio', { 'id': catlivre.id }) }}" class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer la catégorie livre audio : {{ catlivre.nom }} ?')">
                                     <i class="glyphicon glyphicon-trash"></i>
                                 </a>
-                            </td>
+                            </tdyle=>
                         </tr>
                     {% else %}
                         <tr>
@@ -187,8 +118,6 @@
         $('[data-toggle="tooltip"]').tooltip();
     });
 </script>
-
-
 <!-- la recherche dans le tableau -->
 <script>
             //un script pour la recherche des categories livreaudio

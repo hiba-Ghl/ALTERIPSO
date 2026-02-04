@@ -1,128 +1,74 @@
 {% extends 'home/index.html.twig' %}
 {% block body %}
-<style>
-    #div2 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			width: 1300px;
-			height: 250px;
-			margin-left: -70px;
-			margin-top: 10px;
-			background-color: white;
-		}
-</style>
 
-<div style="border-radius: 8px;text-align: left;margin-top:10px;margin-bottom: 10px;margin-left: -70px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
+<link rel="stylesheet" href="{{ asset('css/design.css') }}" />
+
+<div id="titre">
     <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
         Ajouter un jeux
 </div>
-<div id="div2">
-
-
+<div id="div2_ajout">
 	
 		<form action="{{path('app_ajouter_jeux')}}" method="post" enctype="multipart/form-data">
-
-
-			<table style="width: 100%;">
-				<tr>
-					<td style="width: 33%;">
-						<div class="control-label">
-							<label  class=" control-label">Nom Jeux:
-							</label>
-							<input type="text" name="nom" class="form-control" style="width: 99%;">
-						</div>
-
-					</td>
-
-					<td style="width: 33%;">
-						<div class="control-label">
-							<label  class=" control-label">Package:
-							</label>
-							<input type="text" name="package" class="form-control" style="width: 99%;">
-						</div>
-
-					</td>
-
-					<td style="width: 33%;">
-						<div class="control-label">
-							<label  class=" control-label">Active:
-							</label>
-
-
-							<select class="form-control" name="active" id="active" style="width: 99%;">
-
-								<option value='0'>0</option>
-								<option value='1'>1</option>
-
-							</select>
-						</div>
-
-					</td>
-
-
-				</tr>
+			<div class="row">
+				<div class="col-12 col-md-4">
+					<label>Nom Application</label>
+					<input type="text" name="nom" class="form-control">
+				</div>
+				<div class="col-12 col-md-4">
+					<label>Package</label>
+					<input type="text" name="package" class="form-control">
+				</div>
+				<div class="col-12 col-md-4">
+					<label>Active</label>
+					<select class="form-control" name="active">
+						<option value="0">0</option>
+						<option value="1">1</option>
+					</select>
+				</div>
+			</div>
 				
-                <tr>
+            <div class="row mt-3">
+				<div class="col-12 col-md-4">
+					<label>Position</label>
+					<select class="form-control" name="position" id="positionSelect">
+					  <option selected="selected" value=''></option>
+					</select>
+				</div>
+				<div class="col-12 col-md-4">
+					<label>Logo</label>
+					<input type="file" class="form-control" name="logo" required>
+				</div>
 
-					<td style="width: 33%;">
-
-						<div class="control-label">
-							<label  class=" control-label">Position:
-							</label>
-							<select class="form-control" id="positionSelect" name="Position" >
-                            	<option selected="selected" value=''></option>
-                        	</select>
-							{# <input type="number" name="position" id="position" class="form-control" style="width: 99%;" > #}
-						</div>
-
-					</td>
-
-					<td style="width: 33%;">
-						<div class="control-label">
-							<label >Logo :</label>
-							<input type="file" class="form-control" id="logo" name="logo" style="width: 99%;" required >
-						</div>
-					</td>
-
-					<td style="width: 33%;">
-						<div class="control-label">
-							<label  class=" control-label">
-								Protocole:
-							</label>
-							<select class="form-control" name="protocole" id="protocole" style="width: 99%;">
-								{% for support in supports %}
-									<option value="{{support.protocole}}">{{support.nom|upper}}</option>
-								{% endfor %}
-							</select>
-						</div>
-
-					</td>
-
-				</tr>
-
-			</table>
+				<div class="col-12 col-md-4">
+					<label>Protocole</label>
+					<select class="form-control" name="protocole">
+						{% for support in supports %}
+							<option value="{{ support.protocole }}">{{ support.nom|upper }}</option>
+						{% endfor %}
+					</select>
+				</div>
+			</div>
 
 			<br>
+			<br>
+			<div class="clearfix">
+				<div class="pull-right">
+					<a class="btn btn-danger btn-md" id="annulerButton" style="width:130px;" href="/application">
+						<i class="glyphicon glyphicon-remove"></i> Annuler
+					</a>
 
-			<div style="float:right;margin-right:-60px;">
-				<a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/jeux">
-					<i class="glyphicon glyphicon-remove"></i> Annuler
-				</a>
-				<button type="submit" class="button btn btn-primary btn-md" name="valider" >
-					<i class="glyphicon glyphicon-floppy-disk"></i>
-					Enregistrer
-				</button>
+					<button type="submit" class="btn btn-primary btn-md" name="valider">
+						<i class="glyphicon glyphicon-floppy-disk"></i>
+						Enregistrer
+					</button>
 				</div>
+			</div>
+
 		</form>
-
-
-
-	
-
 </div>
 <!-- Scripts -->
 <script type="text/javascript">
-
 
 </script>
 <script>

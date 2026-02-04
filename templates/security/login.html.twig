@@ -4,33 +4,15 @@
 
 {% block body %}
   {# offline #}
+  <Link rel="stylesheet" href="{{ asset('css/login.css') }}"> 
+
+  {# online #}
+  {# <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> #}
 
 <script src="{{ asset('javascript/all.min.js') }}"></script>  {# online #}
     
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
-	<style>
-		#div1 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 20px;
-			width: 1091px;
-			height: 300px;
-			margin-left: 10px;
-			margin-top: 10px;
-			
-			padding: 43px;
-
-		}
-		#div2 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 20px;
-			width: 1091px;
-			height: 1090px;
-			margin-left: 10px;
-			margin-top: 10px;
-		}
-	</style>
+	
 	{% for type, messages in app.flashes %}
     {% for message in messages %}
         <div class="alert alert-{{ type }}">
@@ -158,8 +140,7 @@
 
 			<div class="form-group">
 				<label for="inputPassword" class="col-lg-2 control-label">
-				<p style="width:100%;text-align:left;padding-left:20px;">
-				Nom
+				<p>				Nom
 				</p>
 				</label>
 				<div class="col-lg-10">
@@ -169,8 +150,7 @@
 
 			<div class="form-group">
 				<label for="inputEmail" class="col-lg-2 control-label">
-				<p style="width:100%;text-align:left;padding-left:20px;">
-				Prénom
+				<p>				Prénom
 				</p>
 				</label>
 				<div class="col-lg-10">
@@ -181,8 +161,7 @@
 			</div>
 <div class="form-group">
     <label for="inputEmail" class="col-lg-2 control-label">
-	<p style="width:100%;text-align:left;padding-left:20px;">
-	Email
+	<p>	Email
 	</p>
 	</label>
     <div class="col-lg-10">
@@ -195,8 +174,7 @@
 			<h5 style="border-radius:10px;width:25%;padding:10px;background-color: #3087ce;color:white;font-size:20px;">Coordonnées</h5>
 			<div class="form-group">
 				<label for="inputEmail" class="col-lg-2 control-label">
-				<p style="width:100%;text-align:left;padding-left:20px;">
-				Nom établissement
+				<p>				Nom établissement
 				</p>
 				</label>
 				<div class="col-lg-10">
@@ -207,8 +185,7 @@
 
 			<div class="form-group">
 				<label for="inputEmail" class="col-lg-2 control-label">
-				<p style="width:100%;text-align:left;padding-left:20px;">
-				Adresse
+				<p>				Adresse
 				</p>
 				</label>
 				<div class="col-lg-10">
@@ -219,8 +196,7 @@
 
 			<div class="form-group">
 				<label for="inputEmail" class="col-lg-2 control-label">
-				<p style="width:100%;text-align:left;padding-left:20px;">
-				Code Postal
+				<p>				Code Postal
 				</p>
 				</label>
 				<div class="col-lg-10">
@@ -231,8 +207,7 @@
 
 			<div class="form-group">
 				<label for="inputEmail" class="col-lg-2 control-label">
-				<p style="width:100%;text-align:left;padding-left:20px;">
-				Ville
+				<p>				Ville
 				</p>
 				</label>
 				<div class="col-lg-10">
@@ -243,8 +218,7 @@
 
 			<div class="form-group">
 				<label for="inputEmail" class="col-lg-2 control-label">
-				<p style="width:100%;text-align:left;padding-left:20px;">
-				Pays
+				<p>				Pays
 				</p>
 				</label>
 				<div class="col-lg-10">
@@ -521,9 +495,7 @@
 			</div>
 			<div class="form-group">
 				<label for="Support" class="col-lg-2 control-label">
-				<p style="width:100%;text-align:left;padding-left:20px;">
-				Support
-				</p>
+				<p>	Support </p>
 				</label>
 				<div class="col-lg-10">
 				<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
@@ -557,9 +529,7 @@
 			<h5 style="border-radius:10px;width:25%;padding:10px;background-color: #3087ce;color:white;font-size:20px;">Coordonnées utilisateur</h5>
 <div class="form-group">
     <label for="inputEmail" class="col-lg-2 control-label">
-	<p style="width:100%;text-align:left;padding-left:20px;">
-				Identifiant
-				</p>
+	    <p>Identifiant</p>
 				</label>
     <div class="col-lg-10">
         <input type="text" id="fos_user_registration_form_username" name="username" required="required" maxlength="255" pattern=".{2,}" class="form-control" value="{{ username|default('') }}"/>
@@ -572,9 +542,7 @@
 <div id="fos_user_registration_form_plainPassword">
     <div class="form-group">
     <label class="col-sm-2 control-label required" for="fos_user_registration_form_plainPassword_first">
-	<p style="width:100%;text-align:left;padding-left:20px;">
-	Mot de passe
-	</p>
+	<p>	Mot de passe </p>
 	</label>
     <div class="col-sm-10">
         <div class="input-group">
@@ -587,9 +555,7 @@
 </div>
 <div class="form-group">
     <label class="col-sm-2 control-label required" for="fos_user_registration_form_plainPassword_second">
-	<p style="width:100%;text-align:left;padding-left:20px;">
-	Confirmation du Mot de passe
-	</p>
+	<p>	Confirmation du Mot de passe </p>
 	</label>
     <div class="col-sm-10">
         <div class="input-group">

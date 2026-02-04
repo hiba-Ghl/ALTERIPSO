@@ -9,18 +9,22 @@
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/stylesmart.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/responsive.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/login.css') }}" rel="stylesheet">
+
 
   </head>
   <body >
   
-
-
   <div class="container" >
 
 
- <div class="col-md-10">
-        <img class="center-block" src="{{ asset('images/smartv.png') }}" style="width: 130px;margin-top: 15px;margin-bottom: 15px;">
+ <div class="row">
+  <div class="col-xs-12 col-sm-6 col-md-10 text-center-xs">
+      <img src="{{ asset('images/smartv.png') }}" class="img-responsive center-block" style="max-width:auto; margin-top:15px; margin-bottom:15px;">
+  </div>
 </div>
+
 
  <!--<div class="col-md-2" style="margin-top: 50px;">
 
@@ -30,77 +34,56 @@
 </div>-->
 </div>
  
-  <nav class="navbar navbar-default " style='min-height: 0px;'>
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header" style="line-height: 4; margin-right: 15px;">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
+<nav class="navbar navbar-default navbar-smart">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed"
+              data-toggle="collapse"
+              data-target="#main-navbar"
+              aria-expanded="false">
+        <span class="sr-only">Menu</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
     </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav ">
+    <!-- Menu -->
+    <div class="collapse navbar-collapse" id="main-navbar">
+
+      <!-- Left -->
+      <ul class="nav navbar-nav">
         <li><a href="{{ path('app_login')}}">SE CONNECTER</a></li>
         <li><a href="{{ path('faq')}}">FAQ</a></li>
- <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  Nos Produits <span class="caret"></span></a>
-          <ul class="dropdown-menu dropa" style="padding: 0px">
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            Nos Produits <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
             <li><a href="{{ path('produits')}}">R-plus</a></li>
-            <li ><a href="{{ path('smartplus')}}">R-S<span style="text-transform: lowercase !important; ">mart</span> TV </a></li>
+            <li><a href="{{ path('smartplus')}}">R-Smart TV</a></li>
           </ul>
-</li>
-
-
-
-        <li><a   target="_blank"   href="http://www.alteripso.com">A propos de nous</a></li>
-        <li style="border-right: 0px" ><a href="{{ path('contact')}}">Contactez nous</a></li>
-
+        </li>
+        <li><a target="_blank" href="http://www.alteripso.com">A propos de nous</a></li>
+        <li><a href="{{ path('contact')}}">Contactez nous</a></li>
       </ul>
-    
-<ul class="nav navbar-nav  navbar-right ">
-       
 
-
-        <li style="width: 50px;    border-left: 1px solid #00356d;">
-        <a style="padding: 0px;"target="_blank" href="https://www.facebook.com/ALTER-IPSO-973016492773492/">
-        <img style="width: 100%;height: 50px;" src="{{ asset('images/fb.png') }}">
-        
-
-        </a>
-        </li>
-
-        <li style="width: 50px;    border-left: 1px solid #00356d;">
-        <a style="padding: 0px;"target="_blank" href="https://twitter.com/AlterIpso">
-        <img style="width: 100%;height: 50px;" src="{{ asset('images/tw.png') }}">
-        </a>
-        </li>
-
-        <li style="width: 50px;    border-left: 1px solid #00356d;">
-        <a style="padding: 0px;"target="_blank" href="https://www.linkedin.com/company/alter-ipso">
-        <img style="width: 100%;height: 50px;" src="{{ asset('images/in.png') }}">
-        </a>
-        </li>
-
-        <li  style="width: 50px; border-right: 0px; border-left: 1px solid #00356d;">
-        <a style="padding: 0px;"target="_blank" href="https://plus.google.com/112972293833999503659/posts">
-        <img style="width: 100%;height: 50px;" src="{{ asset('images/g+.png') }}">
-        </a>
-        </li>
-
-
+      <!-- Right (réseaux sociaux) -->
+      <ul class="nav navbar-nav navbar-right social-nav">
+        <li><a target="_blank" href="https://www.facebook.com/ALTER-IPSO-973016492773492/"><img src="{{ asset('images/fb.png') }}"></a></li>
+        <li><a target="_blank" href="https://twitter.com/AlterIpso"><img src="{{ asset('images/tw.png') }}"></a></li>
+        <li><a target="_blank" href="https://www.linkedin.com/company/alter-ipso"><img src="{{ asset('images/in.png') }}"></a></li>
+        <li><a target="_blank" href="https://plus.google.com/112972293833999503659/posts"><img src="{{ asset('images/g+.png') }}"></a></li>
       </ul>
-    
 
-     
-    </div><!-- /.navbar-collapse -->
-</div>
-  </div><!-- /.container-fluid -->
+    </div>
+  </div>
 </nav>
+
+
   <div class="container" >
 
     {% block body %}

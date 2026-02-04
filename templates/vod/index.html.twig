@@ -382,7 +382,6 @@ document.addEventListener('click', function (event) {
     }
       }
       }
-      }
     }
   const checkAll = document.getElementById('checkAllboxn');
 const checkboxes = document.querySelectorAll('.boxcheck');
@@ -434,8 +433,15 @@ document.addEventListener('click', function (event) {
 
 })
 
-
-</script>
+<style>
+    @media (max-width: 768px) {
+        .table {
+            width: 100%;
+            display: block;
+            overflow-x: auto;
+        }
+    }
+</style>
 
 
 

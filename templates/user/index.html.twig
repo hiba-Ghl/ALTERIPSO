@@ -1,4 +1,4 @@
- {% extends 'home/index.html.twig' %}
+{% extends 'home/index.html.twig' %}
  
 {% block body %}
 
@@ -177,4 +177,18 @@
  
 </div>
 <br>
+<style>
+    @media (max-width: 768px) {
+        .form-horizontal .control-label {
+            text-align: left;
+            width: 100%;
+        }
+        .form-horizontal .form-group {
+            margin-bottom: 15px;
+        }
+        .form-horizontal .form-control {
+            width: 100%;
+        }
+    }
+</style>
 {% endblock %}

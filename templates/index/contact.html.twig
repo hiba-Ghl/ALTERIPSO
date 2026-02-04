@@ -5,170 +5,84 @@
 
 <div class="container">
 
+    <div class="col-lg-9 col-lg-offset-2">
+        <strong>
+        <img style="width: 45px;float: left;" src="{{ asset('images/ler.png') }}"> <h1 style="font-weight: 800;"> Contact</h1>
 
-<style type="text/css">
+    <form id="contact-form" method="post" action="form.php" role="form">
 
-h1{
-margin-bottom: 40px;
-}
-label {
-color: #333;
-}
-.form-control {
-margin-bottom: 20px;
-}
-.btn-send {
-font-weight: 300;
-text-transform: uppercase;
-letter-spacing: 0.1em;
-margin-bottom: 20px;
-}
-p{font-size: 13px !important;margin-bottom: 5px !important;
-text-align: center;}
-/* Sticky footer styles
--------------------------------------------------- */
+        <div class="messages"></div>
 
+        <div class="controls">
 
-#push,
-#footer {
-}
-#footer {
-background-color: #337ab7 ;
-}
+        <div class="row">
+            <div class="col-md-6">
+            <label for="form_name">Titre <i id='obl'>*</i></label>
+                <select class="form-control" name="titre">
+                <option>Mr</option>
+                <option>Mme</option>                        
+                </select>
+        </div>
+        <div class="col-md-6">
+            <label for="form_lastname">Nom <i id='obl'>*</i></label>
+            <input id="form_lastname" type="text" name="Nom" class="form-control" placeholder="Entrer votre Nom *" required="required">
+        </div>
 
-/* Lastly, apply responsive CSS fixes as necessary */
-@media (max-width: 767px) {
-#footer {
-margin-left: -20px;
-margin-right: -20px;
-padding-left: 20px;
-padding-right: 20px;
-}
-}
+        <div class="col-md-6">
+            <label for="form_lastname">Prénom <i id='obl'>*</i></label>
+            <input id="form_lastname" type="text" name="Prenom" class="form-control" placeholder="Entrer votre Prénom" required="required">
+        </div>
+        <div class="col-md-6">
+            <label for="form_email">Email <i id='obl'>*</i></label>
+            <input id="form_email" type="email" name="email" class="form-control" placeholder="Entrer votre email *" required="required">
+        </div>
 
-.text-muted{color: #2D7BB9}
-</style>
+        
+        <div class="col-md-6">
+            <label for="form_phone">Téléphone</label>
+            <input id="form_phone" type="tel" name="phone" class="form-control" placeholder="Entrer votre telephone">
+        </div>
 
-        <div class="col-lg-9 col-lg-offset-2">
+        
+        <div class="col-md-6">
+            <label for="form_phone">Société</label>
+            <input id="form_phone" type="tel" name="Societe" class="form-control" placeholder="Entrer nom de votre Société">
+        </div>
 
-               <strong>
-               
-               <img style="width: 45px;float: left;" src="{{ asset('images/ler.png') }}"> <h1 style="font-weight: 800;"> Contact</h1>
+        
+        <div class="col-md-6">
+            <label for="form_phone">Rue</label>
+            <input id="form_phone" type="tel" name="Rue" class="form-control" placeholder="Entrer votre Rue">
+        </div>                         
 
-
-
-                <form id="contact-form" method="post" action="form.php" role="form">
-
-                    <div class="messages"></div>
-
-                    <div class="controls">
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label for="form_name">Titre <i id='obl'>*</i></label>
-                                  <select class="form-control" name="titre">
-                                    <option>Mr</option>
-                                    <option>Mme</option>
-                         
-                                  </select>
-
-
-                </div>
-                <div class="col-md-6">
-                    <label for="form_lastname">Nom <i id='obl'>*</i></label>
-                    <input id="form_lastname" type="text" name="Nom" class="form-control" placeholder="Entrer votre Nom *" required="required">
-                </div>
-
-                                                <div class="col-md-6">
-                    <label for="form_lastname">Prénom <i id='obl'>*</i></label>
-                    <input id="form_lastname" type="text" name="Prenom" class="form-control" placeholder="Entrer votre Prénom" required="required">
-                            </div>
-
-
-
-                            <div class="col-md-6">
-                                <label for="form_email">Email <i id='obl'>*</i></label>
-                                <input id="form_email" type="email" name="email" class="form-control" placeholder="Entrer votre email *" required="required">
-                            </div>
-
-                            
-                            <div class="col-md-6">
-                                <label for="form_phone">Téléphone</label>
-                                <input id="form_phone" type="tel" name="phone" class="form-control" placeholder="Entrer votre telephone">
-                            </div>
-
-                            
-                            <div class="col-md-6">
-                                <label for="form_phone">Société</label>
-                                <input id="form_phone" type="tel" name="Societe" class="form-control" placeholder="Entrer nom de votre Société">
-                            </div>
-
-                            
-                            <div class="col-md-6">
-                                <label for="form_phone">Rue</label>
-                                <input id="form_phone" type="tel" name="Rue" class="form-control" placeholder="Entrer votre Rue">
-                            </div>
-
-                            
-
-                            
-                            <div class="col-md-6">
-                                <label for="form_phone">Code postal</label>
-                                <input id="form_phone" type="tel" name="Code" class="form-control" placeholder="Entrer votre Code postal">
-                            </div>
-
-                            
-
-                            
-                            <div class="col-md-6">
-                                <label for="form_phone">Ville</label>
-                                <input id="form_phone" type="tel" name="Ville" class="form-control" placeholder="Entrer votre Ville">
-                            </div>
-
-                            
-
-                            
-                            <div class="col-md-6">
-                                <label for="form_phone">Pays</label>
-                                <input id="form_phone" type="tel" name="Pays" class="form-control" placeholder="Entrer votre Pays">
-                            </div>
-
-                            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                            <div class="col-md-12">
-                                <label for="form_message">Message <i id='obl'>*</i></label>
-                                <textarea id="form_message" name="message" class="form-control" placeholder="Entrer votre Message*" rows="4" required="required"></textarea>
-                            </div>
-                            <div class="col-md-12">
-                                <input type="submit" class="btn btn-success btn-send" value="Envoyer message">
-                            </div>
-                            <div class="col-md-12">
-                                <p style="text-align: left !important;color: red" class="text-muted"><strong>*</strong> Champs obligatoires.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                </form>
-
-
-
-
-
-
-            </div><!-- /.8 -->
+        <div class="col-md-6">
+            <label for="form_phone">Code postal</label>
+            <input id="form_phone" type="tel" name="Code" class="form-control" placeholder="Entrer votre Code postal">
+        </div>            
+        
+        <div class="col-md-6">
+            <label for="form_phone">Ville</label>
+            <input id="form_phone" type="tel" name="Ville" class="form-control" placeholder="Entrer votre Ville">
+        </div>                  
+        
+        <div class="col-md-6">
+            <label for="form_phone">Pays</label>
+            <input id="form_phone" type="tel" name="Pays" class="form-control" placeholder="Entrer votre Pays">
+        </div>
+        <div class="col-md-12">
+            <label for="form_message">Message <i id='obl'>*</i></label>
+            <textarea id="form_message" name="message" class="form-control" placeholder="Entrer votre Message*" rows="4" required="required"></textarea>
+        </div>
+        <div class="col-md-12">
+            <input type="submit" class="btn btn-success btn-send" value="Envoyer message">
+        </div>
+        <div class="col-md-12">
+            <p style="text-align: left !important;color: red" class="text-muted"><strong>*</strong> Champs obligatoires.</p>
+        </div>
+    </div>
+    </div>
+    </form>
+</div><!-- /.8 -->
 
 </div>
 <br><br>
