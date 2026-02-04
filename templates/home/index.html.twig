@@ -8,17 +8,13 @@
 		<link	rel="icon"	type="image/x-icon"	href="{{ asset('images/ler.png') }}">
 		<title>
 			ALTER
-		</title>
-	
-		
+		</title>		
 	</head>
-
-
 
  {% if appConfig.StatusServeur is same as('Offline') %}
 
 {# offline #}
-<script src="{{ asset('javascript/serviceIndex.js') }}"></script>
+		<script src="{{ asset('javascript/serviceIndex.js') }}"></script>
 		<script src="{{ asset('javascript/jquery1.min.js') }}"></script>
 		<script src="{{ asset('javascript/jquery-ui.min.js') }}"></script>
 		<script src="{{ asset('javascript/jsgrid.min.js') }}"></script>
@@ -29,17 +25,16 @@
 		<link rel="stylesheet" href="{{ asset('css/fontawesome.min.css') }}">
 		<script src="{{ asset('javascript/fontawesome.min.js') }}"></script>
 
-
 {% else %}
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid-theme.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid.min.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" rel="stylesheet">
+		<link href="https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid-theme.min.css" rel="stylesheet">
+		<link href="https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid.min.css" rel="stylesheet">
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid.min.js"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+		<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
 
 {% endif %}
 
@@ -53,74 +48,70 @@
 		<script src="{{ asset('javascript/service.js') }}"></script>
 		<script src="{{ asset('javascript/user.js') }}"></script>
 	<body>
-	
-		<nav	class="navbar navbar-default navbar-fixed-top">
-			<div	class="container-fluid">
-
-				<div	class="navbar-header"	style="line-height: 4; margin-right: 15px;">
-					<button	type="button"	class="navbar-toggle collapsed"	data-toggle="collapse"	data-target="#bs-example-navbar-collapse-1"	aria-expanded="false">
-						<span	class="sr-only">
-							Toggle navigation
-						</span>
-						<span	class="icon-bar"></span>
-						<span	class="icon-bar"></span>
-						<span	class="icon-bar"></span>
-					</button>
-					<img id="logo"src="{{ asset('images/logo.png') }}"	style="width: 130px;">
-				</div>
-
+		<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header" style="line-height: 4; margin-right: 15px;">
+				<button	type="button" class="navbar-toggle collapsed"	data-toggle="collapse"	data-target="#bs-example-navbar-collapse-1"	aria-expanded="false">
+					<span	class="sr-only">
+						Toggle navigation
+					</span>
+					<span	class="icon-bar"></span>
+					<span	class="icon-bar"></span>
+					<span	class="icon-bar"></span>
+				</button>
+				<img id="logo"src="{{ asset('images/logo.png') }}"	style="width: 130px;">
+			</div>
 				<!-- debut du changement -->
+			<div	class="collapse navbar-collapse"	id="bs-example-navbar-collapse-1">
+				<ul	class="nav navbar-nav">
+					<li>
+						<a	href="{{ path('home') }}">
+							<i	class="glyphicon glyphicon-home "></i>
+							ACCUEIL
+						</a>
+					</li>
 
-				<div	class="collapse navbar-collapse"	id="bs-example-navbar-collapse-1">
-					<ul	class="nav navbar-nav">
-						<li>
-							<a	href="{{ path('home') }}">
-								<i	class="glyphicon glyphicon-home "></i>
-								ACCUEIL
-							</a>
-						</li>
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			var dropdowns = document.querySelectorAll('.dropdown');
 
-						<script>
-document.addEventListener("DOMContentLoaded", function() {
-    var dropdowns = document.querySelectorAll('.dropdown');
+			dropdowns.forEach(function(dropdown) {
+				var submenu = dropdown.querySelector('.dropdown-menu');
 
-    dropdowns.forEach(function(dropdown) {
-        var submenu = dropdown.querySelector('.dropdown-menu');
+				// Ajouter un gestionnaire de survol pour le menu déroulant et le sous-menu
+				dropdown.addEventListener('mouseover', function() {  
+					dropdown.classList.add('active');
+					submenu.style.display = 'block';
+				});
 
-        // Ajouter un gestionnaire de survol pour le menu déroulant et le sous-menu
-        dropdown.addEventListener('mouseover', function() {  
-            dropdown.classList.add('active');
-            submenu.style.display = 'block';
-        });
+				// Ajouter un gestionnaire de sortie pour le menu déroulant et le sous-menu
+				dropdown.addEventListener('mouseout', function(event) {
+					// Vérifier si la souris est sortie du menu déroulant ou du sous-menu
+					if (!dropdown.contains(event.relatedTarget) && !submenu.contains(event.relatedTarget)) {
+						dropdown.classList.remove('active');
+						submenu.style.display = 'none';
+					}
+				});
 
-        // Ajouter un gestionnaire de sortie pour le menu déroulant et le sous-menu
-        dropdown.addEventListener('mouseout', function(event) {
-            // Vérifier si la souris est sortie du menu déroulant ou du sous-menu
-            if (!dropdown.contains(event.relatedTarget) && !submenu.contains(event.relatedTarget)) {
-                dropdown.classList.remove('active');
-                submenu.style.display = 'none';
-            }
-        });
+				submenu.addEventListener('mouseover', function() {
+					dropdown.classList.add('active');
+					submenu.style.display = 'block';
+				});
 
-        submenu.addEventListener('mouseover', function() {
-            dropdown.classList.add('active');
-            submenu.style.display = 'block';
-        });
-
-        submenu.addEventListener('mouseout', function(event) {
-            // Vérifier si la souris est sortie du menu déroulant ou du sous-menu
-            if (!dropdown.contains(event.relatedTarget) && !submenu.contains(event.relatedTarget)) {
-                dropdown.classList.remove('active');
-                submenu.style.display = 'none';
-            }
-        });
-    });
-});
+				submenu.addEventListener('mouseout', function(event) {
+					// Vérifier si la souris est sortie du menu déroulant ou du sous-menu
+					if (!dropdown.contains(event.relatedTarget) && !submenu.contains(event.relatedTarget)) {
+						dropdown.classList.remove('active');
+						submenu.style.display = 'none';
+					}
+				});
+			});
+		});
 </script>
 
-						<script>
-							/*
-							document.addEventListener("DOMContentLoaded", function () {
+<script>
+/*
+document.addEventListener("DOMContentLoaded", function () {
 
 var dropdowns = document.querySelectorAll('.dropdown');
 
@@ -151,440 +142,132 @@ submenu.style.display = 'none';
 });
 });
 */
-		 </script>
+</script>
 
-						<style>
-							.dropdown-menu .dropdown-menu {
-								position: absolute;
-								left: 100%;
-								top: 0;
-							}
-						</style>
-						<!-- changements -->
-						{% if appConfig is defined and appConfig is defined and appConfig.EnableCategories is defined and appConfig.EnableCategories == '1' %}
-						{% if app.user is defined and app.user.TELEVISION  or
-						app.user.RADIO or app.user.SERVICE or app.user.VOD 
-						or app.user.MUSIQUE or app.user.LIVREAUDIO or 
-						app.user.JEUX or app.user.SERVICESPAYANTS 
-						or app.user.QUESTIONNAIRE or app.user.APPLICATION 
-						or app.user.CHARTES  or app.user.VIDEOS  
-						or app.user.CatLivreAudio 
-						or app.user.CatRadio or app.user.CatVod or app.user.ServiceEnChambre
-						or app.user.ResultatQs  or app.user.STATISTIQUECHAINETV %}
-						<li	class="dropdown Categories">
-							<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button" aria-haspopup="true" aria-expanded="false">
-								<i	class="glyphicon glyphicon-list"></i>
-								CATEGORIES
-								<span	class="caret"></span>
-							</a>
-							<ul	class="dropdown-menu">
-								<!-- Application-->
-								{% if appConfig is defined and appConfig is defined and appConfig.EnableAPPLICATION is defined and appConfig.EnableAPPLICATION == '1' %}
-								{% if app.user.APPLICATION  %}
-								<li	class="dropdown APPLICATION">
-									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
-										<i	class="glyphicon glyphicon-phone"	style="margin-right: 10px;"></i>
-										APPLICATION
-										<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
-											<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-										</svg>
-									</a>
-									<ul	class="dropdown-menu">
-										<li>
-											<a	href="{{ path('app_application') }}">
-												<i	class="glyphicon glyphicon-file"	style="margin-right: 10px;"></i>
-												liste APPLICATION
-											</a>
-										</li>
-
-									</ul>
-								</li>
-								{% endif %}
-								{% endif %}
-								<!-- Charte Patient-->
-								{% if appConfig is defined and appConfig is defined and appConfig.EnableCHARTES is defined and appConfig.EnableCHARTES == '1' %}
-								{% if app.user.CHARTES %}
-								<li	class="dropdown CHARTEPATIENT">
-									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
-										<i	class="glyphicon glyphicon-file"	style="margin-right: 10px;"></i>
-										CHARTE PATIENT
-										<!-- <span class="caret"></span>-->
-										<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
-											<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-										</svg>
-									</a>
-									<ul	class="dropdown-menu">
-										<li>
-											<a	href="{{ path('app_charte_patient') }}">
-												<i	class="glyphicon glyphicon-file"	style="margin-right: 10px;"></i>
-												Modifier PDF
-											</a>
-										</li>
-									<!--	<li  >
-										<a href="{{ path('home') }}">
-										<i class="glyphicon glyphicon-phone" style="margin-right: 10px;"></i>
-										Charte Patient
-										</a>
-									</li>-->
-									</ul>
-								</li>
-							{% endif %}
-							{% endif %}
-								<!--JEUX -->
-							{% if appConfig is defined and appConfig is defined and appConfig.EnableJEUX is defined and appConfig.EnableJEUX == '1' %}
-								{% if app.user.JEUX %}
-								<li	class="dropdown JEUX">
-									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
-										<i	class="glyphicon glyphicon-knight"	style="margin-right: 10px;"></i>
-										JEUX
-										<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
-											<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-										</svg>
-									</a>
-									<ul	class="dropdown-menu">
-										<li>
-											<a	href="{{ path('app_jeux') }}">
-												<i	class="glyphicon glyphicon-knight"	style="margin-right: 10px;"></i>
-												Liste JEUX
-											</a>
-										</li>
-									</ul>
-								</li>
-							{% endif %}
-							{% endif %}
-								<!-- LIVRE AUDIO -->
-							{% if appConfig is defined and appConfig is defined and appConfig.EnableLIVREAUDIO is defined and appConfig.EnableLIVREAUDIO == '1' %}
-								{% if app.user.LIVREAUDIO == '1'or app.user.CatLivreAudio == "1" %}
-								<li	class="dropdown LIVREAUDIO">
-									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
-										<i	class="glyphicon glyphicon-equalizer"	style="margin-right: 10px;"></i>
-										LIVRE AUDIO
-										<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
-											<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-										</svg>
-									</a>
-									<ul	class="dropdown-menu">
-										{% if app.user.CatLivreAudio == "1" %}
-										<li>
-											<a	href="{{ path('app_categorie_livreaudio') }}">
-												<i	class="glyphicon glyphicon-folder-open"	style="margin-right: 10px;"></i>
-												Catégorie LIVRE AUDIO
-											</a>
-										</li>
-										{% endif %}
-										{% if app.user.LIVREAUDIO == '1' %}
-										<li>
-											<a	href="{{ path('app_livreaudio') }}">
-												<i	class="glyphicon glyphicon-list"	style="margin-right: 10px;"></i>
-												Liste Livre audio
-											</a>
-										</li>
-										{% endif %}
-									</ul>
-								</li>
-							 {% endif %}
-							{% endif %}
-								<!-- MUSIQUE -->
-							{% if appConfig is defined and appConfig is defined and appConfig.EnableMUSIQUE is defined and appConfig.EnableMUSIQUE == '1' %}
-							{% if app.user.MUSIQUE == '1' %}
-							<li class="dropdown MUSIQUE">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-									<i class="glyphicon glyphicon-music"  style="margin-right: 10px;"></i>
-									MUSIQUE
-									<svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-									<path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-									</svg>
-									</a>
-									<ul class="dropdown-menu">
-									<li>
-									<a href="{{ path('home') }}">
-									<i class="glyphicon glyphicon-music" style="margin-right: 10px;"></i>
-									Liste MUSIQUE
-									</a>
-									</li>
-									</ul>
-							</li>
-							{% endif %}
-							{% endif %}
-								<!-- QUESTIONNAIRE-->
-								{% if appConfig is defined and appConfig is defined and appConfig.EnableQUESTIONNAIRE is defined and appConfig.EnableQUESTIONNAIRE == '1' %}
-								{% if app.user.QUESTIONNAIRE or app.user.ResultatQs %}
-								<li	class="dropdown QUESTIONNAIRE">	<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
-										<i	class="glyphicon glyphicon-pencil"	style="margin-right: 10px;"></i>
-										QUESTIONNAIRE
-										<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
-											<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-										</svg>
-									</a>
-									<ul	class="dropdown-menu">
-										{% if app.user.QUESTIONNAIRE  %}	
-										<li>
-											<a	href="{{ path('app_questionnaire') }}">
-												<i	class="glyphicon glyphicon-pencil "	style="margin-right: 10px;"></i>
-												Liste QUESTIONNAIRE
-											</a>
-										</li>
-										{% endif %}
-										{% if app.user.ResultatQs %}
-										<li>
-											<a	href=" {{ path('app_resultat_questionnaire') }}">
-												<i	class="glyphicon glyphicon-list "	style="margin-right: 10px;"></i>
-												Resultat QUESTIONNAIRE
-											</a>
-										</li>
-										{% endif %}
-									</ul>
-								</li>
-								{% endif %}
-								{% endif %}
-								<!-- radio-->
-								{% if appConfig is defined and appConfig is defined and appConfig.EnableRADIO is defined and appConfig.EnableRADIO == '1' %}
-								{% if app.user.RADIO == '1' or app.user.CatRadio == "1" %}
-								<li	class="dropdown RADIO">
-									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
-										<i	class="glyphicon glyphicon-equalizer"	style="margin-right: 10px;"></i>
-										RADIO
-										<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
-											<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-										</svg>
-									</a>
-									<ul	class="dropdown-menu ">
-									{% if app.user.CatRadio == "1" %}
-										<li>
-											<a	href="{{ path('app_categorie_radio') }}">
-												<i	class="glyphicon glyphicon-list"	style="margin-right: 10px;"></i>
-												Catégories radio
-											</a>
-										</li>
-									{% endif %}
-									{% if app.user.RADIO == '1' %}
-										<li>
-											<a	href="{{ path('app_radio') }}">
-												<i	class="glyphicon glyphicon-stats"	style="margin-right: 10px;"></i>
-												Liste radio
-											</a>
-										</li>
-									{% endif %}
-									</ul>
-								</li>
-								{% endif %}
-								{% endif %}
-								<!-- SERVICE -->
-								{% if appConfig is defined and appConfig is defined and appConfig.EnableSERVICE is defined and appConfig.EnableSERVICE == '1' %}
-								{% if app.user.SERVICE or app.user.ServiceEnChambre %}
-								<li	class="dropdown SERVICE">
-									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
-										<i	class="glyphicon glyphicon-bell"	style="margin-right: 10px;"></i>
-										SERVICE
-										<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
-											<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-										</svg>
-									</a>
-									<ul	class="dropdown-menu">
-									{% if app.user.SERVICE %}
-										<li>
-											<a	href="{{ path('app_services') }}">
-												<i	class="glyphicon glyphicon-list"	style="margin-right: 10px;"></i>
-												Liste Services
-											</a>
-										</li>
-									{% endif %}
-										{% if app.user.ServiceEnChambre %}		
-										<li>
-											<a	href="{{ path('service_en_chambre') }}">
-												<i	class="glyphicon glyphicon-home"	style="margin-right: 10px;"></i>
-												Service en chambre
-											</a>
-										</li>
-										{% endif %}
-
-									</ul>
-								</li>
-								{% endif %}
-								{% endif %}
-								<!-- SERVICES PAYANTS-->
-								{% if appConfig is defined and appConfig is defined and appConfig.EnableSERVICESPAYANTS is defined and appConfig.EnableSERVICESPAYANTS == '1' %}
-								{% if app.user.SERVICESPAYANTS %}	
-								<li	class="dropdown SERVICESPAYANTS">
-									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
-										<i	class="glyphicon glyphicon-euro"	style="margin-right: 10px;"></i>
-										SERVICES PAYANTS
-										<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
-											<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-										</svg>
-									</a>
-									<ul	class="dropdown-menu">
-										<!--<li>
-											<a href="{{ path('home') }}">
-											<i class="glyphicon glyphicon-knight" style="margin-right: 10px;"></i>
-											Services Payants
-											</a>
-										</li>-->
-										<li>
-											<a	href="{{ path('app_service_payant') }}">
-												<i	class="glyphicon glyphicon-phone"	style="margin-right: 10px;"></i>
-												Modifier PDF
-											</a>
-										</li>
-									</ul>
-								</li>
-								{% endif %}
-								{% endif %}
-								<!-- television -->
-								{% if appConfig is defined and appConfig is defined and appConfig.EnableTELEVISION is defined and appConfig.EnableTELEVISION == '1' %}
-								{% if app.user.TELEVISION or app.user.STATISTIQUECHAINETV %}
-								<li	class="dropdown TELEVISION">
-									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
-										<i	class="glyphicon glyphicon-blackboard"	style="margin-right: 10px;"></i>
-										TÉLÉVISION
-										<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
-											<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-										</svg>
-									</a>
-									<ul	class="dropdown-menu">
-									{% if app.user.TELEVISION %}
-										<li>
-											<a	href="{{ path('app_television') }}">
-												<i	class="glyphicon glyphicon-list"	style="margin-right: 10px;"></i>
-												Liste TÉLÉVISION
-											</a>
-										</li>
-									{% endif %}
-										{% if app.user.STATISTIQUECHAINETV %}	
-										<li>
-											<a	href="{{ path('home') }}">
-												<i	class="glyphicon glyphicon-stats"	style="margin-right: 10px;"></i>
-												STATISTIQUE UTILISATION CHAINE TV
-											</a>
-										</li>
-										{% endif %}
-									</ul>
-								</li>
-								{% endif %}
-								{% endif %}
-								<!-- VIDEO -->
-								{% if appConfig is defined and appConfig is defined and appConfig.EnableVIDEOS is defined and appConfig.EnableVIDEOS == '1' %}
-								{% if app.user.VIDEOS == '1' %}
-								<li	class="dropdown VIDEO">
-									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
-										<i	class="glyphicon glyphicon-facetime-video"	style="margin-right: 10px;"></i>
-										VIDEO
-										<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
-											<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-										</svg>
-									</a>
-									<ul	class="dropdown-menu">
-										<li>
-											<a	href="{{ path('home') }}">
-												<i	class="glyphicon glyphicon-equalizer"	style="margin-right: 10px;"></i>
-												Liste video
-											</a>
-										</li>
-									</ul>
-								</li>
-								{% endif %}
-								{% endif %}
-								<!-- VOD -->
-								{% if appConfig is defined and appConfig is defined and appConfig.EnableVOD is defined and appConfig.EnableVOD == '1' %}
-								{% if app.user.VOD == '1' or app.user.CatVod == "1" %}
-								<li	class="dropdown VOD">
-									<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
-										<i	class="glyphicon glyphicon-facetime-video"	style="margin-right: 10px;"></i>
-										VOD
-										<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
-											<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-										</svg>
-									</a>
-									<ul	class="dropdown-menu">
-									{% if app.user.CatVod == "1" %}
-										<li>
-											<a	href="{{ path('app_categorie_vod') }}">
-												<i	class="glyphicon glyphicon-folder-open"	style="margin-right: 10px;"></i>
-												Catégorie VOD
-											</a>
-										</li>
-									{% endif %}
-									{% if app.user.VOD == '1' %}
-										<li>
-											<a	href="{{ path('app_vod') }}">
-												<i	class=" glyphicon glyphicon-list"	style="margin-right: 10px;"></i>
-												Liste VOD
-											</a>
-										</li>
-									{% endif %}
-									</ul>
-								</li>
-								{% endif %}
-							{% endif %}
-							</ul>
-						</li>
-						{% endif %}
-						{% endif %}
-						{% if appConfig is defined and appConfig is defined and appConfig.EnableENREGISTREMENT is defined and appConfig.EnableENREGISTREMENT == '1' %}
-						{% if app.user is defined and (app.user.SupportConnect == '1' or app.user.MessagePersonnel == '1') %}
-						<li	class="dropdown ENREGISTREMENT">
-							<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
-								<i	class="glyphicon glyphicon-inbox "></i>
-								ENREGISTREMENT
-								<span	class="caret"></span>
-							</a>
-							<ul	class="dropdown-menu">
-								{% if appConfig is defined and appConfig is defined and appConfig.EnableSupportConnect is defined and appConfig.EnableSupportConnect == '1' %}
-								{% if app.user.SupportConnect == '1' %}
-								<li>
-									<a	href="{{ path('app_chambre') }}">
-										<i	class="glyphicon glyphicon-inbox "></i>
-										Support connecté
-									</a>
-								</li>
-								{% endif %}
-								{% endif %}
-								{% if appConfig is defined and appConfig is defined and appConfig.EnableMessagePersonnels is defined and appConfig.EnableMessagePersonnels == '1' %}
-								{% if  app.user.MessagePersonnel == '1' %}
-								<li>
-									<a	href=" {{ path('app_envoyer_message_chambre') }}">
-										<i	class="glyphicon glyphicon-comment "></i>
-										Messages personnels
-									</a>
-								</li>
-								{% endif %}
-								{% endif %}
-							</ul>
-						</li>
-						{% endif %}
-						{% endif %}
-						{% if appConfig is defined and appConfig is defined and appConfig.EnableANNONCES is defined and appConfig.EnableANNONCES == '1' %}
-						{% if app.user is defined and app.user.ANNONCES == '1' %}
-						<li	class="ANNONCES">
-							<a	href="{{ path('app_annonce') }}">
-								<i	class="glyphicon glyphicon-certificate"></i>
-								ANNONCES
-							</a>
-						</li>
-						{% endif %}
-						{% endif %}
-						{% if appConfig is defined and appConfig is defined and appConfig.EnableRApplication is defined and appConfig.EnableRApplication == '1' %}
-						{% if app.user is defined and (app.user.RREMOTE == '1' or app.user.RMOBILE == '1') %}
+<style>
+	.dropdown-menu .dropdown-menu {
+		position: absolute;
+		left: 100%;
+		top: 0;
+	}
+</style>
+				<!-- changements -->
+				{% if appConfig is defined and appConfig is defined and appConfig.EnableCategories is defined and appConfig.EnableCategories == '1' %}
+				{% if app.user is defined and app.user.TELEVISION  or
+				app.user.RADIO or app.user.SERVICE or app.user.VOD 
+				or app.user.MUSIQUE or app.user.LIVREAUDIO or 
+				app.user.JEUX or app.user.SERVICESPAYANTS 
+				or app.user.QUESTIONNAIRE or app.user.APPLICATION 
+				or app.user.CHARTES  or app.user.VIDEOS  
+				or app.user.CatLivreAudio 
+				or app.user.CatRadio or app.user.CatVod or app.user.ServiceEnChambre
+				or app.user.ResultatQs  or app.user.STATISTIQUECHAINETV %}
+				<li	class="dropdown Categories">
+					<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button" aria-haspopup="true" aria-expanded="false">
+						<i	class="glyphicon glyphicon-list"></i>
+						CATEGORIES
+						<span	class="caret"></span>
+					</a>
+					<ul	class="dropdown-menu">
+						<!-- Application-->
+						{% if appConfig is defined and appConfig is defined and appConfig.EnableAPPLICATION is defined and appConfig.EnableAPPLICATION == '1' %}
+						{% if app.user.APPLICATION  %}
 						<li	class="dropdown APPLICATION">
 							<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
-								<i	class="glyphicon glyphicon-phone "></i>
-								R-APPLICATION
-								<span	class="caret"></span>
+								<i	class="glyphicon glyphicon-phone"	style="margin-right: 10px;"></i>
+								APPLICATION
+								<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
+									<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+								</svg>
 							</a>
 							<ul	class="dropdown-menu">
-								{% if  app.user.RMOBILE == '1' %}
 								<li>
-									<a	href="{{ path('app_config_mobile') }} ">
-										<i	class="glyphicon glyphicon-phone "></i>
-										R-MOBILE
+									<a	href="{{ path('app_application') }}">
+										<i	class="glyphicon glyphicon-file"	style="margin-right: 10px;"></i>
+										liste APPLICATION
+									</a>
+								</li>
+
+							</ul>
+						</li>
+						{% endif %}
+						{% endif %}
+						<!-- Charte Patient-->
+						{% if appConfig is defined and appConfig is defined and appConfig.EnableCHARTES is defined and appConfig.EnableCHARTES == '1' %}
+						{% if app.user.CHARTES %}
+						<li	class="dropdown CHARTEPATIENT">
+							<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+								<i	class="glyphicon glyphicon-file"	style="margin-right: 10px;"></i>
+								CHARTE PATIENT
+								<!-- <span class="caret"></span>-->
+								<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
+									<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+								</svg>
+							</a>
+							<ul	class="dropdown-menu">
+								<li>
+									<a	href="{{ path('app_charte_patient') }}">
+										<i	class="glyphicon glyphicon-file"	style="margin-right: 10px;"></i>
+										Modifier PDF
+									</a>
+								</li>
+							<!--	<li  >
+								<a href="{{ path('home') }}">
+								<i class="glyphicon glyphicon-phone" style="margin-right: 10px;"></i>
+								Charte Patient
+								</a>
+							</li>-->
+							</ul>
+						</li>
+					{% endif %}
+					{% endif %}
+						<!--JEUX -->
+					{% if appConfig is defined and appConfig is defined and appConfig.EnableJEUX is defined and appConfig.EnableJEUX == '1' %}
+						{% if app.user.JEUX %}
+						<li	class="dropdown JEUX">
+							<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+								<i	class="glyphicon glyphicon-knight"	style="margin-right: 10px;"></i>
+								JEUX
+								<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
+									<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+								</svg>
+							</a>
+							<ul	class="dropdown-menu">
+								<li>
+									<a	href="{{ path('app_jeux') }}">
+										<i	class="glyphicon glyphicon-knight"	style="margin-right: 10px;"></i>
+										Liste JEUX
+									</a>
+								</li>
+							</ul>
+						</li>
+					{% endif %}
+					{% endif %}
+						<!-- LIVRE AUDIO -->
+					{% if appConfig is defined and appConfig is defined and appConfig.EnableLIVREAUDIO is defined and appConfig.EnableLIVREAUDIO == '1' %}
+						{% if app.user.LIVREAUDIO == '1'or app.user.CatLivreAudio == "1" %}
+						<li	class="dropdown LIVREAUDIO">
+							<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+								<i	class="glyphicon glyphicon-equalizer"	style="margin-right: 10px;"></i>
+								LIVRE AUDIO
+								<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
+									<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+								</svg>
+							</a>
+							<ul	class="dropdown-menu">
+								{% if app.user.CatLivreAudio == "1" %}
+								<li>
+									<a	href="{{ path('app_categorie_livreaudio') }}">
+										<i	class="glyphicon glyphicon-folder-open"	style="margin-right: 10px;"></i>
+										Catégorie LIVRE AUDIO
 									</a>
 								</li>
 								{% endif %}
-								{% if app.user.RREMOTE == '1' %}
+								{% if app.user.LIVREAUDIO == '1' %}
 								<li>
-									<a	href="{{ path('home') }}">
-										<i	class="glyphicon glyphicon-phone "></i>
-										R-REMOTE
+									<a	href="{{ path('app_livreaudio') }}">
+										<i	class="glyphicon glyphicon-list"	style="margin-right: 10px;"></i>
+										Liste Livre audio
 									</a>
 								</li>
 								{% endif %}
@@ -592,81 +275,389 @@ submenu.style.display = 'none';
 						</li>
 						{% endif %}
 					{% endif %}
-					</ul>
-
-					<ul	class="nav navbar-nav navbar-right">
-
-						<li	class="dropdown">
-							<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
-								<i	class="glyphicon glyphicon-user "></i>
-								{{ app.user.username }}
-								(
-								{{ app.user.etablissement.id }}
-								)
-								<span	class="caret"></span>
+						<!-- MUSIQUE -->
+					{% if appConfig is defined and appConfig is defined and appConfig.EnableMUSIQUE is defined and appConfig.EnableMUSIQUE == '1' %}
+					{% if app.user.MUSIQUE == '1' %}
+					<li class="dropdown MUSIQUE">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+							<i class="glyphicon glyphicon-music"  style="margin-right: 10px;"></i>
+							MUSIQUE
+							<svg  width="10" height="10" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+							<path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+							</svg>
+							</a>
+							<ul class="dropdown-menu">
+							<li>
+							<a href="{{ path('home') }}">
+							<i class="glyphicon glyphicon-music" style="margin-right: 10px;"></i>
+							Liste MUSIQUE
+							</a>
+							</li>
+							</ul>
+					</li>
+					{% endif %}
+					{% endif %}
+						<!-- QUESTIONNAIRE-->
+						{% if appConfig is defined and appConfig is defined and appConfig.EnableQUESTIONNAIRE is defined and appConfig.EnableQUESTIONNAIRE == '1' %}
+						{% if app.user.QUESTIONNAIRE or app.user.ResultatQs %}
+						<li	class="dropdown QUESTIONNAIRE">	<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+								<i	class="glyphicon glyphicon-pencil"	style="margin-right: 10px;"></i>
+								QUESTIONNAIRE
+								<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
+									<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+								</svg>
 							</a>
 							<ul	class="dropdown-menu">
+								{% if app.user.QUESTIONNAIRE  %}	
 								<li>
-									<a	href="{{ path('app_profil') }}">
-										<i	class="glyphicon glyphicon-user "></i>
-										Profil
+									<a	href="{{ path('app_questionnaire') }}">
+										<i	class="glyphicon glyphicon-pencil "	style="margin-right: 10px;"></i>
+										Liste QUESTIONNAIRE
 									</a>
 								</li>
-							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN')  %}
+								{% endif %}
+								{% if app.user.ResultatQs %}
 								<li>
-									<a	href="{{ path('app_gestion_profile') }}">
-										<i	class="glyphicon glyphicon-modal-window "></i>
-										Gestion des Profils
+									<a	href=" {{ path('app_resultat_questionnaire') }}">
+										<i	class="glyphicon glyphicon-list "	style="margin-right: 10px;"></i>
+										Resultat QUESTIONNAIRE
+									</a>
+								</li>
+								{% endif %}
+							</ul>
+						</li>
+						{% endif %}
+						{% endif %}
+						<!-- radio-->
+						{% if appConfig is defined and appConfig is defined and appConfig.EnableRADIO is defined and appConfig.EnableRADIO == '1' %}
+						{% if app.user.RADIO == '1' or app.user.CatRadio == "1" %}
+						<li	class="dropdown RADIO">
+							<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+								<i	class="glyphicon glyphicon-equalizer"	style="margin-right: 10px;"></i>
+								RADIO
+								<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
+									<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+								</svg>
+							</a>
+							<ul	class="dropdown-menu ">
+							{% if app.user.CatRadio == "1" %}
+								<li>
+									<a	href="{{ path('app_categorie_radio') }}">
+										<i	class="glyphicon glyphicon-list"	style="margin-right: 10px;"></i>
+										Catégories radio
 									</a>
 								</li>
 							{% endif %}
+							{% if app.user.RADIO == '1' %}
 								<li>
-									<a	href="{{ path('app_etablissement') }}">
-										<i	class="glyphicon glyphicon-flag "></i>
-										Infos établissement
+									<a	href="{{ path('app_radio') }}">
+										<i	class="glyphicon glyphicon-stats"	style="margin-right: 10px;"></i>
+										Liste radio
 									</a>
 								</li>
-								{% if is_granted('ROLE_SUPER_ADMIN')  %}
+							{% endif %}
+							</ul>
+						</li>
+						{% endif %}
+						{% endif %}
+						<!-- SERVICE -->
+						{% if appConfig is defined and appConfig is defined and appConfig.EnableSERVICE is defined and appConfig.EnableSERVICE == '1' %}
+						{% if app.user.SERVICE or app.user.ServiceEnChambre %}
+						<li	class="dropdown SERVICE">
+							<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+								<i	class="glyphicon glyphicon-bell"	style="margin-right: 10px;"></i>
+								SERVICE
+								<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
+									<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+								</svg>
+							</a>
+							<ul	class="dropdown-menu">
+							{% if app.user.SERVICE %}
 								<li>
-									<a	href="{{ path('app_super_admin') }}">
-									<i class='fas fa-user-cog'></i>
-										Administration
+									<a	href="{{ path('app_services') }}">
+										<i	class="glyphicon glyphicon-list"	style="margin-right: 10px;"></i>
+										Liste Services
+									</a>
+								</li>
+							{% endif %}
+								{% if app.user.ServiceEnChambre %}		
+								<li>
+									<a	href="{{ path('service_en_chambre') }}">
+										<i	class="glyphicon glyphicon-home"	style="margin-right: 10px;"></i>
+										Service en chambre
 									</a>
 								</li>
 								{% endif %}
-								{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN')  %}
-								<li>
-									<a	href="https://localhost:1111/r-import/Page_accueil.php?etab={{ app.user.etablissement.id }}"	target="_blank">
-										<i	class="glyphicon glyphicon-import "></i>
-										Import données
-									</a>
-								</li>
-								{% endif %}
-								<li	role="separator"	class="divider"></li>
-								<li>
-									<a	href="{{ path('app_logout') }}">
-										<i	class="glyphicon glyphicon-log-out "></i>
-										Deconnexion
-									</a>
-								</li>
 
 							</ul>
 						</li>
+						{% endif %}
+						{% endif %}
+						<!-- SERVICES PAYANTS-->
+						{% if appConfig is defined and appConfig is defined and appConfig.EnableSERVICESPAYANTS is defined and appConfig.EnableSERVICESPAYANTS == '1' %}
+						{% if app.user.SERVICESPAYANTS %}	
+						<li	class="dropdown SERVICESPAYANTS">
+							<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+								<i	class="glyphicon glyphicon-euro"	style="margin-right: 10px;"></i>
+								SERVICES PAYANTS
+								<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
+									<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+								</svg>
+							</a>
+							<ul	class="dropdown-menu">
+								<!--<li>
+									<a href="{{ path('home') }}">
+									<i class="glyphicon glyphicon-knight" style="margin-right: 10px;"></i>
+									Services Payants
+									</a>
+								</li>-->
+								<li>
+									<a	href="{{ path('app_service_payant') }}">
+										<i	class="glyphicon glyphicon-phone"	style="margin-right: 10px;"></i>
+										Modifier PDF
+									</a>
+								</li>
+							</ul>
+						</li>
+						{% endif %}
+						{% endif %}
+						<!-- television -->
+						{% if appConfig is defined and appConfig is defined and appConfig.EnableTELEVISION is defined and appConfig.EnableTELEVISION == '1' %}
+						{% if app.user.TELEVISION or app.user.STATISTIQUECHAINETV %}
+						<li	class="dropdown TELEVISION">
+							<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+								<i	class="glyphicon glyphicon-blackboard"	style="margin-right: 10px;"></i>
+								TÉLÉVISION
+								<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
+									<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+								</svg>
+							</a>
+							<ul	class="dropdown-menu">
+							{% if app.user.TELEVISION %}
+								<li>
+									<a	href="{{ path('app_television') }}">
+										<i	class="glyphicon glyphicon-list"	style="margin-right: 10px;"></i>
+										Liste TÉLÉVISION
+									</a>
+								</li>
+							{% endif %}
+								{% if app.user.STATISTIQUECHAINETV %}	
+								<li>
+									<a	href="{{ path('home') }}">
+										<i	class="glyphicon glyphicon-stats"	style="margin-right: 10px;"></i>
+										STATISTIQUE UTILISATION CHAINE TV
+									</a>
+								</li>
+								{% endif %}
+							</ul>
+						</li>
+						{% endif %}
+						{% endif %}
+						<!-- VIDEO -->
+						{% if appConfig is defined and appConfig is defined and appConfig.EnableVIDEOS is defined and appConfig.EnableVIDEOS == '1' %}
+						{% if app.user.VIDEOS == '1' %}
+						<li	class="dropdown VIDEO">
+							<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+								<i	class="glyphicon glyphicon-facetime-video"	style="margin-right: 10px;"></i>
+								VIDEO
+								<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
+									<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+								</svg>
+							</a>
+							<ul	class="dropdown-menu">
+								<li>
+									<a	href="{{ path('home') }}">
+										<i	class="glyphicon glyphicon-equalizer"	style="margin-right: 10px;"></i>
+										Liste video
+									</a>
+								</li>
+							</ul>
+						</li>
+						{% endif %}
+						{% endif %}
+						<!-- VOD -->
+						{% if appConfig is defined and appConfig is defined and appConfig.EnableVOD is defined and appConfig.EnableVOD == '1' %}
+						{% if app.user.VOD == '1' or app.user.CatVod == "1" %}
+						<li	class="dropdown VOD">
+							<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+								<i	class="glyphicon glyphicon-facetime-video"	style="margin-right: 10px;"></i>
+								VOD
+								<svg	width="10"	height="10"	fill="currentColor"	class="bi bi-caret-right-fill"	viewBox="0 0 16 16">
+									<path	d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+								</svg>
+							</a>
+							<ul	class="dropdown-menu">
+							{% if app.user.CatVod == "1" %}
+								<li>
+									<a	href="{{ path('app_categorie_vod') }}">
+										<i	class="glyphicon glyphicon-folder-open"	style="margin-right: 10px;"></i>
+										Catégorie VOD
+									</a>
+								</li>
+							{% endif %}
+							{% if app.user.VOD == '1' %}
+								<li>
+									<a	href="{{ path('app_vod') }}">
+										<i	class=" glyphicon glyphicon-list"	style="margin-right: 10px;"></i>
+										Liste VOD
+									</a>
+								</li>
+							{% endif %}
+							</ul>
+						</li>
+						{% endif %}
+					{% endif %}
+					</ul>
+				</li>
+				{% endif %}
+				{% endif %}
+				{% if appConfig is defined and appConfig is defined and appConfig.EnableENREGISTREMENT is defined and appConfig.EnableENREGISTREMENT == '1' %}
+				{% if app.user is defined and (app.user.SupportConnect == '1' or app.user.MessagePersonnel == '1') %}
+				<li	class="dropdown ENREGISTREMENT">
+					<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+						<i	class="glyphicon glyphicon-inbox "></i>
+						ENREGISTREMENT
+						<span	class="caret"></span>
+					</a>
+					<ul	class="dropdown-menu">
+						{% if appConfig is defined and appConfig is defined and appConfig.EnableSupportConnect is defined and appConfig.EnableSupportConnect == '1' %}
+						{% if app.user.SupportConnect == '1' %}
 						<li>
-							<a	href="{{ path('app_logout') }}"	data-toggle="tooltip"	data-placement="top"	title="Déconnexion">
-								<i	class="glyphicon glyphicon-off"></i>
-							<!-- Il n'y a pas besoin du caractère ">" ici -->
+							<a	href="{{ path('app_chambre') }}">
+								<i	class="glyphicon glyphicon-inbox "></i>
+								Support connecté
+							</a>
+						</li>
+						{% endif %}
+						{% endif %}
+						{% if appConfig is defined and appConfig is defined and appConfig.EnableMessagePersonnels is defined and appConfig.EnableMessagePersonnels == '1' %}
+						{% if  app.user.MessagePersonnel == '1' %}
+						<li>
+							<a	href=" {{ path('app_envoyer_message_chambre') }}">
+								<i	class="glyphicon glyphicon-comment "></i>
+								Messages personnels
+							</a>
+						</li>
+						{% endif %}
+						{% endif %}
+					</ul>
+				</li>
+				{% endif %}
+				{% endif %}
+				{% if appConfig is defined and appConfig is defined and appConfig.EnableANNONCES is defined and appConfig.EnableANNONCES == '1' %}
+				{% if app.user is defined and app.user.ANNONCES == '1' %}
+				<li	class="ANNONCES">
+					<a	href="{{ path('app_annonce') }}">
+						<i	class="glyphicon glyphicon-certificate"></i>
+						ANNONCES
+					</a>
+				</li>
+				{% endif %}
+				{% endif %}
+				{% if appConfig is defined and appConfig is defined and appConfig.EnableRApplication is defined and appConfig.EnableRApplication == '1' %}
+				{% if app.user is defined and (app.user.RREMOTE == '1' or app.user.RMOBILE == '1') %}
+				<li	class="dropdown APPLICATION">
+					<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+						<i	class="glyphicon glyphicon-phone "></i>
+						R-APPLICATION
+						<span	class="caret"></span>
+					</a>
+					<ul	class="dropdown-menu">
+						{% if  app.user.RMOBILE == '1' %}
+						<li>
+							<a	href="{{ path('app_config_mobile') }} ">
+								<i	class="glyphicon glyphicon-phone "></i>
+								R-MOBILE
+							</a>
+						</li>
+						{% endif %}
+						{% if app.user.RREMOTE == '1' %}
+						<li>
+							<a	href="{{ path('home') }}">
+								<i	class="glyphicon glyphicon-phone "></i>
+								R-REMOTE
+							</a>
+						</li>
+						{% endif %}
+					</ul>
+				</li>
+				{% endif %}
+			{% endif %}
+			</ul>
+
+			<ul	class="nav navbar-nav navbar-right">
+
+				<li	class="dropdown">
+					<a	href="#"	class="dropdown-toggle"	data-toggle="dropdown"	role="button"	aria-haspopup="true"	aria-expanded="false">
+						<i	class="glyphicon glyphicon-user "></i>
+						{{ app.user.username }}
+						(
+						{{ app.user.etablissement.id }}
+						)
+						<span	class="caret"></span>
+					</a>
+					<ul	class="dropdown-menu">
+						<li>
+							<a	href="{{ path('app_profil') }}">
+								<i	class="glyphicon glyphicon-user "></i>
+								Profil
+							</a>
+						</li>
+					{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN')  %}
+						<li>
+							<a	href="{{ path('app_gestion_profile') }}">
+								<i	class="glyphicon glyphicon-modal-window "></i>
+								Gestion des Profils
+							</a>
+						</li>
+					{% endif %}
+						<li>
+							<a	href="{{ path('app_etablissement') }}">
+								<i	class="glyphicon glyphicon-flag "></i>
+								Infos établissement
+							</a>
+						</li>
+						{% if is_granted('ROLE_SUPER_ADMIN')  %}
+						<li>
+							<a	href="{{ path('app_super_admin') }}">
+							<i class='fas fa-user-cog'></i>
+								Administration
+							</a>
+						</li>
+						{% endif %}
+						{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN')  %}
+						<li>
+							<a	href="https://localhost:1111/r-import/Page_accueil.php?etab={{ app.user.etablissement.id }}"	target="_blank">
+								<i	class="glyphicon glyphicon-import "></i>
+								Import données
+							</a>
+						</li>
+						{% endif %}
+						<li	role="separator"	class="divider"></li>
+						<li>
+							<a	href="{{ path('app_logout') }}">
+								<i	class="glyphicon glyphicon-log-out "></i>
+								Deconnexion
 							</a>
 						</li>
 
 					</ul>
+				</li>
+				<li>
+					<a	href="{{ path('app_logout') }}"	data-toggle="tooltip"	data-placement="top"	title="Déconnexion">
+						<i	class="glyphicon glyphicon-off"></i>
+					<!-- Il n'y a pas besoin du caractère ">" ici -->
+					</a>
+				</li>
 
-				</div>
+			</ul>
 
-			</div>
+		</div>
 
-		</nav>
-	</body>
+	</div>
+
+</nav>
+</body>
 
 </html>
 <br>

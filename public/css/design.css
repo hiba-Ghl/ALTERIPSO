@@ -3,13 +3,13 @@
         border-radius: 8px;
         text-align: left;
         margin-bottom: 10px;
-        margin-left: -120px;
+        margin-left: 15px;
         color: white;
         font-style: oblique;
         font-size: 20px;
         background-color: #3087ce;
         width:292px;
-        padding-left: 10px;
+        padding-left: 20px;
     }
     #div1 {
         border-radius: 25px;
@@ -117,6 +117,9 @@
         width: 100%;
         font-size: 12px;
     }
+    #div2_ajout .form-control {
+        width: 100% !important;
+    }
      #titre {
         margin-left: -80px;
     }
@@ -147,41 +150,37 @@
             margin: 2px;
         }
          #titre {
-        margin-left: -80px;
+        margin-left: -120px;
         }
 }
     /* Tablette */
-@media (max-width: 576px) and (max-width: 992px){
+/* Tablette uniquement */
+@media (min-width: 577px) and (max-width: 992px){
     #div1 {
         padding: 10px;
     }
+
     #div2_ajout{
         padding: 15px;
         height: auto;
     }
+
     #div_modifier{
         padding: 15px;
         height:auto !important;
     }
-   .caption h5 {
-        font-size: 12px;
-    }
 
-    input[type="text"] {
-        width: 40px;
-        font-size: 12px;
-    }
-    .btn-xs {
-        padding: 6px 8px;
-        font-size: 12px;
-    }
     .caption h5 {
         font-size: 14px;
     }
-    #titre {
-        margin-left: -80px;
+
+    /* ⚠️ IMPORTANT */
+    input[type="text"] {
+        width: 100%;
+        font-size: 12px;
     }
 }
+
 
 /* fichier livreAudio = index.html.twig */
   .table-container {

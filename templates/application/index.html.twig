@@ -10,13 +10,9 @@
     <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
 		Liste Applications
 	</div>
-
-	<div id="div2">
-		
-        <form action="{{ path('app_modifier_homeapplication')}}" name="test" method="post" enctype="multipart/form-data" onsubmit="return check_fields(this)">
-           
-            <input type="hidden" name="ongletActif" value="{{ app.request.query.get('ongletActif') }}">
-   
+	<div id="div2">		
+        <form action="{{ path('app_modifier_homeapplication')}}" name="test" method="post" enctype="multipart/form-data" onsubmit="return check_fields(this)">           
+            <input type="hidden" name="ongletActif" value="{{ app.request.query.get('ongletActif') }}">  
 
 			<div class="col-md-12">
 				<a href="{{path('app_ajouter_application')}}" class="btn btn-info btn-sm" name="add" id="add" {% if app.user.AjoutApp == '0' %} disabled {% endif %}>

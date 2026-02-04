@@ -81,10 +81,6 @@
 					Connexion
 				</button>
 			</div>
-
-
-
-
 		</form>
 	</div>
 	{#{ render(controller('App\\Controller\\UserController::createUser')) }#}
@@ -96,8 +92,6 @@
 		INSCRIVEZ-VOUS
 	</div>
 	<br>
- 
-
 {% for message in app.flashes('error') %}
     <div class="alert alert-danger">
         {{ message }}
