@@ -1,6 +1,6 @@
 {% extends 'home/index.html.twig' %}
 {% block body %}
-<link rel="stylesheet" href="{{ asset('css/design.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/modifier.css') }}" />
 
 <div id="titre">
 <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
@@ -16,8 +16,9 @@
                     <div class="col-12 col-md-3">
                         <img
                         src="{{ path('afficher_image', { filename: application.logo|split('/')|last, directory: 'application_directory' }) }}"
-                        class="img-responsive"
-                        style="max-width:200px; height:auto;"
+                        class="img-rounded img-responsive"
+                        id="img"
+                        style="width:200px; height:auto;"
                         >
                 </div>
                 <div class="col-12 col-md-9">
@@ -48,14 +49,14 @@
                         </div>
                         <div class="col-12 col-md-4"></div>
                         <div class="col-12 col-md-4">
-                            <label>Logo:</label>
+                            <label class="control-label">Logo:</label>
                             <input type="file" class="form-control" id="logo" name="logo">
                         </div>
                     </div>
                 </div>
                 <div class="row">
                 </div>
-                <div class="clearfix" style="margin-top:-20px;">
+                <div class="clearfix" id="div_btn">
                     <div class="pull-right">
                         <a class="btn btn-danger btn-md" id="annulerButton" style="width:130px;" href="/application">
                             <i class="glyphicon glyphicon-remove"></i> Annuler
@@ -70,23 +71,6 @@
         </div>       
         </form>    
 </div>
-<style>
-    @media (max-width:375) and (max-width: 576px) and (max-width: 768px) and (max-width: 992px) {
-        .form-horizontal .control-label {
-            text-align: left;
-            width: 100%;
-        }
-        .form-horizontal .form-group {
-            margin-bottom: 15px;
-        }
-        .form-horizontal .form-control {
-            width: 100%;
-        }
-        #div_modifier{
-            padding: 15px;
-            height:auto !important;
-        }
-    }
-</style>
+
 
 {% endblock %}

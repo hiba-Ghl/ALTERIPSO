@@ -1,0 +1,51 @@
+/* fichier Application=> modifier.html.twig */
+ #titre{
+        border-radius: 8px;
+        text-align: left;
+        margin-bottom: 10px;
+        margin-left: 15px;
+        color: white;
+        font-style: oblique;
+        font-size: 20px;
+        background-color: #3087ce;
+        width:292px;
+        padding-left: 20px;
+    }
+
+#div_modifier{
+        border-radius: 25px;
+        border: 2px solid #3087ce;
+        padding: 20px;
+        width: 100%;
+        height:280px;
+        max-width: 1300px;
+        margin: 10px auto;
+        background-color: white;
+    }
+    #div_btn{
+        width: 100%;
+        margin-top: -10px;
+        margin-bottom: 20px;
+    }
+
+       @media (max-width:375) and (max-width: 576px) and (max-width: 768px) and (max-width: 992px) {
+        .form-horizontal .control-label {
+            text-align: left;
+            width: 100%;
+        }
+        .form-horizontal .form-group {
+            margin-bottom: 15px;
+        }
+        .form-horizontal .form-control {
+            width: auto !important;
+        }
+        #div_modifier{
+            padding: 15px;
+            height:auto !important;
+            width: auto !important;
+        }
+        #img {
+            max-width: 50% !important;
+            height: auto !important;
+        }
+    }
