@@ -1,0 +1,132 @@
+#div2 {
+        border-radius: 25px;
+        border: 2px solid #3087ce;
+        padding: 20px;
+        width: 100%;
+        max-width: 1200px;
+        height: auto;
+        margin: 10px auto;
+        background-color: white;
+		}
+#titre{
+        text-align: left;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        color: white;
+        font-style: oblique;
+        font-size: 20px;
+        background-color: #3087ce;
+        width:392px;
+        padding-left: 20px;
+    }
+#titre_modifier{
+        text-align: left;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        color: white;
+        font-style: oblique;
+        font-size: 20px;
+        background-color: #3087ce;
+        width:500px;
+        padding-left: 20px;
+    }
+#logo_titre{
+        margin-top: -51px;
+        margin-left: -10px;
+        width: 45px;
+        float: left;
+    }
+
+#logo-preview{
+        width:250px;
+        height:235px;
+        margin-left:10px;
+}
+
+#img_lang{
+        width: 30px;
+    }
+
+    .accordion-toggle {
+        cursor: pointer;
+    }
+
+    .error-message {
+        color: white;
+        font-weight: bold;
+        display: none;
+        background-color: red;
+        border-radius: 4px;
+    }
+
+@media (max-width: 768px){
+        #div2 > div {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+        }
+
+        #div2 > div > div {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        #div2 a,
+        #div2 button {
+            width: 100%;
+        }
+
+        #myInput {
+            width: 100%;
+            float: none;
+        }
+
+        /* Titre plus souple */
+        #titre {
+            width: auto;
+            font-size: 12px;
+        }
+        #titre_modifier{
+            width: auto;
+            font-size: 12px;
+        }
+/* RESPONSIVE INPUTS LANGUES */
+         /* Les lignes passent en colonne */
+        #inputGroup1 .form-row {
+            margin-left: 0 !important;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Chaque champ prend toute la largeur */
+        #inputGroup1 .form-group {
+            width: 100%;
+            margin-left: 0 !important;
+        }
+
+        /* Inputs full width */
+        #inputGroup1 .form-control {
+            width: 100%;
+        }
+
+        /* Alignement image + label */
+        #inputGroup1 img {
+            display: inline-block;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+
+        #inputGroup1 label {
+            vertical-align: middle;
+        }
+        
+    }
+
+    @media (min-width: 1024px) {
+        #logo-preview {
+            width: 100%;
+            height: auto;
+            margin-left: 0;
+        }
+    }

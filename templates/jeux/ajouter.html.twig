@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{{ asset('css/design.css') }}" />
 
 <div id="titre">
-    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+    <img id="logo_titre" src="{{ asset('images/ler.png') }}">
         Ajouter un jeux
 </div>
 <div id="div2_ajout">
@@ -12,7 +12,7 @@
 		<form action="{{path('app_ajouter_jeux')}}" method="post" enctype="multipart/form-data">
 			<div class="row">
 				<div class="col-12 col-md-4">
-					<label>Nom Application</label>
+					<label>Nom jeux </label>
 					<input type="text" name="nom" class="form-control">
 				</div>
 				<div class="col-12 col-md-4">
@@ -54,10 +54,9 @@
 			<br>
 			<div class="clearfix">
 				<div class="pull-right">
-					<a class="btn btn-danger btn-md" id="annulerButton" style="width:130px;" href="/application">
+					<a class="btn btn-danger btn-md" id="annulerButton" style="width:130px;" href="/jeux">
 						<i class="glyphicon glyphicon-remove"></i> Annuler
 					</a>
-
 					<button type="submit" class="btn btn-primary btn-md" name="valider">
 						<i class="glyphicon glyphicon-floppy-disk"></i>
 						Enregistrer

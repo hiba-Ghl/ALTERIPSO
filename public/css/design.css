@@ -3,13 +3,19 @@
         border-radius: 8px;
         text-align: left;
         margin-bottom: 10px;
-        margin-left: -25px;
+        margin-left: 15px;
         color: white;
         font-style: oblique;
         font-size: 20px;
         background-color: #3087ce;
         width:292px;
-        padding-left: 10px;
+        padding-left: 20px;
+    }
+    #logo_titre{
+        margin-top: -51px;
+        margin-left: -10px;
+        width: 45px;
+        float: left;
     }
     #div1 {
         border-radius: 25px;
@@ -21,8 +27,8 @@
     }
     .nav-item {
         display: inline-block;
-        width: 150px; /* Largeur fixe de chaque élément de la barre de navigation */
-        text-align: center; /* Pour centrer le texte à l'intérieur de chaque élément */
+        width: 150px; 
+        text-align: center; 
         text-decoration: underline;
         color: black;
     }
@@ -106,9 +112,15 @@
     #div2_ajout .form-control {
         width: 100% !important;
     }
-     #titre {
-        margin-left: -80px;
-    }
+          /* Titre plus souple */
+        #titre {
+            width: auto;
+            font-size: 12px;
+            text-align: center;
+        }
+     /* #titre {
+        margin-left: 80px;
+    } */
     }
     @media (max-width: 768px) {
         #div2 {
@@ -131,9 +143,15 @@
             width: auto !important;
             margin: 2px;
         }
-         #titre {
-        margin-left: -120px;
+            /* Titre plus souple */
+        #titre {
+            width: auto;
+            font-size: 12px;
+            text-align: center;
         }
+         /* #titre {
+        margin-left: auto;
+        } */
 }
     /* Tablette */
 /* Tablette uniquement */
@@ -151,6 +169,12 @@
     .caption h5 {
         font-size: 14px;
     }
+          /* Titre plus souple */
+        #titre {
+            width: auto;
+            font-size: 12px;
+            margin-left:-120%;
+        }
 
     /* ⚠️ IMPORTANT */
     input[type="text"] {
@@ -160,79 +184,3 @@
 }
 
 
-/* fichier livreAudio = index.html.twig */
-  .table-container {
-        max-height: 400px; 
-        margin-top: 10px;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    tbody {
-        display: block;
-        max-height: 360px; 
-        overflow-y: auto;
-    }
-
-    thead, th {
-        background-color: #f2f2f2;
-        position: sticky;
-        top: 0;
-        z-index: 2;
-    }
-
-    th, td {
-        padding: 8px;
-        border-bottom: 1px solid #ddd;
-        height: 50px;
-        width:250px;
-        text-align:center
-    }
-    th {
-        height: 50px;
-        width:250px;
-        text-align:center
-    }
-
-    tr {
-        display: table;
-        width: 100%;
-        table-layout: fixed;
-    }
-
-    thead tr {
-        display: table;
-        width: 100%;
-        table-layout: fixed;
-    }
-
-    .header-title {
-        border-radius: 8px;
-        text-align: left;
-        margin-bottom: 10px;
-        margin-left: -30px;
-        color: white;
-        font-style: oblique;
-        font-size: 20px;
-        background-color: #3087ce;
-        padding-left: 10px;
-		display: inline-block;
-		width: 300px;
-
-    }
-
-    .header-title img {
-        margin-top: -51px;
-        margin-left: -10px;
-        width: 45px;
-        float: left;
-    }
-
-
-    .alert{
-        color: white;
-        border-radius: 5px;
-    }

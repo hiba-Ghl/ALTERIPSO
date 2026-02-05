@@ -1,7 +1,6 @@
 {% extends 'home/index.html.twig' %}
-
 {% block body %}
-<link rel="stylesheet" href="{{ asset('css/design.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/Catégorie_livreAudio.css') }}" />
 
     <!-- Gestion des flash messages -->
 {% for message in app.flashes('error') %}
@@ -14,93 +13,85 @@
 {% endfor %}
    
 <div id="titre">
-    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+    <img  id="logo_titre" src="{{ asset('images/ler.png') }}">
     Liste Catégorie livre audio
 </div>
-
-
-
-<form name="form" action="{{ path('app_update_active_categorie_livreaudio') }}" method="post" enctype="multipart/form-data">
-    
+<form name="form" action="{{ path('app_update_active_categorie_livreaudio') }}" method="post" enctype="multipart/form-data">    
     <!-- les boutons en haut du tableau -->
     <div id="div2">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:3px;">
-<div>
+    <div>
     <a href="{{ path('app_ajouter_categorielivreaudio') }}" {% if app.user.ajoutCatLivreAudio == '0' %} disabled {% endif %} class="btn btn-info btn-sm" name="add" id="add" style="margin-bottom: 10px; margin-right: 5px;">
         <i class="glyphicon glyphicon-plus"></i>
         Ajouter Catégorie livre Audio
     </a>
-
     <button type="submit" {% if app.user.SauvegarderCatLivreAudio == '0' %} disabled {% endif %} name="valider" class="btn btn-success btn-sm" style="margin-bottom: 10px; border: 2px; padding: 8px; margin-right: 5px;width:150px;">
         <i class="glyphicon glyphicon-floppy-disk"></i>
             Sauvegarder
     </button>
-
     <a name="annuler" href="{{ path('app_categorie_livreaudio') }}" class="btn btn-danger btn-sm" style="margin-bottom: 10px; border: 2px; padding: 8px;width:150px;">
         <i class="glyphicon glyphicon-remove"></i>
         Annuler
     </a>
 </div>
     <!-- la barre de recherche -->
-    <input id="myInput" type="text" placeholder="Search.." style="float: right; padding: 6px; border-radius: 5px;">
+<input id="myInput" type="text" placeholder="Search.." style="float: right; padding: 6px; border-radius: 5px;">
 </div>
-        <div class="table-container">
- <table class="table table-striped table-bordered header-fixed table-hover" id="dataTables-example" style="width: 100%;margin-top:20px;">
-                <thead>
-                    <tr>
-                        <th>Titre</th>
-                        <th>Icon</th>
-                        <th> 
-                        <p style="display:flex;gap:10px;justify-content:center">
-                        <span>
-                            Active
-                        </span>
-                        <input type="checkbox" id="checklist" style="margin-top:-1px;"></th>
-                        </p>
-                        <th>Position</th>
-                        <th style="width:245px">Actions</thle=>
-                    </tr>
-                </thead>
-
-                <tbody id="myTable">
-                    {% for catlivre in catlivreaudios %}
-                        <tr class="odd gradeX">
-                            <!-- le nom -->
-                            <td>{{ catlivre.nom|capitalize }}</tdle=>
-                            <td>
-                                <img style="width:45px;height:45px;text-align:center" src="{{ path('afficher_image', { filename: catlivre.logo|split('/')|last, directory: 'categorie_livreaudio_directory' }) }}"  alt="..." class="img-rounded img-responsive center-block">
-                            </tde=>
-                            <!-- checkbox -->
-                            {% set ch = '' %}
-                            {% if catlivre.active == 1 %}
-                                {% set ch = 'checked' %}
-                            {% endif %}
-                            <td>
-                                <label><input {% if app.user.SauvegarderCatLivreAudio == '0' %} disabled {% endif %} name="listeactive[{{ catlivre.id }}]" type="checkbox" {{ ch }} class="jpCheckbox"></label>
-                            </td>
-                            <!-- la position -->
-                            <td>{{ catlivre.position }}</td>
-                            <!-- les actions -->
-                            <td>>
-                                <a data-toggle="tooltip" {% if app.user.ModifierCatLivreAudio == '0' %} disabled {% endif %} data-placement="top" title="Modifier Catégorie livre audio" href="{{ path('app_modifier_categorielivreaudio', { 'id': catlivre.id }) }}" class="btn btn-warning btn-xs">
-                                    <i class="glyphicon glyphicon-pencil"></i>
-                                </a>
-                                <a data-toggle="tooltip"  {% if app.user.SuppCatLivreAudio == '0' %} disabled {% endif %} data-placement="top" title="Supprimer Catégorie livre audio" href="{{ path('app_supprimer_categorielivreaudio', { 'id': catlivre.id }) }}" class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer la catégorie livre audio : {{ catlivre.nom }} ?')">
-                                    <i class="glyphicon glyphicon-trash"></i>
-                                </a>
-                            </tdyle=>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="5">No records found</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
+    <div class="table-container">
+    <table class="table table-striped table-bordered header-fixed table-hover" id="dataTables-example" style="width: 100%;margin-top:20px;">
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Icon</th>
+                <th> 
+                <p style="display:flex;gap:10px;justify-content:center">
+                <span>
+                    Active
+                </span>
+                <input type="checkbox" id="checklist" style="margin-top:-1px;"></th>
+                </p>
+                <th>Position</th>
+                <th>Actions</thle=>
+            </tr>
+        </thead>
+        <tbody id="myTable">
+        {% for catlivre in catlivreaudios %}
+            <tr class="odd gradeX">
+                <!-- le nom -->
+                <td>{{ catlivre.nom|capitalize }}</tdle=>
+                <td>
+                    <img style="width:45px;height:45px;text-align:center" src="{{ path('afficher_image', { filename: catlivre.logo|split('/')|last, directory: 'categorie_livreaudio_directory' }) }}"  alt="..." class="img-rounded img-responsive center-block">
+                </tde=>
+                <!-- checkbox -->
+                {% set ch = '' %}
+                {% if catlivre.active == 1 %}
+                    {% set ch = 'checked' %}
+                {% endif %}
+                <td>
+                    <label><input {% if app.user.SauvegarderCatLivreAudio == '0' %} disabled {% endif %} name="listeactive[{{ catlivre.id }}]" type="checkbox" {{ ch }} class="jpCheckbox"></label>
+                </td>
+                <!-- la position -->
+                <td>{{ catlivre.position }}</td>
+                <!-- les actions -->
+                <td>
+                    <a data-toggle="tooltip" {% if app.user.ModifierCatLivreAudio == '0' %} disabled {% endif %} data-placement="top" title="Modifier Catégorie livre audio" href="{{ path('app_modifier_categorielivreaudio', { 'id': catlivre.id }) }}" class="btn btn-warning btn-xs">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    </a>
+                    <a data-toggle="tooltip"  {% if app.user.SuppCatLivreAudio == '0' %} disabled {% endif %} data-placement="top" title="Supprimer Catégorie livre audio" href="{{ path('app_supprimer_categorielivreaudio', { 'id': catlivre.id }) }}" class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer la catégorie livre audio : {{ catlivre.nom }} ?')">
+                        <i class="glyphicon glyphicon-trash"></i>
+                    </a>
+                </tdyle=>
+            </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5">No records found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
             </table>
         </div>
     </div>
 </form>
-
 <!-- Script pour cocher ou décocher toutes les cases à cocher -->
 <script>
     document.getElementById('checklist').addEventListener('click', function() {
@@ -110,7 +101,6 @@
         }
     });
 </script>
-
 <!-- initialisation des tooltips -->
 <script>
     $(document).ready(function(){
@@ -120,15 +110,15 @@
 </script>
 <!-- la recherche dans le tableau -->
 <script>
-            //un script pour la recherche des categories livreaudio
-			$(document).ready(function () {
-			$("#myInput").on("keyup", function () {
-			var value = $(this).val().toLowerCase();
-			$("#myTable tr").filter(function () {
-			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-			});
-			});
-			});
+    //un script pour la recherche des categories livreaudio
+    $(document).ready(function () {
+    $("#myInput").on("keyup", function () {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function () {
+    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+    });
+    });
 </script>
 
 {% endblock %}

@@ -1,49 +1,25 @@
 {% extends 'home/index.html.twig' %}
 {% block body %}
 
-<style>
-    #div2 {
-        border-radius: 25px;
-        border: 2px solid #3087ce;
-        padding: 20px;
-        height: auto;
-        display: flex;
-        justify-content: space-between;
-        background-color:white;
-        margin-left: -70px;
-    }
-
-    .accordion-toggle {
-        cursor: pointer;
-    }
-
-    .error-message {
-        color: white;
-        font-weight: bold;
-        display: none;
-        background-color: red;
-        border-radius: 4px;
-    }
-</style>
+<link rel="stylesheet" href="{{ asset('css/AjoutCateg_LivreAudio.css') }}">
 
 
-<div style="border-radius: 8px;text-align: left;margin-bottom:10px;margin-top:10px;margin-left: -70px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 400px;padding-left: 10px;">
-    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+<div id="titre_modifier">
+    <img id="logo_titre" src="{{ asset('images/ler.png') }}">
        Modifier la catégorie Livre Audio : {{categorielivreaudio.nom}}
 </div>
 
 <div id="div2">
      <!-- le formulaire de modification --> 
-    <form name="" style="width:100%" method="post" action="" class="form-horizontal" enctype="multipart/form-data" onsubmit="return validateForm()">
+    <form name="" method="post" action="" class="form-horizontal" enctype="multipart/form-data" onsubmit="return validateForm()">
 
-        <div class="row" style="width:100%">
+        <div class="row">
             <!-- Colonne pour le logo -->
             <div class="col-md-4 text-center">
                 <div class="form-group">
                     <img  src="{{ path('afficher_image', { filename: categorielivreaudio.logo|split('/')|last, directory: 'categorie_livreaudio_directory' }) }}" id="logo-preview" style="width:250px; height:235px; margin-left:10px;" />
                 </div>
             </div>
-
             <!-- Colonne pour les autres champs -->
             <div class="col-md-8">
                 <!-- nom -->
@@ -101,7 +77,7 @@
             </a>
             <div>
             <!-- les langues --> 
-        <div style="width: 800px; margin-left:-50px;margin-bottom: 15px; margin-top: 20px">
+            <div style="margin-bottom: 15px; margin-top: 20px">
             <!-- le boutons des langues --> 
             
             <!-- les champs des langues -->
@@ -110,12 +86,12 @@
                     <div id="inputGroup1">
                         <div class="form-row" style="margin-left:27px">
                             <div class="form-group col-md-6">
-                                <img style="width: 30px" src="{{ asset('images/eng.png') }}">
+                                <img id="img_lang" src="{{ asset('images/eng.png') }}">
                                 <label for="EN">English</label>
                                 <input type="text" class="form-control" id="EN" name="EN" value="{{categorielivreaudio.en}}">
                             </div>
                             <div class="form-group col-md-6" style="margin-left:27px">
-                                <img style="width: 30px" src="{{ asset('images/es.png') }}">
+                                <img id="img_lang" src="{{ asset('images/es.png') }}">
                                 <label for="ES">Espagnol</label>
                                 <input type="text" class="form-control" id="ES" name="ES" value="{{categorielivreaudio.es}}">
                             </div>
@@ -123,36 +99,36 @@
                         <!-- Repeat for all other languages -->
                         <div class="form-row" style="margin-left:27px">
                             <div class="form-group col-md-6">
-                                <img style="width: 30px" src="{{ asset('images/pt.png') }}">
+                                <img id="img_lang" src="{{ asset('images/pt.png') }}">
                                 <label for="PT">Portugues</label>
                                 <input type="text" class="form-control" id="PT" name="PT" value="{{categorielivreaudio.pt}}">
                             </div>
                             <div class="form-group col-md-6" style="margin-left:27px">
-                                <img style="width: 30px" src="{{ asset('images/ita.png') }}">
+                                <img id="img_lang" src="{{ asset('images/ita.png') }}">
                                 <label for="IT">Italiano</label>
                                 <input type="text" class="form-control" id="IT" name="IT" value="{{categorielivreaudio.it}}">
                             </div>
                         </div>
                         <div class="form-row" style="margin-left:27px">
                             <div class="form-group col-md-6">
-                                <img style="width: 30px" src="{{ asset('images/rus.png') }}">
+                                <img id="img_lang" src="{{ asset('images/rus.png') }}">
                                 <label for="RU">Russian</label>
                                 <input type="text" class="form-control" id="RU" name="RU" value="{{categorielivreaudio.ru}}">
                             </div>
                             <div class="form-group col-md-6" style="margin-left:27px">
-                                <img style="width: 30px" src="{{ asset('images/deu.png') }}">
+                                <img id="img_lang" src="{{ asset('images/deu.png') }}">
                                 <label for="DE">Deutsch</label>
                                 <input type="text" class="form-control" id="DE" name="DE" value="{{categorielivreaudio.de}}">
                             </div>
                         </div>
                         <div class="form-row" style="margin-left:27px">
                             <div class="form-group col-md-6">
-                                <img style="width: 30px" src="{{ asset('images/ch.png') }}">
+                                <img id="img_lang" src="{{ asset('images/ch.png') }}">
                                 <label for="ZH">China</label>
                                 <input type="text" class="form-control" id="ZH" name="ZH" value="{{categorielivreaudio.zh}}">
                             </div>
                             <div class="form-group col-md-6" style="margin-left:27px">
-                                <img style="width: 30px" src="{{ asset('images/ma.png') }}">
+                                <img id="img_lang" src="{{ asset('images/ma.png') }}">
                                 <label for="AR">العربية</label>
                                 <input type="text" class="form-control" id="AR" name="AR" value="{{categorielivreaudio.ar}}">
                             </div>
@@ -163,9 +139,7 @@
         </div>
                 </div>
             </div>
-        </div>
-
-        
+        </div>       
 
         <br>
 

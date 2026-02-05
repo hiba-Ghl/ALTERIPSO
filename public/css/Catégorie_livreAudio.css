@@ -1,0 +1,149 @@
+/* fichier livreAudio = index.html.twig */
+  .table-container {
+        max-height: 400px; 
+        margin-top: 10px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    tbody {
+        display: block;
+        max-height: 360px; 
+        overflow-y: auto;
+    }
+
+    thead, th {
+        background-color: #f2f2f2;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+    }
+
+    th, td {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+        height: 50px;
+        width:250px;
+        text-align:center
+    }
+    th {
+        height: 50px;
+        width:250px;
+        text-align:center
+    }
+
+    tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    thead tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .header-title {
+        border-radius: 8px;
+        text-align: left;
+        margin-bottom: 10px;
+        margin-left: -30px;
+        color: white;
+        font-style: oblique;
+        font-size: 20px;
+        background-color: #3087ce;
+        padding-left: 10px;
+		display: inline-block;
+		width: 300px;
+    }
+
+    .header-title img {
+        margin-top: -51px;
+        margin-left: -10px;
+        width: 45px;
+        float: left;
+    }
+
+    .alert{
+        color: white;
+        border-radius: 5px;
+    }
+
+    #titre{
+        border-radius: 8px;
+        text-align: left;
+        margin-bottom: 10px;
+        margin-left: 15px;
+        color: white;
+        font-style: oblique;
+        font-size: 20px;
+        background-color: #3087ce;
+        width:292px;
+        padding-left: 20px;
+    }
+    #logo_titre{
+        margin-top: -51px;
+        margin-left: -10px;
+        width: 45px;
+        float: left;
+    }
+  
+    #div2 {
+        border-radius: 25px;
+        border: 2px solid #3087ce;
+        padding: 20px;
+        width: 100%;
+        max-width: 1200px;
+        margin: 10px auto;
+        background-color: white;
+    }
+
+    /* Responsive zone boutons + recherche */
+/* /* ========================= */
+/* RESPONSIVE MOBILE / TABLET */
+/* ========================= */
+
+@media (max-width: 768px) {
+
+    /* Autoriser le scroll horizontal */
+    .table-container {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 900px; /* force le swipe */
+    }
+
+    /* Boutons + search en colonne */
+    #div2 > div {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    #div2 > div > div {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    #div2 a,
+    #div2 button {
+        width: 100%;
+    }
+
+    #myInput {
+        width: 100%;
+        float: none;
+    }
+
+    /* Titre plus souple */
+    #titre {
+        width: auto;
+        font-size: 12px;
+    }
+}

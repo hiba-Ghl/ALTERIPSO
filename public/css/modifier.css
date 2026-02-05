@@ -3,13 +3,19 @@
         border-radius: 8px;
         text-align: left;
         margin-bottom: 10px;
-        margin-left: 15px;
+        margin-left: -25px;
         color: white;
         font-style: oblique;
         font-size: 20px;
         background-color: #3087ce;
         width:292px;
-        padding-left: 20px;
+        padding-left: 10px;
+    }
+#logo_titre{
+        margin-top: -51px;
+        margin-left: -10px;
+        width: 45px;
+        float: left;
     }
 
 #div_modifier{
