@@ -1,5 +1,6 @@
 	/* fichier application = index.html.twig */
-    #titre{
+  
+  #titre{
         border-radius: 8px;
         text-align: left;
         margin-bottom: 10px;
@@ -17,6 +18,7 @@
         width: 45px;
         float: left;
     }
+  
     #div1 {
         border-radius: 25px;
         border: 2px solid #3087ce;
@@ -114,10 +116,9 @@
     }
           /* Titre plus souple */
         #titre {
-            width: auto;
-            font-size: 12px;
-            text-align: center;
-        }
+        width: auto;
+        font-size: 12px;
+    }
      /* #titre {
         margin-left: 80px;
     } */
@@ -144,11 +145,10 @@
             margin: 2px;
         }
             /* Titre plus souple */
-        #titre {
-            width: auto;
-            font-size: 12px;
-            text-align: center;
-        }
+     #titre {
+        width: auto;
+        font-size: 12px;
+    }
          /* #titre {
         margin-left: auto;
         } */
@@ -171,10 +171,9 @@
     }
           /* Titre plus souple */
         #titre {
-            width: auto;
-            font-size: 12px;
-            margin-left:-120%;
-        }
+        width: auto;
+        font-size: 12px;
+    }
 
     /* ⚠️ IMPORTANT */
     input[type="text"] {

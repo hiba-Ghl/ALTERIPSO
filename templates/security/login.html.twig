@@ -4,7 +4,7 @@
 
 {% block body %}
   {# offline #}
-  <Link rel="stylesheet" href="{{ asset('css/login.css') }}"> 
+  <Link rel="stylesheet" href="{{ asset('css/css_login.css') }}"> 
 
   {# online #}
   {# <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> #}
@@ -22,8 +22,8 @@
 	{% endfor %}
 
 	<br><br>
-	<div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
-		<img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+	<div id="titre">
+		<img id="logo_titre" src="{{ asset('images/ler.png') }}">
 		CONNECTEZ-VOUS
 	</div>
 	<br>
@@ -87,8 +87,8 @@
 
 	<!--                                          registration                                                      -->
 	<br><br><br><br>
-	<div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
-		<img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+	<div id="titre">
+		<img id="logo_titre" src="{{ asset('images/ler.png') }}">
 		INSCRIVEZ-VOUS
 	</div>
 	<br>
@@ -201,8 +201,7 @@
 
 			<div class="form-group">
 				<label for="inputEmail" class="col-lg-2 control-label">
-				<p>				Ville
-				</p>
+				<p>	Ville </p>
 				</label>
 				<div class="col-lg-10">
 					<input type="text" id="ville" name="ville" class="form-control" value="{{ ville|default('') }}"/>
