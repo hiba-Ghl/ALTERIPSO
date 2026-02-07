@@ -20,7 +20,7 @@ html {
 body {
   margin: 0;
 }
-body{background:url('../images/back.jpg');background-repeat: no-repeat;background-size:100% auto}
+body{background:url('../images/back.jpg');background-repeat:repeat !important;background-size:auto}
 article,
 aside,
 details,

@@ -42,6 +42,14 @@
             padding-left:20px;
        }
 
+       h5{
+            border-radius:10px;
+            width:25%;
+            padding:10px;
+            background-color: #3087ce;
+            color:white;
+            font-size:20px;
+        }
        .navbar-smart {
             margin-bottom: 10px;
             border-radius: 0;
@@ -100,7 +108,8 @@ letter-spacing: 0.1em;
 margin-bottom: 20px;
 }
 p{font-size: 13px !important;margin-bottom: 5px !important;
-text-align: center;}
+text-align: lef;}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 
@@ -120,12 +129,17 @@ padding-left: 20px;
 padding-right: 20px;
 }
 #titre{
-width: 150px !important;
-font-size: 12px !important;
+width: 180px !important;
+font-size: 15px !important;
+margin-bottom: -10px;
+margin-left: 20px;
+padding-left: 10px;
 }
 
 #logo_titre{
 width: 30px !important;
+margin-top: -32px !important;
+margin-left: -10px !important;
 }
 }   
 

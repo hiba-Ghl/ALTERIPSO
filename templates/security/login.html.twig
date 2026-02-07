@@ -4,7 +4,7 @@
 
 {% block body %}
   {# offline #}
-  <Link rel="stylesheet" href="{{ asset('css/css_login.css') }}"> 
+<link rel="stylesheet" href="{{ asset('css/css_login.css') }}">
 
   {# online #}
   {# <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> #}
@@ -118,17 +118,16 @@
 	<div id="div2">
     
 		<form name="createUser" method="post" action="{{ path('app_register')}}" class="fos_user_registration_register form-horizontal">
-			<h5 style="border-radius:10px;width:25%;padding:10px;background-color: #3087ce;color:white;font-size:20px;">Données Personnelles</h5>
+			<h5>Données Personnelles</h5>
 			<div class="form-group">
-				<label for="inputEmail" class="col-lg-2 control-label">
-				<p style="width:100%;text-align:left;padding-left:20px;">Titre</p></label>
+				<label for="genre" class="col-lg-2 control-label">
+				<p>Titre</p></label>
 				<div class="col-lg-10">
 					<select id="genre" name="genre" class="form-control">
 						<option value="0">aucun</option>
 						<option value="1">Mr.</option>
 						<option value="2">Mme</option>
 					</select>
-
 				</div>
 			</div>
 
@@ -165,7 +164,7 @@
         {% endif %} 
     </div>
 </div>
-			<h5 style="border-radius:10px;width:25%;padding:10px;background-color: #3087ce;color:white;font-size:20px;">Coordonnées</h5>
+			<h5>Coordonnées</h5>
 			<div class="form-group">
 				<label for="inputEmail" class="col-lg-2 control-label">
 				<p>				Nom établissement
@@ -519,7 +518,7 @@
         			{% endif %} 
 				</div>
 				</div>
-			<h5 style="border-radius:10px;width:25%;padding:10px;background-color: #3087ce;color:white;font-size:20px;">Coordonnées utilisateur</h5>
+			<h5>Coordonnées utilisateur</h5>
 <div class="form-group">
     <label for="inputEmail" class="col-lg-2 control-label">
 	    <p>Identifiant</p>
