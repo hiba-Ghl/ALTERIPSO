@@ -65,6 +65,17 @@
         flex: 0 0 auto;
         min-width: 120px;
     }
+    #btn_nbr{
+        width: 25px;
+        text-align: center;
+        margin-top: -205px;
+        position: absolute;
+        margin-left: 59px;
+        height: 26px;
+        background-color: #020202bd;
+        color: white;
+        border-radius: 4px;
+    }
 
 /* fichier application = ajouter.html.twig */
 
@@ -116,8 +127,19 @@
     }
           /* Titre plus souple */
         #titre {
-        width: auto;
+        width: 180px !important;
         font-size: 12px;
+    }
+       #btn_nbr{
+        width: 25px;
+        text-align: center;
+        margin-top: -205px;
+        position: absolute;
+        margin-left: 59px;
+        height: 26px;
+        background-color: #020202bd;
+        color: white;
+        border-radius: 4px;
     }
      /* #titre {
         margin-left: 80px;
@@ -143,6 +165,9 @@
         .btn-sm {
             width: auto !important;
             margin: 2px;
+        }
+        .btn-md{
+            padding: 0px 10px;
         }
             /* Titre plus souple */
      #titre {
@@ -179,6 +204,17 @@
     input[type="text"] {
         width: 100%;
         font-size: 12px;
+    }
+       #btn_nbr{
+        width: 25px !important;
+        text-align: center;
+        margin-top: -205px;
+        position: absolute;
+        margin-left: 59px;
+        height: 26px;
+        background-color: #020202bd;
+        color: white;
+        border-radius: 4px;
     }
 }
 

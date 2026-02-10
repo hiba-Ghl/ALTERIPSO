@@ -1,3 +1,4 @@
+        /* pour la page login.twig.html */
         #div1 {
             border-radius: 25px;
             border: 2px solid #3087ce;
@@ -50,162 +51,73 @@
             color:white;
             font-size:20px;
         }
-       .navbar-smart {
-            margin-bottom: 10px;
-            border-radius: 0;
+     
+
+        /* fichier Contact */
+        h1{
+            margin-bottom: 40px;
+        }
+        label {
+            color: #333;
+        }
+        .form-control {
+            margin-bottom: 20px;
+        }
+        .btn-send {
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 20px;
+        }
+        p{font-size: 13px !important;margin-bottom: 5px !important;
+        text-align: lef;}
+
+        /* Sticky footer styles
+        -------------------------------------------------- */
+
+
+        #push,#footer {
+        }
+        #footer {
+        background-color: #337ab7 ;
         }
 
-        /* Icônes réseaux */
-        .social-nav li{
-           width:50px;
-           /* border-left:1px solid #00356d */
+        /* Lastly, apply responsive CSS fixes as necessary */
+        @media (max-width: 767px) {
+        #footer {
+            margin-left: -20px;
+            margin-right: -20px;
+            padding-left: 20px;
+            padding-right: 20px;
         }
-        /* BARRE BLEUE */
-    .navbar-smart {
-        background: #337ab7;
-        border: none;
-        border-radius: 0;
-    }
+        #titre{
+            width: 180px !important;
+            font-size: 15px !important;
+            margin-bottom: -10px;
+            margin-left: 20px;
+            padding-left: 10px;
+        }
 
-    /* LIENS */
-    .navbar-smart .navbar-nav > li > a {
-        color: #fff;
-        padding: 15px 18px;
-    }
+        #logo_titre{
+            width: 30px !important;
+            margin-top: -32px !important;
+            margin-left: -10px !important;
+        }
+        }   
 
-    .navbar-smart .navbar-nav > li > a:hover {
-        background: #286090;
-    }
+        .text-muted{color: #2D7BB9}
+        @media (max-width: 768px) {
+            img[src*='ler.png'] {
+                width: 35px !important;
+            }
+        }
+        @media (max-width: 425px) {
+            img[src*='ler.png'] {
+                width: 30px !important;
+            }
+        }
 
-    /* RÉSEAUX SOCIAUX */
-    .social-nav > li > a {
-        padding: 10px;
-    }
-
-    .social-nav img {
-        width: 26px;
-        height: 26px;
-    }
-
-    /* SÉPARATION VISUELLE (comme sur ton image) */
-    .social-nav li {
-        border-left: 1px solid rgba(255,255,255,0.3);
-    }
- /* fichier Contact */
-h1{
-margin-bottom: 40px;
-}
-label {
-color: #333;
-}
-.form-control {
-margin-bottom: 20px;
-}
-.btn-send {
-font-weight: 300;
-text-transform: uppercase;
-letter-spacing: 0.1em;
-margin-bottom: 20px;
-}
-p{font-size: 13px !important;margin-bottom: 5px !important;
-text-align: lef;}
-
-/* Sticky footer styles
--------------------------------------------------- */
-
-
-#push,#footer {
-}
-#footer {
-background-color: #337ab7 ;
-}
-
-/* Lastly, apply responsive CSS fixes as necessary */
-@media (max-width: 767px) {
-#footer {
-margin-left: -20px;
-margin-right: -20px;
-padding-left: 20px;
-padding-right: 20px;
-}
-#titre{
-width: 180px !important;
-font-size: 15px !important;
-margin-bottom: -10px;
-margin-left: 20px;
-padding-left: 10px;
-}
-
-#logo_titre{
-width: 30px !important;
-margin-top: -32px !important;
-margin-left: -10px !important;
-}
-}   
-
-.text-muted{color: #2D7BB9}
-@media (max-width: 768px) {
-    img[src*='ler.png'] {
-        width: 35px !important;
-    }
-}
-@media (max-width: 425px) {
-    img[src*='ler.png'] {
-        width: 30px !important;
-    }
-}
-
-
-    /* ===== ALIGNEMENT DES MENUS SUR UNE SEULE LIGNE (DESKTOP) ===== */
-@media (min-width:1200px) {
-
-    .navbar-smart .navbar-collapse {
-        display: flex !important;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    /* Menu principal à gauche */
-    .navbar-smart .navbar-nav {
-        display: flex;
-        flex-direction: row;
-    }
-
-    /* Réseaux sociaux à droite */
-    .navbar-smart .social-nav {
-        display: flex;
-        flex-direction: row;
-        margin-left: auto;
-    }
-
-    /* Empêche les retours à la ligne */
-    .navbar-smart .navbar-nav > li,
-    .navbar-smart .social-nav > li {
-        float: none !important;
-    }
-}
-
-
-/* Mobile */
-@media (max-width: 767px) {
-
-    .navbar-nav {
-        margin-left:50px;
-        text-align: center;
-    }
-    .social-nav {
-        margin-left: 50px;
-        /* float: none !important; */
-        text-align: center;
-    }
-    /* Empêche le navbar d’écraser le formulaire */
-    .container {
-        padding-left: 15px;
-        padding-right: 15px;
-    }
-}
-
-       /* Responsive styles */
+     /* Responsive styles */
 		@media (max-width: 1200px) {
 			#div1, #div2 {
 				width: 95% !important;

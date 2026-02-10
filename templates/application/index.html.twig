@@ -58,7 +58,7 @@
 										{% endif %}
 
 										<input name="listeactive[{{application.id}}]" class="caf3" style="width:100%" type="checkbox" {{ch}} {% if app.user.SauvegarderApp == '0' %} disabled {% endif %}>
-										<input type="text" {% if app.user.SauvegarderApp == '0' %} disabled {% endif %} name="listeposition[{{application.id}}]" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" value="{{application.position}}" style="width: 27px;margin-top: -205px;position: absolute;margin-left: 59px;height: 26px;background-color: #020202bd;color: white;border-radius: 4px;"/>
+										<input id="btn_nbr" type="text" {% if app.user.SauvegarderApp == '0' %} disabled {% endif %} name="listeposition[{{application.id}}]" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" value="{{application.position}}"style="width: 27px;margin-top: -205px;position: absolute;margin-left: 59px;height: 26px;background-color: #020202bd;color: white;border-radius: 4px;"/>
 										<a data-toggle="tooltip" data-placement="top" {% if app.user.ModifierApp == '0' %} disabled {% endif %} title="modifier l'application" href="{{path('app_modifier_application',{'id':application.id})}}" class="btn btn-warning btn-xs" style="margin-top: -406px;background-color: #020202bd;border-color: #020202bd;">
 											<i class="glyphicon glyphicon-pencil"></i>
 										</a>

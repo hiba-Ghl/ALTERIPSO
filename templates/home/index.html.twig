@@ -10,6 +10,86 @@
 			ALTER
 		</title>		
 	</head>
+		<style>
+		/* Forced Responsive Navbar Styles */
+		@media (max-width: 992px) {
+			.navbar-header {
+				line-height: normal !important;
+				display: flex !important;
+				justify-content: space-between !important;
+				align-items: center !important;
+				padding: 5px 15px !important;
+				margin-right: 0 !important;
+				float: none !important;
+			}
+			#logo {
+				width: 100px !important;
+				height: auto !important;
+				margin: 0 !important;
+			}
+			.navbar-toggle {
+				display: block !important;
+				background-color: #2c3e50 !important; /* New Blue color */
+				border: 1px solid #fff !important;
+				margin-top: 8px !important;
+				margin-bottom: 8px !important;
+				float: right !important;
+			}
+			.navbar-toggle .icon-bar {
+				background-color: #fff !important; /* Changed back to white for visibility on dark blue */
+			}
+			.navbar-collapse.collapse {
+				display: none !important;
+			}
+			.navbar-collapse.collapse.in {
+				display: block !important;
+				background-color: #2c3e50 !important; /* Match background */
+				max-height: 400px !important;
+				overflow-y: auto !important;
+			}
+			.navbar-nav {
+				margin: 0 !important;
+				float: none !important;
+			}
+			.navbar-nav > li {
+				float: none !important;
+			}
+			.navbar-nav > li > a {
+				color: #fff !important; /* White text looks better on dark blue */
+				padding: 10px 15px !important;
+			}
+			.navbar-nav .open .dropdown-menu {
+				position: static !important;
+				float: none !important;
+				background-color: #34495e !important; /* Slightly lighter blue for dropdown items */
+				box-shadow: none !important;
+				border: 0 !important;
+			}
+			.navbar-nav .open .dropdown-menu > li > a {
+				color: #fff !important;
+			}
+		}
+
+		/* Specific Background for Visibility (320px - 640px) */
+		@media (max-width: 768px) {
+			.navbar.navbar-default {
+				background-color: #2c3e50 !important; /* Forced #2c3e50 Background */
+				border-color: #1a252f !important;
+			}
+			.navbar-header {
+				background-color: #2c3e50 !important;
+			}
+			.navbar-nav > li > a {
+				color: #fff !important; /* White text on dark blue bg */
+			}
+			.navbar-nav .open .dropdown-menu > li > a {
+				color: #fff !important;
+			}
+			.navbar-toggle .icon-bar {
+				background-color: #fff !important; /* White bars for dark blue bg */
+			}
+		}
+	</style>
 
  {% if appConfig.StatusServeur is same as('Offline') %}
 
@@ -43,7 +123,7 @@
 		<script src="{{ asset('javascript/bootstrap.min.js') }}"></script>
 		<link	href="{{ asset('css/style.css') }}"	rel="stylesheet">
 		<link rel="stylesheet" href="{{ asset('css/mycss.css') }}" />
-		<link rel="stylesheet" href="{{ asset('css/css_responsive.css') }}" />
+		{# <link rel="stylesheet" href="{{ asset('css/responsive.css') }}" /> #}
 		<script src="{{ asset('javascript/serviceIndex.js') }}"></script>
 		<script src="{{ asset('javascript/service.js') }}"></script>
 		<script src="{{ asset('javascript/user.js') }}"></script>

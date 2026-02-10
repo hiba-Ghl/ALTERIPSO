@@ -102,8 +102,7 @@
         background-color: white;
     }
 
-    /* Responsive zone boutons + recherche */
-/* /* ========================= */
+
 /* RESPONSIVE MOBILE / TABLET */
 /* ========================= */
 
@@ -112,6 +111,11 @@
     /* Autoriser le scroll horizontal */
     .table-container {
         overflow-x: auto;
+    }
+
+    #titre {
+       width: 70% !important;
+        font-size: 12px !important;
     }
 
     table {
@@ -131,19 +135,8 @@
         gap: 8px;
     }
 
-    #div2 a,
-    #div2 button {
-        width: 100%;
-    }
-
     #myInput {
         width: 100%;
         float: none;
-    }
-
-    /* Titre plus souple */
-    #titre {
-        width: auto;
-        font-size: 12px;
     }
 }

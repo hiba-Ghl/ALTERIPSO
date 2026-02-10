@@ -1,36 +1,159 @@
+
+body{
+    background:url('../images/back.jpg');
+    background-repeat:repeat !important;
+    background-size:auto
+}
+
+
+/* ========================= */
+/* NAVBAR DESIGN */
 .navbar-default {
     background-color: #337ab7 !important;
-    border-color: #00356d !important;
+    /* border-color: #00356d !important; */
 }
 
 .navbar {
-    border-width: 1px;    margin-bottom: 30px;
-
+    /* border-width: 1px; */
+    margin-bottom: 30px;
 }
 
-.navbar-nav > li {
-    float: left;
-    /* background: #fba960; */
-    border-right: 1px solid #00356d;    width: 200px;    
+/* MENU */
+/* .navbar-nav > li {
+    border-right: 1px solid #00356d;
+} */
 
-
+.navbar-nav > li:last-child {
+    border-right: none;
 }
 
 .navbar-default .navbar-nav > li > a {
-    color: #fff !important;text-align: center;	text-transform: uppercase  !important;    font-size: 16px!important;
-
-
+    color: #fff !important;
+    text-align: left;
+    text-transform: uppercase;
+    font-size: 12px;
+    padding: 5px 8px;
 }
-body{background:url('../images/back.jpg');background-repeat: no-repeat;background-size:100% auto}
-
 
 .navbar-nav > li:hover {
-   background: #fba960;
+    background: #fba960;
+    cursor: pointer;
 }
 
-.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus{
-   color: #fff !important;
+.navbar-default .navbar-nav > li > a:hover {
+    color: #fff !important;
 }
+
+/* DROPDOWN */
+.dropdown-menu {
+    background: #fba960;
+    border: none;
+}
+
+.dropdown-menu > li > a {
+    color: #fff;
+    text-align: center;
+    text-transform: uppercase;
+    padding: 2px;
+}
+
+.dropdown-menu > li > a:hover {
+    background: #337ab7;
+}
+
+/* ========================= */
+/* RESEAUX SOCIAUX */
+
+/* .social-nav > li > a {
+    padding: 10px !important;
+} */
+
+/* Icônes réseaux */
+.social-nav li{
+    width:20px;
+}
+.social-nav img {
+    width: 5% !important;
+    height:5% !important;
+    object-fit: contain;
+    transition: 0.3s;
+}
+
+.social-nav img:hover {
+    transform: scale(1.1);
+}
+
+.nav-icon {
+    display: none !important;
+}
+
+/* ========================= */
+/* RESPONSIVE */
+
+/* Desktop */
+@media (min-width: 768px) {
+
+    .navbar-collapse {
+        display: flex !important;
+        justify-content: space-between;
+        align-items: left;
+    }
+
+    .menu-left {
+        display: flex;
+        align-items: left;
+    }
+
+    .navbar-right {
+        display: inline;
+        align-items: left;
+        float: left !important;
+    }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+
+    .navbar-nav > li {
+        border-right: none !important;
+        border-bottom: 1px solid #00356d;
+    }
+
+    .navbar-nav > li:last-child {
+        border-bottom: none;
+    }
+
+    .navbar-collapse {
+        text-align: left;
+    }
+
+    .social-nav {
+        margin-top: 5px;
+    }
+
+    .social-nav > li {
+        display: inline-block;
+    }
+
+     .nav-icon {
+        display: inline-block;
+        font-size: 16px;
+        margin-right: 8px;
+    }
+
+    .navbar-nav > li > a {
+        display: flex;
+        align-items: left;
+        justify-content: left;
+    }
+
+    .nav-text {
+        font-size: 14px;
+        padding: 10px;
+        margin-left: -20px;
+    }
+}
+
 
 .d10 >p >a {color:#fff !important}
 .d10 >p >a:hover {cursor:pointer}
@@ -39,18 +162,15 @@ body{background:url('../images/back.jpg');background-repeat: no-repeat;backgroun
 
 
 .dropdown-menu > li > a {    color: #fff;text-align: center;
-	text-transform: uppercase  !important; 
-   font-size: 16px;   background: #fba960;    padding: 15px;
+   text-transform: uppercase  !important; 
+   font-size: 16px;
+   background: #fba960;
+   padding: 15px;
 }
 
+/* .dropa{border-width: 0px; border-top-width: 0px;    margin-top: 1px !important;} */
 
-.dropdown-menu > li > a { 
-border-bottom: 1px solid #337ab7;
-}
-
-.dropa{border-width: 0px; border-top-width: 0px;    margin-top: 1px !important;}
-
-.dropa >li {width:200px}
+/* .dropa >li {width:200px} */
 .footer > .container > p{text-align:center}
 #obl{color:red}
 
@@ -71,3 +191,6 @@ border-bottom: 1px solid #337ab7;
     bottom: -10px;
 }
 }
+
+
+/* ============================= */
