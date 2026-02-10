@@ -114,29 +114,38 @@
     }
 
     #titre {
-       width: 70% !important;
+       width: 60% !important;
         font-size: 12px !important;
     }
 
     table {
-        min-width: 900px; /* force le swipe */
+        min-width: 400px; /* force le swipe */
     }
+
+      .btn-sm .btn-text {
+            display: none;
+        }
+
+    /* table thead th {
+        position: sticky;
+        top: 0
+    }  */
 
     /* Boutons + search en colonne */
     #div2 > div {
-        flex-direction: column;
+        flex-direction: row;
         align-items: stretch;
         gap: 10px;
     }
 
     #div2 > div > div {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         gap: 8px;
     }
 
     #myInput {
-        width: 100%;
-        float: none;
+        width: 10%;
+        float: right;
     }
 }
