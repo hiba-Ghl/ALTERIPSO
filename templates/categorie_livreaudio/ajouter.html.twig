@@ -52,7 +52,7 @@
                 <div class="form-group ">
                     <label for="logo" class="col-lg-2 control-label">Logo </label>
                     <div class="col-lg-10">
-                    <input type="file" class="form-control" id="logo" name="logo" accept=".jpg, .jpeg, .png" onchange="previewLogo(event)" required>
+                    <input type="file" class="form-control" id="logo_input" name="logo" accept=".jpg, .jpeg, .png" onchange="previewLogo(event)" required>
                     <p class="error-message" id="file-error">La taille maximale du fichier est de 400 Ko.</p>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
             <!-- le bouton de traduction -->
             <div class="col-lg-10">
             <button type="button" id="translateBtn" class="btn btn-info btn-sm">
-                <i class="glyphicon glyphicon-globe"></i> Traduire le texte
+                <i class="glyphicon glyphicon-globe"></i>Traduire le texte
             </button>
                 <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
                 <span><i class="glyphicon glyphicon-plus"></i></span>
@@ -131,20 +131,9 @@
          </div>
         </div>      
         <br>
-
-         <!-- les boutons du formulaire--> 
-                 {# <div style="float:right;margin-left:30px;">
-                    <a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/categorielivreaudio">
-                        <i class="glyphicon glyphicon-remove"></i> Annuler
-                    </a>
-                    <button type="submit" class="btn btn-primary btn-md" name="valider" >
-                        <i class="glyphicon glyphicon-floppy-disk"></i>
-                        Enregistrer
-                    </button>
-		        </div> #}
                 <div class="clearfix">
-				<div class="pull-right">
-					<a class="btn btn-danger btn-md" id="annulerButton" style="width:130px;" href="/application">
+				<div class="pull-right" id="buttons">
+					<a class="btn btn-danger btn-md" id="annulerButton" style="width:130px;" href="/categorielivreaudio">
 						<i class="glyphicon glyphicon-remove"></i> <span class="btn-text">Annuler</span>
 					</a>
 
