@@ -173,10 +173,14 @@
      #titre {
         width: auto;
         font-size: 12px;
+        margin-left: 8px;
     }
-         /* #titre {
-        margin-left: auto;
-        } */
+    #logo_titre{
+            margin-top: -39px;
+            margin-left: -10px;
+            width: 35px;
+            float: left;
+        }
 }
     /* Tablette */
 /* Tablette uniquement */

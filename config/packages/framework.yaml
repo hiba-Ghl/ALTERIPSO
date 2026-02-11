@@ -5,7 +5,9 @@ framework:
 
     # Note that the session will be started ONLY if you read or write from it.
     session: true
-
+    assets:
+        version: 'v1.0'
+        version_format: '%%s?version=%%s'
     #esi: true
     #fragments: true
 

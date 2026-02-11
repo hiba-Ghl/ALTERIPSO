@@ -126,6 +126,7 @@ body::-webkit-scrollbar {
     display: none;
 }
 
+
 /* Hide scrollbar for IE, Edge and Firefox */
 body {
     -ms-overflow-style: none;
@@ -133,6 +134,7 @@ body {
     scrollbar-width: none;
     /* Firefox */
     min-height: 100vh;
+    margin: 0%;
 }
 
 html {

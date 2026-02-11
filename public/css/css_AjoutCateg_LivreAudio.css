@@ -84,7 +84,7 @@
 
         /* Titre plus souple */
         #titre {
-            width: auto;
+            width: 80% !important;
             font-size: 12px;
         }
         #titre_modifier{

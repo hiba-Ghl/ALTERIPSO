@@ -34,24 +34,59 @@
         margin-bottom: 20px;
     }
 
-       @media (max-width:375) and (max-width: 576px) and (max-width: 768px) and (max-width: 992px) {
+    @media (max-width: 768px) {
+        #titre {
+            width: 200px !important;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+        #logo_titre{
+            margin-top: -39px;
+            margin-left: -10px;
+            width: 35px;
+            float: left;
+        }
         .form-horizontal .control-label {
             text-align: left;
-            width: 100%;
-        }
-        .form-horizontal .form-group {
-            margin-bottom: 15px;
-        }
-        .form-horizontal .form-control {
-            width: auto !important;
+            width: 100% !important;
         }
         #div_modifier{
             padding: 15px;
-            height:auto !important;
-            width: auto !important;
+            height:520px !important;
+        }
+        /* Spécifique pour input file */
+        input[id="logo_input"] {
+            width: 100% !important;
+            padding: 10px;
+        }
+        #div_btn {
+            margin-top: 10px;
+            text-align: center;
         }
         #img {
             max-width: 50% !important;
             height: auto !important;
+            margin-left: 20%;
+            margin-bottom: 5%;
+        }
+        .btn-md{
+            padding: 0px 10px;
+            margin-top: 15px;
+            margin-bottom: 7px;
+        }
+          
+    }
+    @media (min-width: 425px) and (max-width:426px) {
+        #div_modifier {
+            padding: 15px;
+            min-height: 550px;
+        }
+    }
+
+    @media (min-width: 426px) and (max-width: 768px) {
+        #div_modifier {
+            padding: 15px;
+            min-height: 650px;
+            height: auto;
         }
     }

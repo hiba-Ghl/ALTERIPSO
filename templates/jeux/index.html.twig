@@ -57,7 +57,7 @@
 													{% set ch = 'checked' %}
 												{% endif %}
 												<input name="listeactive[{{jeux.id}}]" class="caf3" style="width:100%" type="checkbox" {{ch}}  {% if app.user.SauvegarderJeux == '0' %} disabled {% endif %} >
-												<input type="text" {% if app.user.SauvegarderJeux == '0' %} disabled {% endif %} name="listeposition[{{jeux.id}}]" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" value="{{jeux.position}}" style="width: 27px;margin-top: -205px;position: absolute;margin-left: 59px;height: 26px;background-color: #020202bd;color: white;border-radius: 4px;"/>
+												<input type="text" {% if app.user.SauvegarderJeux == '0' %} disabled {% endif %} name="listeposition[{{jeux.id}}]" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" value="{{jeux.position}}" style="width: 27px;margin-top: -205px;position: absolute;margin-left: 59px;height: 26px;background-color: #020202bd;color: white;border-radius: 4px;text-align:center;"/>
 													
 												<a data-toggle="tooltip" data-placement="top" {% if app.user.ModifierJeux == '0' %} disabled {% endif %} title="modifier l'jeux" href="{{path('app_modifier_jeux',{'id':jeux.id})}}" class="btn btn-warning btn-xs" style="margin-top: -406px;background-color: #020202bd;border-color: #020202bd;">
 													<i class="glyphicon glyphicon-pencil"></i>
