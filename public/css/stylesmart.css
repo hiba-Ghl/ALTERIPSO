@@ -31,8 +31,9 @@ body{
     color: #fff !important;
     text-align: left;
     text-transform: uppercase;
-    font-size: 12px;
+    font-size: 16px;
     padding: 5px 8px;
+    margin-top: 20px;
 }
 
 .navbar-nav > li:hover {
@@ -64,28 +65,28 @@ body{
 /* ========================= */
 /* RESEAUX SOCIAUX */
 
-/* .social-nav > li > a {
-    padding: 10px !important;
-} */
+.social-nav > li > a {
+    padding: 5px 8px;
+    margin-top: 15px;
+}
 
 /* Icônes réseaux */
 .social-nav li{
-    width:20px;
+    width:41px;
 }
 .social-nav img {
-    width: 5% !important;
-    height:5% !important;
+    width: 45px !important;
+    height:45px !important;
     object-fit: contain;
     transition: 0.3s;
+    padding: 2px !important;
 }
 
 .social-nav img:hover {
     transform: scale(1.1);
 }
 
-.nav-icon {
-    display: none !important;
-}
+
 
 /* ========================= */
 /* RESPONSIVE */
@@ -93,23 +94,75 @@ body{
 /* Desktop */
 @media (min-width: 768px) {
 
-    .navbar-collapse {
-        display: flex !important;
-        justify-content: space-between;
-        align-items: left;
+    .navbar-smart {
+        background-color: #337ab7 !important;
+        border: none;
+        border-radius: 0;
+        min-height: 60px;
     }
 
-    .menu-left {
+    .navbar-smart .navbar-nav {
         display: flex;
-        align-items: left;
+        align-items: center;
+        height: 60px;
     }
 
-    .navbar-right {
-        display: inline;
-        align-items: left;
-        float: left !important;
+    /* MENU GAUCHE */
+    .navbar-smart .menu-left > li {
+        border-right: 1px solid #2b669a;
+    }
+
+    .navbar-smart .menu-left > li:last-child {
+        border-right: none;
+    }
+
+    .navbar-smart .navbar-nav > li > a {
+        color: #fff !important;
+        text-transform: uppercase;
+        font-size: 14px;
+        padding: 20px 18px;
+        margin-top: 0 !important;   /* SUPPRIME LE DÉCALAGE */
+        height: 60px;
+        display: flex;
+        align-items: center;
+    }
+
+    .navbar-smart .navbar-nav > li:hover {
+        background-color: #fba960;
+    }
+
+    /* DROPDOWN */
+    .navbar-smart .dropdown-menu {
+        margin-top: 0;
+        border-radius: 0;
+    }
+
+    /* RÉSEAUX SOCIAUX À DROITE */
+    .navbar-smart .navbar-right {
+        display: flex;
+        align-items: center;
+        height: 60px;
+    }
+
+    .navbar-smart .social-nav > li {
+        border-left: 1px solid #2b669a;
+        width: auto;
+    }
+
+    .navbar-smart .social-nav > li > a {
+        padding: 10px 12px;
+        margin-top: 0 !important;
+    }
+
+    .navbar-smart .social-nav img {
+        width: 45px !important;
+        height: 45px !important;
+    }
+    .nav-icon {
+        display: none !important;
     }
 }
+
 
 /* Mobile */
 @media (max-width: 767px) {
@@ -136,21 +189,24 @@ body{
     }
 
      .nav-icon {
-        display: inline-block;
+        display: inline-block !important;
         font-size: 16px;
         margin-right: 8px;
     }
 
-    .navbar-nav > li > a {
-        display: flex;
-        align-items: left;
-        justify-content: left;
-    }
+   .navbar-nav > li > a {
+    display: flex;
+    align-items: center;      /* aligne verticalement */
+    justify-content: flex-start;
+    gap: 10px;                /* espace entre icône et texte */
+    padding: 12px 15px;
+}
+
 
     .nav-text {
         font-size: 14px;
-        padding: 10px;
-        margin-left: -20px;
+        /* padding: 10px;
+        margin-left: -20px; */
     }
 }
 
@@ -161,7 +217,7 @@ body{
 #val{    display: none;}
 
 
-.dropdown-menu > li > a {    color: #fff;text-align: center;
+.dropdown-menu > li > a {    color: #fff;text-align: left;
    text-transform: uppercase  !important; 
    font-size: 16px;
    background: #fba960;

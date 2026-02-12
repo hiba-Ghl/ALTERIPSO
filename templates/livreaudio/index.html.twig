@@ -14,15 +14,15 @@
 	<div id="div2">
 	  <div style="display:flex;align-items:center;justify-content:space-between;gap:3px;">
 		<div>
-			<button type="submit" name="valider"   {% if app.user.SauvegarderLiveAudio == '0' %} disabled {% endif %}  class="btn btn-success btn-sm" style="margin-right: 5px;width:150px;" href="{{path('modifier_chaine')}}">
+			<button type="submit" name="valider"   {% if app.user.SauvegarderLiveAudio == '0' %} disabled {% endif %}  class="btn btn-success btn-sm" id="button_sm" href="{{path('modifier_chaine')}}">
 				<i class="glyphicon glyphicon-floppy-disk"></i> Sauvegarder
 			</button>
-			<a name="annuler" href="{{ path('app_livreaudio') }}" class="btn btn-danger btn-sm" style="margin-right: 5px;width:150px;">
+			<a name="annuler" href="{{ path('app_livreaudio') }}" class="btn btn-danger btn-sm" id="button_sm">
 				<i class="glyphicon glyphicon-remove"></i> Annuler
 			</a>
 			</div>
 			<!--la barre de recherche-->
-			<input id="myInput" type="text" placeholder="Search.." style="float: right;width:200px; padding: 6px; border-radius: 5px;" >
+			<input id="myInput" type="text" placeholder="Search..">
 	</div>
 	<br> <br>
 	<div class="table-scrollable">

@@ -27,6 +27,21 @@
     background-color: white;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
+#button_sm {
+    margin-right: 5px;
+    width:150px;
+}
+
+/* BARRE DE RECHERCHE */
+#myInput {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    max-width: 300px;
+    float: right;
+    width:200px;
+    padding: 6px;
+}
 
 /* TABLE RESPONSIVE */
 .table-responsive {
@@ -190,13 +205,6 @@ input[type="checkbox"].jpCheckbox {
     cursor: not-allowed;
 }
 
-/* BARRE DE RECHERCHE */
-#myInput {
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    padding: 8px 12px;
-    max-width: 300px;
-}
 
 /* SCROLL POUR TABLES */
 .table-scrollable {
@@ -302,13 +310,13 @@ input[type="checkbox"].jpCheckbox {
         box-sizing: border-box;
         /* Ensure padding doesn't affect width calculation */
     }
-
+/* 
     #myInput {
         width: 100% !important;
         max-width: 100%;
         float: none;
         margin-top: 5px;
-    }
+    } */
 
     /* Titre plus souple */
     #titre_livreaudio {
