@@ -12,7 +12,7 @@
 <form action="{{ path('modifier_livreaudio')}}" name="form" method="post" enctype="multipart/form-data" onsubmit="return validateListeIpForm();">
 <!--les boutons en haut du tableau-->
 	<div id="div2">
-	  <div style="display:flex;align-items:center;justify-content:space-between;gap:3px;">
+	  <div id="div_btn">
 		<div>
 			<button type="submit" name="valider"   {% if app.user.SauvegarderLiveAudio == '0' %} disabled {% endif %}  class="btn btn-success btn-sm" id="button_sm" href="{{path('modifier_chaine')}}">
 				<i class="glyphicon glyphicon-floppy-disk"></i> Sauvegarder
@@ -42,9 +42,7 @@
 						<th class="col-action">Action</th>
 					</tr>
 				</thead>
-
 				<tbody id="myTable"> 
-
 					{% for tele in livreaudio %}
 						<tr>
 							<!--le nom-->
@@ -76,7 +74,6 @@
 									<input {% if app.user.SauvegarderLiveAudio == '0' %} disabled {% endif %}  id="{{tele.Id}}" type="file" class="upload" name="listelogo[{{tele.Id}}]" accept=".jpg, .jpeg, .png"/>
 								</div>
 							</td>
-
 							<!--le status active-->
 							{% set ch = ' ' %}
 							{% set chg = ' ' %}
@@ -94,9 +91,7 @@
 								</a>
 							</td>
 						</tr>
-
 					{% endfor %}				
-
 				</tbody>
 			</table>
 			<!-- Formulaire d'ajout -->
@@ -131,14 +126,11 @@
 								<input {% if app.user.AjoutLiveAudio == '0' %}	disabled {% endif %} id="0" type="file" class="upload" name="logo" accept=".jpg, .jpeg, .png"/>
 							</div>
 
-						</td>
-
-				
+						</td>				
 						<!--le status active-->
 						<td class="col-active">
 							<input {% if app.user.AjoutLiveAudio == '0' %}	disabled {% endif %} name='active' type="checkbox" class="jpCheckbox">
 						</td>
-
 						<!--l'action -->
 						<td class="col-action">
 						<button type="submit" {% if app.user.AjoutLiveAudio == '0' %}	disabled {% endif %} class="btn btn-info btn-sm">

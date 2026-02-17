@@ -1,3 +1,4 @@
+/* fichier css du page livreAudio=>index.html.twig */
 /* TITRE LIVREAUDIO */
 #titre_livreaudio {
     text-align: left;
@@ -27,9 +28,17 @@
     background-color: white;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
+
+#div_btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3px;
+}
+
 #button_sm {
     margin-right: 5px;
-    width:150px;
+    width: 150px;
 }
 
 /* BARRE DE RECHERCHE */
@@ -39,7 +48,7 @@
     padding: 8px 12px;
     max-width: 300px;
     float: right;
-    width:200px;
+    width: 200px;
     padding: 6px;
 }
 
@@ -235,121 +244,42 @@ input[type="checkbox"].jpCheckbox {
 }
 
 /* RESPONSIVE */
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
+
     #div2 {
-        padding: 15px;
-    }
-
-    .table-livreaudio thead th,
-    .table-livreaudio tbody td {
-        padding: 10px;
-        font-size: 0.9rem;
-    }
-
-    .btn {
-        font-size: 0.85rem;
-        padding: 0.375rem 0.75rem;
-    }
-
-    .table-livreaudio .col-nom,
-    .table-livreaudio .col-fichier,
-    .table-livreaudio .col-categorie {
-        min-width: 120px;
-    }
-
-    .table-livreaudio .col-icons {
-        min-width: 90px;
-    }
-
-    .table-livreaudio .col-active {
-        min-width: 110px;
-    }
-
-    .table-livreaudio .col-action {
-        min-width: 90px;
+        margin-left: 0 !important;
+        width: 100% !important;
     }
 }
 
-/* Mobile (max-width: 768px) */
-@media (max-width: 768px) {
+@media (max-width: 991px) {
+    #div2 {
+        padding: 15px;
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
 
-    /* Autoriser le scroll horizontal */
+    #titre_livreaudio {
+        width: 50%;
+        font-size: 14px;
+        margin-left: unset;
+    }
+
     .table-scrollable {
+        width: 100%;
         overflow-x: auto;
+        overflow-y: auto;
     }
 
     .table-livreaudio {
-        min-width: 900px;
-        /* Force le swipe comme dans Catégorie */
-        font-size: 0.85rem;
+        min-width: 750px;
+        font-size: 0.9rem;
     }
 
-    /* Boutons + search en colonne */
-    #div2>div {
-        flex-direction: column !important;
-        /* Force column layout */
-        align-items: stretch !important;
-        gap: 10px;
-    }
-
-    /* Container for buttons inside #div2 > div */
-    #div2>div>div {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        width: 100%;
-    }
-
-    /* Make buttons full width */
-    #div2 .btn,
-    #div2 button,
-    #div2 a.btn {
-        width: 100% !important;
-        margin-right: 0 !important;
-        display: block;
-        box-sizing: border-box;
-        /* Ensure padding doesn't affect width calculation */
-    }
-/* 
-    #myInput {
-        width: 100% !important;
-        max-width: 100%;
-        float: none;
-        margin-top: 5px;
-    } */
-
-    /* Titre plus souple */
-    #titre_livreaudio {
-        width: auto;
-        font-size: 12px;
-        margin-left: 0;
-        text-align: center;
-        padding: 10px;
-    }
-
-    #logo_titre {
-        float: none;
-        margin: 0 auto 5px;
-        display: block;
-        width: 35px;
-        margin-top: -30px;
-        /* Reset negative margin if needed or adjust */
-    }
-
-    #div2 {
-        padding: 10px;
-    }
-
-    /* Table cells */
-    .table-livreaudio thead th,
-    .table-livreaudio tbody td {
-        padding: 8px;
-        min-width: 100px;
+    .table-livreaudio th,
+    .table-livreaudio td {
         white-space: nowrap;
-    }
-
-    .table-livreaudio .col-icons {
-        min-width: 80px;
+        padding: 8px;
     }
 
     .fileUpload img {
@@ -357,56 +287,76 @@ input[type="checkbox"].jpCheckbox {
         height: 40px !important;
     }
 
-    /* Hide Active text */
-    .col-active-content span {
-        display: none;
+    #div_btn {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    #button_sm {
+        width: auto;
+        margin-right: 0;
+    }
+
+    #myInput {
+        width: 100%;
+        max-width: 100%;
+        float: none;
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+    #div2 {
+        padding: 10px;
+    }
+
     .table-livreaudio {
-        font-size: 0.75rem;
+        min-width: 650px;
+        /* force scroll horizontal */
+        font-size: 1.1rem;
+        margin: 0;
+        border-collapse: separate;
+        border-spacing: 0;
     }
 
-    .table-livreaudio thead th,
-    .table-livreaudio tbody td {
+    .table-scrollable {
+        padding: 0;
+    }
+
+    .table-livreaudio th,
+    .table-livreaudio td {
         padding: 6px;
-        min-width: 80px;
     }
 
-    #titre_livreaudio {
-        font-size: 16px;
-    }
-
-    .form-control-search {
-        font-size: 0.85rem;
+    .form-control,
+    .form-select {
+        font-size: 1.1rem;
+        padding: 4px 6px;
     }
 
     .btn-sm {
-        font-size: 0.65rem;
-        padding: 0.2rem 0.4rem;
+        font-size: 0.9rem;
+        padding: 3px 6px;
     }
 
-    .table-livreaudio .col-nom,
-    .table-livreaudio .col-fichier,
-    .table-livreaudio .col-categorie,
-    .table-livreaudio .col-icons,
-    .table-livreaudio .col-active,
-    .table-livreaudio .col-action {
-        min-width: 80px;
+    .fileUpload img {
+        width: 35px !important;
+        height: 35px !important;
     }
-}
 
-@media (max-width: 992px) {
+    .col-nom,
+    .col-fichier,
+    .col-categorie {
+        min-width: 110px;
+    }
+
+    .col-icons,
+    .col-active,
+    .col-action {
+        min-width: 70px;
+    }
+
     #titre_livreaudio {
-        margin-left: 0;
-        width: 100%;
-        text-align: center;
-    }
-
-    #logo_titre {
-        float: none;
-        margin: 0 auto 5px;
-        display: block;
+        margin-left: 0 !important;
     }
 }

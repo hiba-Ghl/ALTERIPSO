@@ -1,4 +1,4 @@
-
+/* css de la page Templates=>index.html.twig */
 body{
     background:url('../images/back.jpg');
     background-repeat:repeat !important;
@@ -250,3 +250,37 @@ body{
 
 
 /* ============================= */
+/* ========================= */
+/* TABLETTE SEULEMENT */
+/* ========================= */
+
+@media (min-width: 768px) and (max-width: 991px) {
+
+    /* Navbar sur une seule ligne */
+    .navbar-smart .navbar-nav {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+    }
+
+    .navbar-smart .navbar-nav > li > a {
+        font-size: 13px;
+        padding: 15px 10px;
+        height: auto;
+    }
+
+    /* Réduire les icônes sociales */
+    .navbar-smart .social-nav img {
+        width: 32px !important;
+        height: 32px !important;
+    }
+
+    .navbar-smart .social-nav > li > a {
+        padding: 8px;
+    }
+
+    /* Réduire largeur des blocs sociaux */
+    .navbar-smart .social-nav > li {
+        width: auto;
+    }
+}

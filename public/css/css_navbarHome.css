@@ -1,0 +1,173 @@
+/* Responsive Navbar Styles extracted from index.html.twig */
+
+@media (max-width: 1024px) {
+
+    /* Force collapse state with higher specificity */
+    nav.navbar-default .navbar-header {
+        line-height: normal !important;
+        display: block !important;
+        padding: 5px 15px !important;
+        float: none !important;
+        width: 100% !important;
+    }
+
+    #logo {
+        width: 100px !important;
+        height: auto !important;
+        float: left !important;
+        margin: 0 !important;
+    }
+
+    /* Force burger button to show */
+    nav.navbar-default .navbar-toggle {
+        display: block !important;
+        background-color: #2c3e50 !important;
+        border: 1px solid #fff !important;
+        margin-top: 8px !important;
+        margin-bottom: 8px !important;
+        float: right !important;
+    }
+
+    nav.navbar-default .navbar-toggle .icon-bar {
+        background-color: #fff !important;
+    }
+
+    /* Force collapse to be hidden by default */
+    nav.navbar-default .navbar-collapse.collapse {
+        display: none !important;
+        clear: both !important;
+    }
+
+    /* Show only when explicitly opened (.in for BS3, .show for BS4) */
+    nav.navbar-default .navbar-collapse.collapse.in,
+    nav.navbar-default .navbar-collapse.collapse.show {
+        display: block !important;
+        background-color: #2c3e50 !important;
+        max-height: 450px !important;
+        overflow-y: auto !important;
+    }
+
+    .navbar-nav {
+        margin: 0 !important;
+        float: none !important;
+    }
+
+    .navbar-nav>li {
+        float: none !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .navbar-nav>li>a {
+        color: #fff !important;
+        padding: 12px 15px !important;
+    }
+
+    .navbar-nav .open .dropdown-menu {
+        position: static !important;
+        float: none !important;
+        background-color: #34495e !important;
+        box-shadow: none !important;
+        border: 0 !important;
+    }
+
+    .navbar-nav .open .dropdown-menu>li>a {
+        color: #fff !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        padding-left: 25px !important;
+    }
+}
+
+/* Specific Background for Visibility (320px - 768px) */
+@media (max-width: 768px) {
+    .navbar.navbar-default {
+        background-color: #2c3e50 !important;
+        border-color: #1a252f !important;
+    }
+
+    .navbar-header {
+        background-color: #2c3e50 !important;
+    }
+
+    .navbar-nav>li>a {
+        color: #fff !important;
+    }
+
+    .navbar-nav .open .dropdown-menu>li>a {
+        color: #fff !important;
+    }
+
+    .navbar-toggle .icon-bar {
+        background-color: #fff !important;
+    }
+
+    /* Layout Overrides for Mobile */
+    .header-fixed-mobile {
+        height: auto !important;
+        min-height: 80px !important;
+    }
+
+    .logo-container-mobile {
+        margin-top: 10px !important;
+        float: none !important;
+        width: 100% !important;
+    }
+
+    .logo-container-mobile img {
+        margin-top: 0 !important;
+        float: none !important;
+        display: block;
+        margin: 0 auto !important;
+    }
+
+    .meteo-container-mobile {
+        float: none !important;
+        width: 100% !important;
+        text-align: center !important;
+        margin-top: 10px !important;
+    }
+
+    .meteo-container-mobile h4 input {
+        margin-left: 0 !important;
+        position: static !important;
+    }
+
+    #meteo2,
+    #meteo3 {
+        float: none !important;
+        display: block !important;
+        text-align: center !important;
+        margin: 0 auto !important;
+    }
+
+    .category-title-mobile {
+        width: 100% !important;
+        margin-top: 20px !important;
+        text-align: center !important;
+    }
+
+    .category-item-mobile {
+        margin-right: 0 !important;
+        margin-bottom: 20px !important;
+    }
+
+    .category-item-mobile>div {
+        margin: 0 auto !important;
+    }
+
+    .version-footer-mobile {
+        position: static !important;
+        margin-top: 20px !important;
+        margin-left: 0 !important;
+        text-align: center !important;
+        width: 100% !important;
+        color: #fff !important;
+        text-shadow: 1px 1px #000 !important;
+    }
+}
+
+/* Nested Dropdown Styles */
+.dropdown-menu .dropdown-menu {
+    position: absolute;
+    left: 100%;
+    top: 0;
+}

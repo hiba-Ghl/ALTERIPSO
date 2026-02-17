@@ -1,0 +1,221 @@
+#div {
+    border-radius: 25px;
+    border: 2px solid #3087ce;
+    padding: 20px;
+    background-color: white;
+    margin-left: -70px;
+    margin-top: 10px;
+    display: flow-root;
+    /* Ensures children like floated buttons are contained */
+}
+
+table {
+    width: 100%;
+}
+
+table td {
+    padding: 10px;
+    vertical-align: top;
+}
+
+.lang-table {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.lang-table img {
+    width: 30px;
+    vertical-align: middle;
+}
+
+.lang-table label {
+    margin-left: 10px;
+}
+
+.lang-table input {
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.control-label {
+    margin-bottom: 10px;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    height: 100%;
+    margin-left: 75%;
+}
+
+.btn-container .btn {
+    margin-left: 10px;
+    /* Add space between buttons */
+}
+
+#option {
+    font-weight: bold;
+}
+
+/* --- Utility classes --- */
+.w-75 {
+    width: 75% !important;
+}
+
+.mb-15 {
+    margin-bottom: 15px !important;
+}
+
+.h-100 {
+    height: 100%;
+}
+
+/* --- New classes from inline styles --- */
+.header-title {
+    border-radius: 8px;
+    text-align: left;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: -70px;
+    color: white;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 250px;
+    padding-left: 10px;
+}
+
+.header-icon {
+    margin-top: -51px;
+    margin-left: -10px;
+    width: 45px;
+    float: left;
+}
+
+
+.td-85 {
+    width: 85%;
+}
+
+.td-33 {
+    width: 33%;
+}
+
+.label-lang {
+    margin-left: 5px;
+}
+
+.form-actions {
+    float: right;
+    margin-right: 10px;
+    margin-top: 15px;
+    /* Added positive margin for spacing */
+}
+
+.btn-annuler {
+    width: 130px;
+}
+
+/* --- Responsive Media Queries --- */
+
+/* Tablet (iPad) and smaller */
+@media (max-width: 991px) {
+
+    div .header-title {
+        margin-left: 0;
+        width: auto;
+        max-width: 250px;
+    }
+
+    #div {
+        border-radius: 15px;
+        padding: 15px;
+        margin-left: 0;
+        width: auto;
+    }
+
+    .td-85,
+    .td-33,
+    .td-44 {
+        width: 100%;
+        display: block;
+        padding: 5px 0;
+    }
+
+    table tr {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .lang-table td {
+        display: table-cell;
+        width: 50%;
+        padding: 5px;
+    }
+
+    .form-actions {
+        float: right;
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        margin-top: 20px;
+        margin-right: 0;
+    }
+
+    #translateBtn {
+        padding: 3px 12px;
+    }
+
+    .btn-annuler,
+    .form-actions .btn {
+        width: auto;
+        padding: 6px 12px;
+        margin-left: 0 !important;
+    }
+
+    /* iPad: 2 columns with separation for language table */
+    .lang-table {
+        border-collapse: separate;
+        border-spacing: 15px 10px;
+        margin-left: -15px;
+        width: calc(100% + 30px);
+    }
+
+    .lang-table td {
+        display: table-cell;
+        width: 50%;
+        padding: 10px;
+        background-color: #fcfcfc;
+        border: 1px solid #efefef;
+        border-radius: 8px;
+    }
+}
+
+/* Mobile Devices */
+@media (max-width: 767px) {
+    div .header-title {
+        width: 65%;
+    }
+
+    #div {
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+
+    .lang-table td {
+        display: block;
+        width: 100%;
+        padding: 5px 0;
+    }
+
+    .form-actions {
+        margin-top: 15px;
+        justify-content: flex-end;
+
+    }
+}
