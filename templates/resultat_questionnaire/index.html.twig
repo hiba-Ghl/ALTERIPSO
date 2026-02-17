@@ -1,164 +1,7 @@
 {% extends 'home/index.html.twig' %}
 {% block body %}
 <h1>Resultat <strong id="cat"> QUESTIONNAIRE</strong></h1>
-<hr>
-{# J'ai appliqué des styles CSS pour mettre en forme la page  #}
-<style type="text/css">
-    h1{
-        margin-top:-2%;
-        margin-left:-70%;
-    }
-    h3{
-        margin-left:-15%;
-        font-size:20px;
-    }
-  /* Styles pour la ligne des dates */
-.date-row .form-group {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px; /* Ajuster l'espacement si nécessaire */
-}
-
-.date-row .form-group label {
-    margin-right: 2px; /* Espace entre le label et l'input/select */
-    min-width: 90px; /* Largeur minimale pour les labels */
-}
-
-.date-row .form-group input[type="date"],
-.date-row .form-group select {
-    flex-grow: 1; /* L'input/select prend plus d'espace */
-    max-width: 100%; /* Assurer qu'il ne dépasse pas */
-    box-sizing: border-box; /* Inclure padding et bordure dans la largeur */
-}
-
-#start_date,
-#end_date,
-#chambre_id {
-    background-color: #F2F2F2;
-    color: black;
-    border: 0.5px dotted #4C4FF1;
-}
-
-/* Styles pour la ligne des boutons */
-.button-row .form-group {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin-bottom: 10px; /* Ajuster l'espacement si nécessaire */
-}
-
-.button-row .form-group button {
-    margin: 0 5px; /* Espace entre les boutons */
-    flex: 1; /* Les boutons prennent de l'espace équitablement */
-}
-
-.div {
-    border-radius: 25px;
-    border: 2px solid #3087ce;
-    padding: 20px;
-    margin-left: -60px;
-    margin-top: 10px;
-    background-color: white;
-}
-    .container{
-        text-align:center;
-        margin-bottom:40px;
-    }
-    table {
-        border-collapse: separate;
-        border-spacing: 5px; 
-    }
-    td {
-        padding: 10px;
-    }
-    tr {
-        margin-bottom: 20px;
-    }
-    #service_id {
-        background-color: #F2F2F2;
-        color: black;
-        border: 0.5px dotted #4C4FF1;
-    }
-   
-    #filtre td {
-        padding: 5px;
-    }
-    
-    .table-container {
-        width: 100%;
-        height: 400px; /* Hauteur fixe pour permettre le défilement */
-        overflow-y: auto; /* Défilement vertical uniquement */
-        overflow-x: auto; /* Défilement horizontal si nécessaire */
-        position: relative;
-    }
-
-    .table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 15px;
-        text-align: left;
-        border: 1px solid #FF9538;
-    }
-
-    .table thead {
-        position: -webkit-sticky; /* Pour les navigateurs basés sur WebKit */
-        position: sticky;
-        top: 0;
-        background-color: white;
-        z-index: 2;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .table thead th {
-        padding: 12px 15px;
-        border: 1px solid black;
-        text-align: center;
-        background-color: white;
-    }
-
-    .table thead tr {
-        background-color: white;
-        color: black;
-        font-weight: bold;
-    }
-
-    .table tbody tr {
-        border-bottom: 1px solid #f2f2f2;
-    }
-
-    .table tbody td {
-        padding: 12px 15px;
-        text-align: center;
-    }
-
-    .table tbody tr:nth-child(even) {
-        background-color: white;
-    }
-
-    .table th img {
-        width: 30px;
-        vertical-align: middle;
-        cursor: pointer;
-    }
-
-    .title{
-        background-color:#FF9538;
-        color:white;
-        font-size:30px;
-        padding: 1px 5px;
-    }
-    @media print {
-        h1{
-            margin-left:2%;
-        }
-        #buttons, #choix{
-            display:none;
-        }
-        #printableArea, #printableArea * {
-            margin-left:1%;
-        }
-    }
-</style>
+<link rel="stylesheet" href="{{ asset('css/css_resultatQuest.css') }}">
 <div class="div">
     <form method="get" action="{{ path('app_resultat_questionnaire') }}">
       <div class="container">
@@ -208,10 +51,10 @@
     <tr class="button-row">
         <td colspan="2">
             <div class="form-group">
-                <button data-toggle="tooltip" data-placement="top" class="btn btn-sm btn-primary" type="submit" name="search-button" id="search-button">Rechercher<i class="glyphicon glyphicon-search"></i></button>                   
-                        <button id="printPdfBtn" class="btn btn-sm btn-warning">Imprimer</button>
-                        <button id="exportPdfBtn" class="btn btn-sm btn-danger">Exporter en PDF</button>
-                        <button id="exportExcelBtn" class="btn btn-sm btn-success">Exporter en Excel</button>
+                <button data-toggle="tooltip" data-placement="top" class="btn btn-sm btn-primary" type="submit" name="search-button" id="search-button"><span class="desktop-text">Rechercher </span><i class="glyphicon glyphicon-search"></i></button>                   
+                        <button id="printPdfBtn" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-print"></i><span class="desktop-text"> Imprimer</span></button>
+                        <button id="exportPdfBtn" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-file"></i><span class="desktop-text"> PDF</span></button>
+                        <button id="exportExcelBtn" class="btn btn-sm btn-success"><i class="glyphicon glyphicon-list-alt"></i><span class="desktop-text"> Excel</span></button>
             </div>
         </td>
     </tr>
@@ -241,7 +84,7 @@
         <caption class="title"><h6>Statistiques de satisfaction par nombre de vote</h6></caption>
             <thead>
                 <tr>
-                    <th style="text-align:left;">Questions</th>
+                    <th class="text-left">Questions</th>
                     <th data-title="Extrêmement satisfait"><img src="{{ asset('images/0.png') }}" alt="Extrêmement satisfait" title="Extrêmement satisfait"></th>
                     <th  data-title="Très satisfait"><img src="{{ asset('images/1.png') }}" alt="Très satisfait" title="Très satisfait"></th>
                     <th  data-title="Satisfait"><img src="{{ asset('images/2.png') }}" alt="Satisfait" title="Satisfait"></th>
@@ -254,7 +97,7 @@
               {% for questionnaire in questionnaires %}
                     <tr class="questionnaire-row" data-service="{{ questionnaire.service.id }}">
                     <!-- Afficher la question en français -->
-                    <td style="text-align:left;" >{{ questionnaire.fr }}</td>
+                    <td class="text-left" >{{ questionnaire.fr }}</td>
                     <!-- Récupérer les votes pour le questionnaire actuel -->
                     {% set votes = voteCounts[questionnaire.id] ?? [0, 0, 0, 0, 0] %}
                     <!-- Afficher le nombre de votes pour chaque niveau de satisfaction -->
@@ -272,7 +115,7 @@
     </form>
 </div>
  <!-- Hidden table for printing -->
-        <div id="printableArea" style="display:none; border:1px solid gray;">
+        <div id="printableArea" class="printable-area">
             <h3>
                 Les statistiques du questionnaire
                 Les statistiques du questionnaire
@@ -296,7 +139,7 @@
                 <caption class="title"><h6>Statistiques de satisfaction par nombre de vote</h6></caption>
                 <thead>
                     <<tr>
-                    <th style="text-align:left;">Questions</th>
+                    <th class="text-left">Questions</th>
                     <th data-title="Extrêmement satisfait"><img src="{{ asset('images/0.png') }}" alt="Extrêmement satisfait" title="Extrêmement satisfait"></th>
                     <th  data-title="Très satisfait"><img src="{{ asset('images/1.png') }}" alt="Très satisfait" title="Très satisfait"></th>
                     <th  data-title="Satisfait"><img src="{{ asset('images/2.png') }}" alt="Satisfait" title="Satisfait"></th>
@@ -309,7 +152,7 @@
                 {% for questionnaire in questionnaires %}
                 <tr class="questionnaire-row" data-service="{{ questionnaire.service.id }}">
                 <!-- Afficher la question en français -->
-                <td style="text-align:left;">{{ questionnaire.fr }}</td>
+                <td class="text-left">{{ questionnaire.fr }}</td>
                 <!-- Récupérer les votes pour le questionnaire actuel -->
                 {% set votes = voteCounts[questionnaire.id] ?? [0, 0, 0, 0, 0] %}
                 <!-- Afficher le nombre de votes pour chaque niveau de satisfaction -->
@@ -340,7 +183,7 @@
                 </td> 
             </tr>
             <tr>
-                <td> <div id="chart_div" style="width: 900px; height: 500px;"></div> </td>
+                <td> <div id="chart_div" class="chart-container"></div> </td>
             </tr>
 </table>
 
@@ -416,34 +259,48 @@
 
         var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
         chart.draw(data, options);
+
+        // Make chart responsive
+        window.addEventListener('resize', function() {
+            chart.draw(data, options);
+        });
     }
 
     function drawBarChart() {
         var data = google.visualization.arrayToDataTable(getDataArray());
         var options = {
             title: 'Les statistiques des résultats du questionnaire',
-            chartArea: {width: '50%'},
+            chartArea: {width: '70%'},
         };
 
         var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
         chart.draw(data, options);
+
+        window.addEventListener('resize', function() {
+            chart.draw(data, options);
+        });
     }
 
     function drawLineChart() {
         var data = google.visualization.arrayToDataTable(getDataArray());
         var options = {
             title: 'Les statistiques des résultats du questionnaire',
+            chartArea: {width: '80%'},
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
         chart.draw(data, options);
+
+        window.addEventListener('resize', function() {
+            chart.draw(data, options);
+        });
     }
 
     function drawColumnChart() {
         var data = google.visualization.arrayToDataTable(getDataArray());
         var options = {
             title: 'Les statistiques des résultats du questionnaire',
-            chartArea: {width: '50%'},
+            chartArea: {width: '80%'},
             hAxis: {
                 slantedText: true, // Incline le texte des labels pour éviter le chevauchement
                 slantedTextAngle: 20 // Angle d'inclinaison des labels
@@ -452,16 +309,25 @@
 
         var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
         chart.draw(data, options);
+
+        window.addEventListener('resize', function() {
+            chart.draw(data, options);
+        });
     }
 
     function drawAreaChart() {
         var data = google.visualization.arrayToDataTable(getDataArray());
         var options = {
             title: 'Les statistiques des résultats du questionnaire',
+            chartArea: {width: '80%'},
         };
 
         var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
         chart.draw(data, options);
+
+        window.addEventListener('resize', function() {
+            chart.draw(data, options);
+        });
     }
 
     document.getElementById('pieChartBtn').addEventListener('click', drawPieChart);

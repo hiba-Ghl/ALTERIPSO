@@ -1,0 +1,328 @@
+/* css_resultatQuest.css */
+
+h1 {
+    margin-top: -2%;
+    margin-left: -70%;
+}
+
+h3 {
+    margin-left: -15%;
+    font-size: 20px;
+}
+
+/* Styles pour la ligne des dates */
+.date-row .form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.date-row .form-group label {
+    margin-right: 2px;
+    min-width: 90px;
+}
+
+.date-row .form-group input[type="date"],
+.date-row .form-group select {
+    flex-grow: 1;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+#start_date,
+#end_date,
+#chambre_id {
+    background-color: #F2F2F2;
+    color: black;
+    border: 0.5px dotted #4C4FF1;
+}
+
+/* Styles pour la ligne des boutons */
+.button-row .form-group {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.button-row .form-group button {
+    margin: 0 5px;
+    flex: 1;
+}
+
+.div {
+    border-radius: 25px;
+    border: 2px solid #3087ce;
+    padding: 20px;
+    margin-left: -60px;
+    margin-top: 10px;
+    background-color: white;
+}
+
+.container {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+table {
+    display: table !important;
+    border-collapse: separate;
+    border-spacing: 5px;
+}
+
+td {
+    padding: 10px;
+}
+
+tr {
+    margin-bottom: 20px;
+}
+
+#service_id {
+    background-color: #F2F2F2;
+    color: black;
+    border: 0.5px dotted #4C4FF1;
+}
+
+#filtre td {
+    padding: 5px;
+}
+
+.table-container {
+    width: 100%;
+    height: 400px;
+    overflow-y: auto;
+    overflow-x: auto;
+    position: relative;
+}
+
+.table {
+    display: table !important;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+    text-align: left;
+    border: 1px solid #FF9538;
+}
+
+.table thead {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 2;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.table thead th {
+    padding: 12px 15px;
+    border: 1px solid black;
+    text-align: center;
+    background-color: white;
+}
+
+.table thead tr {
+    background-color: white;
+    color: black;
+    font-weight: bold;
+}
+
+.table tbody tr {
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.table tbody td {
+    padding: 12px 15px;
+    text-align: center;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: white;
+}
+
+.table th img {
+    width: 30px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.title {
+    background-color: #FF9538;
+    color: white;
+    font-size: 24px;
+    padding: 0;
+    caption-side: top;
+    text-align: center;
+}
+
+.title h6 {
+    margin: 0;
+    padding: 10px 5px;
+    font-size: inherit;
+    color: white;
+}
+
+/* Utility classes for inline replacements */
+.text-left {
+    text-align: left !important;
+}
+
+.printable-area {
+    display: none;
+    border: 1px solid gray;
+}
+
+.chart-container {
+    width: 900px;
+    height: 500px;
+}
+
+@media print {
+    h1 {
+        margin-left: 2%;
+    }
+
+    #buttons,
+    #choix {
+        display: none;
+    }
+
+    #printableArea,
+    #printableArea * {
+        margin-left: 1%;
+    }
+}
+
+/* Responsive Media Queries */
+
+/* Tablet (iPad) and smaller */
+@media (max-width: 1024px) {
+    h1 {
+        margin-left: 0;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    h3 {
+        margin-left: 0;
+        text-align: center;
+        font-size: 18px;
+    }
+
+    .div {
+        margin-left: 0;
+        border-radius: 15px;
+        padding: 15px;
+        width: auto;
+    }
+
+    .container {
+        margin-bottom: 20px;
+    }
+
+    #filtre {
+        width: 100%;
+        border-spacing: 0;
+    }
+
+    .date-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .date-row td {
+        flex: 1 1 45%;
+        padding: 5px;
+        display: block;
+        width: 100%;
+    }
+
+    .button-row td {
+        padding: 10px 5px;
+        width: 100%;
+        display: block;
+    }
+
+    .button-row .form-group {
+        flex-direction: row;
+        gap: 5px;
+    }
+
+    .button-row .form-group button {
+        width: auto;
+        margin: 0 2px;
+        flex: 1;
+    }
+
+    .chart-container {
+        width: 100% !important;
+        height: 400px !important;
+    }
+
+    .table-container {
+        height: auto;
+        max-height: 500px;
+        border: 1px solid #FF9538;
+        border-radius: 8px;
+    }
+}
+
+/* Mobile Devices */
+@media (max-width: 767px) {
+    .date-row td {
+        flex: 1 1 100%;
+    }
+
+    .title {
+        font-size: 12px;
+        /* Slightly smaller title */
+    }
+
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table {
+        /* Relax constrained width to allow fitting if possible, 
+           but keep 100% to fill container */
+        width: 100%;
+        min-width: auto;
+    }
+
+    .table thead th,
+    .table tbody td {
+        padding: 4px 2px;
+        /* Minimal padding */
+        font-size: 11px;
+        /* Smaller font */
+    }
+
+    /* Resize header images (acting as 'buttons') to fit */
+    .table th img {
+        width: 18px;
+    }
+
+    .chart-container {
+        height: 300px !important;
+        width: 100% !important;
+    }
+
+    /* Stack chart control buttons */
+    #buttons td {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    #buttons button {
+        width: 100%;
+        margin: 0 !important;
+    }
+
+    /* Hide text on mobile for action buttons */
+    .desktop-text {
+        display: none;
+    }
+}
