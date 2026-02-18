@@ -1,56 +1,26 @@
 {% extends 'home/index.html.twig' %}
 {% block body %}
+<link rel="stylesheet" href="{{ asset('css/css_categRadio.css') }}">
 
-<style>
-		#div1 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 20px;
-			width: 1091px;
-			margin-left: 10px;
-			margin-top: 10px;
-			
-			padding: 43px;
-
-		}
-		#div4 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 60px;
-			width: 1091px;
-            background-color:white;
-			margin-left: 10px;
-			margin-top: 10px;
-		}
-	</style>
 <!-- ajouter categories                                                      -->
 
-<div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 390px;padding-left: 10px;">
-    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+<div class="ajouter-banner-title">
+    <img class="ajouter-banner-img" src="{{ asset('images/ler.png') }}">
     Ajouter une catégorie radio
 </div>
 
-<div id="div4">
-
+<div id="container-ajouter-categorie">
     <form name="" method="post" action="{{path('app_ajouter_categorieradio')}}" class="form-horizontal" enctype="multipart/form-data">
-
-
         <strong>Infos
         </strong>
-
-
 
         <div class="form-group">
             <label  class="col-lg-2 control-label">Nom
             </label>
             <div class="col-lg-10">
-
                 <input type="text" id="nom" name="nom" class="form-control"/>
-
             </div>
-        </div>
-
-       
+        </div>       
 		<div class="form-group">
 				<label  class="col-lg-2 control-label">Active</label>
 				<div class="col-lg-10">
@@ -62,27 +32,21 @@
 
 				</div>
 			</div>
-
         <div class="form-group">
             <label  class="col-lg-2 control-label">Position</label>
             <div class="col-lg-10">
-
                 <input type="number" id="position" name="position" class="form-control"/>
-
             </div>
         </div>
-
-        <div class="form-group" style="display:flex;">
+        <div class="form-group ajouter-form-flex">
             <label for="logo" class="col-lg-2 control-label">Logo </label>
             <div class="col-lg-10">
-           <input type="file" class="form-control" id="logo" name="logo" required> 
+           <input type="file" class="form-control" id="logo_input" name="logo" required> 
            </div>
         </div>
- 
-
-        <div style="width: 900px; margin-left:100px; margin-bottom: 5px; margin-top: 20px">
+        <div class="ajouter-langues-section">
             <!-- le boutons des langues --> 
-            <label style="margin-right: 20px;" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Langues</label>
+            <label class="accordion-toggle ajouter-langue-label" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Langues</label>
             <!-- le bouton de traduction -->
             <button type="button" id="translateBtn" class="btn btn-info btn-sm">
                 <i class="glyphicon glyphicon-globe"></i> Traduire le texte
@@ -94,50 +58,50 @@
             <div id="collapseTwo" class="panel-collapse collapse">
                 <div class="panel-body">
                     <div id="inputGroup1">
-                        <div class="form-row" style="margin-left:27px">
+                        <div class="form-row ajouter-langue-row">
                             <div class="form-group col-md-6">
-                                <img style="width: 30px" src="{{ asset('images/eng.png') }}">
+                                <img class="ajouter-langue-img" src="{{ asset('images/eng.png') }}">
                                 <label for="EN">English</label>
                                 <input type="text" class="form-control" id="EN" name="EN">
                             </div>
-                            <div class="form-group col-md-6" style="margin-left:27px">
-                                <img style="width: 30px" src="{{ asset('images/es.png') }}">
+                            <div class="form-group col-md-6">
+                                <img class="ajouter-langue-img" src="{{ asset('images/es.png') }}">
                                 <label for="ES">Espagnol</label>
                                 <input type="text" class="form-control" id="ES" name="ES">
                             </div>
                         </div>
-                        <div class="form-row" style="margin-left:27px">
+                        <div class="form-row ajouter-langue-row">
                             <div class="form-group col-md-6">
-                                <img style="width: 30px" src="{{ asset('images/pt.png') }}">
+                                <img class="ajouter-langue-img" src="{{ asset('images/pt.png') }}">
                                 <label for="PT">Portugues</label>
                                 <input type="text" class="form-control" id="PT" name="PT">
                             </div>
-                            <div class="form-group col-md-6" style="margin-left:27px">
-                                <img style="width: 30px" src="{{ asset('images/ita.png') }}">
+                            <div class="form-group col-md-6">
+                                <img class="ajouter-langue-img" src="{{ asset('images/ita.png') }}">
                                 <label for="IT">Italiano</label>
                                 <input type="text" class="form-control" id="IT" name="IT">
                             </div>
                         </div>
-                        <div class="form-row" style="margin-left:27px">
+                        <div class="form-row ajouter-langue-row">
                             <div class="form-group col-md-6">
-                                <img style="width: 30px" src="{{ asset('images/rus.png') }}">
+                                <img class="ajouter-langue-img" src="{{ asset('images/rus.png') }}">
                                 <label for="RU">Russian</label>
                                 <input type="text" class="form-control" id="RU" name="RU">
                             </div>
-                            <div class="form-group col-md-6" style="margin-left:27px">
-                                <img style="width: 30px" src="{{ asset('images/deu.png') }}">
+                            <div class="form-group col-md-6">
+                                <img class="ajouter-langue-img" src="{{ asset('images/deu.png') }}">
                                 <label for="DE">Deutsch</label>
                                 <input type="text" class="form-control" id="DE" name="DE">
                             </div>
                         </div>
-                        <div class="form-row" style="margin-left:27px">
+                        <div class="form-row ajouter-langue-row">
                             <div class="form-group col-md-6">
-                                <img style="width: 30px" src="{{ asset('images/ch.png') }}">
+                                <img class="ajouter-langue-img" src="{{ asset('images/ch.png') }}">
                                 <label for="ZH">China</label>
                                 <input type="text" class="form-control" id="ZH" name="ZH">
                             </div>
-                            <div class="form-group col-md-6" style="margin-left:27px">
-                                <img style="width: 30px" src="{{ asset('images/ma.png') }}">
+                            <div class="form-group col-md-6">
+                                <img class="ajouter-langue-img" src="{{ asset('images/ma.png') }}">
                                 <label for="AR">العربية</label>
                                 <input type="text" class="form-control" id="AR" name="AR">
                             </div>
@@ -145,10 +109,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-         
-            <div style="float:right;margin-left:30px;margin-bottom:-30px;">
-            <a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/categorieradio">
+        </div>         
+            <div class="ajouter-actions-btns">
+            <a class="btn btn-danger btn-md ajouter-btn-annuler" id = "annulerButton" href="/categorieradio">
                 <i class="glyphicon glyphicon-remove"></i> Annuler
             </a>
             <button type="submit" class="btn btn-primary btn-md" name="valider" >
@@ -157,7 +120,6 @@
             </button>
     </div>
         </form>
-
 
 </div>
  <script>

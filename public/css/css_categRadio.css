@@ -182,4 +182,250 @@
         gap: 5px;
         /* Plus serré sur petit écran */
     }
+
+}
+
+
+/* --- STYLES POUR LA PAGE AJOUTER (INDÉPENDANT) --- */
+
+#container-ajouter-categorie {
+    border-radius: 25px;
+    border: 2px solid #3087ce;
+    padding: 60px;
+    width: 1091px;
+    background-color: white;
+    margin-left: 10px;
+    margin-top: 10px;
+    box-sizing: border-box;
+}
+
+.ajouter-banner-title {
+    border-radius: 8px;
+    text-align: left;
+    margin-left: 10px;
+    color: white;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 350px;
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.ajouter-banner-img {
+    margin-top: -77px;
+    margin-left: -10px;
+    width: 45px;
+    float: left;
+}
+
+.ajouter-form-flex {
+    display: flex;
+}
+
+.ajouter-langues-section {
+    width: 900px;
+    margin-left: 100px;
+    margin-bottom: 5px;
+    margin-top: 20px;
+}
+
+.ajouter-langue-label {
+    margin-right: 20px;
+}
+
+.ajouter-langue-row {
+    margin-left: 27px;
+}
+
+.ajouter-langue-img {
+    width: 30px;
+}
+
+.ajouter-actions-btns {
+    float: right;
+    margin-left: 30px;
+    margin-bottom: -30px;
+}
+
+.ajouter-btn-annuler {
+    width: 130px;
+}
+
+/* RESPONSIVE AJOUTER */
+@media (max-width: 1150px) {
+    #container-ajouter-categorie {
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding: 20px !important;
+        height: auto !important;
+        border-radius: 15px;
+    }
+
+    .ajouter-banner-title {
+        width: 35% !important;
+        font-size: 16px !important;
+    }
+
+    .ajouter-form-flex {
+        display: block !important;
+        /* Force le passage à la ligne pour le logo sur tablette/mobile */
+    }
+
+    .ajouter-langues-section {
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+
+    .ajouter-actions-btns {
+        float: none !important;
+        margin-bottom: 0 !important;
+        margin-top: 20px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    #container-ajouter-categorie {
+        padding: 15px !important;
+        /* Padding réduit sur téléphone comme demandé */
+    }
+
+    .ajouter-banner-img {
+        margin-top: -74px;
+        margin-left: -10px;
+        width: 45px;
+        float: left;
+    }
+
+    .ajouter-actions-btns {
+        float: none !important;
+        margin-left: 0 !important;
+        margin-top: 20px !important;
+        margin-bottom: 0px !important;
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: left !important;
+        gap: 10px !important;
+    }
+
+    .ajouter-btn-annuler,
+    .ajouter-actions-btns .btn-primary {
+        flex: 1 !important;
+        width: auto !important;
+        padding: 1px !important;
+        font-size: 14px !important;
+    }
+
+    .ajouter-langue-row {
+        margin-left: 0 !important;
+    }
+
+    .ajouter-banner-title {
+        width: 65% !important;
+        font-size: 16px !important;
+    }
+
+    input[id="logo_input"] {
+        width: 100% !important;
+        padding: 10px;
+    }
+
+    #translateBtn {
+        padding: 2px !important;
+        font-size: 14px !important;
+    }
+}
+
+/* --- STYLES POUR LA PAGE MODIFIER (INDÉPENDANT) --- */
+
+.modifier-container {
+    border-radius: 25px;
+    border: 2px solid #3087ce;
+    width: 1091px;
+    background-color: white;
+    /* Fond blanc du formulaire */
+    margin-left: 10px;
+    margin-top: 10px;
+    padding: 60px;
+    box-sizing: border-box;
+}
+
+/* Fix pour le background de la page derrière le formulaire */
+body {
+    background-image: url('../images/back.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+.modifier-banner-title {
+    border-radius: 8px;
+    text-align: left;
+    margin-left: 10px;
+    color: white;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 390px;
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modifier-banner-img {
+    margin-top: -74px;
+    margin-left: -10px;
+    width: 45px;
+    float: left;
+}
+
+/* RESPONSIVE MODIFIER */
+@media (max-width: 1150px) {
+    .modifier-container {
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding: 20px !important;
+        height: auto !important;
+        border-radius: 15px;
+    }
+
+    .modifier-banner-title {
+        width: 45% !important;
+        font-size: 16px !important;
+    }
+
+}
+
+@media (max-width: 768px) {
+    .modifier-container {
+        padding: 15px !important;
+    }
+
+    .modifier-banner-title {
+        width: 65% !important;
+        font-size: 16px !important;
+    }
+}
+
+@media (max-width: 490px) {
+
+    .modifier-banner-title {
+        width: 80% !important;
+        font-size: 14px !important;
+    }
+
+    .modifier-banner-img {
+        margin-top: -64px;
+        margin-left: -10px;
+        width: 45px;
+        float: left;
+    }
 }
