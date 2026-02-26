@@ -1,0 +1,556 @@
+/* CSS for VOD module */
+
+.table-container {
+    max-height: 500px;
+    margin-top: 10px;
+}
+
+.v-table-main {
+    width: 100% !important;
+    border-collapse: collapse;
+}
+
+.v-table-main thead,
+.v-table-main th {
+    background-color: #f2f2f2 !important;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.scrollable {
+    max-height: 80px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    display: block;
+}
+
+.v-table-main tbody {
+    display: block;
+    max-height: 450px;
+    overflow-y: auto;
+}
+
+.v-table-main tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.v-table-main thead tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.dataTables_filter {
+    float: right;
+    width: 50%;
+    margin-top: -27px;
+}
+
+.dataTables_filter label {
+    color: #3087ce;
+    font-size: 20px;
+}
+
+.dataTables_filter input {
+    color: black;
+    font-size: 16px;
+}
+
+#div2 {
+    margin-left: -130px;
+    margin-top: 10px;
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    border-radius: 8px;
+    padding: 20px;
+    min-height: 600px;
+}
+
+.v-checkbox-text,
+.v-modal-checkbox-text {
+    display: none;
+}
+
+.v-search-label {
+    color: #3087ce;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.v-search-group {
+    display: flex;
+    align-items: center;
+}
+
+.v-container.backp {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+
+/* Header Styles */
+.v-header-title {
+    border-radius: 8px;
+    margin-left: -130px;
+    margin-top: 10px;
+    text-align: left;
+    margin-bottom: 10px;
+    color: white;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 300px;
+    padding-left: 10px;
+    display: inline-block;
+}
+
+.v-header-icon {
+    margin-top: -51px;
+    margin-left: -10px;
+    width: 45px;
+    float: left;
+}
+
+/* Actions Row */
+.v-actions-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3px;
+}
+
+.v-btn-group {
+    display: flex;
+    gap: 5px;
+}
+
+.v-btn-group a,
+.v-btn-group button {
+    width: 150px;
+}
+
+.v-search-input {
+    float: right;
+    padding: 6px;
+    border-radius: 5px;
+    width: 200px;
+}
+
+/* Table Cell Sizes */
+.v-th-col,
+.v-td-col {
+    height: 50px;
+    width: 190px;
+    text-align: center;
+    vertical-align: middle !important;
+}
+
+.v-th-action,
+.v-td-action {
+    height: 50px;
+    width: 214px;
+    text-align: center;
+    vertical-align: middle !important;
+}
+
+.v-logo-img {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+}
+
+.v-active-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.v-checklist-input {
+    margin-top: -1px;
+}
+
+.v-td-actions-group {
+    display: flex !important;
+    justify-content: center;
+    gap: 4px;
+}
+
+/* Modal Styles */
+.v-modal-custom-header {
+    border-radius: 8px;
+    text-align: left;
+    margin: 10px 0;
+    color: white;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 220px;
+    padding: 5px 10px;
+}
+
+.v-modal-header-icon {
+    margin-top: -55px;
+    margin-left: -10px;
+    width: 45px;
+    float: left;
+}
+
+.v-modal-content-custom {
+    width: 800px;
+    height: 740px;
+}
+
+.v-modal-header-container {
+    margin-top: 30px;
+}
+
+.v-modal-main {
+    margin-left: -200px !important;
+}
+
+.v-modal-sub-title {
+    font-size: 16px;
+    color: black;
+}
+
+/* Modal Table Styles */
+.v-modal-table {
+    width: 100% !important;
+}
+
+.v-modal-thead-row,
+.v-modal-tr {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.v-modal-th {
+    width: 120px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.v-modal-th:first-child {
+    gap: 5px;
+    justify-content: flex-start;
+}
+
+.v-modal-td {
+    width: 120px;
+    height: 40px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.v-modal-tr-body {
+    height: 50px;
+}
+
+.v-text-red {
+    color: red;
+}
+
+/* --- TABLET ADAPTATIONS (max 1024px) --- */
+@media screen and (max-width: 1024px) {
+    .v-header-title {
+        width: 25%;
+        margin-left: 0 !important;
+        font-size: 18px;
+    }
+
+    #div2 {
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding: 15px !important;
+    }
+
+    .v-actions-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .v-btn-group a,
+    .v-btn-group button {
+        width: 130px;
+        font-size: 11px;
+    }
+
+    .v-search-input {
+        width: 150px;
+    }
+
+    .v-th-col,
+    .v-td-col {
+        width: 120px !important;
+    }
+
+    .v-th-action,
+    .v-td-action {
+        width: 140px !important;
+    }
+}
+
+/* --- MOBILE ADAPTATIONS (max 768px) --- */
+@media screen and (max-width: 768px) {
+    .v-header-title {
+        width: 25% !important;
+        /* margin-left: 5% !important; */
+        font-size: 16px;
+    }
+
+    .v-header-icon {
+        width: 35px;
+        margin-top: -40px;
+    }
+
+    #div2 {
+        border-radius: 12px;
+        padding: 10px !important;
+        margin-bottom: 20px;
+        height: auto !important;
+        min-height: unset !important;
+    }
+
+    .v-actions-row {
+        flex-direction: column-reverse;
+        gap: 15px;
+        align-items: stretch;
+    }
+
+    .v-btn-group {
+        flex-direction: row;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .v-btn-group a,
+    .v-btn-group button {
+        width: 45px !important;
+        height: 45px !important;
+        padding: 0 !important;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 20px;
+    }
+
+    .v-btn-text {
+        display: none !important;
+    }
+
+    .v-checkbox-text,
+    .v-modal-checkbox-text {
+        display: inline-block;
+        margin-left: 10px;
+        color: #333;
+        font-weight: normal;
+    }
+
+    .v-checkbox-label,
+    .v-modal-checkbox-label {
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    .v-search-input {
+        width: 100% !important;
+        float: none !important;
+        margin-bottom: 5px;
+    }
+
+    .v-search-group {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .v-search-label {
+        margin-bottom: 5px;
+    }
+
+    /* Transform Table into Form-like Cards on Mobile */
+    .table-container {
+        overflow-x: visible !important;
+        display: block !important;
+        width: 100% !important;
+        max-height: none !important;
+    }
+
+    .v-table-main {
+        display: block !important;
+        width: 100% !important;
+        min-width: unset !important;
+        border: none !important;
+    }
+
+    .v-table-main thead {
+        display: none !important;
+    }
+
+    .v-table-main tbody {
+        display: block !important;
+        overflow-y: visible !important;
+        max-height: none !important;
+    }
+
+    .v-table-main tr {
+        display: block !important;
+        margin-bottom: 30px;
+        padding: 20px;
+        background: #fff;
+        border: 2px solid #3087ce;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
+
+    .v-table-main td {
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 0 !important;
+        border: none !important;
+        border-bottom: 1px solid #f0f0f0 !important;
+        width: 100% !important;
+        text-align: right !important;
+        min-height: 45px;
+    }
+
+    .v-table-main td:last-child {
+        border-bottom: none !important;
+    }
+
+    /* Labels as form field titles */
+    .v-table-main td:before {
+        content: attr(data-label);
+        display: block !important;
+        font-weight: bold;
+        color: #3087ce;
+        text-align: left;
+        width: 40%;
+        font-size: 13px;
+    }
+
+    /* Exceptions for specific cells */
+    /* Standard row layout for Logo */
+
+    .v-td-col[data-label="Logo"]:before {
+        width: 40%;
+        text-align: left;
+        margin-bottom: 0;
+        font-size: 13px;
+    }
+
+    .v-logo-img {
+        width: 50px !important;
+        height: 50px !important;
+        margin: 0 !important;
+        border: 1px solid #3087ce;
+        border-radius: 4px !important;
+        background-color: #fff;
+        box-shadow: none;
+        object-fit: cover;
+    }
+
+    .v-active-group {
+        justify-content: flex-end !important;
+        width: 60% !important;
+    }
+
+    .v-td-actions-group {
+        justify-content: space-around !important;
+        padding-top: 15px !important;
+        margin-top: 10px;
+        border-top: 2px solid #f0f0f0 !important;
+    }
+
+    .v-td-actions-group:before {
+        content: "Actions";
+        width: 100%;
+        text-align: center;
+        position: absolute;
+        top: -25px;
+        left: 0;
+        font-weight: bold;
+        color: #3087ce;
+    }
+
+    .scrollable {
+        max-height: 120px !important;
+        width: 55% !important;
+        text-align: right;
+        display: block !important;
+    }
+
+    /* Fix checkbox labels on mobile */
+    .v-checkbox-text,
+    .v-modal-checkbox-text {
+        display: inline-block !important;
+        margin-left: 8px;
+    }
+
+    .v-checkbox-label {
+        justify-content: flex-end;
+    }
+
+    /* Modal Adjustments on Mobile */
+    .v-modal-main {
+        margin-left: 0 !important;
+    }
+
+    .v-modal-content-custom {
+        width: 95% !important;
+        margin: 10px auto;
+        height: auto !important;
+        min-height: 480px;
+        padding: 10px;
+    }
+
+    .v-modal-custom-header {
+        width: 100%;
+        font-size: 16px;
+    }
+
+    .v-modal-table thead {
+        display: none !important;
+    }
+
+    .v-modal-tr {
+        flex-direction: column;
+        height: auto !important;
+        border: 1px solid #3087ce;
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 15px;
+    }
+
+    .v-modal-td {
+        width: 100% !important;
+        text-align: right !important;
+        padding: 8px 0;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #f5f5f5;
+    }
+
+    .v-modal-td:last-child {
+        border-bottom: none;
+    }
+
+    .v-modal-td:before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #3087ce;
+    }
+}

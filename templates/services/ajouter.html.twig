@@ -2,6 +2,7 @@
 {% extends 'home/index.html.twig' %}
 {# Cette section concerne la conception de modèles pour l'ajout d'un service.#}
 {% block body %}
+<link rel="stylesheet" href="{{ asset('css/css_service.css') }}">
 {# offline #}
 {% if appConfig.StatusServeur is same as('Offline') %}
 
@@ -10,8 +11,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 
 {% endif %}
-<div style="border-radius: 8px;  margin-top:10px;text-align: left; margin-bottom: 10px; margin-left: -130px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 200px; padding-left: 10px; display: inline-block;">
-    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+<div class="aj-header-title">
+    <img class="aj-header-icon" src="{{ asset('images/ler.png') }}">
     Ajouter un service
 </div>
 <div class="div2">
@@ -25,7 +26,7 @@
                     <label class="control-label">Nom de Service</label>
                     <input type="text" id="nom_service" class="form-control test" name="nom" onchange=""/>
                 </div>
-                <div class="form-group" style="margin-bottom:18px;">
+                <div class="form-group aj-form-group-icon">
                     <button type="button" class="btn btn-success btn btn-sm" data-toggle="modal" id="ajoute">
                      Choisissez un icone
                 </button>
@@ -42,7 +43,7 @@
                         <option value="0">Non</option>
                     </select>
                     </div>
-                     <div style="display: flex; align-items: center; gap: 5px; margin-top: 8px; height: 48px; padding-top: 5px">
+                     <div class="aj-translate-row">
                  <div class="form-group">
                     <button type="button" class="btn btn-info"  id ="test" >
                         Traduire le service
@@ -53,16 +54,16 @@
                 </a>
                 </div>
                     <div id="collapseTwo" class="panel-collapse collapse">
-                        <div class="panel-body" style="width:410px;padding:0px">
-                            <table class="table" style="width: 400px; ">
-                                <tr style="width:400px">
+                        <div class="panel-body aj-panel-body-traduction">
+                            <table class="table aj-table-traduction">
+                                <tr>
                                     <td>
-                                        <img style="width: 30px" src="{{ asset('images/eng.png') }}">
+                                        <img class="aj-flag-img" src="{{ asset('images/eng.png') }}">
                                         <label class="control-label required" for="EN">English</label>
                                         <input  type="text" id="EN" name="EN" class="form-control" >
                                     </td>
                                     <td>
-                                        <img style="width: 30px" src="{{ asset('images/es.png') }}">
+                                        <img class="aj-flag-img" src="{{ asset('images/es.png') }}">
                                         <label class="control-label required" for="ES">Espagnol</label>
                                         <input  type="text" id="ES" name="ES" class="form-control">
                                     </td>
@@ -70,12 +71,12 @@
 
                                 <tr>
                                     <td>
-                                        <img style="width: 30px" src="{{ asset('images/pt.png') }}">
+                                        <img class="aj-flag-img" src="{{ asset('images/pt.png') }}">
                                         <label class="control-label required" for="PT">Portugues</label>
                                         <input  type="text" id="PT" name="PT" class="form-control">
                                     </td>
                                     <td>
-                                        <img style="width: 30px" src="{{ asset('images/ita.png') }}">
+                                        <img class="aj-flag-img" src="{{ asset('images/ita.png') }}">
                                         <label class="control-label required" for="IT">Italiano</label>
                                             <input  type="text" id="IT" name="IT" class="form-control">
                                     </td>
@@ -83,12 +84,12 @@
 
                                 <tr>
                                     <td>
-                                        <img style="width: 30px" src="{{ asset('images/rus.png') }}">
+                                        <img class="aj-flag-img" src="{{ asset('images/rus.png') }}">
                                         <label class="control-label required" for="RU">Russian</label>
                                         <input  type="text" id="RU" name="RU" class="form-control">
                                     </td>
                                     <td>
-                                        <img style="width: 30px" src="{{ asset('images/deu.png') }}">
+                                        <img class="aj-flag-img" src="{{ asset('images/deu.png') }}">
                                         <label class="control-label required" for="DE">Deutsch</label>
                                         <input  type="text" id="DE" name="DE" class="form-control">
                                     </td>
@@ -96,12 +97,12 @@
 
                                 <tr>
                                     <td>
-                                        <img style="width: 30px" src="{{ asset('images/ch.png') }}">
+                                        <img class="aj-flag-img" src="{{ asset('images/ch.png') }}">
                                         <label class="control-label required" for="ZH">China</label>
                                         <input  type="text" id="ZH" name="ZH" class="form-control">
                                     </td>
                                     <td>
-                                        <img style="width: 30px" src="{{ asset('images/ma.png') }}">
+                                        <img class="aj-flag-img" src="{{ asset('images/ma.png') }}">
                                         <label class="control-label required" for="AR">العربية</label>
                                         <input  type="text" id="AR" name="AR"  class="form-control">
                                     </td>
@@ -122,13 +123,13 @@
                             <option value="VIDEO">VIDEO</option>
                         </select>
                     </div>
-                    <div style="margin-bottom:-6px" id="divFile">
+                    <div class="aj-div-file" id="divFile">
                         <input type="file" id="service_src" accept=".jpg, .jpeg, .png" multiple="multiple" class="form-control test">
                         <p id="Perror"></p>
                     </div>
                     <div style="">
                         <label class="control-label">Description</label>
-                        <textarea id="service_description" class="form-control test" style="height:50px" placholder="description" name="Description"></textarea>
+                        <textarea id="service_description" class="form-control test aj-textarea-description" placholder="description" name="Description"></textarea>
                     </div>
                  <div >
                     <label class="control-label">Service</label>
@@ -139,10 +140,10 @@
         </div>
 
         <div class="button">
-            <button type="button" class="btn btn-danger mt-3"  style="width:130px" id="annulerAjout">
+            <button type="button" class="btn btn-danger mt-3 aj-btn-action" id="annulerAjout">
                 <i class="glyphicon glyphicon-remove"></i> Annuler
             </button>
-            <button id="submit" type="submit" class="btn btn-primary mt-3" style="width:130px">
+            <button id="submit" type="submit" class="btn btn-primary mt-3 aj-btn-action">
                 <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
             </button>
         </div> 
@@ -151,11 +152,11 @@
 {# ################################################################################################## #}
 {# pop-up affichant les images internes pour sélectionner une icône afin d'ajouter le logo du service. #}
 <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-    <div class="modal-dialog" role="document" style="width:1000px" >
+    <div class="modal-dialog aj-modal-dialog-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header" style="margin-top:30px">
-                <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 200px; padding: 5px 10px; display: inline-block;">
-                    <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+            <div class="modal-header aj-modal-header-icone">
+                <div class="aj-modal-header-title">
+                    <img class="aj-modal-header-icon" src="{{ asset('images/ler.png') }}" alt="Icon">
                     Ajouter un icone
                 </div>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -163,17 +164,17 @@
                 </button>
             </div>
   <div class="modal-body">
-  <div style="display: flex; height:400px;overflow:scroll;justify-content:center;flex-wrap: wrap; gap: 15px;">
+  <div class="aj-images-grid">
       {% for image in images %}
           <div class="image-container1" onclick="selectImage('{{ image }}')" style="cursor: pointer;">
-              <img src="{{ asset(image) }}" alt="Image" class="image-thumbnail" style="width: 100px; object-fit: cover; border: 3px solid #ddd; border-radius: 5px;">
+              <img src="{{ asset(image) }}" alt="Image" class="image-thumbnail aj-image-thumbnail">
           </div>
       {% endfor %}
   </div>
 </div>
   <input type="hidden" id="selectedImage" name="selectedImage"/>
             <div class="modal-footer">
-                <div class="form-group" style="width: 100%; text-align: left;">
+                <div class="form-group aj-modal-footer-upload">
                     <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg">
                 </div>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>

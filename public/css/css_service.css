@@ -1,0 +1,1112 @@
+/* Custom CSS for Service List */
+.dataTables_filter {
+    float: right;
+    width: 50%;
+    margin-top: -27px;
+}
+
+.dataTables_filter label {
+    color: #3087ce;
+    font-size: 20px;
+}
+
+.dataTables_filter input {
+    color: black;
+    font-size: 16px;
+}
+
+.dt-buttons .btn {
+    margin-right: 5px;
+}
+
+/* Header Styles */
+.header-blue-main {
+    border-radius: 8px;
+    text-align: left;
+    margin-bottom: 10px;
+    margin-left: -130px;
+    color: white;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 200px;
+    padding-left: 10px;
+    display: inline-block;
+}
+
+.header-blue-modal {
+    border-radius: 8px;
+    text-align: left;
+    margin: 10px 0;
+    color: white;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 200px;
+    padding: 5px 10px;
+}
+
+.header-blue-lancer {
+    border-radius: 8px;
+    text-align: left;
+    margin: 10px 0;
+    color: white;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 220px;
+    padding: 5px 10px;
+}
+
+.header-icon-main {
+    margin-top: -51px;
+    margin-left: -10px;
+    width: 45px;
+    float: left;
+}
+
+.header-icon-modal {
+    margin-top: -55px;
+    margin-left: -10px;
+    width: 45px;
+    float: left;
+}
+
+/* Button Styles */
+.btn-fixed-130 {
+    width: 130px;
+}
+
+.btn-fixed-139 {
+    width: 139px;
+}
+
+/* Table and Other Styles */
+.text-red-14 {
+    color: red;
+    font-size: 14px;
+}
+
+.table-service-main {
+    width: 100%;
+    height: 200px;
+}
+
+.flex-center-60 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+}
+
+.td-image-container {
+    width: 102px;
+    height: 70px;
+    border-radius: 5px;
+}
+
+.td-image {
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.source-link-style {
+    text-decoration: none;
+    color: #3087ce;
+    font-size: 15px;
+    display: inline-block;
+    width: 200px;
+    word-wrap: break-word;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.pos-select {
+    width: 60px;
+    font-size: 14px;
+    padding: 4px;
+    text-align: center;
+}
+
+.modal-content-large {
+    width: 800px;
+    height: 780px;
+}
+
+.modal-header-margin {
+    margin-top: 30px;
+}
+
+.form-padding-bottom {
+    height: 100%;
+    padding-bottom: 300px;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.cell-120-center {
+    width: 120px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cell-120-gap {
+    width: 120px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.row-height-50 {
+    height: 50px;
+}
+
+.cell-40-center {
+    width: 120px;
+    height: 40px;
+    text-align: center;
+}
+
+.cell-40-check {
+    width: 120px;
+    height: 40px;
+}
+
+/* Desktop th alignment */
+.th-center {
+    text-align: center;
+}
+
+@media (max-width: 767px) {
+
+    /* --- Layout --- */
+    #div2 {
+        padding: 20px;
+        max-width: 350px;
+        margin: 20px auto;
+        box-sizing: border-box;
+        overflow-x: auto;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .header-blue-main {
+        margin-left: -10px;
+        width: 70%;
+    }
+
+    .header-icon-main {
+        margin-top: -51px;
+        margin-left: -10px;
+        width: 45px;
+    }
+
+    /* --- Buttons --- */
+    .btn-fixed-130,
+    .btn-fixed-139 {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    /* --- DataTables search bar --- */
+    .dataTables_filter {
+        float: none;
+        width: auto;
+        margin-top: 10px;
+    }
+
+    .dataTables_filter label {
+        font-size: 14px;
+        width: auto;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .dataTables_filter input {
+        width: 130px !important;
+        font-size: 13px;
+        padding: 4px 6px;
+    }
+
+    .dt-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .dt-buttons .btn {
+        flex: 1 1 45%;
+        margin-right: 0;
+    }
+
+    /* --- Table: scrollable inside #div2 --- */
+    .table-service-main {
+        min-width: 700px;
+        height: auto;
+        /* Clé de l'alignement : table-layout fixed respecte les width des <th> pour toute la table */
+        table-layout: fixed;
+    }
+
+    .table-service-main th,
+    .table-service-main td {
+        padding: 4px 6px;
+        font-size: 13px;
+        overflow: hidden;
+        vertical-align: middle;
+    }
+
+    /* Force tous les <div> internes des <td> à suivre la largeur de leur cellule </
+       au lieu d'imposer leur propre width fixe (cause du zigzag) */
+    .table-service-main td>div {
+        width: 100% !important;
+        box-sizing: border-box;
+        height: auto !important;
+        min-height: 40px;
+    }
+
+    .table-service-main .td-image {
+        width: 40px;
+        height: 40px;
+    }
+
+    .table-service-main .td-image-container {
+        width: 50px;
+        height: 50px;
+    }
+
+    .table-service-main .flex-center-60 {
+        height: 40px;
+    }
+
+    .source-link-style {
+        max-width: 100%;
+        font-size: 12px;
+        word-break: break-all;
+        white-space: normal;
+    }
+
+    .pos-select {
+        width: 50px;
+        font-size: 12px;
+    }
+
+
+    /* --- Modal responsive --- */
+    /* Force le retrait du margin-left négatif injecté par JS */
+    .modal {
+        margin-left: 0 !important;
+    }
+
+    .modal-content-large {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .modal-dialog {
+        margin: 10px auto;
+        width: 98%;
+        max-width: none;
+    }
+
+    .modal-header-margin {
+        margin-top: 10px;
+        padding-bottom: 5px;
+    }
+
+    /* Minimiser les bannières de titre bleues dans les modaux */
+    .header-blue-lancer,
+    .header-blue-modal {
+        width: 100% !important;
+        font-size: 16px;
+        padding: 5px;
+        margin: 5px 0;
+    }
+
+    .header-icon-modal {
+        margin-top: -45px;
+        margin-left: -5px;
+        width: 35px;
+    }
+
+    .form-padding-bottom {
+        height: auto;
+        padding-bottom: 20px;
+    }
+
+    /* --- Inner modal tables (chambre) --- */
+    .flex-between {
+        flex-wrap: wrap;
+    }
+
+    .cell-120-center,
+    .cell-120-gap,
+    .cell-40-center,
+    .cell-40-check {
+        width: 100% !important;
+        height: auto !important;
+        padding: 5px 0;
+        min-height: unset !important;
+    }
+
+    .row-height-50 {
+        height: auto !important;
+    }
+
+    .modal-body {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+/* ============================================================ */
+/* CSS de la page : Ajouter un Service (ajouter.html.twig)       */
+/* Préfixe aj- pour éviter tout conflit avec index.html.twig    */
+/* ============================================================ */
+
+/* Bandeau titre principal */
+.aj-header-title {
+    border-radius: 8px;
+    margin-top: 10px;
+    text-align: left;
+    margin-bottom: 10px;
+    margin-left: -130px;
+    color: white;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 22%;
+    padding-left: 10px;
+    display: inline-block;
+}
+
+/* Icone dans le bandeau titre */
+.aj-header-icon {
+    margin-top: -51px;
+    margin-left: -10px;
+    width: 45px;
+    float: left;
+}
+
+/* Bandeau titre dans le modal "Ajouter un icone" */
+.aj-modal-header-title {
+    border-radius: 8px;
+    text-align: left;
+    margin: 10px 0;
+    color: white;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 22%;
+    padding: 5px 10px;
+    display: inline-block;
+}
+
+/* Icone dans le bandeau du modal "Ajouter un icone" */
+.aj-modal-header-icon {
+    margin-top: -55px;
+    margin-left: -10px;
+    width: 45px;
+    float: left;
+}
+
+/* Conteneur des boutons Traduire + expand avec flex */
+.aj-translate-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 8px;
+    height: 48px;
+    padding-top: 5px;
+}
+
+/* Panel body du collapse des traductions */
+.aj-panel-body-traduction {
+    width: 410px;
+    padding: 0px;
+}
+
+/* Table interne de traductions */
+.aj-table-traduction {
+    width: 400px;
+}
+
+/* Image drapeau (drapeaux de langue) */
+.aj-flag-img {
+    width: 30px;
+}
+
+/* Textarea Description */
+.aj-textarea-description {
+    height: 50px;
+}
+
+/* Boutons Annuler / Enregistrer */
+.aj-btn-action {
+    width: 130px;
+}
+
+/* Dialog du modal sélection icone */
+.aj-modal-dialog-lg {
+    width: 1000px;
+}
+
+/* En-tête du modal sélection icone */
+.aj-modal-header-icone {
+    margin-top: 30px;
+}
+
+/* Grille d'images dans le modal (sélection icone) */
+.aj-images-grid {
+    display: flex;
+    height: 400px;
+    overflow: scroll;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* Vignette image dans la grille */
+.aj-image-thumbnail {
+    width: 100px;
+    object-fit: cover;
+    border: 3px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Footer du modal - formulaire upload */
+.aj-modal-footer-upload {
+    width: 100%;
+    text-align: left;
+}
+
+/* Marge du form-group "Choisir icone" */
+.aj-form-group-icon {
+    margin-bottom: 18px;
+}
+
+/* Margin-bottom négatif pour divFile */
+.aj-div-file {
+    margin-bottom: -6px;
+}
+
+/* ============================================================ */
+/* Responsive : Tablette (≤ 1024px) – ajouter.html.twig         */
+/* ============================================================ */
+@media (max-width: 1024px) {
+
+    /* Conteneur principal */
+    .div2 {
+        width: 100% !important;
+        margin-left: 0 !important;
+        padding: 15px !important;
+        box-sizing: border-box;
+    }
+
+    /* Formulaire principal */
+    .form {
+        gap: 20px !important;
+        padding: 10px !important;
+    }
+
+    /* Rangée des 3 colonnes : passage en colonne */
+    .div1 {
+        flex-direction: column !important;
+        gap: 15px !important;
+    }
+
+    /* Chaque colonne prend toute la largeur */
+    .div1>.col-md-4 {
+        width: 100% !important;
+    }
+
+    /* Inputs et selects */
+    .test {
+        width: 100% !important;
+    }
+
+    /* Bandeau titre : suppression de la marge négative */
+    .aj-header-title {
+        margin-left: 0 !important;
+        width: auto !important;
+        padding: 2px 20px !important;
+    }
+
+    /* Panel traductions : passe en largeur 100% */
+    .aj-panel-body-traduction {
+        width: 100% !important;
+    }
+
+    .aj-table-traduction {
+        width: 100% !important;
+    }
+
+    /* Modal sélection icone */
+    .aj-modal-dialog-lg {
+        width: 90% !important;
+        margin: 10px auto !important;
+    }
+
+    /* Boutons action */
+    .button {
+        margin-right: 10px !important;
+        align-self: right !important;
+    }
+
+    /* Div image diapos */
+    #divAll {
+        width: 100% !important;
+    }
+
+    .dia {
+        width: 100% !important;
+    }
+
+    .img {
+        width: 420px !important;
+        height: 220px !important;
+        display: block;
+        margin: 0 auto;
+    }
+}
+
+/* ============================================================ */
+/* Responsive : Mobile (≤ 767px) – ajouter.html.twig            */
+/* ============================================================ */
+@media (max-width: 767px) {
+
+    /* Conteneur principal */
+    .div2 {
+        width: 100% !important;
+        margin-left: 0 !important;
+        padding: 10px !important;
+        border-radius: 10px !important;
+        box-sizing: border-box;
+    }
+
+    /* Formulaire principal */
+    .form {
+        gap: 15px !important;
+        padding: 5px !important;
+    }
+
+    /* Rangée des 3 colonnes : empilement vertical */
+    .div1 {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+
+    /* Chaque colonne prend toute la largeur */
+    .div1>.col-md-4 {
+        width: 100% !important;
+        padding: 0 !important;
+    }
+
+    /* Image de prévisualisation */
+    .img {
+        width: 120px !important;
+        height: 120px !important;
+        display: block;
+        margin: 0 auto;
+    }
+
+    /* Inputs, selects et textarea */
+    .test {
+        width: 100% !important;
+        height: auto !important;
+        font-size: 15px;
+    }
+
+    /* Bandeau titre principal */
+    .aj-header-title {
+        margin-left: 10px !important;
+        width: 60% !important;
+        padding: 2px 20px !important;
+    }
+
+    /* Icone dans le bandeau : stabiliser la position */
+    .aj-header-icon {
+        margin-top: -40px !important;
+        width: 35px !important;
+        margin-left: -20px !important;
+    }
+
+    /* Rangée Traduire – flex wrap pour mobile */
+    .aj-translate-row {
+        flex-wrap: wrap;
+        height: auto !important;
+    }
+
+    /* Panel traductions */
+    .aj-panel-body-traduction {
+        width: 100% !important;
+        overflow-x: auto;
+    }
+
+    .aj-table-traduction {
+        width: 100% !important;
+        font-size: 13px;
+    }
+
+    /* Tableau traductions : empiler les colonnes */
+    .aj-table-traduction td {
+        display: block !important;
+        width: 100% !important;
+    }
+
+    /* Textarea Description */
+    .aj-textarea-description {
+        height: 70px !important;
+        width: 100% !important;
+    }
+
+    /* Boutons Annuler / Enregistrer */
+    .aj-btn-action {
+        width: 45% !important;
+        font-size: 14px;
+        padding: 3px 5px;
+    }
+
+    .button {
+        margin-right: 0 !important;
+        align-self: stretch !important;
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    /* Modal sélection icone */
+    .aj-modal-dialog-lg {
+        width: 98% !important;
+        margin: 5px auto !important;
+    }
+
+    .aj-modal-header-icone {
+        margin-top: 10px !important;
+    }
+
+    .aj-modal-header-icon {
+        margin-top: -51px;
+        margin-left: -20px;
+        width: 45px;
+        float: left;
+    }
+
+    .aj-modal-header-title {
+        width: 60% !important;
+        font-size: 15px !important;
+        padding: 2px 20px !important;
+    }
+
+    /* Grille des images du modal */
+    .aj-images-grid {
+        height: 300px !important;
+        gap: 8px !important;
+    }
+
+    .aj-image-thumbnail {
+        width: 90px !important;
+    }
+
+    /* Div image diapos */
+    #divAll {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 250px;
+    }
+
+    .dia {
+        width: 100% !important;
+        font-size: 14px;
+    }
+
+    .DivImageD {
+        width: calc(50% - 6px) !important;
+        height: auto !important;
+    }
+}
+
+/* ============================================================ */
+/* CSS de la page : Modifier un Service (modifier.html.twig)     */
+/* Préfixe md- pour éviter tout conflit                          */
+/* ============================================================ */
+
+/* Bandeau titre principal */
+.md-header-title {
+    border-radius: 8px;
+    margin-top: 10px;
+    text-align: left;
+    margin-bottom: 10px;
+    margin-left: -130px;
+    color: white;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 22%;
+    padding-left: 10px;
+    display: inline-block;
+}
+
+/* Icone dans le bandeau titre */
+.md-header-icon {
+    margin-top: -51px;
+    margin-left: -10px;
+    width: 45px;
+    float: left;
+}
+
+/* Bandeau titre dans le modal */
+.md-modal-header-title {
+    border-radius: 8px;
+    text-align: left;
+    margin: 10px 0;
+    color: white;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 22%;
+    padding: 5px 10px;
+    display: inline-block;
+}
+
+/* Icone dans le bandeau du modal */
+.md-modal-header-icon {
+    margin-top: -55px;
+    margin-left: -10px;
+    width: 45px;
+    float: left;
+}
+
+/* Conteneur des boutons Traduire + expand */
+.md-translate-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 8px;
+    height: 48px;
+    padding-top: 5px;
+}
+
+/* Panel body du collapse des traductions */
+.md-panel-body-traduction {
+    width: 410px;
+    padding: 0px;
+}
+
+/* Table interne de traductions */
+.md-table-traduction {
+    width: 400px;
+}
+
+/* Image drapeau */
+.md-flag-img {
+    width: 30px;
+}
+
+/* Textarea Description */
+.md-textarea-description {
+    height: 50px;
+    color: black;
+}
+
+/* Boutons Annuler / Enregistrer */
+.md-btn-action {
+    width: 130px;
+}
+
+/* Dialog du modal sélection icone */
+.md-modal-dialog-lg {
+    width: 1000px;
+}
+
+/* En-tête du modal sélection icone */
+.md-modal-header-icone {
+    margin-top: 30px;
+}
+
+/* Grille d'images dans le modal */
+.md-images-grid {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    height: 500px;
+    overflow-y: scroll;
+}
+
+/* Vignette image dans la grille */
+.md-image-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Footer du modal */
+.md-modal-footer-upload {
+    width: 100%;
+    text-align: left;
+}
+
+/* Marge du form-group "Choisir icone" */
+.md-form-group-icon {
+    margin-bottom: 18px;
+}
+
+/* Classes pour les éléments de diapo (oldImage) */
+.md-diapo-delete-btn {
+    width: 100%;
+    text-align: end;
+    cursor: pointer;
+}
+
+.md-diapo-inputs-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.md-diapo-input-number {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.md-diapo-input-time-container {
+    position: relative;
+}
+
+.md-diapo-unit-span {
+    position: absolute;
+    right: 4px;
+    top: 2px;
+}
+
+/* ============================================================ */
+/* Responsive : Tablette (≤ 1024px) – modifier.html.twig        */
+/* ============================================================ */
+@media (max-width: 1024px) {
+    .md-header-title {
+        margin-left: 0 !important;
+        width: auto !important;
+        padding: 2px 20px !important;
+    }
+
+    .md-header-icon {
+        margin-top: -40px !important;
+        width: 35px !important;
+        margin-left: -20px !important;
+    }
+
+    .md-btn-action {
+        width: 130px;
+    }
+
+    .md-modal-dialog-lg {
+        width: 90% !important;
+        margin: 10px auto !important;
+    }
+
+    #test {
+        padding: 4px;
+        font-size: 15px;
+    }
+}
+
+/* ============================================================ */
+/* Responsive : Mobile (≤ 767px) – modifier.html.twig           */
+/* ============================================================ */
+@media (max-width: 767px) {
+    .md-header-title {
+        margin-left: 0 !important;
+        width: 50% !important;
+        padding: 2px 20px !important;
+        font-size: 13px;
+    }
+
+    .md-header-icon {
+        margin-top: -40px !important;
+        width: 35px !important;
+        margin-left: -20px !important;
+    }
+
+    .md-btn-action {
+        width: 45% !important;
+        font-size: 14px;
+        padding: 3px 5px;
+    }
+
+    .md-modal-dialog-lg {
+        width: 98% !important;
+        margin: 5px auto !important;
+    }
+
+    .md-modal-header-icon {
+        margin-top: -51px;
+        margin-left: -20px;
+        width: 45px;
+        float: left;
+    }
+
+    .md-modal-header-title {
+        width: 60% !important;
+        font-size: 15px !important;
+        padding: 2px 20px !important;
+    }
+
+    .md-images-grid {
+        height: 300px !important;
+    }
+
+    .md-panel-body-traduction {
+        width: 100% !important;
+    }
+
+    .md-table-traduction {
+        width: 100% !important;
+    }
+
+    .md-table-traduction td {
+        display: block !important;
+        width: 100% !important;
+    }
+
+    #test {
+        padding: 2px;
+        font-size: 12px;
+    }
+}
+
+/* ============================================================ */
+/* Responsive : Tablette (768px - 1024px) – index.html.twig     */
+/* ============================================================ */
+@media (min-width: 768px) and (max-width: 1024px) {
+    #div2 {
+        width: 100% !important;
+        margin-left: 0 !important;
+        padding: 20px !important;
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
+
+    .header-blue-main {
+        margin-left: 0 !important;
+        width: auto !important;
+        padding-right: 20px !important;
+        display: inline-flex !important;
+        align-items: center;
+        min-width: 200px;
+    }
+
+    .header-icon-main {
+        margin-top: -71px !important;
+        margin-left: 0 !important;
+    }
+
+    /* Catégories - flex wrap pour tablette */
+    #categorie {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .click-service {
+        padding: 8px 15px !important;
+        font-size: 14px !important;
+        margin: 0 !important;
+        white-space: nowrap;
+    }
+
+    /* DataTables filters and buttons for tablet */
+    .dataTables_filter {
+        float: none !important;
+        width: 100% !important;
+        margin-top: 10px !important;
+        text-align: left !important;
+    }
+
+    .dataTables_filter label {
+        font-size: 16px !important;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .dataTables_filter input {
+        width: 250px !important;
+        font-size: 14px !important;
+    }
+
+    /* Container de la table scrollable */
+    #myDiv {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        margin-top: 15px;
+        width: 100% !important;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .table-service-main {
+        min-width: 950px !important;
+        /* Maintient une lisibilité minimale en forçant le scroll horizontal */
+        table-layout: fixed;
+    }
+
+    /* --- Modals responsive tablette --- */
+    .modal {
+        margin-left: 0 !important;
+        /* Annule le style inline JS */
+    }
+
+    .modal-dialog {
+        width: 95% !important;
+        max-width: 800px;
+        margin: 30px auto !important;
+    }
+
+    .modal-content-large {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .modal-header-margin {
+        margin-top: 10px;
+        padding-bottom: 5px;
+    }
+
+    .header-blue-lancer {
+        width: 25% !important;
+        min-width: unset !important;
+        font-size: 18px !important;
+    }
+
+    .header-icon-modal {
+        margin-top: -55px !important;
+        margin-left: 0 !important;
+    }
+
+    .form-padding-bottom {
+        padding-bottom: 20px !important;
+        height: auto !important;
+    }
+}

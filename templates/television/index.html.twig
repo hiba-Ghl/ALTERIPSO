@@ -25,90 +25,8 @@
   <script src="https://cdn.datatables.net/buttons/2.3.3/js/dataTables.buttons.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script> 
   {% endif %} 
-	<style>
-		#div1 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 43px;
-			width: 1091px;
-			height: 300px;
-			margin-left: 10px;
-			margin-top: 10px;
+	<link rel="stylesheet" href="{{ asset('css/css_television.css') }}">
 
-		}
-	
-
-		.fileUpload {
-			position: relative;
-			overflow: hidden;
-			/* margin: 10px;*/
-		}
-		.fileUpload input.upload {
-			position: absolute;
-			top: 0;
-			right: 0;
-			margin: 0;
-			padding: 0;
-			font-size: 20px;
-			cursor: pointer;
-			opacity: 0;
-			filter: alpha(opacity=0);
-
-		}
-
-		.header-fixed {
-			width: 1200px;
-		}
-
-		.header-fixed > thead,
-		.header-fixed > tbody,
-		.header-fixed > thead > tr,
-		.header-fixed > tbody > tr,
-		.header-fixed > thead > tr > th,
-		.header-fixed > tbody > tr > td {
-			display: block;
-		}
-
-		.header-fixed > tbody > tr:after,
-		.header-fixed > thead > tr:after {
-			content: ' ';
-			display: block;
-			visibility: hidden;
-			clear: both;
-		}
-
-		.header-fixed > tbody {
-			overflow-y: auto;
-			height: 400px;
-		}
-
-		.header-fixed > tbody > tr > td,
-		.header-fixed > thead > tr > th {
-			/*width: 20%;*/
-			float: left;
-		}
-
-		.frame {
-    width: 100%;
-    max-width: 1000px;
-    height: auto;
-}
-.dataTables_filter{
-    float: right;
-    width: 50%;
-    margin-top: -27px;
-}
-
-.dataTables_filter label {
-  color: #3087ce;
-  font-size: 20px;
-}
-.dataTables_filter input {
-  color:black;
-  font-size: 16px;
-}
-
-	</style>
 	{% if app.request.get('msg') is defined %}
 		{% if app.request.get('msg') ==1 %}
 			<div class="alert alert-success alert-dismissible fade in" role="alert">
@@ -153,96 +71,91 @@
 
 		{% endif %}
 	{% endif %}
-	<div style="border-radius: 8px; margin-left:-130px; margin-top:10px;text-align: left; margin-bottom: 10px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding-left: 10px; display: inline-block;">
-    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+	<div class="tv-header-title">
+    <img class="tv-header-icon" src="{{ asset('images/ler.png') }}">
 		Liste chaînes télévision
 </div>
 	<div id="div2">
 		<form action="{{ path('modifier_chaine')}}" name="form" method="post" enctype="multipart/form-data">
-		<div style="display:flex;align-items:center;justify-content:space-between;gap:3px;">
+		<div class="tv-actions-row">
 		<div>
-			<a  {% if app.user.ExportTv == '0' %}	 disabled {% endif %} style="width: 120px;" type="submit" class="btn-success btn btn-sm  exporter" href="/export_tv">
+			<a  {% if app.user.ExportTv == '0' %}	 disabled {% endif %} type="submit" class="btn-success btn btn-sm exporter tv-btn-width" href="/export_tv">
 				<i class="fa-solid fa-clone"></i>
 				Exporter
 			</a>
-			<a 	{% if app.user.ImportTV == '0' %}	 disabled {% endif %} style="width: 120px;" type="submit" class="btn btn-info btn btn-sm  importer" id="desvod" name="desvod" data-toggle="modal" data-target="#myModal6">
+			<a 	{% if app.user.ImportTV == '0' %}	 disabled {% endif %} type="submit" class="btn btn-info btn btn-sm importer tv-btn-width" id="desvod" name="desvod" data-toggle="modal" data-target="#myModal6">
 				<i	class="glyphicon glyphicon-import "></i>
 				Importer
 			</a>		
-			<a 	{% if app.user.GratuiteTv == '0' %}	 disabled {% endif %} style="width: 120px;" type="submit" class="btn-primary btn btn-sm  chaine_gratuite" id="desvod" name="desvod" data-toggle="modal" data-target="#vodmodal">
+			<a 	{% if app.user.GratuiteTv == '0' %}	 disabled {% endif %} type="submit" class="btn-primary btn btn-sm chaine_gratuite tv-btn-width" id="desvod" name="desvod" data-toggle="modal" data-target="#vodmodal">
 				<i class="glyphicon glyphicon-refresh"></i>
 				Gratuité
 			</a>			
-			<button type="submit" {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} class="btn btn-success btn-sm" href="{{path('modifier_chaine')}}" style="width: 120px;">
-				<i class="glyphicon glyphicon-floppy-disk" style="margin-right:2px;"></i>Sauvegarder</button>
-			<button type="button" class="btn btn-danger btn-sm" style="width: 120px;">
-				<i class="glyphicon glyphicon-remove" style="margin-right:2px;"></i>Annuler</button>
+			<button type="submit" {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} class="btn btn-success btn-sm tv-btn-width" href="{{path('modifier_chaine')}}">
+				<i class="glyphicon glyphicon-floppy-disk tv-icon-margin"></i>Sauvegarder</button>
+			<button type="button" class="btn btn-danger btn-sm tv-btn-width">
+				<i class="glyphicon glyphicon-remove tv-icon-margin"></i>Annuler</button>
 		</div>
-		<input id="myInput3" type="text" placeholder="Search.." style="height: 34px;border-color: #3087ce;width: 200px;border: 2px solid;border-radius: 5px;">
+		<input id="myInput3" type="text" placeholder="Search.." class="tv-search-input">
 		</div>
-        <table class="table table-striped table-bordered header-fixed table-hover" id="dataTables-example" style="width: 100%;margin-top:20px;">
+        <table class="table table-striped table-bordered header-fixed table-hover tv-table-main" id="dataTables-example">
 
 				<thead>
 					<tr>
-						<th style="width:150px;height: 50px;">Nom télévision</th>
-						<th style="height: 50px;width:150px;text-align:center;">Ip</th>
-						<th style="height: 50px;width:120px;text-align:center;">Port</th>
-						<th style="height: 50px;width:120px;text-align:center;">Numéro </th>
-						<th style="height: 50px;width:120px;text-align:center;">Icons</th>
-						<th style="height: 50px;width:120px;text-align:center;">Pays</th>
-						<th style="height: 50px;width:120px;text-align:center;">Protocole</th>
-						<th style="height: 50px;width:120px;text-align:center;">
-						<p style="display:flex;gap:10px;justify-content:center">
-                        <span>
-                            Active
-                        </span>
-                        <input type="checkbox" id="checklist" style="margin-top:-1px;"></th>
-                        </p></th>
-						<th style="height: 50px;width:120px;text-align:center;">
-						<p style="display:flex;gap:10px;justify-content:center">
-                        <span>
-                           Gratuite
-                        </span>
-                        <input type="checkbox" id="checklistgratuite" style="margin-top:-1px;"></th>
-                        </p>
-						 </th>
-						<th style="height: 50px;width:214px;text-align:center;">Actions</th>
-
-
+						<th class="tv-th-name">Nom télévision</th>
+						<th class="tv-th-ip">Ip</th>
+						<th class="tv-th-port">Port</th>
+						<th class="tv-th-numero">Numéro </th>
+						<th class="tv-th-icons">Icons</th>
+						<th class="tv-th-pays">Pays</th>
+						<th class="tv-th-protocole">Protocole</th>
+						<th class="tv-th-active">
+							<p class="tv-flex-center-gap">
+								<span>Active</span>
+								<input type="checkbox" id="checklist" class="tv-checkbox-margin">
+							</p>
+						</th>
+						<th class="tv-th-gratuite">
+							<p class="tv-flex-center-gap">
+								<span>Gratuite</span>
+								<input type="checkbox" id="checklistgratuite" class="tv-checkbox-margin">
+							</p>
+						</th>
+						<th class="tv-th-actions">Actions</th>
 					</tr>
 				</thead>
 
 				<tbody id="myTable3">
 					{% for tele in television %}
 						<tr class="odd gradeX">
-							<td style="width:150px">
-								<label><input {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} name='listenom[{{tele.Id}}]' type="text" value="{{tele.nom}}" class="form-control" style="font-size: 11px;"></label>
-								<label style="visibility: hidden;">{{tele.nom}}</label>
+							<td class="tv-th-name" data-label="Nom télévision">
+								<label><input {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} name='listenom[{{tele.Id}}]' type="text" value="{{tele.nom}}" class="form-control tv-font-11"></label>
+								<label class="tv-display-none">{{tele.nom}}</label>
 							</td>
 
-							<td style="width:150px">
+							<td class="tv-th-ip" data-label="Ip">
 								<label>
-									<textarea {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} name='listeip[{{tele.Id}}]' class="form-control" style="margin: 0px -320px 0px 0px;width: 140px;height: 45px;font-size: 11px;">{{tele.Ip}}</textarea>
+									<textarea {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} name='listeip[{{tele.Id}}]' class="form-control tv-textarea-ip">{{tele.Ip}}</textarea>
 								</label>
 							</td>
 
 
-							<td style="width:120px;text-align:center;">
-								<label><input {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} name='listeport[{{tele.Id}}]' type="text" value="{{tele.port}}" class="form-control" style="font-size: 11px;"></label>
+							<td class="tv-th-port" data-label="Port">
+								<label><input {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} name='listeport[{{tele.Id}}]' type="text" value="{{tele.port}}" class="form-control tv-font-11"></label>
 
 							</td>
 
 
-							<td style="width:120px;text-align:center;">
-								<label><input {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} name='listenumero[{{tele.Id}}]' type="number" value="{{tele.numero}}" class="form-control" style="font-size: 11px;"></label>
+							<td class="tv-th-numero" data-label="Numéro">
+								<label><input {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} name='listenumero[{{tele.Id}}]' type="number" value="{{tele.numero}}" class="form-control tv-font-11"></label>
 							</td>
 
-							<td style="width:120px;text-align:center;">
+							<td class="tv-th-icons" data-label="Icons">
 
 
-								<div class="fileUpload " id="mainform">
-									<img id="preview-{{tele.Id}}" style="width:50px;height:50px;text-align:center" src="{{ path('afficher_image', { filename: tele.logo|split('/')|last, directory: 'chaines_directory' }) }}" alt="..." class="img-rounded img-responsive center-block">
-									<input {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} id="{{tele.Id}}" type="file" class="upload" name="listelogo[{{tele.Id}}]" accept=".jpg, .jpeg, .png" style="width:50px;height:50px;text-align:center"/>
+								<div class="fileUpload tv-logo-container" id="mainform">
+									<img id="preview-{{tele.Id}}" src="{{ path('afficher_image', { filename: tele.logo|split('/')|last, directory: 'chaines_directory' }) }}" alt="..." class="img-rounded img-responsive center-block tv-logo-container">
+									<input {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} id="{{tele.Id}}" type="file" class="upload tv-logo-container" name="listelogo[{{tele.Id}}]" accept=".jpg, .jpeg, .png"/>
 
 
 								</div>
@@ -250,9 +163,9 @@
 
 							</td>
 
-							<td style="width:120px;text-align:center;">
+							<td class="tv-th-pays" data-label="Pays">
 								<label>
-									<select {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} class="form-control pdf-select" name='listepays[{{tele.Id}}]' style="width: 100%; font-size: 11px;">
+									<select {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} class="form-control pdf-select tv-select-full-font-11" name='listepays[{{tele.Id}}]'>
 										<option selected value='{{tele.pays}}'>{{tele.pays}}</option>
 
 										<option value="Afghanistan">Afghanistan</option>
@@ -511,29 +424,33 @@
 										<option value="Vatican City">Vatican City</option>
 										<option value="Venezuela">Venezuela</option>
 										<option value="Vietnam">Vietnam</option>
-										<option value="Wake Island">Wake Island</option>
-										<option value="Wallis and Futuna">Wallis and Futuna</option>
+										<option value="Virgin Islands (U.S.)">Virgin Islands (U.S.)</option>
+										<option value="Wallis and Futuna Islands">Wallis and Futuna Islands</option>
 										<option value="Western Sahara">Western Sahara</option>
 										<option value="Yemen">Yemen</option>
+										<option value="Yugoslavia">Yugoslavia</option>
+										<option value="Zaire">Zaire</option>
 										<option value="Zambia">Zambia</option>
 										<option value="Zimbabwe">Zimbabwe</option>
-										<option value="Åland Islands">Åland Islands</option>
+									</select>
+								</label>
+							</td>
 
-
+							<td class="tv-th-protocole" data-label="Protocole">
+								<label>
+									<select {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} class="form-control tv-select-full-font-11" name='listeprotocole[{{tele.Id}}]'>
+										<option selected value='{{tele.protocole}}'>{{tele.protocole}}</option>
+										<option value="HLS">HLS</option>
+										<option value="UDP">UDP</option>
+										<option value="HTTP">HTTP</option>
+										<option value="DASH">DASH</option>
+										<option value="RTMP">RTMP</option>
+										<option value="RTSP">RTSP</option>
 									</select>
 								</label>
 							</td>
 
 
-							<td style="width:120px;text-align:center;">
-								<select {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} class="form-control" name='listeprotocole[{{tele.Id}}]' style="width: 100%; font-size: 11px;">
-									<option selected value='{{tele.Protocole}}'>{{tele.Protocole}}</option>
-									<option value="http://">HTTP</option>
-									<option value="coax">COAX</option>
-									<option value="udp://@">UDP</option>
-
-								</select>
-							</td>
 							{% set ch = ' ' %}
 							{% set chg = ' ' %}
 							{% if (tele.active) == 1 %}
@@ -542,17 +459,21 @@
 							{% if (tele.gratuite) == 1 %}
 								{% set chg = 'checked' %}
 							{% endif %}
-							<td style="width:120px;text-align:center;">
-								<label><input {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} name='listeactive[{{tele.Id}}]' type="checkbox" {{ch}} class="jpCheckbox"></label>
+							<td class="tv-th-active" data-label="Active">
+								<label>
+									<input {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} type="checkbox" name='listeactive[{{tele.Id}}]' class="pdf-check" {% if tele.Active == 1 %} checked {% endif %}/>
+								</label>
 							</td>
 
 
-							<td style="width:120px;text-align:center;">
-								<label><input {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} name='listegratuite[{{tele.Id}}]' type="checkbox" {{chg}} class="jpCheckbox2"></label>
+							<td class="tv-th-gratuite" data-label="Gratuite">
+								<label>
+									<input {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} type="checkbox" name='listegratuite[{{tele.Id}}]' class="pdf-check" {% if tele.gratuite == 1 %} checked {% endif %}/>
+								</label>
 							</td>
 
 
-							<td style="width:185px;text-align:center;display:flex;justify-content:center;gap:4px;">
+							<td class="tv-td-actions" data-label="Actions">
                 			<div data-toggle="modal" data-target="#modal2-{{tele.id}}" data-id ="{{tele.id}}"  data-name="{{tele.nom}}" class="lancer-button">
 								<a  name="send" class="btn btn-info btn-xs">
 									<i data-toggle="tooltip" data-placement="top" title="lancer la chaîne" class="glyphicon glyphicon-play-circle"></i>
@@ -581,43 +502,43 @@
 		</form>
 		
 			
-		<form action="{{ path('ajouter_chaine')}}" name="form" method="post" enctype="multipart/form-data" style="height: 70px;">
-			<table class="table table-striped table-bordered header-fixed table-hover" style="width: 100%;margin-top:20px;" >
-				<tbody style="height: auto !important;">
-					<tr class="odd gradeX" style="background-color:white;">
-						<td style="width:150px;text-align:center">
-							<label><input  {% if app.user.AjoutTV == '0' %} disabled {% endif %}name='nom' type="text" value="" class="form-control" style="font-size: 11px;"></label>
+		<form action="{{ path('ajouter_chaine')}}" name="form" method="post" enctype="multipart/form-data" class="tv-actions-row">
+			<table class="table table-striped table-bordered header-fixed table-hover tv-table-main">
+				<tbody class="tv-table-tbody-auto">
+					<tr class="odd gradeX tv-bg-white">
+						<td class="tv-th-name">
+							<label><input  {% if app.user.AjoutTV == '0' %} disabled {% endif %}name='nom' type="text" value="" class="form-control tv-font-11"></label>
 
 						</td>
-						<td style="width:150px;">
+						<td class="tv-th-ip">
 							<label>
-								<textarea {% if app.user.AjoutTV == '0' %} disabled {% endif %} name='ip' class="form-control" style="margin: 0px -320px 0px 0px;width: 140px;height: 45px;font-size: 11px;"></textarea>
+								<textarea {% if app.user.AjoutTV == '0' %} disabled {% endif %} name='ip' class="form-control tv-textarea-ip"></textarea>
 							</label>
 						</td>
 
 
-						<td style="width:120px;text-align:center;">
-							<label><input {% if app.user.AjoutTV == '0' %} disabled {% endif %} name='port' type="text" value="" class="form-control" style="font-size: 11px;"></label>
+						<td class="tv-th-port">
+							<label><input {% if app.user.AjoutTV == '0' %} disabled {% endif %} name='port' type="text" value="" class="form-control tv-font-11"></label>
 
 						</td>
 
 
-						<td style="width:120px;text-align:center;">
-							<label><input {% if app.user.AjoutTV == '0' %} disabled {% endif %} name='numero' type="number" value="" class="form-control" style="font-size: 11px;"></label>
+						<td class="tv-th-numero">
+							<label><input {% if app.user.AjoutTV == '0' %} disabled {% endif %} name='numero' type="number" value="" class="form-control tv-font-11"></label>
 						</td>
 
-						<td style="width:120px;text-align:center;">
+						<td class="tv-th-icons">
 
 
-							<div class="fileUpload " id="mainform0">
-								<img id="preview-0" style="width:50px;height:50px;text-align:center" src="{{ asset('images/no_image.png') }}" alt="..." class="img-rounded img-responsive center-block">
-								<input {% if app.user.AjoutTV == '0' %} disabled {% endif %} id="0" type="file" class="upload" name="logo" accept=".jpg, .jpeg, .png" style="width:50px;height:50px;text-align:center"/>
+							<div class="fileUpload tv-logo-container" id="mainform0">
+								<img id="preview-0" src="{{ asset('images/no_image.png') }}" alt="..." class="img-rounded img-responsive center-block tv-logo-container">
+								<input {% if app.user.AjoutTV == '0' %} disabled {% endif %} id="0" type="file" class="upload tv-logo-container" name="logo" accept=".jpg, .jpeg, .png"/>
 							</div>
 						</td>
 
-						<td style="width:120px;text-align:center;">
+						<td class="tv-th-pays">
 							<label>
-								<select {% if app.user.AjoutTV == '0' %} disabled {% endif %} class="form-control" name='pays' style="width: 100%; font-size: 11px;">
+								<select {% if app.user.AjoutTV == '0' %} disabled {% endif %} class="form-control tv-select-full-font-11" name='pays'>
 
 									<option value="France">France</option>
 									<option value="Afghanistan">Afghanistan</option>
@@ -888,21 +809,21 @@
 								</select>
 							</label>
 						</td>
-						<td style="width:120px;text-align:center;">
-							<select {% if app.user.AjoutTV == '0' %} disabled {% endif %} class="form-control" name='protocole' style="width: 100%; font-size: 11px;">
+						<td class="tv-th-protocole">
+							<select {% if app.user.AjoutTV == '0' %} disabled {% endif %} class="form-control tv-select-full-font-11" name='protocole'>
 								<option value="http://">HTTP</option>
 								<option value="coax">COAX</option>
 								<option value="udp://@">UDP</option>
 
 							</select>
 						</td>
-						<td style="width:120px;text-align:center">
+						<td class="tv-th-active">
 							<label><input {% if app.user.AjoutTV == '0' %} disabled {% endif %} name='active' type="checkbox"></label>
 						</td>
-						<td style="width:120px;text-align:center;">
+						<td class="tv-th-gratuite">
 							<label><input {% if app.user.AjoutTV == '0' %} disabled {% endif %} name='gratuite' type="checkbox"></label>
 						</td>
-						<td style="width:180px;text-align:center;">
+						<td class="tv-th-actions">
 							<button {% if app.user.AjoutTV == '0' %} disabled {% endif %} type="submit" data-toggle="tooltip" data-placement="top" title="Ajouter une chaîne" id="" href="{{path('ajouter_chaine')}}" class="btn btn-info btn-xs">
 								<i data-toggle="tooltip" data-placement="top" title="Ajouter une chaîne" class="glyphicon glyphicon-plus"></i>
 							</button>
@@ -916,11 +837,11 @@
 
 	<div class="modal fade" id="myModal6" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		 <form action="{{ path('app_import_tv',{'id':app.user.etablissement.id}) }}" method="post" enctype="multipart/form-data">
-	<div class="modal-dialog" role="document" style="width:1000px" >
+	<div class="modal-dialog tv-modal-1000" role="document">
         <div class="modal-content">
-            <div class="modal-header" style="margin-top:30px">
-                <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding: 5px 10px; display: inline-block;">
-                    <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+            <div class="modal-header tv-modal-header-30">
+                <div class="tv-modal-title-box">
+                    <img class="tv-modal-title-icon" src="{{ asset('images/ler.png') }}" alt="Icon">
                     Importer les televisions
                 </div>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -931,8 +852,8 @@
 				<input type="file" class="form-control" name="fileData" accept=".zip"></input>
 			</div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal" style="width:130px;">Annuler</button>
-				<button	type="submit" class="btn btn-primary" style="width:130px;">
+                <button type="button" class="btn btn-danger tv-btn-fixed-130" data-dismiss="modal">Annuler</button>
+				<button	type="submit" class="btn btn-primary tv-btn-fixed-130">
 					Enregistrer
 				</button>
             </div>
@@ -965,7 +886,7 @@
 	
 	<!-- Modal Gratuité   -->
 		<div class="modal fade" id="vodmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> 
-			<div class="modal-dialog  modal-md" style="width:460px" role="document">
+			<div class="modal-dialog modal-md tv-modal-460" role="document">
 				<div class="modal-content">
 				<form action="{{path('envoyer_gratuite')}}" name="" method="post" enctype="multipart/form-data">
 
@@ -974,26 +895,26 @@
 							<span aria-hidden="true">&times;</span>
 						</a>
 						<div class="col-md-6">
-							<h4 style="line-height: 3;" class="modal-title" id="myModalLabel">Chaine TV gratuite
+							<h4 class="modal-title tv-modal-title-lh3" id="myModalLabel">Chaine TV gratuite
 							</h4>
 						</div>
 					</div>
 					<div class="modal-body">
 						<div class="form-group">
 							{% if (typegratuite == 'stop') %}
-								<p style="color: red;font-size: 16px;">
+								<p class="tv-text-red-16">
 									<B>
 										Pas de gratuité enregistrée.</B>
 								</p>
 							{% elseif (typegratuite == 'r_immediate') %}
-								<p style="color: red;font-size: 16px;">
+								<p class="tv-text-red-16">
 									<i class="glyphicon glyphicon-warning-sign"></i>
 									<B>
 										- Gratuité en cours..</B>
 								</p>
 							{% elseif (typegratuite == 'r_defini') %}
 								{% if dd|date('Y-m-d H:i:s', 'Europe/Paris') < "now"|date('Y-m-d H:i:s', 'Africa/Casablanca')  and df|date('Y-m-d H:i:s', 'Europe/Paris') > "now"|date('Y-m-d H:i:s', 'Africa/Casablanca')  %}
-									<p style="color: red;font-size: 13px;">
+									<p class="tv-text-red-13">
 										<i class="glyphicon glyphicon-warning-sign"></i>
 										- Gratuité en cours entre le
 										<strong>
@@ -1024,12 +945,12 @@
 							<label>Gratuité avec date début et fin :</label><br>
 
 
-							<div class="d_defini" style="display:none;">
+							<div class="d_defini tv-display-none">
 								<label>Date début:</label>
-								<input type="datetime-local" id="d_debut" name="d_debut" style="margin-left: 51px;"><br>
+								<input type="datetime-local" id="d_debut" name="d_debut" class="tv-margin-left-51"><br>
 
 								<label>Date fin:</label>
-								<input type="datetime-local" id="d_fin" name="d_fin" style="margin-left: 70px;">
+								<input type="datetime-local" id="d_fin" name="d_fin" class="tv-margin-left-70">
 							</div>
 
 
@@ -1215,32 +1136,31 @@ magazines.prop('checked', false);
   const chambre = {{chambre | raw }};
 function createModal(index,Id,name) {
     const popUP = document.createElement('div');
-    popUP.setAttribute("class", "modal fade");
+    popUP.setAttribute("class", "modal fade tv-modal-ml-200");
     popUP.setAttribute("tabindex", "-1");
-    popUP.style.marginLeft="-200px";
     popUP.setAttribute("role", "dialog");
     popUP.setAttribute("id", `modal1-${index}`);
     popUP.setAttribute("aria-labelledby", "modalLabel1");
     popUP.setAttribute("aria-hidden", "true");
     popUP.innerHTML = `
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="width:800px;height:780px;">
-                <div class="modal-header" style="margin-top:30px;">
+            <div class="modal-content tv-modal-custom-size">
+                <div class="modal-header tv-modal-header-30">
                 <button id="close" type="button" class="close close2" data-dismiss="modal1-${index}" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 220px; padding: 5px 10px;">
-                    <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+                    <div class="tv-modal-title-box-launch">
+                    <img class="tv-modal-title-icon" src="{{ asset('images/ler.png') }}" alt="Icon">
                         Lancer la TV ${name}
                     </div>
                 </div>
-                <form style="height:100%" id="form" method="post" enctype="multipart/form-data" action="/televesion/LancerTv/${Id}">
+                <form class="tv-form-padding-bottom" id="form" method="post" enctype="multipart/form-data" action="/televesion/LancerTv/${Id}">
                 <div class="modal-body" id="modal-body1-${index}" >
-                <div style="font-size:16px;color:black;">Liste Support connecté à choisir</div>
+                <div class="tv-modal-body-font-black">Liste Support connecté à choisir</div>
                 </div>
                 <div class="modal-footer">
                   <button id="envoyervod" type="submit" class="btn btn-primary conf" name="envoyervod"> <i class="glyphicon glyphicon-send"></i> Lancer la TV</button>
-                  <a class="btn btn-danger " style="width: 139px;" href="/television/" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a></div>
+                  <a class="btn btn-danger tv-btn-fixed-139" href="/television/" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a></div>
             </div>
             </form>
         </div>    
@@ -1276,33 +1196,29 @@ document.addEventListener('click', function (event) {
       if(!existeTable)
       {
       const table = document.createElement('table');
-      table.style.width = "100%";
-      table.setAttribute("class","table table-striped header-fixed table-bordered table-hover table-checkable order-column dataTable no-footer");
+      table.setAttribute("class","table table-striped header-fixed table-bordered table-hover table-checkable order-column dataTable no-footer tv-table-modal");
       table.id = `table-${index}`;
       const thead = document.createElement('thead');
-      thead.style.width = "100%";
+      thead.setAttribute('class', 'tv-table-modal');
       thead.innerHTML = `
-        <tr style="width:100%;display:flex;justify-content:space-between">
-          <th style="width:120px;height:60px;display:flex;align-items: center;gap:5px"><input type="checkbox" id="checkAllboxn"/><p style="color:red">Selectionner / Désélectionner</p></th>
-          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Chambre</th>
-          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Adresse IP</th>
-          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Adresse MAC</th> 
+        <tr class="tv-actions-row">
+          <th class="tv-th-modal-header"><input type="checkbox" id="checkAllboxn"/><p class="tv-text-red">Selectionner / Désélectionner</p></th>
+          <th class="tv-th-modal-center">Chambre</th>
+          <th class="tv-th-modal-center">Adresse IP</th>
+          <th class="tv-th-modal-center">Adresse MAC</th> 
         </tr>`;
       table.appendChild(thead);
       const tbody = document.createElement('tbody');
-      tbody.style.width = "100%";
+      tbody.setAttribute('class', 'tv-table-modal');
       let i = 0;
       chambre.forEach(chbr => {
     const tr1 = document.createElement('tr');
-    tr1.style.width = "100%";
-    tr1.style.height = "50px";
-    tr1.style.display = "flex";
-    tr1.style.justifyContent = 'space-between';
+    tr1.setAttribute('class', 'tv-tr-modal');
     tr1.innerHTML = `
-        <td style="width:120px;height:40px;"><input type="checkbox" value=${chbr.id} name="checked[${i}]" class="boxcheck"/><input style="display:none" type="text" value=${chbr.id} name="chambre[${i}]"></td>
-        <td style="width:120px;height:40px;text-align:center;">${chbr.nom}</td>
-        <td style="width:120px;height:40px;text-align:center;">${chbr.ip}</td>
-        <td style="width:120px;height:40px;text-align:center;">${chbr.Mac}</td>`;
+        <td class="tv-td-modal"><input type="checkbox" value=${chbr.id} name="checked[${i}]" class="boxcheck"/><input class="tv-display-none" type="text" value=${chbr.id} name="chambre[${i}]"></td>
+        <td class="tv-td-modal-center">${chbr.nom}</td>
+        <td class="tv-td-modal-center">${chbr.ip}</td>
+        <td class="tv-td-modal-center">${chbr.Mac}</td>`;
     tbody.appendChild(tr1);
     i++;
 });
@@ -1391,32 +1307,31 @@ document.addEventListener('click', function (event) {
 
   function createModal1(index,Id,name) {
     const popUP = document.createElement('div');
-    popUP.setAttribute("class", "modal fade");
+    popUP.setAttribute("class", "modal fade tv-modal-ml-200");
     popUP.setAttribute("tabindex", "-1");
-    popUP.style.marginLeft="-200px";
     popUP.setAttribute("role", "dialog");
     popUP.setAttribute("id", `modal2-${index}`);
     popUP.setAttribute("aria-labelledby", "modalLabel2");
     popUP.setAttribute("aria-hidden", "true");
     popUP.innerHTML = `
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="width:800px;height:780px;">
-                <div class="modal-header" style="margin-top:30px;">
+            <div class="modal-content tv-modal-custom-size">
+                <div class="modal-header tv-modal-header-30">
                 <button id="close" type="button" class="close close1" data-dismiss="modal2-${index}" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 220px; padding: 5px 10px;">
-                    <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+                    <div class="tv-modal-title-box-launch">
+                    <img class="tv-modal-title-icon" src="{{ asset('images/ler.png') }}" alt="Icon">
                         Arrêter la TV ${name}
                     </div>
                 </div>
             <form id="form" method="post" enctype="multipart/form-data" action="/television/ArreteTV/${Id}">
                 <div class="modal-body" id="modal-body2-${index}">
-                <div style="font-size:16px;color:black;">Liste Support connecté à choisir</div>
+                <div class="tv-modal-body-font-black">Liste Support connecté à choisir</div>
                 </div>
                 <div class="modal-footer">
                   <button id="envoyervod" type="submit" class="btn btn-primary conf"name="envoyervod"> <i class="glyphicon glyphicon-send" style="margin-right:3px"></i>Arrêt la TV en cours</button>
-                  <a class="btn btn-danger " style="width: 139px;" href="/television/" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a>                </div>
+                  <a class="btn btn-danger tv-btn-fixed-139" href="/television/" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a>                </div>
             </div>
             </form>
         </div>    
@@ -1459,33 +1374,29 @@ if (!response.ok) {
       if(!existeTable)
       {
       const table = document.createElement('table');
-      table.style.width = "100%";
-      table.setAttribute("class","table table-striped header-fixed table-bordered table-hover table-checkable order-column dataTable no-footer");
+      table.setAttribute("class","table table-striped header-fixed table-bordered table-hover table-checkable order-column dataTable no-footer tv-table-modal");
       table.id = `table1-${index}`;
       const thead = document.createElement('thead');
-      thead.style.width = "100%";
+      thead.setAttribute('class', 'tv-table-modal');
       thead.innerHTML = `
-        <tr style="width:100%;display:flex;justify-content:space-between">
-          <th style="width:120px;height:60px;display:flex;align-items: center;gap:5px"><input type="checkbox" id="checkAllboxn1" checked/> <p style="color:red">Selectionner / Désélectionner</p></th>
-          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Chambre</th>
-          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Adresse IP</th>
-          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Adresse MAC</th> 
+        <tr class="tv-actions-row">
+          <th class="tv-th-modal-header"><input type="checkbox" id="checkAllboxn1" checked/> <p class="tv-text-red">Selectionner / Désélectionner</p></th>
+          <th class="tv-th-modal-center">Chambre</th>
+          <th class="tv-th-modal-center">Adresse IP</th>
+          <th class="tv-th-modal-center">Adresse MAC</th> 
         </tr>`;
       table.appendChild(thead);
       const tbody = document.createElement('tbody');
-      tbody.style.width = "100%";
+      tbody.setAttribute('class', 'tv-table-modal');
       let i = 0;
       data.TVLancer.forEach(chbr => {
     const tr1 = document.createElement('tr');
-    tr1.style.width = "100%";
-    tr1.style.height = "50px";
-    tr1.style.display = "flex";
-    tr1.style.justifyContent = 'space-between';
+    tr1.setAttribute('class', 'tv-tr-modal');
     tr1.innerHTML = `
-        <td style="width:120px;height:40px;"><input type="checkbox" value=${chbr.id} name="checked[${i}]" class="boxcheck1" checked/><input style="display:none" type="text" value=${chbr.id} name="chambre[${i}]"></td>
-        <td style="width:120px;height:40px;text-align:center;">${capitalize(chbr.nom)}</td>
-        <td style="width:120px;height:40px;text-align:center;">${chbr.ip}</td>
-        <td style="width:120px;height:40px;text-align:center;">${chbr.Mac}</td>`;
+        <td class="tv-td-modal"><input type="checkbox" value=${chbr.id} name="checked[${i}]" class="boxcheck1" checked/><input class="tv-display-none" type="text" value=${chbr.id} name="chambre[${i}]"></td>
+        <td class="tv-td-modal-center">${capitalize(chbr.nom)}</td>
+        <td class="tv-td-modal-center">${chbr.ip}</td>
+        <td class="tv-td-modal-center">${chbr.Mac}</td>`;
     tbody.appendChild(tr1);
     i++;
 });

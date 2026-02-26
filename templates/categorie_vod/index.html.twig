@@ -1,40 +1,7 @@
 {% extends 'home/index.html.twig' %}
 
 {% block body %}
-<style>
-
-
-   table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-thead {
-    background-color: #f2f2f2;
-    position: sticky;
-    top: 0;
-    z-index: 2;
-}
-
-tbody {
-    display: block;
-    max-height: 360px; 
-    overflow-y: auto;
-}
-
-tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-}
-
-    .alert{
-        color: white;
-        border-radius: 5px;
-    }
-
-
-</style>
+<link rel="stylesheet" href="{{ asset('css/css_categVod.css') }}">
 
 <!-- Gestion des flash messages -->
 {% for message in app.flashes('error') %}
@@ -45,68 +12,69 @@ tr {
     </button>
 </div>
 {% endfor %}
-<div style="border-radius: 8px; text-align: left; margin-bottom: 10px; margin-left: -130px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding-left: 10px; display: inline-block;">
-    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
-Liste Catégorie VOD
+
+<div class="cv-header-title">
+    <img class="cv-header-icon" src="{{ asset('images/ler.png') }}">
+    Liste Catégorie VOD
 </div>
 
 
     <form name="form" action="{{ path('app_update_active_categorie_vod')}}" method="post" enctype="multipart/form-data">
       <div id="div2">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:3px;">
-        <div>
-        <a {% if app.user.AjoutCatVod == '0' %} disabled {% endif %} href="{{ path('app_ajouter_categorievod') }}" class="btn btn-info btn-sm" name="add" id="add" style="margin-bottom: 10px; margin-right: 5px;">
-            <i class="glyphicon glyphicon-plus"></i>
-            Ajouter Catégorie VOD
-        </a>
-        <button {% if app.user.SauvegarderCatVod == '0' %} disabled {% endif %} type="submit"  name="valider" class="btn btn-success btn-sm" style=" margin-bottom: 10px;border: 2px; padding:8px; margin-right: 5px;width:150px">
-            <i class="glyphicon glyphicon-floppy-disk"></i>
-            Sauvegarder
-        </button>
+        <div class="cv-actions-row">
+            <div>
+                <a {% if app.user.AjoutCatVod == '0' %} disabled {% endif %} href="{{ path('app_ajouter_categorievod') }}" class="btn btn-info btn-sm cv-btn-add" name="add" id="add">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    Ajouter Catégorie VOD
+                </a>
+                <button {% if app.user.SauvegarderCatVod == '0' %} disabled {% endif %} type="submit"  name="valider" class="btn btn-success btn-sm cv-btn-save">
+                    <i class="glyphicon glyphicon-floppy-disk"></i>
+                    Sauvegarder
+                </button>
 
-        <a name="annuler" href="{{ path('app_categorie_vod') }}" class="btn btn-danger btn-sm" style=" margin-bottom: 10px;border: 2px; padding:8px;width:150px;">
-            <i class="glyphicon glyphicon-remove"></i>
-            Annuler
-        </a>
-</div>
-    </div>
+                <a name="annuler" href="{{ path('app_categorie_vod') }}" class="btn btn-danger btn-sm cv-btn-cancel">
+                    <i class="glyphicon glyphicon-remove"></i>
+                    Annuler
+                </a>
+            </div>
+            <input id="myInput3" type="text" placeholder="Search.." class="tv-search-input">
+        </div>
+
         <div class="table-container">
-        <table class="table table-striped table-bordered header-fixed table-hover" id="dataTables-example" style="width: 100%;margin-top:20px;">
+        <table class="table table-striped table-bordered cv-table-fixed table-hover cv-table-main" id="dataTables-example">
             <thead>
                 <tr>
-                    <th style="height: 50px;width:251px;text-align:center;">Nom</th>
-                    <th style="height: 50px;width:251px;text-align:center;">Logo</th>
-                    <th style="height: 50px;width:251px;text-align:center;" >
-                     <p style="display:flex;gap:10px;justify-content:center">
-                        <span>
-                            Active
-                        </span>
-                        <input type="checkbox" id="checklist" style="margin-top:-1px;">
-                        </p>
+                    <th class="cv-th-name">Nom</th>
+                    <th class="cv-th-logo">Logo</th>
+                    <th class="cv-th-active">
+                     <p class="cv-flex-center-gap10">
+                        <span>Active</span>
+                        <input type="checkbox" id="checklist" class="cv-checkbox-margin">
+                     </p>
                     </th>
-                    <th style="height: 50px;width:251px;text-align:center;">Position</th>
-                    <th style="height: 50px;width:350px;text-align:center;" style="width:246px">Actions </th>
+                    <th class="cv-th-position">Position</th>
+                    <th class="cv-th-actions">Actions </th>
                 </tr>
             </thead>
 
 
-            <tbody >
+            <tbody>
                 {% for catvod in categorie_v_o_ds %}
                     <tr class="odd gradeX">
-                        <td style="height: 50px;width:251px;text-align:center;">{{ catvod.nom|capitalize}}</td>
-                        <td style="height: 50px;width:251px;text-align:center;">
-                            <img style="width:40px;height:40px;text-align:center" src="{{ path('afficher_image', { filename: catvod.logo|split('/')|last, directory: 'categorie_vod_directory' }) }}" alt="..." class="img-rounded img-responsive center-block">
+                        <td class="cv-td-name" data-label="Nom">{{ catvod.nom|capitalize}}</td>
+                        <td class="cv-td-logo" data-label="Logo">
+                            <img src="{{ path('afficher_image', { filename: catvod.logo|split('/')|last, directory: 'categorie_vod_directory' }) }}" alt="..." class="img-rounded img-responsive center-block cv-logo-img">
                         </td>
                         <!-- checkbox -->
                         {% set ch = '' %}
                         {% if catvod.active == 1 %}
                             {% set ch = 'checked' %}
                         {% endif %}
-                        <td style="height: 50px;width:251px;text-align:center;">
+                        <td class="cv-td-active" data-label="Active">
                             <label><input {% if app.user.SauvegarderCatVod == '0' %} disabled {% endif %} name="listeactive[{{ catvod.id }}]" type="checkbox" {{ ch }} class="jpCheckbox"></label>
                         </td>
-                        <td style="height: 50px;width:251px;text-align:center;">{{ catvod.position }}</td>
-                        <td style="height: 50px;width:350px;text-align:center;">
+                        <td class="cv-td-position" data-label="Position">{{ catvod.position }}</td>
+                        <td class="cv-td-actions" data-label="Actions">
                             <a {% if app.user.ModifierCatVod == '0' %} disabled {% endif %} data-toggle="tooltip" data-placement="top" title="Modifier Catégorie VOD" href="{{ path('app_modifier_categorievod', { 'id': catvod.id }) }}" class="btn btn-warning btn-xs">
                                 <i class="glyphicon glyphicon-pencil"></i>
                             </a>
@@ -125,6 +93,7 @@ Liste Catégorie VOD
         </div>
        </div>  
     </form>
+
 
 
 <!-- Script pour cocher ou décocher toutes les cases à cocher -->

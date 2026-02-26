@@ -1,26 +1,6 @@
 {% extends 'home/index.html.twig' %}
 {% block body %}
-<style>
-.dataTables_filter{
-    float: right;
-    width: 50%;
-    margin-top: -27px;
-
-}
-
-.dataTables_filter label {
-  color: #3087ce;
-  font-size: 20px;
-}
-.dataTables_filter input {
-  color:black;
-  font-size: 16px;
-}
-	  .dt-buttons .btn {
-    margin-right: 5px;
-  }
-
-</style>
+<link rel="stylesheet" href="{{ asset('css/css_service.css') }}">
 {# ce fichier contenent l'affichage de liste des services #}
 	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -32,33 +12,33 @@
     </div>
 {% endfor %}
 {# Cette section concerne la conception de modèles pour l'affichage liste des services.#}
-<div style="border-radius: 8px; text-align: left; margin-bottom: 10px; margin-left: -130px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 200px; padding-left: 10px; display: inline-block;">
-    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+<div class="header-blue-main">
+    <img class="header-icon-main" src="{{ asset('images/ler.png') }}">
    Liste des services
 </div>
 
 <form id="form" method="post" enctype="multipart/form-data" onsubmit="return validateUpdate(`{{path('update_services',{'id': id})}}`)">
 <div id="div2">
     <div style="display: flex;gap:2px">
-        <a  class="btn btn-info btn-sm" style="width:130px" id="add" {% if app.user.AjouteService == '0' %} disabled {% endif %}> 
+        <a  class="btn btn-info btn-sm btn-fixed-130" id="add" {% if app.user.AjouteService == '0' %} disabled {% endif %}> 
             <i class="glyphicon glyphicon-plus"></i>
             Ajouter service
         </a>
         
-                <button type="submit" class="btn btn-success btn-sm" style="width:130px" {% if app.user.SauvegarderService == '0' %} disabled {% endif %}>
+                <button type="submit" class="btn btn-success btn-sm btn-fixed-130" {% if app.user.SauvegarderService == '0' %} disabled {% endif %}>
                     <i class="glyphicon glyphicon-floppy-disk"></i> Sauvegarder
                 </button>
-                <a class="btn btn-danger btn-sm" id = "annulerButton" style="width:130px">
+                <a class="btn btn-danger btn-sm btn-fixed-130" id = "annulerButton">
                     <i class="glyphicon glyphicon-remove"></i> Annuler
                 </a>
     </div>
        
-    <p style="margin-top:10px">Sélectionner le service que vous souhaitez renseigner :</p>
+    <p class="mt-10">Sélectionner le service que vous souhaitez renseigner :</p>
     <div id="categorie">
     </div>
-    <div style="color: red; font-size: 14px;">Choisissez le modèle d'extraction de données :</div>
+    <div class="text-red-14">Choisissez le modèle d'extraction de données :</div>
   <div id="myDiv" >
-    <table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column" id="dataTables-example" role="none" style="width:100%;height: 200px;">
+    <table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column table-service-main" id="dataTables-example" role="none">
            <thead>
                     <tr>
                         <th style="text-align: center; width: 141px;height:30px;">Icone</th>
@@ -257,8 +237,8 @@ async function fetchData(id) {
       </td>`,
       `
       <td >
-        <div style=" width: 123px;height:60px; display:flex;justify-content:center;align-items:center;">
-         <select {% if app.user.SauvegarderService == '0' %} disabled {% endif %} id="position_service" class="form-control" name="position_service[${service.Id}]" value="${service.position}" style="width:60px;font-size:14px;padding:4px;text-align:center;">
+        <div class="flex-center-60" style="width: 123px;">
+         <select {% if app.user.SauvegarderService == '0' %} disabled {% endif %} id="position_service" class="form-control pos-select" name="position_service[${service.Id}]" value="${service.position}">
           <option style="display:none">${service.position}</option>
         </select>
         </div>
@@ -278,20 +258,20 @@ async function fetchData(id) {
       `
       <td >
       <div style="text-align: center;width: 222px; cursor: pointer;height:60px;display:flex;align-items:center;justify-content:center;">
-      <a data-toggle="modal" data-target="#modal-${index}" class="source-link" 
+      <a data-toggle="modal" data-target="#modal-${index}" class="source-link source-link-style" 
            data-type="${service.type}" 
            data-id="${service.Id}" 
            data-value="${URL}"
-           style="text-decoration: none; color:#3087ce;font-size:15px;display: inline-block;width:200px; word-wrap:break-word;" id="displayButton">${service.src}</a>
+           id="displayButton">${service.src}</a>
       <div class="modal fade" id="modal-${index}" tabindex="-1" role="dialog" aria-labelledby="modalLabel-${index}" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
-            <div class="modal-header" style="margin-top:30px;">
+            <div class="modal-header modal-header-margin">
                 <button id="close" type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-            <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 200px; padding: 5px 10px;">
-                    <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+            <div class="header-blue-modal">
+                    <img class="header-icon-modal" src="{{ asset('images/ler.png') }}" alt="Icon">
                     Aperçu du service
                 </div>
             </div>
@@ -574,23 +554,23 @@ function createModal(index,Id,name) {
     popUP.setAttribute("aria-hidden", "true");
     popUP.innerHTML = `
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="width:800px;height:780px;">
-                <div class="modal-header" style="margin-top:30px;">
+            <div class="modal-content modal-content-large">
+                <div class="modal-header modal-header-margin">
                 <button id="close" type="button" class="close close2" data-dismiss="modal-${index}" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 220px; padding: 5px 10px;">
-                    <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+                    <div class="header-blue-lancer">
+                    <img class="header-icon-modal" src="{{ asset('images/ler.png') }}" alt="Icon">
                         Lancer le service ${name}
                     </div>
                 </div>
-                <form style="height:100%;padding-bottom:300px;" id="form" method="post" enctype="multipart/form-data" action="/services/lancerService/${Id}">
+                <form class="form-padding-bottom" id="form" method="post" enctype="multipart/form-data" action="/services/lancerService/${Id}">
                 <div class="modal-body" id="modal-body1-${index}" >
                 <div style="font-size:16px;color:black;">Liste Support connecté à choisir</div>
                 </div>
                 <div class="modal-footer">
                   <button id="envoyervod" type="submit" class="btn btn-primary conf" name="envoyervod"> <i class="glyphicon glyphicon-send"></i> Lancer le service</button>
-                  <a class="btn btn-danger " style="width: 139px;" href="/services/categorie/${id_categorie}" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a>                </div>
+                  <a class="btn btn-danger btn-fixed-139" href="/services/categorie/${id_categorie}" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a>                </div>
             </div>
             </form>
         </div>    
@@ -625,33 +605,29 @@ document.addEventListener('click', function (event) {
       if(!existeTable)
       {
       const table = document.createElement('table');
-      table.style.width = "100%";
-      table.setAttribute("class","table table-striped header-fixed table-bordered table-hover table-checkable order-column dataTable no-footer");
+      table.classList.add("w-100", "table", "table-striped", "header-fixed", "table-bordered", "table-hover", "table-checkable", "order-column", "dataTable", "no-footer");
       table.id = `table-${index}`;
       const thead = document.createElement('thead');
-      thead.style.width = "100%";
+      thead.classList.add("w-100");
       thead.innerHTML = `
-        <tr style="width:100%;display:flex;justify-content:space-between">
-          <th style="width:120px;height:60px;display:flex;align-items: center;gap:5px"><input type="checkbox" id="checkAllboxn"/><p style="color:red">Selectionner / Désélectionner</p></th>
-          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Chambre</th>
-          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Adresse IP</th>
-          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Adresse MAC</th> 
+        <tr class="flex-between">
+          <th class="cell-120-gap"><input type="checkbox" id="checkAllboxn"/><p style="color:red">Selectionner / Désélectionner</p></th>
+          <th class="cell-120-center">Chambre</th>
+          <th class="cell-120-center">Adresse IP</th>
+          <th class="cell-120-center">Adresse MAC</th> 
         </tr>`;
       table.appendChild(thead);
       const tbody = document.createElement('tbody');
-      tbody.style.width = "100%";
+      tbody.classList.add("w-100");
       let i = 0;
       chambre.forEach(chbr => {
     const tr1 = document.createElement('tr');
-    tr1.style.width = "100%";
-    tr1.style.height = "50px";
-    tr1.style.display = "flex";
-    tr1.style.justifyContent = 'space-between';
+    tr1.classList.add("w-100", "row-height-50", "flex-between");
     tr1.innerHTML = `
-        <td style="width:120px;height:40px;"><input type="checkbox" value=${chbr.id} name="checked[${i}]" class="boxcheck"/><input style="display:none" type="text" value=${chbr.id} name="chambre[${i}]"></td>
-        <td style="width:120px;height:40px;text-align:center;">${capitalize(chbr.nom)}</td>
-        <td style="width:120px;height:40px;text-align:center;">${chbr.ip}</td>
-        <td style="width:120px;height:40px;text-align:center;">${chbr.Mac}</td>`;
+        <td class="cell-40-check"><input type="checkbox" value=${chbr.id} name="checked[${i}]" class="boxcheck"/><input style="display:none" type="text" value=${chbr.id} name="chambre[${i}]"></td>
+        <td class="cell-40-center">${capitalize(chbr.nom)}</td>
+        <td class="cell-40-center">${chbr.ip}</td>
+        <td class="cell-40-center">${chbr.Mac}</td>`;
     tbody.appendChild(tr1);
     i++;
 });
@@ -752,13 +728,13 @@ modal.style.overflowY = '';
     popUP.setAttribute("aria-hidden", "true");
     popUP.innerHTML = `
         <div class="modal-dialog" role="document" >
-            <div class="modal-content" style="width:800px;height:780px;">
-                <div class="modal-header" style="margin-top:30px;">
+            <div class="modal-content modal-content-large">
+                <div class="modal-header modal-header-margin">
                 <button id="close" type="button" class="close close1" data-dismiss="modal-${index}" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 220px; padding: 5px 10px;">
-                    <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+                    <div class="header-blue-lancer">
+                    <img class="header-icon-modal" src="{{ asset('images/ler.png') }}" alt="Icon">
                         Arrêter le service ${name}
                     </div>
                 </div>
@@ -768,7 +744,7 @@ modal.style.overflowY = '';
                 </div>
                 <div class="modal-footer">
                   <button id="envoyervod" type="submit" class="btn btn-primary conf"name="envoyervod"> <i class="glyphicon glyphicon-send" style="margin-right:3px"></i>Arrêt service en cours</button>
-                  <a class="btn btn-danger " style="width: 139px;" href="/services/categorie/${id_categorie}" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a>                </div>
+                  <a class="btn btn-danger btn-fixed-139" href="/services/categorie/${id_categorie}" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a>                </div>
             </div>
             </form>
         </div>    
@@ -811,34 +787,30 @@ if (!response.ok) {
       if(!existeTable)
       {
       const table = document.createElement('table');
-      table.style.width = "100%";
-      table.setAttribute("class","table table-striped header-fixed table-bordered table-hover table-checkable order-column dataTable no-footer");
+      table.classList.add("w-100", "table", "table-striped", "header-fixed", "table-bordered", "table-hover", "table-checkable", "order-column", "dataTable", "no-footer");
       table.id = `table1-${index}`;
       const thead = document.createElement('thead');
-      thead.style.width = "100%";
+      thead.classList.add("w-100");
       thead.innerHTML = `
-        <tr style="width:100%;display:flex;justify-content:space-between">
-          <th style="width:120px;height:60px;display:flex;align-items: center;gap:5px"><input type="checkbox" id="checkAllboxn1" checked/> <p style="color:red">Selectionner / Désélectionner</p></th>
-          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Chambre</th>
-          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Adresse IP</th>
-          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Adresse MAC</th> 
+        <tr class="flex-between">
+          <th class="cell-120-gap"><input type="checkbox" id="checkAllboxn1" checked/> <p style="color:red">Selectionner / Désélectionner</p></th>
+          <th class="cell-120-center">Chambre</th>
+          <th class="cell-120-center">Adresse IP</th>
+          <th class="cell-120-center">Adresse MAC</th> 
         </tr>`;
       table.appendChild(thead);
       const tbody = document.createElement('tbody');
-      tbody.style.width = "100%";
+      tbody.classList.add("w-100");
       let i = 0;
       data.ServiceLancer.forEach(chbr => {
     const tr1 = document.createElement('tr');
-    tr1.style.width = "100%";
-    tr1.style.height = "50px";
-    tr1.style.display = "flex";
-    tr1.style.justifyContent = 'space-between';
+    tr1.classList.add("w-100", "row-height-50", "flex-between");
     tr1.innerHTML = `
-        <td style="width:120px;height:40px;"><input type="checkbox" value=${chbr.id} name="checked[${i}]" class="boxcheck1" checked/><input style="display:none" type="text" value=${chbr.id} name="chambre[${i}]"></td>
-        <td style="width:120px;height:40px;text-align:center;">${capitalize(chbr.nom)}</td>
-        <td style="width:120px;height:40px;text-align:center;">${chbr.ip}</td>
-        <td style="width:120px;height:40px;text-align:center;">${chbr.Mac}</td>`;
-    tbody.appendChild(tr1);
+        <td class="cell-40-check"><input type="checkbox" value=${chbr.id} name="checked[${i}]" class="boxcheck1" checked/><input style="display:none" type="text" value=${chbr.id} name="chambre[${i}]"></td>
+        <td class="cell-40-center">${capitalize(chbr.nom)}</td>
+        <td class="cell-40-center">${chbr.ip}</td>
+        <td class="cell-40-center">${chbr.Mac}</td>`;
+      tbody.appendChild(tr1);
     i++;
 });
       table.appendChild(tbody);

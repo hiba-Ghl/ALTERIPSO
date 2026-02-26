@@ -1,0 +1,275 @@
+/* ==================== DESKTOP (Desktop) ==================== */
+
+#header {
+	border-radius: 8px;
+	text-align: left;
+	margin-bottom: 10px;
+	margin-left: -120px;
+	color: white;
+	font-style: oblique;
+	font-size: 20px;
+	background-color: #3087ce;
+	width: 250px;
+	padding-left: 10px;
+}
+
+#header img {
+	margin-top: -51px;
+	margin-left: -10px;
+	width: 45px;
+	float: left;
+}
+
+#div1 {
+	border-radius: 25px;
+	border: 2px solid #3087ce;
+	padding: 43px;
+	width: 1091px;
+	height: 300px;
+	margin-left: 10px;
+	margin-top: 10px;
+}
+
+#div2 {
+	margin-left: 10px;
+	margin-top: 10px;
+    height: 800px;
+}
+
+input[type="file"].upload {
+	margin-bottom: 10px;
+}
+
+label {
+	display: block;
+	margin-bottom: 10px;
+	color: red;
+}
+
+.btn-action {
+	margin-bottom: 10px;
+	border: 2px;
+	padding: 8px;
+	width: 150px;
+	margin-right: 5px;
+	display: inline-block;
+}
+
+#pdf-container {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	height: 630px;
+	margin-top: 10px;
+}
+
+#pdf-container object {
+	width: 50%;
+	height: 100%;
+	border-radius: 5px;
+}
+
+/* ==================== TABLETTE (991px - 1200px) ==================== */
+@media (max-width: 1200px) {
+	#header {
+		margin-left: -60px;
+		width: 280px;
+	}
+
+	#div1 {
+		width: auto;
+		max-width: 900px;
+		height: auto;
+		padding: 30px;
+	}
+
+	#div2 {
+		max-width: 900px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	#pdf-container {
+		height: 850px;
+	}
+
+	#pdf-container object {
+		width: 70%;
+	}
+    
+	.btn-action {
+		width: 40%;
+		margin-right: 0;
+		margin-bottom: 10px;
+	}
+
+}
+
+/* ==================== TABLETTE (768px - 991px) ==================== */
+@media (max-width: 991px) {
+	#header {
+		margin-left: 0;
+		width: 30%;
+		font-size: 18px;
+		padding: 1px;
+	}
+
+	#header img {
+		margin-top: -51px;
+        /* margin-left: -10px; */
+        width: 45px;
+    }
+	
+
+	#div1 {
+		width: 90%;
+		max-width: 700px;
+		height: auto;
+		padding: 25px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	#div2 {
+		width: 100%;
+		max-width: 700px;
+		margin-left: auto;
+		margin-right: auto;
+        height: 200%;
+		padding: 15px;
+	}
+
+	.btn-action {
+		width: 20%;
+		margin-right: 0;
+		margin-bottom: 10px;
+        font-size: 16px;
+	}
+
+	#pdf-container {
+		height: 400px;
+		flex-direction: column;
+	}
+
+	#pdf-container object {
+		width: 90%;
+	}
+
+	input[type="file"].upload {
+		width: 100%;
+	}
+}
+
+/* ==================== MOBILE (480px - 768px) ==================== */
+@media (max-width: 768px) {
+	#header {
+		margin-left: 0;
+		width: 50%;
+		font-size: 16px;
+		padding: 1px;
+	}
+
+	#header img {
+		margin-top: -51px;
+        /* margin-left: -10px; */
+        width: 45px;
+	}
+
+	#div1 {
+		width: 95%;
+		max-width: 100%;
+		height: auto;
+		padding: 20px;
+		margin-left: auto;
+		margin-right: auto;
+		border-radius: 20px;
+	}
+
+	#div2 {
+		width: 95%;
+		max-width: 100%;
+		margin-left: auto;
+        height: 300%;
+		margin-right: auto;
+		padding: 15px;
+		margin-top: 15px;
+	}
+
+	.btn-action {
+		width: 20%;
+		margin-right: 0;
+		margin-bottom: 10px;
+		padding: 4px;
+		font-size: 14px;
+	}
+
+	label {
+		font-size: 15px;
+		margin-bottom: 15px;
+	}
+
+	#pdf-container {
+		height: 550px;
+		flex-direction: column;
+		margin-top: 15px;
+	}
+
+	#pdf-container object {
+		width: 100%;
+		border-radius: 8px;
+	}
+
+	input[type="file"].upload {
+		width: 100%;
+		padding: 8px;
+		margin-bottom: 15px;
+	}
+}
+
+/* ==================== PETIT MOBILE (< 480px) ==================== */
+@media (max-width: 480px) {
+	#header {
+		margin-left: 0;
+		width: 60%;
+		font-size: 16px;
+		padding: 1px;
+	}
+
+	#header img {
+		margin-top: -50px;
+        /* margin-left: -10px; */
+        width: 45px;
+	}
+
+	#div1 {
+		width: 100%;
+		padding: 15px;
+		border-radius: 15px;
+	}
+
+	#div2 {
+		width: 100%;
+		padding: 10px;
+		margin-top: 10px;
+        height: 450%;
+	}
+
+	.btn-action {
+		width: 40%;
+		padding: 3px;
+		font-size: 12px;
+	}
+
+	#pdf-container {
+		height: 400px;
+		margin-top: 10px;
+	}
+
+	#pdf-container object {
+		width: 100%;
+	}
+
+	input[type="file"].upload {
+		font-size: 12px;
+	}
+}

@@ -2,52 +2,24 @@
 {% block body %}
 
 
-<style>
-		#div2 {
-            border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 20px;
-            height: auto;
-            display: flex;
-            justify-content: space-between;
-            background-color:white;
-            margin: 10px;
+<link rel="stylesheet" href="{{ asset('css/css_categVod.css') }}" />
 
-		}
-        .accordion-toggle {
-            cursor: pointer;
-        }
-
-         .error-message {
-        color: white;
-        font-weight: bold;
-        display: none; 
-        background-color:red;
-        border-radius: 4px;
-    }
-	</style>
-
-    <div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 390px;padding-left: 10px;">
-    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+    <div class="cv-add-header">
+    <img class="cv-add-header-icon" src="{{ asset('images/ler.png') }}">
     Ajouter une catégorie VOD
     </div>
  
-<div id="div2">
+<div class="cv-add-container">
 
-    
+    <form name="" class="cv-add-form form-horizontal" method="post" action="{{path('app_ajouter_categorievod')}}" enctype="multipart/form-data"  onsubmit="return validateForm()">
 
-    <form name="" style="width:100%;" method="post" action="{{path('app_ajouter_categorievod')}}" class="form-horizontal" enctype="multipart/form-data"  onsubmit="return validateForm()">
-
-
-    <div class="row" style="width:100%;display:flex;gap:20px;">
-
+    <div class="cv-add-row row">
         <!-- Colonne pour le logo -->
         <div class="col-md-4 text-center">
                 <div class="form-group">
-                        <img id="logo-preview" style="width:250px;height:235px;" />
+                        <img id="logo-preview" class="cv-logo-preview" />
             </div>
         </div>
-
         <!-- Colonne pour les autres champs -->
         <div class="col-md-8">
             <div class="form-group row">
@@ -56,7 +28,6 @@
                     <input type="text" id="nom" name="nom" class="form-control"/>
                 </div>
             </div>
-
             <div class="form-group row">
                 <label for="active" class="col-lg-2 col-form-label">Active</label>
                 <div class="col-lg-10">
@@ -66,7 +37,6 @@
                     </select>
                 </div>
             </div>
-
             <div class="form-group row">
                 <label for="position" class="col-lg-2 col-form-label">Position</label>
                 <div class="col-lg-10">
@@ -77,77 +47,75 @@
                     </select>
                 </div>
             </div>
-
             <div class="form-group row">
                 <label for="nom" class="col-lg-2 col-form-label">Logo</label>
                 <div class="col-lg-10">
-                    <input type="file" class="form-control-file" id="logo" name="logo" accept=".jpg, .jpeg, .png" onchange="previewLogo(event)" required>
-                    <p class="error-message" id="file-error">La taille maximale du fichier est de 400 Ko.</p>
-  </div>
+                    <input type="file" class="form-control-file" id="logo_input" name="logo" accept=".jpg, .jpeg, .png" onchange="previewLogo(event)" required>
+                    <p class="cv-error-message" id="file-error">La taille maximale du fichier est de 400 Ko.</p>
+            </div>
                 </div>
                 <div class="form-group ">
-            <label class="col-lg-2 control-label accordion-toggle" style="text-align:left;" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Langues</label>
+            <label class="col-lg-2 control-label cv-accordion-toggle cv-label-left" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Langues</label>
             <!-- le bouton de traduction -->
             <div class="col-lg-10">
             <button type="button" id="translateBtn" class="btn btn-info btn-sm">
                 <i class="glyphicon glyphicon-globe"></i> Traduire le texte
             </button>
-                <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                <a type="button" class="cv-accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
                 <span><i class="glyphicon glyphicon-plus"></i></span>
             </a>
             <div>
             <!-- les langues --> 
-        <div style="width: 760px; margin-left:-50px;margin-bottom: 15px; margin-top: 20px">
-            <!-- le boutons des langues --> 
-            
+        <div class="cv-lang-container">
+            <!-- le boutons des langues -->             
             <!-- les champs des langues -->
             <div id="collapseTwo" class="panel-collapse collapse">
                 <div class="panel-body">
                     <div id="inputGroup1">
-                        <div class="form-row" style="margin-left:27px">
+                        <div class="form-row cv-form-row-custom">
                             <div class="form-group col-md-6">
-                                <img style="width: 30px" src="{{ asset('images/eng.png') }}">
+                                <img class="cv-lang-icon" src="{{ asset('images/eng.png') }}">
                                 <label for="EN">English</label>
                                 <input type="text" class="form-control" id="EN" name="EN">
                             </div>
-                            <div class="form-group col-md-6" style="margin-left:27px">
-                                <img style="width: 30px" src="{{ asset('images/es.png') }}">
+                            <div class="form-group col-md-6 cv-form-group-custom">
+                                <img class="cv-lang-icon" src="{{ asset('images/es.png') }}">
                                 <label for="ES">Espagnol</label>
                                 <input type="text" class="form-control" id="ES" name="ES">
                             </div>
                         </div>
-                        <div class="form-row" style="margin-left:27px">
+                        <div class="form-row cv-form-row-custom">
                             <div class="form-group col-md-6">
-                                <img style="width: 30px" src="{{ asset('images/pt.png') }}">
+                                <img class="cv-lang-icon" src="{{ asset('images/pt.png') }}">
                                 <label for="PT">Portugues</label>
                                 <input type="text" class="form-control" id="PT" name="PT">
                             </div>
-                            <div class="form-group col-md-6" style="margin-left:27px">
-                                <img style="width: 30px" src="{{ asset('images/ita.png') }}">
+                            <div class="form-group col-md-6 cv-form-group-custom">
+                                <img class="cv-lang-icon" src="{{ asset('images/ita.png') }}">
                                 <label for="IT">Italiano</label>
                                 <input type="text" class="form-control" id="IT" name="IT">
                             </div>
                         </div>
-                        <div class="form-row" style="margin-left:27px">
+                        <div class="form-row cv-form-row-custom">
                             <div class="form-group col-md-6">
-                                <img style="width: 30px" src="{{ asset('images/rus.png') }}">
+                                <img class="cv-lang-icon" src="{{ asset('images/rus.png') }}">
                                 <label for="RU">Russian</label>
                                 <input type="text" class="form-control" id="RU" name="RU">
                             </div>
-                            <div class="form-group col-md-6" style="margin-left:27px">
-                                <img style="width: 30px" src="{{ asset('images/deu.png') }}">
+                            <div class="form-group col-md-6 cv-form-group-custom">
+                                <img class="cv-lang-icon" src="{{ asset('images/deu.png') }}">
                                 <label for="DE">Deutsch</label>
                                 <input type="text" class="form-control" id="DE" name="DE">
                             </div>
                         </div>
-                        <div class="form-row" style="margin-left:27px">
+                        <div class="form-row cv-form-row-custom">
                             <div class="form-group col-md-6">
-                                <img style="width: 30px" src="{{ asset('images/ch.png') }}">
+                                <img class="cv-lang-icon" src="{{ asset('images/ch.png') }}">
                                 <label for="ZH">China</label>
                                 <input type="text" class="form-control" id="ZH" name="ZH">
                             </div>
-                            <div class="form-group col-md-6" style="margin-left:27px">
-                                <img style="width: 30px" src="{{ asset('images/ma.png') }}">
+                            <div class="form-group col-md-6 cv-form-group-custom">
+                                <img class="cv-lang-icon" src="{{ asset('images/ma.png') }}">
                                 <label for="AR">العربية</label>
                                 <input type="text" class="form-control" id="AR" name="AR">
                             </div>
@@ -156,35 +124,25 @@
                 </div>
             </div>
         </div>
-                </div>
-            </div>
         </div>
-
-        
-
+        </div>
+        </div>      
         <br>
 
          <!-- les boutons du formulaire-->
-        <div style="float:right;margin-left:30px;">
-         <a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/categorie/vod">
+        <div class="cv-btn-group">
+         <a class="btn btn-danger btn-md cv-btn-annuler" id = "annulerButton" href="/categorie/vod">
              <i class="glyphicon glyphicon-remove"></i> Annuler
          </a>
          <button type="submit" class="btn btn-primary btn-md" name="valider" >
              <i class="glyphicon glyphicon-floppy-disk"></i>
              Enregistrer
          </button>
- </div>
-        
-        </form>
-
+    </div>        
+    </form>
 
 </div>
 <br> <br> <br> <br>
-
-
-
-
-
 
 <script>
 
@@ -201,7 +159,7 @@
     //le control de la taille du fichier 
     function validateForm() {
         //la partie de la taille du logo
-        var fileInput = document.getElementById('logo');
+        var fileInput = document.getElementById('logo_input');
         var file = fileInput.files[0];
         var maxSize = 400 * 1024; // 400 KB
 
@@ -213,12 +171,10 @@
  }
 
 </script>
-
-
 <!--le champ de tracudtion-->
 
-    <script>
-          const configApp = {{configApp | raw}}
+<script>
+    const configApp = {{configApp | raw}}
 document.addEventListener('DOMContentLoaded', function () {
 	const traduireButton = document.getElementById('translateBtn');
 	 const languageInputs = {

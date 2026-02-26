@@ -1,0 +1,820 @@
+/* CSS for Categorie VOD */
+
+.cv-table-fixed {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cv-table-fixed thead {
+    background-color: #f2f2f2;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.cv-table-fixed tbody {
+    display: block;
+    max-height: 360px;
+    overflow-y: auto;
+}
+
+.cv-table-fixed tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.alert {
+    color: white;
+    border-radius: 5px;
+}
+
+/* Custom classes from inline styles */
+
+.cv-header-title {
+    border-radius: 8px;
+    text-align: left;
+    margin-bottom: 10px;
+    margin-left: -130px;
+    color: white;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 300px;
+    padding-left: 10px;
+    display: inline-block;
+}
+
+.cv-header-icon {
+    margin-top: -51px;
+    margin-left: -10px;
+    width: 45px;
+    float: left;
+}
+
+.cv-actions-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3px;
+}
+
+.cv-btn-add {
+    margin-bottom: 10px;
+    margin-right: 5px;
+}
+
+.cv-btn-save {
+    margin-bottom: 10px;
+    border: 2px;
+    padding: 8px;
+    margin-right: 5px;
+    width: 150px;
+}
+
+.cv-btn-cancel {
+    margin-bottom: 10px;
+    border: 2px;
+    padding: 8px;
+    width: 150px;
+}
+
+.cv-table-main {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.cv-th-name,
+.cv-th-logo,
+.cv-th-active,
+.cv-th-position,
+.cv-td-name,
+.cv-td-logo,
+.cv-td-active,
+.cv-td-position {
+    height: 50px;
+    width: 251px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.cv-th-actions,
+.cv-td-actions {
+    height: 50px;
+    width: 350px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.cv-flex-center-gap10 {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.cv-checkbox-margin {
+    margin-top: -1px;
+}
+
+.cv-logo-img {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+}
+
+/* Responsive Table into Cards for Mobile/Tablet */
+@media screen and (max-width: 1024px) {
+    #div2 {
+        margin: 0 !important;
+        padding: 0 10px;
+        width: 100% !important;
+        max-width: 100vw !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden;
+    }
+
+    .cv-header-title {
+        margin-left: 0 !important;
+        width: 35% !important;
+    }
+
+
+    .cv-actions-row {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .cv-actions-row>div {
+        display: flex;
+        flex-wrap: wrap;
+        /* justify-content: center; */
+        gap: 8px;
+        width: 100%;
+        margin-top: 15px;
+    }
+
+    .cv-table-main {
+        display: block;
+        border: none !important;
+    }
+
+    .cv-table-main thead {
+        display: none;
+    }
+
+    .cv-table-main tbody {
+        display: block;
+        height: auto !important;
+        max-height: unset !important;
+    }
+
+    .cv-table-main tbody tr {
+        display: block;
+        width: 100% !important;
+        margin-bottom: 25px;
+        border: 2px solid #3087ce;
+        border-radius: 12px;
+        padding: 15px;
+        background: #fff;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+        box-sizing: border-box;
+    }
+
+    .cv-table-main td {
+        display: flex !important;
+        width: 100% !important;
+        padding: 10px 0 !important;
+        border: none !important;
+        border-bottom: 1px solid #f0f0f0 !important;
+        text-align: left !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        height: auto !important;
+        box-sizing: border-box;
+    }
+
+    .cv-table-main td:last-child {
+        border-bottom: none !important;
+    }
+
+    .cv-table-main td:before {
+        content: attr(data-label) " :";
+        font-weight: 800;
+        color: #3087ce;
+        margin-right: 15px;
+        min-width: 120px;
+        flex-shrink: 0;
+        text-transform: uppercase;
+        font-size: 11px;
+    }
+
+    .cv-td-actions {
+        justify-content: flex-end !important;
+        gap: 10px !important;
+    }
+
+    .cv-logo-img {
+        margin: 5px auto !important;
+    }
+
+    .tv-search-input {
+        width: 100% !important;
+        max-width: 500px;
+        margin-top: 10px;
+        margin-left: 0 !important;
+    }
+}
+
+/* --- MOBILE ÉTROIT (max 480px) --- */
+@media screen and (max-width: 480px) {
+
+    .cv-header-title {
+        margin-left: 0 !important;
+        width: 80% !important;
+    }
+
+    .cv-table-main td {
+        /* flex-direction: column; */
+        align-items: flex-start !important;
+    }
+
+    .cv-table-main td:before {
+        margin-bottom: 5px;
+        font-size: 10px;
+    }
+
+    .cv-table-main td label {
+        text-align: left;
+        width: 100% !important;
+    }
+
+    /* Masquer le texte des boutons d'action du haut sur mobile */
+    .cv-btn-add,
+    .cv-btn-save,
+    .cv-btn-cancel {
+        width: 50px !important;
+        min-width: 50px !important;
+        height: 40px !important;
+        padding: 5px 0 !important;
+        font-size: 0 !important;
+        /* Cache le texte */
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        margin-top: 5px !important;
+    }
+
+    .cv-btn-add i,
+    .cv-btn-save i,
+    .cv-btn-cancel i,
+    .cv-btn-add .glyphicon,
+    .cv-btn-save .glyphicon,
+    .cv-btn-cancel .glyphicon {
+        font-size: 20px !important;
+        margin: 0 !important;
+        color: white !important;
+        display: inline-block !important;
+    }
+
+    .tv-search-input {
+        width: 100% !important;
+        max-width: 180px;
+        /* margin-top: 5px; */
+        margin-left: 0px;
+    }
+}
+
+
+/* --- Styles for Ajouter Categorie VOD --- */
+
+.cv-add-header {
+    border-radius: 8px;
+    text-align: left;
+    margin-left: 10px;
+    color: white;
+    font-style: oblique;
+    font-size: 22px;
+    background-color: #3087ce;
+    width: fit-content;
+    min-width: 300px;
+    padding: 4px 15px 4px 15px;
+    position: relative;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cv-add-header-icon {
+    position: absolute;
+    top: -52px;
+    left: 0px;
+    width: 48px;
+}
+
+.cv-add-container {
+    border-radius: 15px;
+    border: 1px solid #3087ce;
+    padding: 30px;
+    height: auto;
+    background-color: white;
+    margin: 15px 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.cv-add-form {
+    width: 100%;
+}
+
+.cv-add-form .form-group {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.cv-add-form label {
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 0;
+}
+
+.cv-add-form .form-control,
+.cv-add-form select.form-control {
+    height: 40px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    width: 100% !important;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background-color: #fff;
+}
+
+.cv-add-form .form-control-file {
+    height: auto;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    padding: 5px 12px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+
+#logo_input {
+    width: 100% !important;
+    max-width: 100%;
+}
+
+.cv-add-form .form-control:focus {
+    border-color: #3087ce;
+    box-shadow: 0 0 0 3px rgba(48, 135, 206, 0.2);
+    outline: none;
+}
+
+.cv-logo-preview {
+    width: 250px;
+    height: 250px;
+    border: 2px dashed #3087ce;
+    border-radius: 12px;
+    object-fit: contain;
+    background: #fdfdfd;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.cv-accordion-toggle {
+    cursor: pointer;
+    font-weight: bold;
+    color: #3087ce;
+    display: flex;
+    align-items: center;
+    text-decoration: none !important;
+}
+
+.cv-accordion-toggle i {
+    margin-left: 8px;
+}
+
+.cv-label-left {
+    text-align: left !important;
+}
+
+.cv-error-message {
+    color: #fff;
+    font-weight: 600;
+    display: none;
+    background-color: #e74c3c;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-top: 8px;
+    font-size: 13px;
+    width: 100%;
+}
+
+.cv-lang-container {
+    width: 100%;
+    margin-top: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.cv-lang-icon {
+    width: 24px;
+    margin-right: 10px;
+    border-radius: 2px;
+}
+
+.cv-btn-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 2px;
+    /* margin-top: 30px; */
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.cv-btn-annuler {
+    min-width: 140px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.cv-add-form button[type="submit"] {
+    min-width: 140px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 1024px) {
+    .cv-add-header {
+        width: 40%;
+        min-width: unset;
+        margin-right: auto;
+    }
+
+    .cv-add-container {
+        padding: 25px;
+        width: 95%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .cv-add-row {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .col-md-4,
+    .col-md-8 {
+        width: 100% !important;
+    }
+
+    .cv-logo-preview {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+
+    /* Keep side-by-side alignment for tablet */
+    .cv-add-form .form-group.row {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+    }
+
+    .cv-add-form label.col-lg-2 {
+        flex: 0 0 25% !important;
+        max-width: 25% !important;
+        text-align: left !important;
+    }
+
+    .cv-add-form .col-lg-10 {
+        flex: 0 0 75% !important;
+        max-width: 75% !important;
+    }
+
+    .cv-btn-group {
+        padding: 5px 0;
+        margin-top: -5px;
+        border-top: none;
+    }
+
+    .cv-add-form .form-group {
+        margin-bottom: 15px;
+    }
+
+    .cv-add-form br {
+        display: none;
+    }
+
+    .cv-btn-group a,
+    .cv-btn-group button {
+        width: 8%;
+        /* Keep them side by side if possible on tablet */
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .cv-add-header {
+        width: 80%;
+        min-width: unset;
+        margin-right: auto;
+    }
+
+    .cv-add-form .form-group.row {
+        display: block !important;
+    }
+
+    .cv-btn-group {
+        padding: 0px;
+        margin-top: -5px;
+        flex-direction: column-reverse;
+        /* Stacking buttons on mobile */
+        display: flex;
+        border-top: none;
+    }
+
+    .cv-add-form .form-group {
+        margin-bottom: 10px;
+    }
+
+    .cv-add-form br {
+        display: none;
+    }
+
+    .cv-btn-group a,
+    .cv-btn-group button {
+        width: 100% !important;
+        margin: 5px 0 !important;
+        min-width: unset !important;
+        height: 40px !important;
+    }
+
+    .cv-add-form .col-lg-2,
+    .cv-add-form .col-lg-10 {
+        width: 100% !important;
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin-bottom: 8px;
+    }
+
+    .cv-add-form label {
+        margin-bottom: 5px;
+        display: block;
+        text-align: left !important;
+    }
+
+    .cv-lang-container {
+        padding: 10px;
+    }
+
+    .cv-lang-container .col-md-6 {
+        width: 100% !important;
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+        margin-bottom: 15px;
+        padding: 0 !important;
+    }
+}
+
+@media screen and (max-width: 428px) {
+    .cv-add-header {
+        width: 90%;
+        margin-right: auto;
+    }
+}
+
+/* --- Styles for Modifier Categorie VOD --- */
+
+.cv-mod-header {
+    border-radius: 8px;
+    text-align: left;
+    margin-left: 0px;
+    color: white;
+    font-style: oblique;
+    font-size: 22px;
+    background-color: #3087ce;
+    width: fit-content;
+    min-width: 380px;
+    padding: 8px 15px 8px 15px;
+    position: relative;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cv-mod-header-icon {
+    position: absolute;
+    top: -52px;
+    left: 0px;
+    width: 48px;
+}
+
+.cv-mod-container {
+    border-radius: 15px;
+    border: 1px solid #3087ce;
+    padding: 30px;
+    height: auto;
+    background-color: white;
+    margin: 15px 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.cv-mod-form {
+    width: 100%;
+}
+
+.cv-mod-form .form-group {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.cv-mod-form label {
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 0;
+}
+
+.cv-mod-form .form-control,
+.cv-mod-form select.form-control {
+    height: 40px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    width: 100% !important;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background-color: #fff;
+}
+
+.cv-mod-logo-preview {
+    width: 300px;
+    height: 300px;
+    border: 2px dashed #3087ce;
+    border-radius: 12px;
+    object-fit: contain;
+    background: #fdfdfd;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+#cv-mod-logo-input {
+    height: auto;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    padding: 6px 12px;
+    width: 100% !important;
+    box-sizing: border-box;
+    background-color: #fff;
+    max-width: 100%;
+    margin-bottom: 10px;
+}
+
+.cv-mod-lang-container {
+    width: 100%;
+    margin-top: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.cv-mod-btn-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 2px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.cv-mod-btn-annuler {
+    min-width: 140px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.cv-mod-form button[type="submit"] {
+    min-width: 140px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Tablet / Mobile adjustments for Modifier */
+@media screen and (max-width: 1024px) {
+    .cv-mod-header {
+        width: 40%;
+        margin-right: auto;
+        min-width: unset;
+        font-size: 18px;
+        padding-top: 15px;
+        padding: 6px;
+    }
+
+    .cv-mod-container {
+        padding: 20px;
+        width: 95%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .cv-mod-logo-preview {
+        width: 320px !important;
+        height: auto !important;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+
+    .cv-mod-form .form-group.row {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+    }
+
+    .cv-mod-form label.col-lg-2 {
+        flex: 0 0 25% !important;
+        max-width: 25% !important;
+    }
+
+    .cv-mod-form .col-lg-10 {
+        flex: 0 0 75% !important;
+        max-width: 75% !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .cv-mod-header {
+        width: 90% !important;
+        padding: 4px;
+    }
+
+    .cv-mod-form .form-group.row {
+        display: block !important;
+    }
+
+    .cv-mod-form label.col-lg-2,
+    .cv-mod-form .col-lg-10 {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+        margin-bottom: 8px;
+    }
+
+    .cv-mod-btn-group {
+        flex-direction: column-reverse;
+        align-items: center;
+        margin-top: 15px;
+    }
+
+    .cv-mod-btn-group a,
+    .cv-mod-btn-group button {
+        width: 100% !important;
+        margin-bottom: 10px !important;
+        height: 40px !important;
+    }
+
+    .cv-mod-row {
+        flex-direction: column !important;
+    }
+
+    .cv-mod-lang-container .col-md-6 {
+        width: 100% !important;
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+        margin-bottom: 15px;
+        padding: 0 !important;
+    }
+
+    .cv-mod-form br {
+        display: none;
+    }
+}
+
+/* Force global icon visibility for Glyphicons on mobile/tablet */
+@media screen and (max-width: 1024px) {
+    .glyphicon {
+        display: inline-block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        font-family: 'Glyphicons Halflings' !important;
+    }
+}

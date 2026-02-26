@@ -1,0 +1,667 @@
+/* Custom CSS for Television List */
+
+#div1 {
+    border-radius: 25px;
+    border: 2px solid #3087ce;
+    padding: 43px;
+    width: 1091px;
+    height: 300px;
+    margin-left: 0;
+    margin-top: 10px;
+}
+
+.fileUpload {
+    position: relative;
+    overflow: hidden;
+}
+
+.fileUpload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    align-items: center;
+}
+
+#div2 {
+    margin-left: -130px;
+    margin-top: 10px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+}
+
+
+.header-fixed {
+    width: 100%;
+    min-width: 1450px;
+    /* Augmenté pour garantir que tout tient sur une ligne */
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.header-fixed thead {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.header-fixed tbody {
+    display: block;
+    height: auto;
+    max-height: 500px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+
+.header-fixed tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.header-fixed th,
+.header-fixed td {
+    padding: 10px 5px;
+    border: 1px solid #ddd;
+    text-align: center;
+    vertical-align: middle;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: table-cell !important;
+}
+
+
+
+.header-fixed td label {
+    display: contents;
+}
+
+/* IMPORTANT: les labels cachés ne doivent pas être affectés par display:contents */
+.header-fixed td label.tv-display-none {
+    display: none !important;
+}
+
+
+.header-fixed tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+
+
+
+.frame {
+    width: 100%;
+    max-width: 100% !important;
+    height: auto;
+}
+
+.dataTables_filter {
+    float: right;
+    width: 50%;
+    margin-top: -27px;
+}
+
+.dataTables_filter label {
+    color: #3087ce;
+    font-size: 20px;
+}
+
+.dataTables_filter input {
+    color: black;
+    font-size: 16px;
+}
+
+/* New classes extracted from inline styles */
+
+.tv-header-title {
+    border-radius: 8px;
+    margin-left: -130px;
+    margin-top: 10px;
+    text-align: left;
+    margin-bottom: 10px;
+    color: white;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 300px;
+    padding-left: 10px;
+    display: inline-block;
+}
+
+.tv-header-icon {
+    margin-top: -51px;
+    margin-left: -10px;
+    width: 45px;
+    float: left;
+}
+
+.tv-actions-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3px;
+    width: 100%;
+    min-width: 150px;
+}
+
+
+.tv-btn-width {
+    width: 120px;
+}
+
+.tv-icon-margin {
+    margin-right: 2px;
+}
+
+.tv-search-input {
+    height: 34px;
+    border-color: #3087ce;
+    width: 200px;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.tv-table-main {
+    width: 1450px !important;
+    margin-top: 20px;
+}
+
+
+/* Definition des largeurs par colonne pour un alignement parfait */
+.tv-th-name {
+    width: 150px;
+    height: 60px;
+    padding: 5px;
+}
+
+.tv-th-ip {
+    width: 150px;
+    height: 60px;
+    padding: 5px;
+    text-align: center;
+}
+
+.tv-th-port {
+    width: 120px;
+    height: 60px;
+    padding: 5px;
+    text-align: center;
+}
+
+.tv-th-numero {
+    width: 120px;
+    height: 60px;
+    padding: 5px;
+    text-align: center;
+}
+
+.tv-th-icons {
+    width: 120px;
+    height: 60px;
+    padding: 5px;
+    text-align: center;
+}
+
+.tv-th-pays {
+    width: 150px;
+    height: 60px;
+    padding: 5px;
+    text-align: center;
+}
+
+.tv-th-protocole {
+    width: 120px;
+    height: 60px;
+    padding: 5px;
+    text-align: center;
+}
+
+.tv-th-active {
+    width: 120px;
+    height: 60px;
+    padding: 5px;
+    text-align: center;
+}
+
+.tv-th-gratuite {
+    width: 120px;
+    height: 60px;
+    padding: 5px;
+    text-align: center;
+}
+
+.tv-th-actions {
+    width: 180px;
+    height: 60px;
+    padding: 5px;
+    text-align: center;
+}
+
+.tv-flex-center-gap {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.tv-checkbox-margin {
+    margin: 0 !important;
+}
+
+.tv-font-11 {
+    font-size: 11px;
+    width: 100%;
+}
+
+.tv-textarea-ip {
+    margin: 0 !important;
+    width: 100% !important;
+    height: 45px !important;
+    font-size: 11px;
+    resize: none;
+}
+
+.tv-logo-container {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.tv-select-full-font-11 {
+    width: 100%;
+    font-size: 11px;
+}
+
+.tv-td-actions {
+    width: 180px;
+    height: 60px;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    /* Empêche les boutons de sauter à la ligne */
+    display: table-cell !important;
+}
+
+.tv-td-actions>div,
+.tv-td-actions>a,
+.tv-td-actions>button {
+    display: inline-block !important;
+    /* Force le comportement en ligne */
+    vertical-align: middle;
+    margin: 0 2px;
+}
+
+
+
+
+.tv-modal-1000 {
+    width: 1000px;
+}
+
+.tv-modal-header-30 {
+    margin-top: 30px;
+}
+
+.tv-modal-title-box {
+    border-radius: 8px;
+    text-align: left;
+    margin: 10px 0;
+    color: white;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 300px;
+    padding: 5px 10px;
+    display: inline-block;
+}
+
+.tv-modal-title-icon {
+    margin-top: -55px;
+    margin-left: -10px;
+    width: 45px;
+    float: left;
+}
+
+.tv-btn-fixed-130 {
+    width: 130px;
+}
+
+.tv-modal-custom-size {
+    width: 800px;
+    height: 780px;
+}
+
+.tv-modal-title-box-launch {
+    border-radius: 8px;
+    text-align: left;
+    margin: 10px 0;
+    color: white;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 220px;
+    padding: 5px 10px;
+}
+
+.tv-form-padding-bottom {
+    height: 100%;
+}
+
+.tv-modal-body-font-black {
+    font-size: 16px;
+    color: black;
+}
+
+.tv-btn-fixed-139 {
+    width: 139px;
+}
+
+.tv-table-modal {
+    width: 100%;
+}
+
+.tv-th-modal-header {
+    width: 120px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.tv-text-red {
+    color: red;
+}
+
+.tv-th-modal-center {
+    width: 120px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tv-tr-modal {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.tv-td-modal {
+    width: 120px;
+    height: 40px;
+}
+
+.tv-td-modal-center {
+    width: 120px;
+    height: 40px;
+    text-align: center;
+}
+
+.tv-display-none {
+    display: none;
+}
+
+.tv-modal-title-lh3 {
+    line-height: 3;
+}
+
+.tv-text-red-16 {
+    color: red;
+    font-size: 16px;
+}
+
+.tv-text-red-13 {
+    color: red;
+    font-size: 13px;
+}
+
+.tv-margin-left-51 {
+    margin-left: 51px;
+}
+
+.tv-margin-left-70 {
+    margin-left: 70px;
+}
+
+.tv-modal-460 {
+    width: 460px;
+}
+
+.tv-modal-ml-200 {
+    margin-left: -200px !important;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (TABLETTE & MOBILE)
+   ========================================================================== */
+
+@media screen and (max-width: 1024px) {
+    #div1 {
+        width: 100%;
+        padding: 20px;
+        height: auto;
+    }
+
+    .tv-header-title {
+        margin-left: 0 !important;
+    }
+
+    /* .tv-header-icon {
+        float: none;
+        margin: 0 auto 10px;
+        display: block;
+    } */
+
+    #div2 {
+        margin-left: 0 !important;
+        width: 100%;
+        padding: 0 10px;
+        box-sizing: border-box;
+        height: 100%;
+    }
+
+    .tv-actions-row {
+        flex-direction: column;
+        align-items: center;
+        width: 100% !important;
+        min-width: unset !important;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .tv-actions-row>div {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .tv-btn-width {
+        flex: 1 1 auto;
+        min-width: 120px;
+        max-width: 200px;
+        margin-top: 20px;
+    }
+
+    .tv-search-input {
+        width: 100% !important;
+        max-width: 200px;
+        margin-left: 70%;
+    }
+
+    /* Transformer la table en cartes pour Tablette ET Mobile */
+    .header-fixed {
+        min-width: unset !important;
+        width: 100% !important;
+        display: block;
+        border: none !important;
+    }
+
+    .header-fixed thead {
+        display: none;
+        /* Cache les en-têtes de table classiques */
+    }
+
+    .header-fixed tbody {
+        display: block;
+        height: auto !important;
+        max-height: unset !important;
+        width: 100% !important;
+    }
+
+    .header-fixed tbody tr {
+        display: block;
+        width: 100% !important;
+        margin-bottom: 25px;
+        border: 2px solid #3087ce;
+        border-radius: 12px;
+        padding: 15px;
+        background: #fff;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+        box-sizing: border-box;
+    }
+
+    .header-fixed td {
+        display: flex !important;
+        width: 100% !important;
+        padding: 10px 0 !important;
+        border: none !important;
+        border-bottom: 1px solid #f0f0f0 !important;
+        text-align: left !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        height: auto !important;
+        white-space: normal !important;
+        box-sizing: border-box;
+    }
+
+    .header-fixed td:last-child {
+        border-bottom: none !important;
+    }
+
+    /* Affichage des labels (thead) à gauche */
+    .header-fixed td:before {
+        content: attr(data-label) " :";
+        font-weight: 800;
+        color: #3087ce;
+        margin-right: 15px;
+        min-width: 120px;
+        flex-shrink: 0;
+        text-transform: uppercase;
+        font-size: 11px;
+    }
+
+    /* Ajustements pour les éléments dans les TD */
+    .header-fixed td label {
+        width: auto !important;
+        flex-grow: 1;
+        text-align: right;
+        display: block !important;
+    }
+
+    .tv-font-11,
+    .tv-textarea-ip,
+    .tv-select-full-font-11 {
+        width: 100% !important;
+        /* max-width: 250px; */
+        margin-left: auto;
+    }
+
+    .tv-logo-container {
+        margin: 5px auto !important;
+    }
+
+
+    .tv-td-actions {
+        justify-content: flex-end !important;
+        gap: 10px !important;
+    }
+
+    /* Modales */
+    .tv-modal-custom-size {
+        width: 95% !important;
+        height: auto !important;
+        margin: 20px auto !important;
+    }
+
+    .tv-modal-ml-200 {
+        margin-left: 0 !important;
+    }
+
+    .tv-modal-460 {
+        width: 95%;
+        margin: 0 auto;
+    }
+}
+
+/* Ajustements spécifiques pour mobiles très étroits */
+@media screen and (max-width: 480px) {
+    .header-fixed td {
+        /* flex-direction: column; */
+        align-items: flex-start !important;
+    }
+
+    .header-fixed td:before {
+        margin-bottom: 5px;
+    }
+
+    .header-fixed td label {
+        text-align: left;
+        width: 100% !important;
+    }
+
+    .tv-font-11,
+    .tv-textarea-ip,
+    .tv-select-full-font-11 {
+        max-width: 100%;
+    }
+
+    .tv-search-input {
+        width: 100% !important;
+        max-width: 400px;
+        margin-left: 0px;
+    }
+
+    /* Masquer le texte des boutons d'action, ne laisser que l'icône */
+    .tv-btn-width {
+        width: 40px !important;
+        min-width: 40px !important;
+        height: 35px !important;
+        padding: 5px 0 !important;
+        font-size: 0 !important;
+        /* Cache le texte */
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        margin-top: 5px !important;
+    }
+
+    .tv-btn-width i,
+    .tv-btn-width .fa-solid,
+    .tv-btn-width .glyphicon,
+    .tv-btn-width svg {
+        font-size: 20px !important;
+        width: 20px !important;
+        height: 20px !important;
+        margin: 0 !important;
+        color: white !important;
+        fill: white !important;
+        /* Pour les SVG */
+        display: inline-block !important;
+        vertical-align: middle !important;
+    }
+}

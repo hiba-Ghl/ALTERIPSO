@@ -5,7 +5,7 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class PushRabbit {
-   public $rabbiturl = '127.0.0.1';
+   public $rabbiturl = '192.168.1.25';
    public $rabbitport = 5672;
    public $rabbitlogin = 'alteripso';
    public $rabbitpass = 'Harestech';

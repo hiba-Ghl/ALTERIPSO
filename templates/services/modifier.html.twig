@@ -3,6 +3,7 @@
 {# ####################################################################################### #}
 {# Cette section concerne la conception de modèles pour la modification d'un service.#}
 {% block body %}
+<link rel="stylesheet" href="{{ asset('css/css_service.css') }}">
 {# offline #}
 {% if appConfig.StatusServeur is same as('Offline') %}
 
@@ -12,8 +13,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 
 {% endif %}
-<div style="border-radius: 8px;  margin-top:10px;text-align: left; margin-bottom: 10px; margin-left: -130px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 200px; padding-left: 10px; display: inline-block;">
-    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+<div class="md-header-title">
+    <img class="md-header-icon" src="{{ asset('images/ler.png') }}">
     Mise à jour Service
 </div>
 <div class="div2">
@@ -27,7 +28,7 @@
                     <label class="control-label">Nom de Service</label>
                     <input type="text" id="nom_service" class="form-control test" name="nom" value="{{service.nom}}"/>
                 </div>
-                <div class="form-group" style="margin-bottom:18px;">
+                <div class="form-group md-form-group-icon">
                     <button type="button" class="btn btn-success btn btn-sm" data-toggle="modal" id="ajoute">
                      Choisissez un icone
                 </button>
@@ -45,7 +46,7 @@
                         <option value='0' {% if service.active == '0' %}selected {% endif %}>Non</option>
                     </select>
                     </div>
-                     <div style="display: flex; align-items: center; gap: 5px; margin-top: 8px; height: 48px; padding-top: 5px">
+                     <div class="md-translate-row">
                  <div class="form-group">
                     <button type="button" class="btn btn-info"  id ="test" >
                         Traduire le service
@@ -56,16 +57,16 @@
                 </a>
                 </div>
                     <div id="collapseTwo" class="panel-collapse collapse">
-                        <div class="panel-body" style="width:410px;padding:0px">
-                            <table class="table" style="width: 400px; ">
-                                <tr style="width:400px">
+                        <div class="panel-body md-panel-body-traduction">
+                            <table class="table md-table-traduction">
+                                <tr>
                                     <td>
-                                        <img style="width: 30px" src="{{ asset('images/eng.png') }}">
+                                        <img class="md-flag-img" src="{{ asset('images/eng.png') }}">
                                         <label class="control-label required" for="EN">English</label>
                                         <input  type="text" id="EN" name="EN" class="form-control" value="{{service.En}}">
                                     </td>
                                     <td>
-                                        <img style="width: 30px" src="{{ asset('images/es.png') }}">
+                                        <img class="md-flag-img" src="{{ asset('images/es.png') }}">
                                         <label class="control-label required" for="ES">Espagnol</label>
                                         <input  type="text" id="ES" name="ES" class="form-control" value="{{service.Es}}">
                                     </td>
@@ -73,12 +74,12 @@
 
                                 <tr>
                                     <td>
-                                        <img style="width: 30px" src="{{ asset('images/pt.png') }}">
+                                        <img class="md-flag-img" src="{{ asset('images/pt.png') }}">
                                         <label class="control-label required" for="PT">Portugues</label>
                                         <input  type="text" id="PT" name="PT" class="form-control" value="{{service.Pt}}">
                                     </td>
                                     <td>
-                                        <img style="width: 30px" src="{{ asset('images/ita.png') }}">
+                                        <img class="md-flag-img" src="{{ asset('images/ita.png') }}">
                                         <label class="control-label required" for="IT">Italiano</label>
                                             <input  type="text" id="IT" name="IT" class="form-control" value="{{service.It}}">
                                     </td>
@@ -86,12 +87,12 @@
 
                                 <tr>
                                     <td>
-                                        <img style="width: 30px" src="{{ asset('images/rus.png') }}">
+                                        <img class="md-flag-img" src="{{ asset('images/rus.png') }}">
                                         <label class="control-label required" for="RU">Russian</label>
                                         <input  type="text" id="RU" name="RU" class="form-control" value="{{service.Ru}}">
                                     </td>
                                     <td>
-                                        <img style="width: 30px" src="{{ asset('images/deu.png') }}">
+                                        <img class="md-flag-img" src="{{ asset('images/deu.png') }}">
                                         <label class="control-label required" for="DE">Deutsch</label>
                                         <input  type="text" id="DE" name="DE" class="form-control" value="{{service.De}}">
                                     </td>
@@ -99,12 +100,12 @@
 
                                 <tr>
                                     <td>
-                                        <img style="width: 30px" src="{{ asset('images/ch.png') }}">
+                                        <img class="md-flag-img" src="{{ asset('images/ch.png') }}">
                                         <label class="control-label required" for="ZH">China</label>
                                         <input  type="text" id="ZH" name="ZH" class="form-control" value="{{service.Zh}}">
                                     </td>
                                     <td>
-                                        <img style="width: 30px" src="{{ asset('images/ma.png') }}">
+                                        <img class="md-flag-img" src="{{ asset('images/ma.png') }}">
                                         <label class="control-label required" for="AR">العربية</label>
                                         <input  type="text" id="AR" name="AR"  class="form-control" value="{{service.Ar}}">
                                     </td>
@@ -126,13 +127,13 @@
                             <option value="VIDEO" {% if service.type == 'VIDEO' %}selected {% endif %}>VIDEO</option>
                         </select>
                     </div>
-                    <div style="margin-bottom:-6px" id="divFile">
+                    <div class="md-div-file" id="divFile">
                         <input type="file" id="service_src" name="service_src" class="form-control test" value="{{service.src}}">
                         <p id="fichier" style="display:none">{{service.src}}</p>
                     </div>
                     <div style="">
                         <label class="control-label">Description</label>
-                        <textarea id="service_description" class="form-control test" style="height:50px;color:black" placholder="description" name="Description" value="{{service.description}}">{{service.description}}</textarea>
+                        <textarea id="service_description" class="form-control test md-textarea-description" placholder="description" name="Description" value="{{service.description}}">{{service.description}}</textarea>
                     </div>
                  <div >
                     <label class="control-label">Service</label>
@@ -146,10 +147,10 @@
         </div>
 
         <div class="button">
-            <button type="button" class="btn btn-danger mt-3" onclick="window.location.href='{{ path('services_Categorie',{id: id_categorie}) }}'" style="width:130px">
+            <button type="button" class="btn btn-danger mt-3 md-btn-action" onclick="window.location.href='{{ path('services_Categorie',{id: id_categorie}) }}'">
                 <i class="glyphicon glyphicon-remove"></i> Annuler
             </button>
-            <button type="submit" class="btn btn-primary mt-3" style="width:130px">
+            <button type="submit" class="btn btn-primary mt-3 md-btn-action">
                 <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
             </button>
         </div>
@@ -159,11 +160,11 @@
 {# ################################################################################################## #}
 {# pop-up affichant les images internes pour sélectionner une icône afin de modifier le logo du service. #}
 <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog" role="document" style="width:1000px">
+<div class="modal-dialog md-modal-dialog-lg" role="document">
 <div class="modal-content">
-            <div class="modal-header" style="margin-top:30px">
-                <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 200px; padding: 5px 10px; display: inline-block;">
-                    <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+            <div class="modal-header md-modal-header-icone">
+                <div class="md-modal-header-title">
+                    <img class="md-modal-header-icon" src="{{ asset('images/ler.png') }}" alt="Icon">
                     Ajouter un icone
                 </div>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -171,17 +172,17 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div style="display: flex; justify-content:center;flex-wrap: wrap; gap: 15px;height:500px;overflow:scroll;">
+                <div class="md-images-grid">
                     {% for image in images %}
-                        <div class="image-container1" onclick="selectImage('{{ image }}')" style="cursor: pointer;">
-                            <img src="{{ asset(image) }}" alt="Image" class="image-thumbnail" style="width: 100%; height:100%;object-fit: cover; border: 1px solid #ddd; border-radius: 5px;">
+                        <div class="image-container1 md-image-container" onclick="selectImage('{{ image }}')">
+                            <img src="{{ asset(image) }}" alt="Image" class="image-thumbnail md-image-thumbnail">
                         </div>
                     {% endfor %}
                 </div>
             </div>
                 <input type="hidden" id="selectedImage" name="selectedImage"/>
             <div class="modal-footer">
-                <div class="form-group" style="width: 100%; text-align: left;">
+                <div class="form-group md-modal-footer-upload">
                     <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg">
                 </div>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
@@ -675,32 +676,31 @@ function oldImage() {
     const imagePath =`${URL}/${image}`;
     const imagesPath = `/images/${imagePath}/services_directory_diapo`
     DivImg.innerHTML = `
-            <p style="width: 100%;text-align: end;cursor: pointer;"  class="btn btn-xs" onclick="deleteOldImage(${i})"   data-toggle="tooltip" data-placement="top" title="Supprimer l'image" >
+            <p class="btn btn-xs md-diapo-delete-btn" onclick="deleteOldImage(${i})" data-toggle="tooltip" data-placement="top" title="Supprimer l'image" >
                 <i class="glyphicon glyphicon-trash" style="color:red"></i>
             </p>
             <img src="${imagesPath}" 
                  alt="Image ${i}" class="img1">
         `;
     let divInputs = document.createElement("div");
-    divInputs.style.display = "flex";
-    divInputs.style.flexDirection = "column";
+    divInputs.classList.add("md-diapo-inputs-container");
     divInputs.innerHTML = `
             <label>Ordre d'affichage:</label>
             <input id="numberInput-${i}" 
                    name="numberInput[${i}]" 
                    type="number" 
                    min="1"
-                   style="width: 100%; margin-bottom: 10px;" 
+                   class="md-diapo-input-number"
                    value="${orderValue}" onchange = "changeValeurOrder(this,${i})">
             <label>Durée d'affichage:</label>
-            <div style="position:relative">
+            <div class="md-diapo-input-time-container">
             <input id="timeInput-${i}" 
                    name="timeInput[${i}]" 
                    type="number"
                    min="1"
-                   style="width: 100%; margin-bottom: 10px;" 
+                   class="md-diapo-input-number"
                    value="${durationValue}">
-            <span style="position:absolute;right:4px;top:2px">(Seconde)</span>
+            <span class="md-diapo-unit-span">(Seconde)</span>
             </div>`;
 
     DivImg.appendChild(divInputs);
