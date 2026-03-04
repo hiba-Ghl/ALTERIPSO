@@ -1,5 +1,8 @@
 /* fichier Application=> modifier.html.twig 
  et Jeux => modifier.html.twig*/
+ body{
+    line-height: 2.42857143;
+}
  #titre{
         border-radius: 8px;
         text-align: left;
@@ -53,7 +56,7 @@
         }
         #div_modifier{
             padding: 15px;
-            height:520px !important;
+            height:560px !important;
         }
         /* Spécifique pour input file */
         input[id="logo_input"] {

@@ -1,4 +1,8 @@
 /* fichier css du page livreAudio=>index.html.twig */
+body{
+    line-height: 2.42857143;
+}
+
 /* TITRE LIVREAUDIO */
 #titre_livreaudio {
     text-align: left;

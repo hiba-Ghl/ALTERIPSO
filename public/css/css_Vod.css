@@ -297,6 +297,7 @@
     .v-td-action {
         width: 140px !important;
     }
+    
 }
 
 /* --- MOBILE ADAPTATIONS (max 768px) --- */
@@ -312,12 +313,22 @@
         margin-top: -40px;
     }
 
-    #div2 {
+    /* #div2 {
         border-radius: 12px;
-        padding: 10px !important;
+        width: 100% !important;
+        padding: 0;
         margin-bottom: 20px;
         height: auto !important;
         min-height: unset !important;
+        height: 100vh;  
+    } */
+   /* ton #div2 doit prendre toute la hauteur et faire défiler son contenu */
+    #div2 {
+        border-radius: 12px;
+        width: 100% !important;
+        height: 100vh;          /* toute la longueur de l’écran */
+        overflow-y: auto;
+        padding: 0 0 20px 0;      /* les <tr> restent à l’intérieur */
     }
 
     .v-actions-row {
@@ -406,7 +417,8 @@
 
     .v-table-main tr {
         display: block !important;
-        margin-bottom: 30px;
+        width: 100% !important;
+        margin-bottom: 10px !important;
         padding: 20px;
         background: #fff;
         border: 2px solid #3087ce;
@@ -552,5 +564,369 @@
         content: attr(data-label);
         font-weight: bold;
         color: #3087ce;
+    }
+}
+
+/* --- ADD VOD PAGE STYLES --- */
+
+.v-add-header-title {
+    border-radius: 8px;
+    text-align: left;
+    margin-left: -30px;
+    margin-top: 10px;
+    color: white;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 250px;
+    padding-left: 10px;
+    display: block;
+    height: 30px;
+    line-height: 30px;
+}
+
+.v-add-header-icon {
+    margin-top: -51px;
+    margin-left: -10px;
+    width: 45px;
+    float: left;
+}
+
+#v-add-container {
+    border-radius: 25px;
+    border: 2px solid #3087ce;
+    height: auto;
+    display: flex;
+    background-color: white;
+    margin-right: -30px;
+    margin-left: -30px;
+    margin-top: 10px;
+    padding: 20px;
+}
+
+.v-add-form {
+    width: 100%;
+}
+
+.v-add-logo-preview {
+    width: 100%;
+    max-width: 350px;
+    height: 335px;
+    margin-top: 20px;
+    margin-left: 20px;
+    object-fit: contain;
+    border: 1px dashed #ccc;
+}
+
+.v-add-info-text {
+    font-weight: bold;
+    color: red;
+    font-size: 15px;
+}
+
+.v-add-textarea {
+    margin-bottom: 20px;
+}
+
+.v-add-footer-actions {
+    float: right;
+    margin-left: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.v-add-btn-annuler {
+    width: 130px;
+}
+
+.v-add-error-message {
+    color: white;
+    font-weight: bold;
+    display: none;
+    background-color: red;
+    padding: 5px;
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
+/* --- ADAPTATIONS TABLET (max 1024px) --- */
+@media screen and (max-width: 1024px) {
+    .v-add-header-title {
+        margin-left: 0;
+    }
+    .v-add-info-text {
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 10px !important;
+    }
+
+    #v-add-container {
+        margin-left: 0;
+        margin-right: 0;
+        padding: 15px;
+    }
+
+    .v-add-logo-preview {
+        width: 100%;
+        height: auto;
+        margin: 20px auto;     /* auto = centre */
+        display: block; 
+    }
+      /* les champs du formulaire prennent seulement la largeur disponible
+       et ne débordent pas */
+    .v-add-form .form-control,
+    #v-add-container select,
+    #v-add-container textarea {
+        width: 90% !important;   /* ou « auto » selon le besoin */
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* si tu veux aussi réduire la taille des boutons */
+    .v-add-footer-actions a,
+    .v-add-footer-actions button {
+        width: auto;
+    }
+
+}
+
+/* --- ADAPTATIONS MOBILE (max 768px) --- */
+@media screen and (max-width: 768px) {
+    .v-add-header-title {
+        width: 100%;
+        max-width: 150px;
+        font-size: 18px;
+    }
+
+    .v-add-header-icon {
+        width: 35px;
+        margin-top: -40px;
+    }
+
+    #v-add-container {
+        border-radius: 15px;
+        padding: 10px;
+        display: block;
+        /* Stack image and form */
+    }
+
+
+    .v-add-logo-preview {
+        max-width: 250px;
+        height: auto;
+        margin: 10px auto;
+        display: block;
+    }
+
+    .v-add-footer-actions {
+        float: none;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .v-add-footer-actions a,
+    .v-add-footer-actions button {
+        width: auto !important;
+        margin-left: 0 !important;
+        padding: 6px 15px !important;
+    }
+
+    .v-add-info-text {
+        font-size: 13px;
+    }
+
+    .control-label {
+        font-size: 14px;
+    }
+}
+
+/* --- MODIFIER VOD PAGE STYLES --- */
+
+.v-mod-header-title {
+    border-radius: 8px;
+    text-align: left;
+    margin-left: -30px;
+    margin-top: 10px;
+    color: white;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+}
+
+.v-mod-header-icon {
+    margin-top: -51px;
+    margin-left: -10px;
+    width: 45px;
+    float: left;
+}
+
+#v-mod-container {
+    border-radius: 25px;
+    border: 2px solid #3087ce;
+    height: auto;
+    display: flex;
+    background-color: white;
+    margin-right: -30px;
+    margin-left: -30px;
+    margin-top: 10px;
+    padding: 20px;
+}
+
+.v-mod-form {
+    width: 100%;
+}
+
+.v-mod-logo-preview {
+    width: 100%;
+    max-width: 350px;
+    height: 335px;
+    margin-top: 20px;
+    margin-left: 20px;
+    object-fit: contain;
+    border: 1px dashed #ccc;
+}
+
+.v-mod-info-text {
+    font-weight: bold;
+    color: red;
+    font-size: 15px;
+}
+
+.v-mod-textarea {
+    margin-bottom: 20px;
+}
+
+.v-mod-footer-actions {
+    float: right;
+    margin-left: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.v-mod-btn-annuler {
+    width: 130px;
+}
+
+.v-mod-error-message {
+    color: white;
+    font-weight: bold;
+    display: none;
+    background-color: red;
+    padding: 5px;
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
+/* --- ADAPTATIONS TABLET (max 1024px) --- */
+@media screen and (max-width: 1024px) {
+    .v-mod-header-title {
+        margin-left: 0;
+    }
+    .v-mod-info-text {
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 10px;
+    }
+
+
+    #v-mod-container {
+        margin-left: 0;
+        margin-right: 0;
+        padding: 15px;
+    }
+
+    .v-mod-logo-preview {
+        width: 100%;
+        height: auto;
+        margin: 20px auto;     /* auto = centre */
+        display: block;
+    }
+    /* les champs du formulaire prennent seulement la largeur disponible
+       et ne débordent pas */
+    .v-mod-form .form-control,
+    #v-mod-container select,
+    #v-mod-container textarea {
+        width: 90% !important;   /* ou « auto » selon le besoin */
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* si tu veux aussi réduire la taille des boutons */
+    .v-mod-footer-actions a,
+    .v-mod-footer-actions button {
+        width: auto;
+    }
+}
+
+/* --- ADAPTATIONS MOBILE (max 768px) --- */
+@media screen and (max-width: 768px) {
+    .v-mod-header-title {
+        width: 100%;
+        max-width: 200px;
+        font-size: 18px;
+    }
+
+    .v-mod-header-icon {
+        width: 35px;
+        margin-top: -40px;
+    }
+
+    #v-mod-container {
+        border-radius: 15px;
+        padding: 10px;
+        display: block;
+    }
+
+    .v-mod-logo-preview {
+        max-width: 250px;
+        height: auto;
+        margin: 10px auto;
+        display: block;
+    }
+
+    .v-mod-footer-actions {
+        float: none;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .v-mod-footer-actions a,
+    .v-mod-footer-actions button {
+        width: auto !important;
+        margin-left: 0 !important;
+        padding: 6px 15px !important;
+    }
+
+    .v-mod-info-text {
+        font-size: 13px;
+    }
+
+    /* Override bootstrap form-horizontal on mobile */
+    .v-mod-form .control-label {
+        text-align: left;
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .v-mod-form .form-group {
+        margin-bottom: 15px;
+    }
+
+    .v-mod-form .form-control {
+        width: 100%;
     }
 }

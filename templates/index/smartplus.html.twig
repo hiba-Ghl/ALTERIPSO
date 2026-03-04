@@ -10,22 +10,26 @@
   width: 70%;
   margin: auto;
 }
-/* Adapter le carousel selon écran */
-/* @media (min-width: 768px) {
-  .carousel-inner > .item > img {
-    width: 80% !important;
+
+/* Adapter le carousel pour le mobile : pleine largeur, sans zoom nécessaire */
+@media (max-width: 767px) {
+  .carousel-inner > .item > img,
+  .carousel-inner > .item > a > img {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  #myCarousel {
+    width: 100% !important;
+  }
+
+  .smartplus-carousel-container {
+    height: auto !important;
   }
 }
-
-@media (min-width: 1200px) {
-  .carousel-inner > .item > img {
-    width: 70% !important;
-  }
-} */
 </style>
 
-
-<div class="container" style="height: 500px">
+<div class="container smartplus-carousel-container">
 
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
 <!-- Indicators -->

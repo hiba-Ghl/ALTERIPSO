@@ -1,0 +1,322 @@
+/* CSS spécifique à la page config_mobile/index.html.twig */
+
+/* Titres, labels et blocs principaux */
+label {
+	display: inline-block;
+	text-transform: lowercase;
+}
+
+label::first-letter {
+	text-transform: capitalize;
+}
+
+#rcorners {
+	border-radius: 25px;
+	border: 2px solid #73AD21;
+	padding: 20px;
+	width: 360px;
+	height: 215px;
+	margin-left: 10px;
+	margin-top: 10px;
+	background-color: white;
+}
+
+#rcorners2 {
+	border-radius: 25px;
+	border: 2px solid #73AD21;
+	padding: 20px;
+	width: 1091px;
+	height: 527px;
+	margin-left: 10px;
+	margin-top: 10px;
+	background-color: white;
+}
+
+#rcorners3 {
+	border-radius: 25px;
+	border: 2px solid #73AD21;
+	padding: 20px;
+	width: 1091px;
+	height: 300px;
+	margin-left: 10px;
+	margin-top: 10px;
+	background-color: white;
+}
+
+#rcorners4 {
+	border-radius: 25px;
+	border: 2px solid #73AD21;
+	padding: 20px;
+	width: 1091px;
+	height: 646px;
+	margin-left: 10px;
+	margin-top: 10px;
+	background-color: white;
+}
+
+/* Effets hover sur les tuiles de services */
+.television:hover {
+	border: 4px solid red !important;
+}
+
+.radio:hover {
+	border: 4px solid green !important;
+}
+
+.service1:hover {
+	border: 4px solid #025fcc !important;
+}
+
+.vod:hover {
+	border: 4px solid yellow !important;
+}
+
+.jeux:hover {
+	border: 4px solid #621717 !important;
+}
+
+.application:hover {
+	border: 4px solid #9a1d84 !important;
+}
+
+.questionnaire:hover {
+	border: 4px solid #928790 !important;
+}
+
+.support1:hover {
+	border: 4px solid #07478e !important;
+}
+
+.livreaudio:hover {
+	border: 4px solid #ca33d8 !important;
+}
+
+.charte:hover {
+	border: 4px solid #ff8956 !important;
+}
+
+.servicepayant:hover {
+	border: 4px solid #c0882e !important;
+}
+
+/* Mise en forme du tableau d'informations établissement */
+.col-lg-12 {
+	width: 100%;
+}
+
+.col-lg-6 {
+	width: 50%;
+	display: inline-block;
+	vertical-align: top;
+}
+
+/* Alignement initial des labels */
+.control-label {
+	text-align: right;
+}
+
+/* Espacement entre les champs */
+.form-control {
+	margin-bottom: 10px;
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
+}
+
+.form-group {
+	margin-bottom: 0px !important;
+}
+
+#infoIcon2,
+#infoIcon3,
+#infoIcon4,
+#infoIcon {
+	font-size: 20px;
+}
+
+/* Ajustements spécifiques pour le bloc rcorners3 */
+#rcorners3 {
+	text-align: left;
+	width: 96%;
+}
+
+/* Ajustement global des labels dans rcorners3 (garde la cascade d'origine) */
+.control-label {
+	width: 100%;
+	display: inline-block;
+	text-align: left;
+	padding-right: 10px;
+}
+
+/* Styles pour les fenêtres modales d'aide */
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+	background-color: #fefefe;
+	margin: 4% auto;
+	padding: 20px;
+	width: 32%;
+}
+
+.close {
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+/* Titres de sections (Informations établissement, mail facture, application) */
+.config-section-title {
+	border-radius: 8px;
+	text-align: left;
+	margin-left: 10px;
+	color: white;
+	font-style: oblique;
+	font-size: 20px;
+	background-color: #73AD21;
+	padding-left: 10px;
+}
+
+.config-section-title--small {
+	width: 250px;
+}
+
+.config-section-title--medium {
+	width: 300px;
+}
+
+/* Wrapper des boutons (par défaut : alignés à droite, sans espace entre eux) */
+.config-btn-wrapper {
+	text-align: right;
+	margin: 15px 0;
+	font-size: 0; /* supprime l'espace inline entre les boutons */
+}
+
+.config-btn-wrapper .btn {
+	margin-left: 2px;
+	margin-right: 0;
+	font-size: 14px; /* rétablit la taille de police normale pour le texte des boutons */
+}
+
+/* ========================= */
+/* Responsive : tablettes et mobiles */
+/* ========================= */
+
+/* Tablette (768px à 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+	#rcorners2,
+	#rcorners3,
+	#rcorners4 {
+		width: 100%;
+		height: auto;
+		margin-left: 0;
+		margin-right: 0;
+	}
+
+	/* Forcer le tableau en affichage bloc pour une seule colonne */
+	#rcorners2 table,
+	#rcorners2 table tr,
+	#rcorners2 table td,
+	#rcorners4 table,
+	#rcorners4 table tr,
+	#rcorners4 table td {
+		display: block;
+		width: 100%;
+	}
+
+	/* Les deux colonnes passent l'une sous l'autre en tablette */
+	.col-lg-6 {
+		width: 100%;
+		display: block;
+	}
+
+	.config-section-title,
+	.config-section-title--small,
+	.config-section-title--medium {
+		/* width: auto; */
+		max-width: 100%;
+		margin-left: 10px;
+		margin-right: 10px;
+	}
+
+	/* Boutons alignés à droite sur tablette (même ligne) */
+	.config-btn-wrapper {
+		text-align: right;
+		margin: 15px 0;
+	}
+}
+
+/* Mobile (moins de 768px) */
+@media (max-width: 767px) {
+	body {
+		padding: 0 5px;
+	}
+
+	#rcorners2,
+	#rcorners3,
+	#rcorners4 {
+		width: 100%;
+		height: auto;
+		margin-left: 0;
+		margin-right: 0;
+		padding: 10px;
+		box-sizing: border-box;
+	}
+
+	/* Forcer le tableau en affichage bloc pour une seule colonne */
+	#rcorners2 table,
+	#rcorners2 table tr,
+	#rcorners2 table td,
+	#rcorners4 table,
+	#rcorners4 table tr,
+	#rcorners4 table td {
+		display: block;
+		width: 100%;
+	}
+
+	/* Les deux colonnes passent l'une sous l'autre */
+	.col-lg-6 {
+		width: 100%;
+		display: block;
+	}
+
+	/* Titres de section pleine largeur */
+	.config-section-title,
+	.config-section-title--small,
+	.config-section-title--medium {
+		width: 55%;
+		max-width: 100%;
+		margin-left: 0;
+		margin-right: 0;
+		box-sizing: border-box;
+	}
+
+	/* Boutons d'action alignés à droite (même ligne) */
+	.config-btn-wrapper {
+		text-align: right;
+		margin: 15px 0;
+	}
+
+	/* Modales plus larges sur petit écran */
+	.modal-content {
+		width: 90%;
+	}
+}
+

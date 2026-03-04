@@ -1,4 +1,7 @@
 /* Custom CSS for Service List */
+body{
+    line-height: 2.42857143;
+}
 .dataTables_filter {
     float: right;
     width: 50%;

@@ -1,5 +1,8 @@
 	/* fichier application = index.html.twig */
-  
+body{
+    line-height: 2.42857143;
+}
+
   #titre{
         border-radius: 8px;
         text-align: left;
@@ -42,6 +45,7 @@
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
         -webkit-appearance: none;
+        appearance: none;
     }
     .active-tab {
         background-color: #ccc; /* Couleur de fond de l'onglet actif */
@@ -52,6 +56,9 @@
     height: auto;
     max-height: 140px;
     object-fit: contain;
+    }
+    .thumbnail{
+        margin-top: 10px;
     }
 
     .nav-tabs {
@@ -93,7 +100,7 @@
         border: 2px solid #3087ce;
         padding: 20px;
         width: 100%;
-        height:250px;
+        height:auto;
         max-width: 1200px;
         margin: 10px auto;
         background-color: white;

@@ -1,41 +1,24 @@
 {% extends 'home/index.html.twig' %}
 
 {% block body %}
-<style>
-    #div2 {
-            border-radius: 25px;
-			border: 2px solid #3087ce;
-            height: auto;
-            display: flex;
-            background-color:white;
-            margin-right:-30px;
-            margin-left:-30px;
-            margin-top: 10px;
-		}
-         .error-message {
-        color: white;
-        font-weight: bold;
-        display: none; 
-        background-color:red;
-    }
-        
-</style>
+<link rel="stylesheet" href="{{ asset('css/css_Vod.css') }}" />
 
-<div style="border-radius: 8px;text-align: left;margin-left: -30px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
-    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+
+<div class="v-add-header-title">
+    <img class="v-add-header-icon" src="{{ asset('images/ler.png') }}">
     Ajouter VOD
 </div>
 
 
-<div id="div2">
-    <form name="" method="post" action="{{ path('app_ajouter_vod') }}" class="form-horizontal" enctype="multipart/form-data" onsubmit="return validateForm()">
+<div id="v-add-container">
+    <form name="" method="post" action="{{ path('app_ajouter_vod') }}" class="form-horizontal v-add-form" enctype="multipart/form-data" onsubmit="return validateForm()">
 
         <div class="container">
             <div class="row">
                 <!-- Logo preview on the left -->
                 <div class="col-md-4">
                     <div class="form-group">
-                        <img id="logo-preview" style="width:350px;height:335px;margin-top:20px; margin-left:20px;" />
+                        <img id="logo-preview" class="v-add-logo-preview" />
                     </div>
                 </div>
 
@@ -51,25 +34,25 @@
                     <!-- File upload input on the right -->
                     <div class="form-group">
                         <label>Logo :</label>
-                        <p style="font-weight: bold; color: red; font-size:15px;">
+                        <p class="v-add-info-text">
                         Choisissez un icon (format PNG/JPG/JPEG - max size 50Ko)
                         </p>
                         
                         <input type="file" class="form-control-file" id="logo" name="logo" accept=".png ,.jpg ,.jpeg" onchange="previewLogo(event)" >
-                        <p class="error-message" id="file-error">La taille maximale du fichier est de 50 Ko.</p>
+                        <p class="v-add-error-message" id="file-error">La taille maximale du fichier est de 50 Ko.</p>
                     </div>
 
                     
 
                     <!-- nom dans le serveur vod aka url-->
                     <div class="form-group">
-                        <p style="font-weight: bold; color: red;font-size:15px;">
+                        <p class="v-add-info-text">
                         Merci de saisir dans la case ci-dessous le nom de votre fichier (en minuscule) suivi de l extension du fichier, que vous avez déposer sur le serveur VOD <br>
                         Exemple : cinema.mp4 ou piscine.mpg2<br>
                         Attention, le lecteur ne lit que ce type de format de fichier : mpg2 / mp4 / m2t / 3gp 
                         </p>
                         <input type="text" id="url" name="url" class="form-control" required/>
-                        <p class="error-message" id="url-error">Le format n'est pas valide. Utilisez mpg2, mp4, m2t ou 3gp.</p>
+                        <p class="v-add-error-message" id="url-error">Le format n'est pas valide. Utilisez mpg2, mp4, m2t ou 3gp.</p>
                     </div>
 
                     <!-- categorie -->
@@ -86,7 +69,7 @@
                     <!-- categorie -->
                     <div class="form-group">
                         <label class="control-label">Description</label>
-                        <textarea id="description" name="description" class="form-control" style="margin-bottom:20px;"></textarea>
+                        <textarea id="description" name="description" class="form-control v-add-textarea"></textarea>
                     </div>
 
                     
@@ -94,8 +77,8 @@
             </div>
         </div>
         <!--les boutons du formulaire-->
-               <div style="float:right;margin-left:30px;">
-        <a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/vod">
+        <div class="v-add-footer-actions">
+        <a class="btn btn-danger btn-md v-add-btn-annuler" id = "annulerButton" href="/vod">
             <i class="glyphicon glyphicon-remove"></i> Annuler
         </a>
         <button type="submit" class="btn btn-primary btn-md" name="valider" >

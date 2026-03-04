@@ -19,7 +19,7 @@
             margin: 10px auto;
         }
 
-        #titre{
+        #titre {
             border-radius: 8px;
             text-align: left;
             margin-bottom: 10px;
@@ -28,167 +28,222 @@
             font-style: oblique;
             font-size: 20px;
             background-color: #3087ce;
-            width:250px;
+            width: 250px;
             padding-left: 10px;
-       }
-       #logo_titre{
-        margin-top: -51px;
-        margin-left: -10px;
-        width: 45px;
-        float: left;
-       }
-       #p{
-            width:100%;
-            text-align:left;
-            padding-left:20px;
-       }
-
-       h5{
-            border-radius:10px;
-            width:25%;
-            padding:10px;
-            background-color: #3087ce;
-            color:white;
-            font-size:20px;
         }
-     
+
+        #logo_titre {
+            margin-top: -51px;
+            margin-left: -10px;
+            width: 45px;
+            float: left;
+        }
+
+        #p {
+            width: 100%;
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        h5 {
+            border-radius: 10px;
+            width: 25%;
+            padding: 10px;
+            background-color: #3087ce;
+            color: white;
+            font-size: 20px;
+        }
+
 
         /* fichier Contact */
-        h1{
+        h1 {
             margin-bottom: 40px;
         }
+
         label {
             color: #333;
         }
+
         .form-control {
             margin-bottom: 20px;
         }
+
         .btn-send {
             font-weight: 300;
             text-transform: uppercase;
             letter-spacing: 0.1em;
             margin-bottom: 20px;
         }
-        p{font-size: 13px !important;margin-bottom: 5px !important;
-        text-align: lef;}
+
+        p {
+            font-size: 13px !important;
+            margin-bottom: 5px !important;
+            text-align: lef;
+        }
 
         /* Sticky footer styles
         -------------------------------------------------- */
 
 
-        #push,#footer {
-        }
+        #push,
+        #footer {}
+
         #footer {
-        background-color: #337ab7 ;
+            background-color: #337ab7;
         }
 
         /* Lastly, apply responsive CSS fixes as necessary */
         @media (max-width: 767px) {
-        #footer {
-            margin-left: -20px;
-            margin-right: -20px;
-            padding-left: 20px;
-            padding-right: 20px;
-        }
-        #titre{
-            width: 180px !important;
-            font-size: 15px !important;
-            margin-bottom: -10px;
-            margin-left: 20px;
-            padding-left: 10px;
+            #footer {
+                margin-left: -20px;
+                margin-right: -20px;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            #titre {
+                width: 180px !important;
+                font-size: 15px !important;
+                margin-bottom: -10px;
+                margin-left: 20px;
+                padding-left: 10px;
+            }
+
+            #logo_titre {
+                width: 30px !important;
+                margin-top: -32px !important;
+                margin-left: -10px !important;
+            }
         }
 
-        #logo_titre{
-            width: 30px !important;
-            margin-top: -32px !important;
-            margin-left: -10px !important;
+        .text-muted {
+            color: #2D7BB9
         }
-        }   
 
-        .text-muted{color: #2D7BB9}
         @media (max-width: 768px) {
             img[src*='ler.png'] {
                 width: 35px !important;
             }
         }
+
         @media (max-width: 425px) {
             img[src*='ler.png'] {
                 width: 30px !important;
             }
         }
 
-     /* Responsive styles */
-		@media (max-width: 1200px) {
-			#div1, #div2 {
-				width: 95% !important;
-				margin-left: 2.5% !important;
-				margin-right: 2.5% !important;
-			}
-		}
-		
-		@media (max-width: 768px) {
-			#div1, #div2 {
-				width: 90% !important;
-				margin-left: 5% !important;
-				margin-right: 5% !important;
-				padding: 15px !important;
-			}
-			#div1 {
-				height: auto !important;
-				padding: 20px !important;
-			}
-			#div2 {
-				height: auto !important;
-			}
-			.form-group {
-				display: block !important;
-			}
-			.col-lg-2, .col-lg-10 {
-				width: 100% !important;
-				margin-bottom: 10px;
-			}
-			#p {
-				margin-bottom: 5px;
-			}
-			.btn {
-				width: 100% !important;
-				margin-left: 0 !important;
-				position: static !important;
-			}
-			.form-group .input-group {
-				width: 100%;
-			}
-			#titre {
-				font-size: 12px;
-				padding-left: 5px;
-			}
-			h5 {
-				font-size: 18px;
-				width: 100% !important;
-			}
-            .navbar-brand img {
-                width: 100px !important; /* ou la taille que tu veux */
-            }
-		}
-		
-		@media (max-width: 480px) {
-			#div1, #div2 {
-				width: 95% !important;
-				margin-left: 2.5% !important;
-				margin-right: 2.5% !important;
-				padding: 10px !important;
-			}
-			#titre {
-				font-size: 12px;
-			}
-			h5 {
-				font-size: 16px;
-			}
-			.form-control {
-				font-size: 14px;
-			}
-			.btn {
-				font-size: 14px;
-			}
-		}
+        /* Responsive styles */
+        @media (max-width: 1200px) {
 
+            #div1,
+            #div2 {
+                width: 95% !important;
+                margin-left: 2.5% !important;
+                margin-right: 2.5% !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            #div1,
+            #div2 {
+                width: 90% !important;
+                margin-left: 5% !important;
+                margin-right: 5% !important;
+                padding: 15px !important;
+            }
+
+            #div1 {
+                height: auto !important;
+                padding: 20px !important;
+            }
+
+            #div2 {
+                height: auto !important;
+            }
+
+            .form-group {
+                display: block !important;
+            }
+
+            .col-lg-2,
+            .col-lg-10 {
+                width: 100% !important;
+                margin-bottom: 10px;
+            }
+
+            #p {
+                margin-bottom: 5px;
+            }
+
+            .btn {
+                width: 100% !important;
+                margin-left: 0 !important;
+                position: static !important;
+            }
+
+            .form-group .input-group {
+                width: 100%;
+            }
+
+            #titre {
+                font-size: 12px;
+                padding-left: 5px;
+            }
+
+            h5 {
+                font-size: 18px;
+                width: 100% !important;
+            }
+
+            .navbar-brand img {
+                width: 100px !important;
+                /* ou la taille que tu veux */
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            #div1,
+            #div2 {
+                width: 95% !important;
+                margin-left: 2.5% !important;
+                margin-right: 2.5% !important;
+                padding: 10px !important;
+            }
+
+            #titre {
+                font-size: 12px;
+            }
+
+            h5 {
+                font-size: 16px;
+            }
+
+            .form-control {
+                font-size: 14px;
+            }
+
+            .btn {
+                font-size: 14px;
+            }
+        }
+
+        /* Register button alignment */
+        .register-btn {
+            float: right;
+        }
+
+        @media (max-width: 768px) {
+            .register-btn {
+                float: none !important;
+                width: 100% !important;
+                margin-left: 0 !important;
+                position: static !important;
+            }
+
+            #footer p {
+                font-size: 11px !important;
+                word-break: break-word;
+            }
+        }

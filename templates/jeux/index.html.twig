@@ -16,28 +16,30 @@
            
             <input type="hidden" name="ongletActif" value="{{ app.request.query.get('ongletActif') }}">  
 
-			<div class="col-md-12">
-				<a href="{{path('app_ajouter_jeux')}}" class="btn btn-info btn-sm" name="add" id="add" {% if app.user.AjouterJeux == '0' %} disabled {% endif %} style="width:150px;">
-					<i class="glyphicon glyphicon-plus"></i>
-					<span class="btn-text"> Ajouter jeux</span></a>
-				<button id="sauv" type="submit" class="btn btn-success btn-sm " {% if app.user.SauvegarderJeux == '0' %} disabled {% endif %} style="width:150px;">
-					<i class="glyphicon glyphicon-floppy-disk"></i>
-					<span class="btn-text">Sauvegarder </span>
-				</button>
-				<a name="annuler" href="{{ path('app_jeux') }}" class="btn btn-danger btn-sm" style="width:150px;">
-        			<i class="glyphicon glyphicon-remove"></i>
-        			<span class="btn-text">Annuler</span>
-    			</a>
-				<br><br><br>
+			<div class="row" style="margin: 0;">
+				<div class="col-md-12" style="padding: 10px 0;">
+					<a href="{{path('app_ajouter_jeux')}}" class="btn btn-info btn-sm" name="add" id="add" {% if app.user.AjouterJeux == '0' %} disabled {% endif %}>
+						<i class="glyphicon glyphicon-plus"></i>
+						<span class="btn-text">Ajouter jeux</span>
+					</a>
+					<button id="sauv" type="submit" class="btn btn-success btn-sm " {% if app.user.SauvegarderJeux == '0' %} disabled {% endif %}>
+						<i class="glyphicon glyphicon-floppy-disk"></i>
+						<span class="btn-text">Sauvegarder</span>
+					</button>
+					<a name="annuler" href="{{ path('app_jeux') }}" class="btn btn-danger btn-sm">
+						<i class="glyphicon glyphicon-remove"></i>
+						<span class="btn-text">Annuler</span>
+					</a>
+				</div>
+			</div>
 
-				<nav>
-					<div class="nav nav-tabs" id="nav-tab" role="tablist">
-						{% for support in supports %}
-							<a class="nav-item nav-link" id="nav-{{ support.id }}-tab" data-toggle="tab" href="#{{ support.id }}" role="tab" aria-controls="nav-{{ support.id }}" aria-selected="true">{{ support.nom }}</a>
-						{% endfor %}
-					</div>
-				</nav>
-				<br><br>
+			<nav>
+				<div class="nav nav-tabs" id="nav-tab" role="tablist">
+					{% for support in supports %}
+						<a class="nav-item nav-link" id="nav-{{ support.id }}-tab" data-toggle="tab" href="#{{ support.id }}" role="tab" aria-controls="nav-{{ support.id }}" aria-selected="true">{{ support.nom }}</a>
+					{% endfor %}
+				</div>
+			</nav>
 				<div class="tab-content" id="nav-tabContent" style="height:500px;overflow-y:scroll;">
 					{% for support in supports %}
 						<div class="tab-pane fade" id="{{support.id}}" role="tabpanel" aria-labelledby="nav-profile-tab">
@@ -48,8 +50,8 @@
 										{% set ch='checked' %}
 									{% endif %}
 									<div class="col-sm-6 col-md-2 col-md-2-14" >
-										<div class="thumbnail" style="padding:0px;background-color: rgba(255, 119, 1, 0);border: 1px solid #545658;">
-											<img style="width:90%;margin-left:auto;margin-right:auto;margin-top:8px;margin-bottom:8px;height: 138px;" src="{{ path('afficher_image', { filename: jeux.logo|split('/')|last,directory:'jeux_directory' }) }}" alt="..." class="img-rounded img-responsive center-block">
+										<div class="thumbnail" style="padding:1px;background-color: rgba(255, 119, 1, 0);border: 1px solid #545658;">
+											<img style="width:90%;margin-left:auto;margin-right:auto;margin-top:8px;margin-bottom:4px;height: 138px;" src="{{ path('afficher_image', { filename: jeux.logo|split('/')|last,directory:'jeux_directory' }) }}" alt="..." class="img-rounded img-responsive center-block">
 											<div class="caption" style="background: #020202bd;padding:1px">
 												<h5 style="text-align: center;color:#fff;margin-bottom: 4px;">{{jeux.nom}}</h5>
 												{% set ch = '' %}

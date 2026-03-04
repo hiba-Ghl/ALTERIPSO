@@ -490,7 +490,7 @@
 				<p>	Support </p>
 				</label>
 				<div class="col-lg-10">
-				<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+				<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;flex-wrap:wrap;gap:10px">
 					<div>
 					<input type="checkbox" id="support_box" name="support[Box Ip/Box coax]" value=1 {% if supports is defined and supports['Box Ip/Box coax'] is defined %} checked {% endif %}>
 					<label>Box Ip/Box coax</label>
@@ -647,7 +647,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
             <br>
        
-            <button type="submit" class="btn btn-success" style="margin-left: 920px;position: absolute;background-color: #3087ce; border: 2px solid #3087ce;"><i class="glyphicon glyphicon-floppy-disk"></i>  Enregistrer</button>
+            <button type="submit" class="btn btn-success register-btn" style="background-color: #3087ce; border: 2px solid #3087ce;">
+                <i class="glyphicon glyphicon-floppy-disk"></i>  Enregistrer
+            </button>
 
 			<input type="hidden" id="fos_user_registration_form__token" name="fos_user_registration_form[_token]" class="form-control" value="vjHbISa7zrduRLLWTCpNBApOU8VaUtZOcmumqM-mVTQ"/></form>
 

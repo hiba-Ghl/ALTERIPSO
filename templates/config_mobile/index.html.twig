@@ -1,16 +1,17 @@
 {% extends 'home/index.html.twig' %}
 {% block body %}
 <head>
-  <!-- Autres balises head ... -->
- {# offline #}
-{% if appConfig.StatusServeur is same as('Offline') %}
+	<!-- Autres balises head ... -->
+	<link rel="stylesheet" href="{{ asset('css/css_configMobile.css') }}">
+	{# offline #}
+	{% if appConfig.StatusServeur is same as('Offline') %}
 
-<script src="{{ asset('javascript/all.min.js') }}"></script>
-{% else %}
-{# online #}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+	<script src="{{ asset('javascript/all.min.js') }}"></script>
+	{% else %}
+	{# online #}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 
-{% endif %}
+	{% endif %}
 
 </head>
 
@@ -23,134 +24,20 @@
 		
 	</div>
 	<hr>
-
-	<style type="text/css">
-		label {
-			display: inline-block;
-			text-transform: lowercase;
-		}
-		label::first-letter {
-			text-transform: capitalize;
-		}
-		#rcorners {
-			border-radius: 25px;
-			border: 2px solid #73AD21;
-			padding: 20px;
-			width: 360px;
-			height: 215px;
-			margin-left: 10px;
-			margin-top: 10px;
-            background-color: white;
-		}
-		#rcorners2 {
-			border-radius: 25px;
-			border: 2px solid #73AD21;
-			padding: 20px;
-			width: 1091px;
-			height: 527px;
-			margin-left: 10px;
-			margin-top: 10px;
-            background-color: white;
-		}
-		#rcorners3 {
-			border-radius: 25px;
-			border: 2px solid #73AD21;
-			padding: 20px;
-			width: 1091px;
-			height: 300px;
-			margin-left: 10px;
-			margin-top: 10px;
-            background-color: white;
-		}
-		#rcorners4 {
-			border-radius: 25px;
-			border: 2px solid #73AD21;
-			padding: 20px;
-			width: 1091px;
-			height: 646px;
-			margin-left: 10px;
-			margin-top: 10px;
-            background-color: white;
-		}
-		.television:hover {
-			border: 4px solid red !important;
-			/*background-image: url("uploads/tele.png") opacity: 0.5;*/
-		}
-		.radio:hover {
-			border: 4px solid green !important;
-		}
-		.service1:hover {
-			border: 4px solid #025fcc !important;
-		}
-		.vod:hover {
-			border: 4px solid yellow !important;
-		}
-		.jeux:hover {
-			border: 4px solid #621717 !important;
-		}
-		.application:hover {
-			border: 4px solid #9a1d84 !important;
-		}
-		.questionnaire:hover {
-			border: 4px solid #928790 !important;
-		}
-		.support1:hover {
-			border: 4px solid #07478e !important;
-		}
-		.livreaudio:hover {
-			border: 4px solid #ca33d8 !important;
-		}
-		.charte:hover {
-			border: 4px solid #ff8956 !important;
-		}
-		.servicepayant:hover {
-			border: 4px solid #c0882e !important;
-		}
-	</style>
-	<form action="">
-		<div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #73AD21;width: 250px;padding-left: 10px;">
-			Informations établissement
-		</div>
+  <form action="">
+    <div class="config-section-title config-section-title--small">
+      Informations établissement
+    </div>
 
 		<div id="rcorners2">
-			<style>
-				/* Custom CSS styles for the table */
-				.col-lg-12 {
-					width: 100%;
-				}
-
-				.col-lg-6 {
-					width: 50%;
-					display: inline-block;
-					vertical-align: top; /* Align the cells at the top */
-				}
-
-				/* Align the labels to the right */
-				.control-label {
-					text-align: right;
-				}
-
-				/* Adjust spacing between fields (optional) */
-				.form-control {
-					margin-bottom: 10px;
-				}
-				.form-group{
-					margin-bottom: 0px !important;
-				}
-
-				#infoIcon2 , #infoIcon4 , #infoIcon3 , #infoIcon {
-  font-size: 20px; /* Ajustez la taille de l'icône si nécessaire */
-}
-
-			</style>
 
 			<table class="col-lg-12">
 				<tr>
 					<td class="col-lg-6">
 						<label for="inputEmail" class="control-label required">Identifiant de l'application: <span id="infoIcon2" style="cursor: pointer; margin-left: 0px;" onclick="showImage2()">
-  <i class="fas fa-info-circle" style="color: black;margin-left: 305px;margin-top: 14px;"></i>
-</span>
-</label>
+			<i class="fas fa-info-circle" style="color: black;margin-left: 305px;margin-top: 14px;"></i>
+			</span>
+			</label>
 						<input type="text" name="info_id" value="{{config.infoId}}" class="form-control">
 						<br>
 						<label for="inputEmail" class="control-label required">Adresse:</label>
@@ -187,32 +74,11 @@
 		</div>
 
 
-		<br><br>
-		<div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #73AD21;width: 300px;padding-left: 10px;">
-			Informations mail facture
-		</div>
+    <br><br>
+    <div class="config-section-title config-section-title--medium">
+      Informations mail facture
+    </div>
 		<br>
-		<style>
-			/* Custom CSS styles for the container div */
-			#rcorners3 {
-				text-align: left;
-				width: 96%; /* Adjust the width as needed */
-				/*margin: 0 auto;*/ /* To center the container */
-			}
-
-			/* Adjust spacing between fields (optional) */
-			.form-control {
-				margin-bottom: 10px;
-			}
-
-			/* Adjust the label width (optional) */
-			.control-label {
-				width: 100%;
-				display: inline-block;
-				text-align: left;
-				padding-right: 10px;
-			}
-		</style>
 
 		<div id="rcorners3">
 			<label for="inputEmail" class="control-label required">Objet:</label>
@@ -226,12 +92,12 @@
 		</div>
 
 
-		<br><br>
+    <br><br>
 
 
-		<div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #73AD21;width: 300px;padding-left: 10px;">
-			Informations application
-		</div>
+    <div class="config-section-title config-section-title--medium">
+      Informations application
+    </div>
 
 		
 
@@ -362,42 +228,6 @@ function closeModal4() {
   modal.style.display = 'none';
 }
 </script>
-<style>
-/* Ajouter le style pour la fenêtre modale */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-}
-
-.modal-content {
-  background-color: #fefefe;
-  margin: 4% auto;
-  padding: 20px;
-  width: 32%;
-}
-
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-</style>
         <br>
 
       <div class="form-group f_date">
@@ -461,14 +291,18 @@ function formatInput(input) {
         <br>
        </td>
       </tr>
-    </table>
+      </table>
+  <div class="config-btn-wrapper">
+    <button type="submit" class="button btn btn-primary btn-sm" name="valider" id="btnEnregistrer">
+      <i class="glyphicon glyphicon-floppy-disk"></i>
+      Enregistrer
+    </button>
+    <button type="button" class="button btn btn-danger btn-sm config-btn-cancel" id="btnAnnuler">
+      <i class="glyphicon glyphicon-remove"></i>
+      Annuler
+    </button>
   </div>
-
-
-<button type="submit" class="button btn btn-primary btn-sm" style="margin-left: 800px;margin-top: -129px;" name="valider" id="btnEnregistrer">
-  <i class="glyphicon glyphicon-floppy-disk"></i>
-  Enregistrer
-</button>
+  </div>
 <script>
 document.getElementById('btnEnregistrer').addEventListener('click', function(event) {
   var payementVersionSelect = document.getElementById('payement_version').value;
@@ -524,6 +358,11 @@ function isValidEmail(email) {
   var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailPattern.test(email);
 }
+
+// Bouton Annuler : retour à la page de configuration sans envoyer le formulaire principal
+document.getElementById('btnAnnuler').addEventListener('click', function () {
+  window.location.href = '{{ path('app_config_mobile') }}';
+});
 </script>
 <script>
 // ... Votre code existant ...
@@ -578,6 +417,6 @@ handleVisibility();
 
 // Ajout d'événements de changement pour les sélecteurs date_version et payement_version
 document.getElementById('date_version').addEventListener('change', handleVisibility);
-document.getElementById('payement_version').addEventListener('change', handleVisibility);</script><form method="POST" action="{{ path('app_config_mobile') }}"><button type="submit" class="button btn btn-danger btn-sm" style="margin-left: 909px;width: 101px;margin-top: -167px;">
-<i class="glyphicon glyphicon-remove"></i>
-Annuler</button></form>{% endblock %}
+document.getElementById('payement_version').addEventListener('change', handleVisibility);
+</script>
+{% endblock %}

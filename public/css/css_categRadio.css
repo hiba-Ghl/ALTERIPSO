@@ -1,4 +1,7 @@
 /* css_categRadio.css */
+body{
+    line-height: 2.42857143;
+}
 
 #div1 {
     border-radius: 25px;
@@ -28,7 +31,7 @@
 }
 
 .category-title-img {
-    margin-top: -80px;
+    margin-top: -91px;
     margin-left: -10px;
     width: 45px;
     float: left;
@@ -215,7 +218,7 @@
 }
 
 .ajouter-banner-img {
-    margin-top: -77px;
+    margin-top: -92px;
     margin-left: -10px;
     width: 45px;
     float: left;
@@ -297,7 +300,7 @@
     }
 
     .ajouter-banner-img {
-        margin-top: -74px;
+        margin-top: -77px;
         margin-left: -10px;
         width: 45px;
         float: left;
@@ -380,7 +383,7 @@ body {
 }
 
 .modifier-banner-img {
-    margin-top: -74px;
+    margin-top: -88px;
     margin-left: -10px;
     width: 45px;
     float: left;
@@ -423,7 +426,7 @@ body {
     }
 
     .modifier-banner-img {
-        margin-top: -64px;
+        margin-top: -75px;
         margin-left: -10px;
         width: 45px;
         float: left;

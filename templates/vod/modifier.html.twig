@@ -1,53 +1,23 @@
 {% extends 'home/index.html.twig' %}
 
 {% block body %}
-<style>
-    #div2 {
-            border-radius: 25px;
-			border: 2px solid #3087ce;
-            height: auto;
-            display: flex;
-            background-color:white;
-            margin-right:-30px;
-            margin-left:-30px;
-            margin-top: 10px;
-		}
+<link rel="stylesheet" href="{{ asset('css/css_Vod.css') }}" />
 
-        .error-message {
-        color: white;
-        font-weight: bold;
-        display: none; 
-        background-color:red;
-    }
 
-    @media (max-width: 768px) {
-        .form-horizontal .control-label {
-            text-align: left;
-            width: 100%;
-        }
-        .form-horizontal .form-group {
-            margin-bottom: 15px;
-        }
-        .form-horizontal .form-control {
-            width: 100%;
-        }
-    }
-</style>
-
-<div style="border-radius: 8px;text-align: left;margin-left: -30px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 'auto';padding-left: 10px; padding-right: 10px; display: inline-block;">
-    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+<div class="v-mod-header-title">
+    <img class="v-mod-header-icon" src="{{ asset('images/ler.png') }}">
     Modifier VOD : {{vods.nom}}
 </div>
 
-<div id="div2">
-    <form name="" method="post" action="{{ path('app_modifier_vod',{'id': vods.getId()}) }}" class="form-horizontal" enctype="multipart/form-data" onsubmit="return validateForm()">
+<div id="v-mod-container">
+    <form name="" method="post" action="{{ path('app_modifier_vod',{'id': vods.getId()}) }}" class="form-horizontal v-mod-form" enctype="multipart/form-data" onsubmit="return validateForm()">
 
         <div class="container">
             <div class="row">
                 <!-- Logo preview on the left -->
                 <div class="col-md-4">
                     <div class="form-group">
-                        <img id="logo-preview" src="{{ path('afficher_image', { filename: vods.logo|split('/')|last, directory: 'vod_directory' }) }}"  style="width:350px;height:335px;margin-top:20px; margin-left:20px;" />
+                        <img id="logo-preview" class="v-mod-logo-preview" src="{{ path('afficher_image', { filename: vods.logo|split('/')|last, directory: 'vod_directory' }) }}" />
                     </div>
                 </div>
 
@@ -64,25 +34,23 @@
                     <!-- File upload input on the right -->
                     <div class="form-group">
                         <label>Logo :</label>
-                        <p style="font-weight: bold; color: red; font-size:15px;">
+                        <p class="v-mod-info-text">
                         Choisissez un icon (format PNG - max size 50Ko)
                         </p>
                         <input type="file" class="form-control-file" id="logo" name="logo" accept=".png ,.jpg ,.jpeg" onchange="previewLogo(event)" >
-                        <p class="error-message" id="file-error">La taille maximale du fichier est de 50 Ko.</p>
+                        <p class="v-mod-error-message" id="file-error">La taille maximale du fichier est de 50 Ko.</p>
                     </div>
-
-
-                    
+                  
 
                     <!-- nom dans le serveur vod aka url-->
                     <div class="form-group">
-                        <p style="font-weight: bold; color: red;font-size:15px;">
+                        <p class="v-mod-info-text">
                         Merci de saisir dans la case ci-dessous le nom de votre fichier (en minuscule) suivi de l extension du fichier, que vous avez déposer sur le serveur VOD <br>
                         Exemple : cinema.mpg4 ou piscine.mpg2<br>
                         Attention, le lecteur ne lit que ce type de format de fichier : mpg2 / mp4 / m2t / 3gp 
                         </p>
                         <input type="text" id="url" name="url" class="form-control" value="{{vods.url}}" required/>
-                        <p class="error-message" id="url-error">Le format n'est pas valide. Utilisez mpg2, mp4, m2t ou 3gp.</p>
+                        <p class="v-mod-error-message" id="url-error">Le format n'est pas valide. Utilisez mpg2, mp4, m2t ou 3gp.</p>
                     </div>
             
                 <!-- categorie -->
@@ -99,15 +67,15 @@
                 <!-- description-->
                     <div class="form-group">
                         <label class="control-label">Description</label>
-                        <textarea id="description" name="description" class="form-control" style="margin-bottom:20px;">{{ vods.description}}</textarea>
+                        <textarea id="description" name="description" class="form-control v-mod-textarea">{{ vods.description}}</textarea>
                     </div>
 
                 </div>
             </div>
         </div>
         <!--les boutons du formulaire-->
-              <div style="float:right;margin-left:30px;">
-        <a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/vod">
+        <div class="v-mod-footer-actions">
+        <a class="btn btn-danger btn-md v-mod-btn-annuler" id = "annulerButton" href="/vod">
             <i class="glyphicon glyphicon-remove"></i> Annuler
         </a>
         <button type="submit" class="btn btn-primary btn-md" name="valider" >
