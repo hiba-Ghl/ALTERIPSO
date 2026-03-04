@@ -2,31 +2,13 @@
  
 {% block body %}
 
-<style>
-		#div1 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 20px;
-			width: 1091px;
-			height: 500px;
-			margin-left: 10px;
-			margin-top: 10px;	
-			padding: 43px;
-		}
-		#div2 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 20px;
-			width: 1091px;
-			height: 550px;
-			margin-left: 10px;
-			margin-top: 10px;
-		}
-	</style>
+<head>
+    <link rel="stylesheet" href="{{ asset('css/css_profil.css') }}">
+</head>
  
 <!--     -->
-<div style="border-radius: 8px; text-align: left; margin-bottom: 10px;color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 200px; padding-left: 10px; display: inline-block;">
-    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+<div class="profil-header">
+    <img class="profil-header-logo" src="{{ asset('images/ler.png') }}">
     Profil
 </div>
  
@@ -44,16 +26,14 @@
 <div id="div2">
 <!--  -->
 <form name="" method="post" action="{{ path('modifierProfil', {'id': app.user.id}) }}" class="form-horizontal" enctype="multipart/form-data">
-    <div style="border-radius: 8px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding: 5px;">
+    <div class="profil-section-title">
     Modifier votre profil
     </div>          
        <br>
         <!-- username -->
         <div class="form-group">
-            <label for="username" class="col-lg-2 control-label">
-            <p style="width:100%;text-align:left;padding-left:20px;">
+            <label for="username" class="col-lg-2 control-label profil-label-text">
                 Nom d'utilisateur
-            </p>
             </label>
             <div class="col-lg-10">
                 <input type="text" id="username" name="username" class="form-control" value="{{app.user.username}}" required />
@@ -62,17 +42,15 @@
 
         <!-- email -->
         <div class="form-group">
-            <label for="email" class="col-lg-2 control-label">
-            <p style="width:100%;text-align:left;padding-left:20px;">
+            <label for="email" class="col-lg-2 control-label profil-label-text">
                 Email
-            </p>
             </label>
             <div class="col-lg-10">
                 <input type="email" id="email" name="email" class="form-control" value="{{app.user.email}}"  required/>
             </div>
         </div>
 
-        <div style="border-radius: 8px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding: 5px;">
+        <div class="profil-section-title">
                 Modifier votre mot de passe
         </div>
 
@@ -80,10 +58,8 @@
 
         <!-- ancien password -->
         <div class="form-group">
-            <label for="password" class="col-lg-2 control-label">
-            <p style="width:100%;text-align:left;padding-left:20px;">
+            <label for="password" class="col-lg-2 control-label profil-label-text">
                 Ancien mot de passe
-            </p>
             </label>
             <div class="col-lg-10">
                 <input type="password" id="password" name="password" class="form-control"  placeholder="Veuillez saisir votre mot de passe" required />
@@ -92,14 +68,12 @@
 
         <!-- nouveau password -->
         <div class="form-group">
-            <label for="newPassword" class="col-lg-2 control-label">
-            <p style="width:100%;text-align:left;padding-left:20px;">
+            <label for="newPassword" class="col-lg-2 control-label profil-label-text">
                 Nouveau mot de passe
-            </p>
             </label>
             <div class="col-lg-10">
                 <input type="password" id="newPassword" name="newPassword" class="form-control" placeholder="Veuillez saisir le nouveau mot de passe"  />
-                <svg class="toggle-password" style="cursor: pointer; margin-right: 20px;"  onclick="togglePasswordVisibility()" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                <svg class="toggle-password" onclick="togglePasswordVisibility()" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                 <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
                 <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
                 </svg>
@@ -109,10 +83,8 @@
 
         <!--confirmer password -->
         <div class="form-group">
-            <label for="confirmPassword" class="col-lg-2 control-label">
-            <p style="width:100%;text-align:left;padding-left:20px;">
+            <label for="confirmPassword" class="col-lg-2 control-label profil-label-text">
                 Confirmer mot de passe
-            </p>
             </label>
             <div class="col-lg-10">
                 <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirmez le nouveau mot de passe"/>
@@ -141,28 +113,13 @@
                 }
             }
         </script>
-        <style>
-                /* Style pour l'icône */
-                .toggle-password {
-                    position: absolute;
-                    top: 50%;
-                    right: 10px;
-                    transform: translateY(-50%);
-                    cursor: pointer;
-                }
-
-                /* Style pour cacher l'icône lorsque le champ est vide */
-                .toggle-password.hidden {
-                    display: none;
-                }
-        </style>
         <br>
         <!-- button enregistrer et annuler  -->
-        <div style="float:right;margin-left:30px;">
-                <a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" onclick="annuler()">
+        <div class="profil-buttons-wrapper">
+                <a class="btn btn-danger btn-md profil-button" id = "annulerButton" onclick="annuler()">
                     <i class="glyphicon glyphicon-remove"></i> Annuler
                 </a>
-     <button type="submit" class="btn btn-primary btn-md" style="width:130px;">
+     <button type="submit" class="btn btn-primary btn-md profil-button">
                     <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
                 </button>
 </div>
@@ -177,18 +134,4 @@
  
 </div>
 <br>
-<style>
-    @media (max-width: 768px) {
-        .form-horizontal .control-label {
-            text-align: left;
-            width: 100%;
-        }
-        .form-horizontal .form-group {
-            margin-bottom: 15px;
-        }
-        .form-horizontal .form-control {
-            width: 100%;
-        }
-    }
-</style>
 {% endblock %}

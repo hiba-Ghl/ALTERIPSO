@@ -1,0 +1,201 @@
+/* CSS spécifique à la page user/index.html.twig (profil) */
+body{
+    line-height: 2.42857143;
+}
+
+/* Blocs principaux */
+#div1 {
+	border-radius: 25px;
+	border: 2px solid #3087ce;
+	padding: 43px;
+	width: 1091px;
+	height: 500px;
+	margin-left: 10px;
+	margin-top: 10px;
+}
+
+#div2 {
+	border-radius: 25px;
+	border: 2px solid #3087ce;
+	padding: 20px;
+	width: 1091px;
+	height: auto;
+	margin-left: 10px;
+	margin-top: 10px;
+}
+
+/* Assure que les éléments flottants (boutons) restent contenus dans le cadre */
+#div2::after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+/* Titre principal "Profil" */
+.profil-header {
+	border-radius: 8px;
+	text-align: left;
+	margin-bottom: 10px;
+	color: white;
+	font-style: oblique;
+	font-size: 20px;
+	background-color: #3087ce;
+	width: 200px;
+	padding-left: 10px;
+	display: inline-block;
+}
+
+.profil-header-logo {
+	margin-top: -51px;
+	margin-left: -10px;
+	width: 45px;
+	float: left;
+}
+
+/* Sous-titres de sections */
+.profil-section-title {
+	border-radius: 8px;
+	color: white;
+	font-style: oblique;
+	font-size: 18px;
+	background-color: #3087ce;
+	width: 220px;
+	padding-left: 5px;
+	margin-bottom: 4px; /* réduit l'espace avec les champs */
+}
+
+/* Supprime le saut de ligne supplémentaire juste après le titre de section */
+.profil-section-title + br {
+	display: none;
+}
+
+/* Texte des labels (aligné à gauche avec retrait) */
+.profil-label-text {
+	text-align: left;
+	padding-left: 0;
+}
+
+/* Icône d'affichage/masquage du mot de passe */
+.toggle-password {
+	position: absolute;
+	top: 50%;
+	right: 18px;
+	transform: translateY(-50%);
+	cursor: pointer;
+}
+
+.toggle-password.hidden {
+	display: none;
+}
+
+.form-horizontal .control-label {
+    text-align: left;
+    margin-bottom: 0;
+    padding-top: 11px;
+    left: 25px;
+}
+
+/* S'assurer que les champs restent bien à l'intérieur de div2 */
+.form-horizontal .form-control {
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
+}
+/* Boutons Annuler / Enregistrer */
+.profil-buttons-wrapper {
+	float: right;
+	margin-left: 30px;
+	margin-top: 10px;
+}
+
+.profil-button {
+	width: 130px;
+}
+
+/* Responsive : tablettes (<= 991px) */
+@media (max-width: 991px) {
+	/* Le bloc principal reste centré et fluide */
+	#div2 {
+		width: 95%;
+		max-width: 100%;
+		padding: 15px;
+		margin: 10px auto;
+	}
+
+	/* Titres adaptés à la largeur */
+	.profil-header {
+		width: 20%;
+		max-width: 100%;
+	}
+
+	.profil-section-title {
+		width: 35%;
+		max-width: 100%;
+        font-size: 16px;
+	}
+
+	/* Boutons bien à l'intérieur de div2, à droite */
+	.profil-buttons-wrapper {
+		float: none;
+		text-align: right;
+		margin: 15px 0 0;
+	}
+    
+	.form-horizontal .control-label {
+		text-align: left;
+		width: 100%;
+        margin-left: 15px;
+        left:0;
+	}
+}
+
+/* Responsive : mobile (<= 768px) */
+@media (max-width: 768px) {
+	#div2 {
+		width: 100%;
+		padding: 10px;
+		margin: 10px 5px;
+	}
+
+	.profil-header {
+		font-size: 18px;
+        width: 40%;
+	}
+
+	.profil-section-title {
+		font-size: 16px;
+        width:60%;
+	}
+
+	.form-horizontal .control-label {
+		text-align: left;
+		width: 100%;
+        margin-left: 15px;
+        left:0;
+	}
+	.form-horizontal .form-group {
+		margin-bottom: 15px;
+	}
+
+	/* Champs 100% largeur dans la carte */
+	.form-horizontal .form-control {
+		width: 100%;
+		max-width: 100%;
+		box-sizing: border-box;
+	}
+
+	/* Boutons sur la même ligne, à droite, sans sortir du cadre */
+	.profil-buttons-wrapper {
+		display: flex;
+		justify-content: flex-end;
+		gap: 10px;
+		margin-top: 15px;
+	}
+
+	.profil-button {
+		width: auto;
+		min-width: 110px;
+        padding: 2px;
+	}
+}
+

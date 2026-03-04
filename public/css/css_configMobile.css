@@ -239,6 +239,7 @@ label::first-letter {
 	#rcorners4 table td {
 		display: block;
 		width: 100%;
+        font-size: 16px;
 	}
 
 	/* Les deux colonnes passent l'une sous l'autre en tablette */

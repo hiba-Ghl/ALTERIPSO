@@ -1,0 +1,99 @@
+/* CSS spécifique à la page gestion_profile/index.html.twig */
+
+/* En-tête "Gestion des utilisateurs" */
+.gestion-header {
+	border-radius: 8px;
+	margin-top: 10px;
+	text-align: left;
+	margin-bottom: 10px;
+	margin-left: -130px;
+	color: white;
+	font-style: oblique;
+	font-size: 20px;
+	background-color: #3087ce;
+	width: 380px; /* largeur augmentée de l'en-tête */
+	padding-left: 10px;
+	display: inline-block;
+}
+
+.gestion-header-logo {
+	margin-top: -51px;
+	margin-left: -10px;
+	width: 45px;
+	float: left;
+}
+
+/* Bloc principal de la liste */
+#div2 {
+	border-radius: 25px;
+	border: 2px solid #3087ce;
+	padding: 20px;
+	width: 1250px; /* largeur augmentée du bloc principal */
+	height: 550px;
+	margin-left: 10px;
+	margin-top: 10px;
+}
+
+/* Actions (ajout / annuler) */
+.gestion-actions {
+	display: flex;
+	gap: 2px;
+	margin-left: 100px;
+	width: 260px; /* actions un peu plus larges */
+}
+
+.gestion-add-btn {
+	margin-left: -72px;
+	width: 100%;
+}
+
+.gestion-cancel-btn {
+	width: 130px;
+}
+
+/* Tableau utilisateurs */
+.gestion-table {
+	width: 100%;
+}
+
+.gestion-th-center,
+.gestion-td-center {
+	text-align: center;
+}
+
+/* Responsive simple : empiler les actions sur petits écrans, sans changer le style desktop */
+@media (max-width: 768px) {
+	.gestion-header {
+		margin-left: 0;
+		width: auto;
+		max-width: 100%;
+	}
+
+	#div2 {
+		width: 100%;
+		margin: 10px 5px;
+		padding: 10px;
+		height: auto;
+	}
+
+	.gestion-actions {
+		margin-left: 0;
+		width: 100%;
+		flex-direction: column;
+	}
+
+	.gestion-add-btn,
+	.gestion-cancel-btn {
+		width: 100%;
+		/* masquer le texte et garder uniquement les icônes sur mobile */
+		font-size: 0;
+		white-space: nowrap;
+	}
+
+	.gestion-add-btn i,
+	.gestion-cancel-btn i {
+		font-size: 14px; /* taille lisible de l'icône */
+		margin: 0;
+	}
+}
+
