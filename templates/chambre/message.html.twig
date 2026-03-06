@@ -1,12 +1,15 @@
 {% extends 'home/index.html.twig' %}
 {% block body %}
+
  <script src="{{asset('javascript/jquery.min.js')}}"> </script>
 
-<script >
+<script>
 $('.dt-buttons').after('<hr>')
 </script>
-<div style="border-radius: 8px; text-align: left; margin-bottom: 10px; margin-left: -130px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding-left: 10px; display: inline-block;">
-<img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">Messages personnels 
+
+<link rel="stylesheet" href="{{ asset('css/css_msgChambre.css') }}">
+<div class="msg-header">
+<img src="{{ asset('images/ler.png') }}" class="msg-header-logo">Messages personnels 
 </div>
 {% if app.request.get('msg') is defined %}
 {% if app.request.get('msg') ==1 %}
@@ -14,137 +17,83 @@ $('.dt-buttons').after('<hr>')
 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 <span aria-hidden="true">×</span></button> <strong><i class='glyphicon glyphicon-thumbs-up' >
 </i> votre message</strong> a été envoyé avec succès </div>
-
 {% endif %}
 {% endif %}
 <form action="{{ path('app_envoyer_message_chambre')}}" method="post">
-<div id="div2">
-<div class="col-md-12">
-
-
+<div id="div2" class="msg-container">
+<div class="col-md-12 msg-col-full">
 <div class="form-group">
 <label for="exampleInputPassword1">Ecrire votre message (max 120 caractères)</label>
 <input maxlength="120" required class="form-control" name="Question">
 </div>
-
 </div>
-
-
-<div class="col-md-12" style="margin-bottom:30px">
-
-
-   
+<div class="col-md-12 msg-col-full msg-bottom-block">   
 <div class="form-group">
-<button type="submit" id="envoyer" name="valider" class="btn-primary btn btn-sm" {% if app.user.EnvoyerMessage == '0' %} disabled {% endif %}>
-<i class="glyphicon glyphicon-comment"></i>
- Envoyer message aux chambres sélectionnées
- </button>
-</div>
-
-
-<hr>
-<div class="col-md-8" >
-</div>
-
-
-<div class="col-md-12" style="margin-buttom:25p"x>
+   <button type="submit" id="envoyer" name="valider" class="btn-primary btn btn-sm msg-send-btn" {% if app.user.EnvoyerMessage == '0' %} disabled {% endif %}>
+   <i class="glyphicon glyphicon-comment"></i>
+      Envoyer message aux chambres sélectionnées
+   </button>
+   </div>
+   <hr>
+   <div class="col-md-8 msg-spacer" >
+   </div>
+   <div class="col-md-12 msg-table-wrapper">
 
 
 
 
   <!--<table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column" id="dataTables-example">-->
 
-   <table class="table table-striped table-bordered header-fixed table-hover" id="dataTables-example" style="width: 100%;margin-top:20px;">
-<thead> 
+   <table class="table table-striped table-bordered header-fixed table-hover msg-table" id="dataTables-example">
+   <thead> 
+      <tr>
+         <th class="msg-th msg-th-select" > <input  type="checkbox"  id="checkAll" >   Selectionner</th>
+         <th class="msg-th">Connexion</th>
+         <th class="msg-th">Ip</th>
+         <th class="msg-th">Support connecté</th>
+         <th class="msg-th">Type</th>
+         <th class="msg-th">Date Mise à jour</th>
+         <th class="msg-th">Chambre</th>
+         <th class="msg-th msg-th-service">Service</th>
+      </tr>
+   </thead> 
+   <tbody>
+      {% set i=0 %}
+      {% for box in boxs %}
+      <tr class="odd gradeX">
+      <td class="msg-td msg-td-select" data-label="Sélection">
+      <label >
+      <input class='arch' name='list[{{box.Id}}]' type="checkbox"  >
+      </label>
+      {{box.nom}}
+      </td>
+      {% if ar[i] == 0 %} 
+      <td class="msg-td" data-label="Connexion"><p class="msg-status msg-status-off" ><i class="glyphicon glyphicon-stop"></i> OFF</p></td>
+      {% else %} 
+      <td class="msg-td" data-label="Connexion"><p class="msg-status msg-status-on" ><i class="glyphicon glyphicon-stop"></i> ON </p></td>
+      {% endif  %} 
+      <td class="msg-td" data-label="Ip">{{box.Ip}}</td>
+      <td class="msg-td" data-label="Support connecté">{{box.Support}}</td>
+      <td class="msg-td" data-label="Type">{{box.type}}</td>
+      <td class="msg-td" data-label="Date Mise à jour">{{box.date}}</td>
+      <td class="msg-td" data-label="Chambre">{{box.Etage}}</td>
+      <td class="msg-td msg-td-service" data-label="Service">{{box.service.nom|capitalize}}</td>
+      </tr>
 
-<tr>
-<th style="width:160px;height: 50px;text-align:center;display:flex;justify-content:space-between;align-items:center" > <input  type="checkbox"  id="checkAll" >   Selectionner</th>
+      {% set i=i+1 %}
+      {% endfor %}
 
-<th style="width:160px;height: 50px;text-align:center;display:flex;justify-content:center;align-items:center">Connexion</th>
-<th style="width:160px;height: 50px;text-align:center;display:flex;justify-content:center;align-items:center">Ip</th>
-<th style="width:160px;height: 50px;text-align:center;display:flex;justify-content:center;align-items:center">Support connecté</th>
-<th style="width:160px;height: 50px;text-align:center;display:flex;justify-content:center;align-items:center">Type</th>
-<th style="width:160px;height: 50px;text-align:center;display:flex;justify-content:center;align-items:center">Date Mise à jour</th>
-<th style="width:160px;height: 50px;text-align:center;display:flex;justify-content:center;align-items:center">Chambre</th>
-<th style="width:174px;height: 50px;text-align:center;display:flex;justify-content:center;align-items:center">Service</th>
+   </tbody>
 
-</tr>
-</thead> 
-
-<tbody>
-    {% set i=0 %}
-    {% for box in boxs %}
-
-<tr class="odd gradeX">
-
-
-<td style="width:160px;height: 50px;text-align:center; display:flex;justify-content:space-between;" >
-<label >
-<input class='arch' name='list[{{box.Id}}]' type="checkbox"  >
-</label>
-{{box.nom}}
-</td>
-
-
-
-{% if ar[i] == 0 %} 
-
-
-<td style="width:160px;height: 50px;text-align:center;"><p style="text-align: center;" ><i style="color:red;" class="glyphicon glyphicon-stop"></i> OFF</p></td>
-
- {% else %} 
-
- <td style="width:160px;height: 50px;text-align:center;"><p style="text-align: center;" ><i style="color:green;" class="glyphicon glyphicon-stop"></i> ON </p></td>
-
-
- {% endif  %} 
-
-<td style="width:160px;height: 50px;text-align:center;">{{box.Ip}}</td>
-
-
-<td style="width:160px;height: 50px;text-align:center;">{{box.Support}}</td>
-<td style="width:160px;height: 50px;text-align:center;">{{box.type}}</td>
-<td style="width:160px;height: 50px;text-align:center;">{{box.date}}</td>
-<td style="width:160px;height: 50px;text-align:center;">{{box.Etage}}</td>
-<td style="width:174px;height: 50px;text-align:center;">{{box.service.nom|capitalize}}</td>
-
-
-
-
-
-
-
-</tr>
-
-{% set i=i+1 %}
-{% endfor %}
-
-
-</tbody>
-
-</table>
-
-
-<div class="form-group">
-
-
-</div>
-
+   </table>
+   <div class="form-group">
+   </div>
 </div>
 </div>
-
-
-
-
-
-
 </form>
 
 <script type="text/javascript">
-  
-
-
-$(function () {
+  $(function () {
     $('#envoyer').click(function(){
        if ($(".arch:input:checkbox:checked").length == 0) 
  {
@@ -185,12 +134,7 @@ var magazines = $("label").find(':checkbox');
 });
 //-->
 $('.dt-buttons').after('<hr>');
-
-
-
-
     });
-    
 </script>
 
 {% endblock %}

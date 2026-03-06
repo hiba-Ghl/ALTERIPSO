@@ -1,0 +1,203 @@
+/* CSS spécifique à la page etablissement/index.html.twig */
+
+/* Bloc principal (ancien #div4) */
+.etab-container {
+	border-radius: 25px;
+	border: 2px solid #3087ce;
+	background-color: white;
+	padding: 20px 20px 50px 20px;
+	width: 1091px;
+	height: auto;
+	margin-left: 10px;
+	margin-top: 10px;
+}
+
+/* En-tête "Infos Etablissement" */
+.etab-header {
+	border-radius: 8px;
+	margin-top: 10px;
+	text-align: left;
+	margin-bottom: 10px;
+	color: white;
+	font-style: oblique;
+	font-size: 20px;
+	background-color: #3087ce;
+	width: 300px;
+	padding-left: 10px;
+	display: inline-block;
+}
+
+.etab-header-logo {
+	margin-top: -51px;
+	margin-left: -10px;
+	width: 45px;
+	float: left;
+}
+
+/* Libellés de champs à gauche */
+.etab-label-text {
+	width: 100%;
+	text-align: left;
+	padding-left: 20px;
+	margin: 0;
+}
+
+/* Liste des villes (autocomplete) */
+.etab-ville-options {
+	font-size: 16px;
+	display: none;
+	position: absolute;
+	width: 97%;
+	z-index: 1000;
+	background-color: white;
+	border: 1px solid #ccc;
+}
+
+/* Titres de sections bleus */
+.etab-section-title {
+	border-radius: 8px;
+	text-align: left;
+	margin-left: 10px;
+	color: white;
+	font-style: oblique;
+	font-size: 20px;
+	background-color: #3087ce;
+	width: 400px;
+	padding: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+/* Ligne couleur texte (picker + input) */
+.etab-color-row {
+	display: flex;
+	align-items: center;
+}
+
+.etab-color-picker {
+	width: 50px;
+	height: 50px;
+	outline: none;
+	border: none;
+}
+
+.etab-color-code {
+	margin-left: 10px;
+}
+
+/* Boutons d'action en bas du formulaire */
+.etab-buttons-wrapper {
+	float: right;
+	margin-left: 30px;
+}
+
+.etab-btn {
+	width: 130px;
+	margin-left: 5px;
+}
+
+/* Aperçu du logo d'établissement */
+.etab-logo-img {
+	width: auto;
+	height: 100px;
+}
+
+/* Responsive tablette et mobile */
+@media (max-width: 1200px) {
+	.etab-container {
+		width: 100%;
+		margin: 10px 5px;
+		padding: 15px;
+	}
+
+	.etab-header {
+		width: 40%;
+		max-width: 100%;
+	}
+
+	.etab-section-title {
+		width: 60%;
+		max-width: 100%;
+	}
+
+	/* Boutons dans le bloc sur tablette */
+	.etab-buttons-wrapper {
+		float: none;
+		margin: 15px 0 0 0;
+		text-align: right;
+	}
+
+	.etab-btn {
+		width: 150px;
+	}
+
+	/* Input téléchargement logo pleine largeur sur tablette */
+	#logo.form-control {
+		width: 100% !important;
+	}
+}
+
+@media (max-width: 768px) {
+	/* Empiler les colonnes du formulaire */
+	.form-horizontal .form-group .col-lg-2,
+	.form-horizontal .form-group .col-lg-10 {
+		width: 100%;
+		float: none;
+	}
+
+    .etab-header {
+		width: 70%;
+		max-width: 100%;
+	}
+	.etab-label-text {
+		padding-left: 0;
+	}
+
+    .etab-section-title {
+		width: 80%;
+		max-width: 100%;
+        font-size: 14px;
+	}
+
+
+	.etab-container {
+		padding: 10px;
+	}
+
+	/* Centrer le logo uniquement sur mobile */
+	.etab-logo-img {
+		display: block;
+		margin: 10px auto;
+	}
+
+	/* Boutons en colonne, pleine largeur sur mobile */
+	.etab-buttons-wrapper {
+		float: none;
+		margin: 15px 0 0 0;
+		text-align: right;
+	}
+
+	.etab-btn {
+		width: 28%;
+		margin-left: 0;
+		/* masquer le texte et garder uniquement les icônes sur mobile */
+		font-size: 0;
+		white-space: nowrap;
+	}
+
+	.etab-btn i {
+		font-size: 14px; /* taille lisible de l'icône */
+		margin: 0;
+	}
+
+	.etab-color-row {
+		flex-direction: row;
+		align-items: center;
+	}
+
+	/* Input téléchargement logo pleine largeur sur mobile */
+	#logo.form-control {
+		width: 100% !important;
+	}
+}
+

@@ -92,36 +92,36 @@
     <tbody id="myTable">
         {% for annonce in annonces %}
             <tr class="odd gradeX" >
-                <td class="cell-standard cell-medium">{{annonce.nom|capitalize}}</td>
-                <td class="cell-standard cell-medium">{{annonce.type}}</td>
-                <td class="cell-standard cell-medium">        
+                <td class="cell-standard cell-medium" data-label="Nom">{{annonce.nom|capitalize}}</td>
+                <td class="cell-standard cell-medium" data-label="Type">{{annonce.type}}</td>
+                <td class="cell-standard cell-medium" data-label="Active">        
                 <input id="active-{{annonce.Id}}" name="active[{{annonce.Id}}]" type="checkbox" {% if annonce.active == '1' %} checked {% endif %} value="1">
 </td>
-                <td class="cell-standard cell-medium">{{annonce.position|capitalize}}</td>
-                <td class="cell-standard cell-medium">{{annonce.datedebut}}</td>
-                <td class="cell-standard cell-medium">{{annonce.datefin}}</td>
-                <td class="cell-standard cell-medium">{{annonce.duree}}</td>
+                <td class="cell-standard cell-medium" data-label="Position">{{annonce.position|capitalize}}</td>
+                <td class="cell-standard cell-medium" data-label="Date début">{{annonce.datedebut}}</td>
+                <td class="cell-standard cell-medium" data-label="Date fin">{{annonce.datefin}}</td>
+                <td class="cell-standard cell-medium" data-label="Durée">{{annonce.duree}}</td>
 
-                <td class="cell-actions">
-                <div>
-                <a   data-toggle="tooltip" data-placement="top" title="Modifier l'annonce " href="{{ path('app_modifier_annonce', { 'id': annonce.id }) }}" class="btn btn-warning btn-xs"  {% if app.user.ModifierAnnonce == '0' %}  disabled {% endif %}><i class="glyphicon glyphicon-edit"></i></a>									
-                </div>
-                <div data-toggle="modal"  data-target="#modal-{{annonce.id}}" data-position="{{ annonce.position }}" data-url="{{ annonce.url }}" data-type="{{ annonce.type }}" class="visualiser">
-                    <a data-toggle="tooltip"  data-placement="top" title="Pré-visualiser l'annonce"   class="ida btn btn-primary btn-xs" ><i class="glyphicon glyphicon-blackboard"></i></a>
-                </div>
-                <div data-toggle="modal" data-target="#modal2-{{annonce.id}}" data-id ="{{annonce.id}}"  data-name="{{annonce.nom}}" class="lancer-button">
-                    <a   data-toggle="tooltip" data-placement="top" title="Lancer l'annonce"  class="ida btn btn-info btn-xs" ><i class="glyphicon glyphicon-play-circle"></i></a>
-                </div>
-                <div data-toggle="modal" data-target="#modal3-{{annonce.id}}" data-id ="{{annonce.id}}" data-name="{{annonce.nom}}" class="arreter-button">
-                    <a   data-toggle="tooltip" data-placement="top" title="Arreter l'annonce" class="ida btn btn-primary btn-xs" ><i class="glyphicon glyphicon-minus-sign"></i></a>
-                </div>
-                <div>
-                     <a data-toggle="tooltip" data-placement="top" title="Journal"  href="{{path('app_journal_annonce', { 'id': annonce.id })}}" class=" ida btn btn-success btn-xs" ><i class="glyphicon glyphicon-list" ></i></a>
-                </div>
+                <td class="cell-actions" data-label="Actions">
+                    <div>
+                    <a   data-toggle="tooltip" data-placement="top" title="Modifier l'annonce " href="{{ path('app_modifier_annonce', { 'id': annonce.id }) }}" class="btn btn-warning btn-xs"  {% if app.user.ModifierAnnonce == '0' %}  disabled {% endif %}><i class="glyphicon glyphicon-edit"></i></a>									
+                    </div>
+                    <div data-toggle="modal"  data-target="#modal-{{annonce.id}}" data-position="{{ annonce.position }}" data-url="{{ annonce.url }}" data-type="{{ annonce.type }}" class="visualiser">
+                        <a data-toggle="tooltip"  data-placement="top" title="Pré-visualiser l'annonce"   class="ida btn btn-primary btn-xs" ><i class="glyphicon glyphicon-blackboard"></i></a>
+                    </div>
+                    <div data-toggle="modal" data-target="#modal2-{{annonce.id}}" data-id ="{{annonce.id}}"  data-name="{{annonce.nom}}" class="lancer-button">
+                        <a   data-toggle="tooltip" data-placement="top" title="Lancer l'annonce"  class="ida btn btn-info btn-xs" ><i class="glyphicon glyphicon-play-circle"></i></a>
+                    </div>
+                    <div data-toggle="modal" data-target="#modal3-{{annonce.id}}" data-id ="{{annonce.id}}" data-name="{{annonce.nom}}" class="arreter-button">
+                        <a   data-toggle="tooltip" data-placement="top" title="Arreter l'annonce" class="ida btn btn-primary btn-xs" ><i class="glyphicon glyphicon-minus-sign"></i></a>
+                    </div>
+                    <div>
+                         <a data-toggle="tooltip" data-placement="top" title="Journal"  href="{{path('app_journal_annonce', { 'id': annonce.id })}}" class=" ida btn btn-success btn-xs" ><i class="glyphicon glyphicon-list" ></i></a>
+                    </div>
 
-                <div>
-                <a   data-toggle="tooltip" data-placement="top" title="Supprimer l'annonce" href="{{ path('app_supprimer_annonce', { 'id': annonce.id }) }}" class="ida btn btn-danger btn-xs" onClick="return(confirm('voullez vous vraiment supprimer cette annonce ?'));" {% if app.user.SuppAnnonce == '0' %} disabled {% endif %}><i class="glyphicon glyphicon-trash"></i></a>
-                </div>
+                    <div>
+                    <a   data-toggle="tooltip" data-placement="top" title="Supprimer l'annonce" href="{{ path('app_supprimer_annonce', { 'id': annonce.id }) }}" class="ida btn btn-danger btn-xs" onClick="return(confirm('voullez vous vraiment supprimer cette annonce ?'));" {% if app.user.SuppAnnonce == '0' %} disabled {% endif %}><i class="glyphicon glyphicon-trash"></i></a>
+                    </div>
                 </td>
             </tr>
         {% endfor %}
@@ -152,7 +152,7 @@
 
 <script>
   const chambre = {{chambre | raw }};
-document.addEventListener('click', function (event) {
+  document.addEventListener('click', function (event) {
   const PrevisualiserButton = event.target.closest('.visualiser');
   console.log(PrevisualiserButton);
   if (!PrevisualiserButton) return;
@@ -209,24 +209,21 @@ else
     const body = document.getElementById('div2');
 
     const popUP = document.createElement('div');
-    popUP.setAttribute("class", "modal fade");
+    popUP.setAttribute("class", "modal fade modal-popup");
     popUP.setAttribute("tabindex", "-1");
-    popUP.style.marginLeft = "-200px";
     popUP.setAttribute("role", "dialog");
     popUP.setAttribute("id", `modal-${index}`);
     popUP.setAttribute("aria-labelledby", "modalLabel1");
     popUP.setAttribute("aria-hidden", "true");
 
     popUP.innerHTML = `
-    <div class="modal-dialog modal-md" style="width:600px" role="document">
+    <div class="modal-dialog modal-md" role="document">
       <div class="modal-content">
         <div class="modal-header">
             <button id="close" type="button" class="close close3" data-dismiss="modal-${index}" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <div class="col-md-4">
-            <h4 class="modal-title" style="line-height: 3;">Pré-visualisation</h4>
-          </div>
+          <h4 class="modal-title" style="color: grey;">Pré-visualisation</h4>
         </div>
         <div class="modal-body" id="modal-body-${index}" >
           <div class="form-group" style="position:relative">
@@ -235,7 +232,7 @@ else
           </div>
         </div>
         <div class="modal-footer">
-          <a class="btn btn-default btn-sm"  href="/annonce/" role="button"> Fermer</a>    
+          <a class="btn btn-default btn-sm btn-width-fixed" href="/annonce/" role="button"> Fermer</a>    
               </div>
         </div>
       </div>
@@ -280,35 +277,35 @@ document.addEventListener('click', function (event) {
 
 <script>
 function createModal(index,Id,name) {
-    const popUP = document.createElement('div');
-    popUP.setAttribute("class", "modal fade");
-    popUP.setAttribute("tabindex", "-1");
-    popUP.style.marginLeft="-200px";
-    popUP.setAttribute("role", "dialog");
-    popUP.setAttribute("id", `modal2-${index}`);
-    popUP.setAttribute("aria-labelledby", "modalLabel1");
-    popUP.setAttribute("aria-hidden", "true");
-    popUP.innerHTML = `
-        <div class="modal-dialog" role="document">
-            <div class="modal-content" style="width:900px;height:780px;padding:10px;">
-                <div class="modal-header" style="margin-top:30px;">
-                <button id="close" type="button" class="close close2" data-dismiss="modal2-${index}" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 220px; padding: 5px 10px;">
-                    <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
-                        Lancer l'annonce ${name}
-                    </div>
+  const popUP = document.createElement('div');
+  popUP.setAttribute("class", "modal fade modal-popup");
+  popUP.setAttribute("tabindex", "-1");
+  popUP.setAttribute("role", "dialog");
+  popUP.setAttribute("id", `modal2-${index}`);
+  popUP.setAttribute("aria-labelledby", "modalLabel1");
+  popUP.setAttribute("aria-hidden", "true");
+  popUP.innerHTML = `
+    <div class="modal-dialog" role="document">
+      <div class="modal-content modal-content-large">
+        <div class="modal-header modal-header-custom">
+        <button id="close" type="button" class="close close2" data-dismiss="modal2-${index}" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div class="modal-header-title">
+          <img src="{{ asset('images/ler.png') }}" alt="Icon">
+            Lancer l'annonce ${name}
+          </div>
+        </div>
+        <form style="display: flex; flex-direction: column; height: 100%;" id="form" method="post" enctype="multipart/form-data" action="/annonce/LancerAnnonce/${Id}">
+        <div class="modal-footer" style="text-align: left; padding: 15px; border-bottom: 1px solid #e5e5e5; border-top: none;">
+                  <button id="envoyervod" type="submit" class="btn btn-primary conf" name="envoyervod"> <i class="glyphicon glyphicon-send"></i> Lancer l'annonce</button>
+                  <a class="btn btn-danger btn-width-fixed" href="/annonce/" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a>
                 </div>
-                <form style="height:100%" id="form" method="post" enctype="multipart/form-data" action="/annonce/LancerAnnonce/${Id}">
-                <div class="modal-body" id="modal-body2-${index}" >
+                <div class="modal-body" id="modal-body2-${index}" style="flex: 1; overflow-y: auto;">
                 <div style="font-size:16px;color:black;">Liste Support connecté à choisir</div>
                 </div>
-                <div class="modal-footer">
-                  <button id="envoyervod" type="submit" class="btn btn-primary conf" name="envoyervod"> <i class="glyphicon glyphicon-send"></i> Lancer l'annonce</button>
-                  <a class="btn btn-danger " style="width: 139px;" href="/annonce/" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a>                </div>
+                </form>
             </div>
-            </form>
         </div>    
     `;
     return popUP;
@@ -364,10 +361,10 @@ document.addEventListener('click', function (event) {
     tr1.style.display = "flex";
     tr1.style.justifyContent = 'space-between';
     tr1.innerHTML = `
-        <td style="width:120px;height:40px;"><input type="checkbox" value=${chbr.id} name="checked[${i}]" class="boxcheck"/><input style="display:none" type="text" value=${chbr.id} name="chambre[${i}]"></td>
-        <td style="width:120px;height:40px;text-align:center;">${capitalize(chbr.nom)}</td>
-        <td style="width:120px;height:40px;text-align:center;">${chbr.ip}</td>
-        <td style="width:120px;height:40px;text-align:center;">${chbr.Mac}</td>`;
+        <td style="width:120px;height:40px;" data-label="Sélection"><input type="checkbox" value=${chbr.id} name="checked[${i}]" class="boxcheck"/><input style="display:none" type="text" value=${chbr.id} name="chambre[${i}]"></td>
+        <td style="width:120px;height:40px;text-align:center;" data-label="Chambre">${capitalize(chbr.nom)}</td>
+        <td style="width:120px;height:40px;text-align:center;" data-label="Adresse IP">${chbr.ip}</td>
+        <td style="width:120px;height:40px;text-align:center;" data-label="Adresse MAC">${chbr.Mac}</td>`;
     tbody.appendChild(tr1);
     i++;
 });
@@ -455,34 +452,34 @@ document.addEventListener('click', function (event) {
 
   function createModal1(index,Id,name) {
     const popUP = document.createElement('div');
-    popUP.setAttribute("class", "modal fade");
+    popUP.setAttribute("class", "modal fade modal-popup");
     popUP.setAttribute("tabindex", "-1");
-    popUP.style.marginLeft="-200px";
     popUP.setAttribute("role", "dialog");
     popUP.setAttribute("id", `modal3-${index}`);
     popUP.setAttribute("aria-labelledby", "modalLabel2");
     popUP.setAttribute("aria-hidden", "true");
     popUP.innerHTML = `
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="width:800px;height:780px;">
+            <div class="modal-content">
                 <div class="modal-header" style="margin-top:30px;">
                 <button id="close" type="button" class="close close1" data-dismiss="modal3-${index}" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 220px; padding: 5px 10px;">
-                    <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+                    <div class="modal-header-title">
+                    <img src="{{ asset('images/ler.png') }}" alt="Icon">
                         Arrêter l'annonce ${name}
                     </div>
                 </div>
-            <form id="form" method="post" enctype="multipart/form-data" action="/annonce/ArreteAnnonce/${Id}">
-                <div class="modal-body" id="modal-body3-${index}">
+            <form id="form" method="post" enctype="multipart/form-data" action="/annonce/ArreteAnnonce/${Id}" style="display: flex; flex-direction: column; height: 100%;">
+                <div class="modal-footer" style="text-align: left; padding: 15px; border-bottom: 1px solid #e5e5e5; border-top: none;">
+                  <button id="envoyervod" type="submit" class="btn btn-primary conf" name="envoyervod"> <i class="glyphicon glyphicon-send" style="margin-right:3px"></i>Arrêt l'annonce en cours</button>
+                  <a class="btn btn-danger btn-width-fixed" href="/annonce/" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a>
+                </div>
+                <div class="modal-body" id="modal-body3-${index}" style="flex: 1; overflow-y: auto;">
                 <div style="font-size:16px;color:black;">Liste Support connecté à choisir</div>
                 </div>
-                <div class="modal-footer">
-                  <button id="envoyervod" type="submit" class="btn btn-primary conf"name="envoyervod"> <i class="glyphicon glyphicon-send" style="margin-right:3px"></i>Arrêt l'annonce en cours</button>
-                  <a class="btn btn-danger " style="width: 139px;" href="/annonce/" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a>                </div>
-            </div>
             </form>
+            </div>
         </div>    
     `;
     return popUP;
@@ -524,16 +521,16 @@ if (!response.ok) {
       {
       const table = document.createElement('table');
       table.style.width = "100%";
-      table.setAttribute("class","table table-striped header-fixed table-bordered table-hover table-checkable order-column dataTable no-footer");
+      table.setAttribute("class","table table-striped header-fixed table-bordered table-hover table-checkable order-column dataTable no-footer table-modal");
       table.id = `table1-${index}`;
       const thead = document.createElement('thead');
       thead.style.width = "100%";
       thead.innerHTML = `
-        <tr style="width:100%;display:flex;justify-content:space-between">
-          <th style="width:120px;height:60px;display:flex;align-items: center;gap:5px"><input type="checkbox" id="checkAllboxn1" checked/> <p style="color:red">Selectionner / Désélectionner</p></th>
-          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Chambre</th>
-          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Adresse IP</th>
-          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Adresse MAC</th> 
+        <tr>
+          <th><input type="checkbox" id="checkAllboxn1" checked/></th>
+          <th>Chambre</th>
+          <th>Adresse IP</th>
+          <th>Adresse MAC</th> 
         </tr>`;
       table.appendChild(thead);
       const tbody = document.createElement('tbody');
@@ -541,15 +538,11 @@ if (!response.ok) {
       let i = 0;
       data.AnnonceLancer.forEach(chbr => {
     const tr1 = document.createElement('tr');
-    tr1.style.width = "100%";
-    tr1.style.height = "50px";
-    tr1.style.display = "flex";
-    tr1.style.justifyContent = 'space-between';
     tr1.innerHTML = `
-        <td style="width:120px;height:40px;"><input type="checkbox" value=${chbr.id} name="checked[${i}]" class="boxcheck1" checked/><input style="display:none" type="text" value=${chbr.id} name="chambre[${i}]"></td>
-        <td style="width:120px;height:40px;text-align:center;">${capitalize(chbr.nom)}</td>
-        <td style="width:120px;height:40px;text-align:center;">${chbr.ip}</td>
-        <td style="width:120px;height:40px;text-align:center;">${chbr.Mac}</td>`;
+        <td data-label="Sélection"><input type="checkbox" value=${chbr.id} name="checked[${i}]" class="boxcheck1" checked/><input style="display:none" type="text" value=${chbr.id} name="chambre[${i}]"></td>
+        <td data-label="Chambre">${capitalize(chbr.nom)}</td>
+        <td data-label="Adresse IP">${chbr.ip}</td>
+        <td data-label="Adresse MAC">${chbr.Mac}</td>`;
     tbody.appendChild(tr1);
     i++;
 });

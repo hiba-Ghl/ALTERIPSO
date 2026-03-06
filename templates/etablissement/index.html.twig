@@ -1,35 +1,16 @@
+
 {% extends 'home/index.html.twig' %}
 {% block body %}
-	<style>
-		#div1 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 43px;
-			width: 1091px;
-			height: 300px;
-			margin-left: 10px;
-			margin-top: 10px;
 
-		}
-		#div4 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			background-color:white;
-			padding: 20px;
-			padding-bottom:50px;
-			width: 1091px;
-			height: auto;
-			margin-left: 10px;
-			margin-top: 10px;
-		}
-	</style>
+<head>
+	<link rel="stylesheet" href="{{ asset('css/css_etablissement.css') }}">
+</head>
 	<!--                                                      -->
-	<div style="border-radius: 8px;  margin-top:10px;text-align: left; margin-bottom: 10px;color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding-left: 10px; display: inline-block;">
-    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+	<div class="etab-header">
+    <img class="etab-header-logo" src="{{ asset('images/ler.png') }}">
 		Infos Etablissement
 	</div>
-	<div
-		id="div4">
+	<div id="div4" class="etab-container">
 		<!--  -->
 		<form name="" method="post" action="{{ path('modifieretablissement', {'id': app.user.etablissement.id}) }}" class="form-horizontal" enctype="multipart/form-data">
 
@@ -38,9 +19,9 @@
 			<!-- nom d'etablissement -->
 			<div class="form-group">
 				<label for="nom_etablissement" class="col-lg-2 control-label">
-				<p style="width:100%;text-align:left;padding-left:20px;">
-				Nom d'établissement
-				</p>
+					<p class="etab-label-text">
+						Nom d'établissement
+					</p>
 				</label>
 				<div class="col-lg-10">
 					<input type="text" id="nom_etablissement" name="nom_etablissement" class="form-control" value="{{app.user.etablissement.nometablissement}}"/>
@@ -50,9 +31,9 @@
 
 			<div class="form-group">
 				<label for="description" class="col-lg-2 control-label">
-				<p style="width:100%;text-align:left;padding-left:20px;">
-				Type d'Etablissement
-				</p>
+					<p class="etab-label-text">
+						Type d'Etablissement
+					</p>
 				</label>
 				<div class="col-lg-10">
 					<label class="radio-inline">
@@ -71,9 +52,9 @@
 			<!-- le genre  -->
 			<div class="form-group">
 				<label for="genre" class="col-lg-2 control-label">
-				<p style="width:100%;text-align:left;padding-left:20px;">
-				Genre
-				</p>
+					<p class="etab-label-text">
+						Genre
+					</p>
 				</label>
 				<div class="col-lg-10">
 
@@ -89,9 +70,9 @@
 			<!-- nom   -->
 			<div class="form-group">
 				<label for="nom" class="col-lg-2 control-label">
-				<p style="width:100%;text-align:left;padding-left:20px;">
-				Nom
-				</p>
+					<p class="etab-label-text">
+						Nom
+					</p>
 				</label>
 				<div class="col-lg-10">
 					<input type="text" id="nom" name="nom" class="form-control" value="{{ app.user.etablissement.nom}}"/>
@@ -100,9 +81,9 @@
 			<!-- prenom  -->
 			<div class="form-group">
 				<label for="prenom" class="col-lg-2 control-label">
-				<p style="width:100%;text-align:left;padding-left:20px;">
-				Prenom
-				</p>
+					<p class="etab-label-text">
+						Prenom
+					</p>
 				</label>
 				<div class="col-lg-10">
 
@@ -113,9 +94,9 @@
 			<!-- pays  -->
 			<div class="form-group">
 				<label for="pays" class="col-lg-2 control-label">
-				<p style="width:100%;text-align:left;padding-left:20px;">
-				Pays
-				</p>
+					<p class="etab-label-text">
+						Pays
+					</p>
 				</label>
 				<div class="col-lg-10">
 
@@ -126,23 +107,23 @@
 			<!-- ville  -->
 			<div class="form-group">
 				<label for="ville" class="col-lg-2 control-label">
-				<p style="width:100%;text-align:left;padding-left:20px;">
-				Ville
-				</p>
+					<p class="etab-label-text">
+						Ville
+					</p>
 				</label>
 				<div class="col-lg-10">
 
 					<input type="text" id="ville" name="ville" class="form-control" value="{{ app.user.etablissement.ville}}"/>
-  <ul id="ville-options" class="list-group mt-2" style="font-size:16px;display:none; position: absolute; width: 97%;z-index: 1000; background-color: white; border: 1px solid #ccc;"></ul> <!-- List for options -->
+  <ul id="ville-options" class="list-group mt-2 etab-ville-options"></ul> <!-- List for options -->
 				</div>
 			</div>
 			
 			<!-- addresse  -->
 			<div class="form-group">
 				<label for="adresse" class="col-lg-2 control-label">
-				<p style="width:100%;text-align:left;padding-left:20px;">
-				Adresse
-				</p>
+					<p class="etab-label-text">
+						Adresse
+					</p>
 				</label>
 				<div class="col-lg-10">
 
@@ -153,9 +134,9 @@
 			<!-- nombres de chambres  -->
 			<div class="form-group">
 				<label for="licence" class="col-lg-2 control-label">
-				<p style="width:100%;text-align:left;padding-left:20px;">
-				Nombre de chambres
-				</p>
+					<p class="etab-label-text">
+						Nombre de chambres
+					</p>
 				</label>
 				<div class="col-lg-10">
 					<input type="number" id="nbr_chambres" name="licence" class="form-control" value="{{ app.user.etablissement.licence}}"/>
@@ -164,9 +145,9 @@
 			<!-- etat du logo   -->
 			<div class="form-group">
 				<label for="logoactive" class="col-lg-2 control-label">
-				<p style="width:100%;text-align:left;padding-left:20px;">
-				Logo
-				</p>
+					<p class="etab-label-text">
+						Logo
+					</p>
 				</label>
 				<div class="col-lg-10">
 
@@ -186,9 +167,9 @@
 
 			<div class="form-group">
 				<label for="logo" class="col-lg-2 control-label">
-				<p style="width:100%;text-align:left;padding-left:20px;">
-				Téléchargement logo
-				</p>
+					<p class="etab-label-text">
+						Téléchargement logo
+					</p>
 				</label>
 				<div class="col-lg-10">
 					<input type="file" class="form-control" id="logo" name="logo" value="{{ app.user.etablissement.logo }}" accept =".jpg , .peg , .png">
@@ -198,7 +179,7 @@
 			<div class="form-group">
 				<label for="logo" class="col-lg-2 control-label"></label>
 				{% if app.user.etablissement.logo is not null %}
-					<img  src="{{ path('afficher_image', { filename: app.user.etablissement.logo|split('/')|last, directory: 'etablissement_directory' }) }}" class="img" style="width:auto; height: 100px;"/>
+					<img  src="{{ path('afficher_image', { filename: app.user.etablissement.logo|split('/')|last, directory: 'etablissement_directory' }) }}" class="img etab-logo-img"/>
 				{% else %}
 					<p>Aucun logo n'a été téléchargé.</p>
 				{% endif %}
@@ -207,8 +188,8 @@
 
 			<div class="form-group">
 				<div class="col-lg-10">
-					   <h4 style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 400px;padding: 10px;">Paramétrage des messages sur ECRAN TV </h4>         
-			   </div>
+					   <h4 class="etab-section-title">Paramétrage des messages sur ECRAN TV </h4>
+		   </div>
 			</div>	
 			
 			<!-- fin espace -->
@@ -216,9 +197,9 @@
 
 			<div class="form-group">
 				<label for="msgbienvenu" class="col-lg-2 control-label">
-				<p style="width:100%;text-align:left;padding-left:20px;">
-				Message bienvenue
-				</p>
+					<p class="etab-label-text">
+						Message bienvenue
+					</p>
 				</label>
 				<div class="col-lg-10">
 
@@ -252,9 +233,9 @@
 			<!-- message ap  -->
 			<div class="form-group">
 				<label for="msgap" class="col-lg-2 control-label">
-				<p style="width:100%;text-align:left;padding-left:20px;">
-				Message AP
-				</p>
+					<p class="etab-label-text">
+						Message AP
+					</p>
 				</label>
 				<div class="col-lg-10">
 
@@ -273,9 +254,9 @@
 			<!-- message internet  -->
 			<div class="form-group">
 				<label for="accessTvInCheckout" class="col-lg-2 control-label">
-					<p style="width:100%;text-align:left;padding-left:20px;">
-				Message internet
-				</p>
+					<p class="etab-label-text">
+						Message internet
+					</p>
 				</label>
 				<div class="col-lg-10">
 					<select id="accessTvInCheckout" name="accessTvInCheckout" class="form-control">
@@ -292,14 +273,14 @@
 
 	<div class="form-group">
 		<div class="col-lg-10">
-			<h4 style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 400px;padding: 10px;">Mise en forme page principale TV</h4>         
+			<h4 class="etab-section-title">Mise en forme page principale TV</h4>
 		</div>
 	</div>	
 	<div class="form-group">
 		<label for="type_text" class="col-lg-2 control-label">
-		<p style="width:100%;text-align:left;padding-left:20px;">
-		Type d’écriture
-		</p>
+			<p class="etab-label-text">
+				Type d’écriture
+			</p>
 		</label>
 		<div class="col-lg-10">
 			<select id="type_text" name="type_text" class="form-control" value="{{app.user.etablissement.Typetext}}">
@@ -317,16 +298,16 @@
 		</div>
 	</div>
 	<div class="form-group">
-  <label for="colorPicker" class="col-lg-2 control-label">
-    <p style="width:100%;text-align:left;padding-left:20px;">
-      Couleur du texte (catégorie)
-    </p>
-  </label>
-  <div class="col-lg-10" style="display:flex;align-items:center">
-    <input type="color" id="colorPicker" value="{{app.user.etablissement.Couleurtext}}" style="width:50px;height:50px;outline:none;border:none"/>
-    <input type="text" id="colorCode" name="color_text" class="form-control" style="margin-left: 10px;" value={{app.user.etablissement.Couleurtext}}></span>
-  </div>
-</div>
+	  <label for="colorPicker" class="col-lg-2 control-label">
+			<p class="etab-label-text">
+				Couleur du texte (catégorie)
+			</p>
+	  </label>
+	  <div class="col-lg-10 etab-color-row">
+		<input type="color" id="colorPicker" value="{{app.user.etablissement.Couleurtext}}" class="etab-color-picker"/>
+		<input type="text" id="colorCode" name="color_text" class="form-control etab-color-code" value={{app.user.etablissement.Couleurtext}}></span>
+	  </div>
+	</div>
 
 <script>
   const picker = document.getElementById('colorPicker');
@@ -340,9 +321,9 @@
 </script>
 	<div class="form-group">
 		<label for="type_text" class="col-lg-2 control-label">
-		<p style="width:100%;text-align:left;padding-left:20px;">
-		Taille du texte (catégorie)
-		</p>
+			<p class="etab-label-text">
+				Taille du texte (catégorie)
+			</p>
 		</label>
 		<div class="col-lg-10">
 			<select id="taille_text" name="taille_text" class="form-control" value="{{app.user.etablissement.Tailletext}}">
@@ -366,9 +347,9 @@
 	</script>
 	<div class="form-group">
 		<label for="volume_demarage" class="col-lg-2 control-label">
-		<p style="width:100%;text-align:left;padding-left:20px;">
-		Volume au démarrage
-		</p>
+			<p class="etab-label-text">
+				Volume au démarrage
+			</p>
 		</label>
 		<div class="col-lg-10">
 			<select id="volume_demarage" name="volume_demarage" class="form-control" value="{{app.user.etablissement.Volumedemarage}}">
@@ -390,13 +371,13 @@
 			volume_demarage.appendChild(option);
 		})
 	</script>
-	<div style="float:right;margin-left:30px;">
-    <a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/home">
-        <i class="glyphicon glyphicon-remove"></i> Annuler
-    </a>
-<button type="submit" class="btn btn-primary btn-md" style="width:130px;" {% if not is_granted('ROLE_ADMIN') and not is_granted('ROLE_SUPER_ADMIN')%} disabled {% endif %}>
-        <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
-    </button>
+	<div class="etab-buttons-wrapper">
+    <a class="btn btn-danger btn-md etab-btn" id = "annulerButton" href="/home">
+		<i class="glyphicon glyphicon-remove"></i> Annuler
+	</a>
+<button type="submit" class="btn btn-primary btn-md etab-btn" {% if not is_granted('ROLE_ADMIN') and not is_granted('ROLE_SUPER_ADMIN')%} disabled {% endif %}>
+		<i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
+	</button>
 </div>
 		</form>
 

@@ -1,6 +1,7 @@
 {% extends 'home/index.html.twig' %}
 
 {% block body %}
+<link rel="stylesheet" href="{{ asset('css/css_annonce.css') }}">
 {# offline
 {% if appConfig.StatusServeur is same as('Offline') %}
 <script src="assets/js/jquery-3.6.0.min.js"></script>
@@ -41,66 +42,37 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script> 
   {% endif %} 
 
-<style>
-    table {
-    width: 100%;
-    border-collapse: collapse;
-    }
-    tbody {
-        display: block;
-        max-height: 350px; 
-        overflow-y: auto;
-    }
-    thead {
-    background-color: #f2f2f2;
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    }
-    tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-}
-
-
-    
-</style>
 
 
 <!--le title header-->
 <p id='p'></p>
-<div style="border-radius: 8px;text-align: left;margin-bottom: 10px;margin-left: -120px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
-    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+<div class="journal-header">
+    <img src="{{ asset('images/ler.png') }}">
     Journal des Annonces
 </div>
    
 <!--le tableau-->
-<div id="div2">
+<div id="journal-container">
 <!--le bouton d'ajout-->
-<div style="display:flex;align-items:center;justify-content:space-between;gap:3px;">
+<div class="journal-btn-area">
 <div>
-    <a href="{{ path('app_annonce') }}" class="button btn btn-danger" name="add" id="add" style="margin-bottom: 10px; margin-right: 5px;">
+    <a href="{{ path('app_annonce') }}" class="button btn btn-danger btn-retour-journal" name="add" id="add">
             <i class="glyphicon glyphicon-arrow-left"></i>
             Retour
 </a>
 </div>
 <!--la barre de recherche-->
 </div>
- <table class="table table-striped table-bordered header-fixed table-hover" id="dataTables-example" style="width: 100%;margin-top:20px;">
-    <thead style="width:100%"> 
-        <tr style = "width:100%;">
-        <th style="height: 30px;width:30%;text-align:center;">Date envoie</th>
-        <th style="height: 30px;width:30%;text-align:center;">Chambre</th>
-        <th style="height: 30px;width:30%;text-align:center;" >Annonce</th>
-        </tr>
+ <table class="table table-striped table-bordered header-fixed table-hover journal-table" id="dataTables-example">
+    <thead> 
+        <tr><th>Date envoie</th><th>Chambre</th><th>Annonce</th></tr>
     </thead> 
     <tbody id="myTable">
     {% for ann in annonceHistorique  %}
-    <tr style="width:100%">
-        <td style="height: 30px;width:31%;text-align:center;">{{ ann.date|date('d/m/Y H:i') }}</td>
-        <td style="height: 30px;width:31%;text-align:center;">{{ann.nom_chambre.nom}}</td>
-        <td style="height: 30px;width:31%;text-align:center;">{{ann.nom_annonce.nom}}</td>
+    <tr>
+        <td data-label="Date envoie">{{ ann.date|date('d/m/Y H:i') }}</td>
+        <td data-label="Chambre">{{ann.nom_chambre.nom}}</td>
+        <td data-label="Annonce">{{ann.nom_annonce.nom}}</td>
     </tr>
     {% endfor %}
     </tbody>

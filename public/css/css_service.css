@@ -1,7 +1,8 @@
 /* Custom CSS for Service List */
-body{
+body {
     line-height: 2.42857143;
 }
+
 .dataTables_filter {
     float: right;
     width: 50%;
@@ -195,17 +196,17 @@ body{
     text-align: center;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1200px) {
 
     /* --- Layout --- */
     #div2 {
-        padding: 20px;
-        max-width: 350px;
-        margin: 20px auto;
+        padding: 10px;
+        max-width: 100%;
+        margin: 10px auto;
         box-sizing: border-box;
-        overflow-x: auto;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
+        height: auto !important;
+        /* Ensure full height for cards */
+        min-height: unset !important;
     }
 
     .header-blue-main {
@@ -242,9 +243,9 @@ body{
     }
 
     .dataTables_filter input {
-        width: 130px !important;
-        font-size: 13px;
-        padding: 4px 6px;
+        width: 200px !important;
+        font-size: 10px;
+        padding: 2px;
     }
 
     .dt-buttons {
@@ -258,60 +259,143 @@ body{
         margin-right: 0;
     }
 
-    /* --- Table: scrollable inside #div2 --- */
+    /* --- Table: Transform to Cards --- */
     .table-service-main {
-        min-width: 700px;
-        height: auto;
-        /* Clé de l'alignement : table-layout fixed respecte les width des <th> pour toute la table */
-        table-layout: fixed;
+        border: 0 !important;
+        display: block !important;
+        min-width: 0 !important;
+        height: auto !important;
+        /* Allow height to adapt to all cards */
     }
 
-    .table-service-main th,
+    .table-service-main thead {
+        display: none !important;
+    }
+
+    .table-service-main tbody,
+    .table-service-main tr,
     .table-service-main td {
-        padding: 4px 6px;
-        font-size: 13px;
-        overflow: hidden;
-        vertical-align: middle;
+        display: block !important;
+        width: 100% !important;
     }
 
-    /* Force tous les <div> internes des <td> à suivre la largeur de leur cellule </
-       au lieu d'imposer leur propre width fixe (cause du zigzag) */
+    .table-service-main tr {
+        margin-bottom: 25px !important;
+        border: 2px solid #3087ce !important;
+        border-radius: 15px !important;
+        background: #f9f9f9 !important;
+        padding: 10px !important;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .table-service-main td {
+        display: flex !important;
+        flex-direction: column !important;
+        /* Stack Label on top of Value */
+        justify-content: flex-start !important;
+        align-items: flex-start !important;
+        /* Align everything to the left */
+        border: none !important;
+        border-bottom: 1px solid #ddd !important;
+        padding: 5px 10px !important;
+        text-align: left !important;
+        width: 100% !important;
+        min-height: unset !important;
+        height: auto !important;
+        background: #fff;
+    }
+
+    /* Forced visibility for Labels */
+    .table-service-main td:before {
+        content: attr(data-label) " :";
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        color: #3087ce !important;
+        font-weight: 800 !important;
+        font-size: 14px !important;
+        text-transform: uppercase !important;
+        margin-bottom: 8px !important;
+        width: 100% !important;
+        text-align: left !important;
+        padding: 5px 0;
+    }
+
+    .table-service-main td:last-child {
+        border-bottom: 0 !important;
+    }
+
+    /* Input/Value Container: Align to the left with reduced width */
     .table-service-main td>div {
         width: 100% !important;
-        box-sizing: border-box;
+        max-width: 200px !important;
+        /* Reduced width as requested */
         height: auto !important;
-        min-height: 40px;
+        margin: 0 !important;
+        display: flex !important;
+        justify-content: flex-start !important;
+        /* Forces content to the left */
+        align-items: center !important;
+        min-height: unset !important;
+        padding: 0 !important;
     }
 
-    .table-service-main .td-image {
-        width: 40px;
-        height: 40px;
+    /* Specific fixes for images */
+    .td1,
+    .td1>div {
+        justify-content: flex-start !important;
     }
 
-    .table-service-main .td-image-container {
-        width: 50px;
-        height: 50px;
+    .table-service-main img {
+        width: 60px !important;
+        height: 60px !important;
+        margin: 0 !important;
+        border-radius: 8px;
+        border: 1px solid #eee;
     }
 
-    .table-service-main .flex-center-60 {
-        height: 40px;
+    /* Align inputs/selects inside the vertical layout */
+    .table-service-main select,
+    .table-service-main .form-control,
+    .test {
+        width: 100% !important;
+        /* relative to the 200px container */
+        height: 40px !important;
+        /* Increased height for mobile */
+        text-align: left !important;
     }
 
     .source-link-style {
-        max-width: 100%;
-        font-size: 12px;
+        width: 100% !important;
+        max-width: 180px !important;
+        font-size: 13px !important;
+        text-align: left !important;
         word-break: break-all;
         white-space: normal;
+        display: block !important;
+        color: #337ab7 !important;
+        text-decoration: underline !important;
     }
 
-    .pos-select {
-        width: 50px;
-        font-size: 12px;
+    /* Actions alignment */
+    .table-service-main td[data-label="Actions"]>div {
+        gap: 12px !important;
+        flex-wrap: wrap !important;
+        justify-content: flex-start !important;
+        max-width: none !important;
     }
 
+    /* Update .test for Ajouter/Modifier pages to be more flexible */
+    .test {
+        width: 100% !important;
+        height: 40px !important;
+        text-align: left !important;
+        margin-left: 0 !important;
+        max-width: 100% !important;
+        /* Allow full width on mobile/tablet */
+    }
 
     /* --- Modal responsive --- */
-    /* Force le retrait du margin-left négatif injecté par JS */
     .modal {
         margin-left: 0 !important;
     }
@@ -329,12 +413,6 @@ body{
         max-width: none;
     }
 
-    .modal-header-margin {
-        margin-top: 10px;
-        padding-bottom: 5px;
-    }
-
-    /* Minimiser les bannières de titre bleues dans les modaux */
     .header-blue-lancer,
     .header-blue-modal {
         width: 100% !important;
@@ -354,7 +432,22 @@ body{
         padding-bottom: 20px;
     }
 
-    /* --- Inner modal tables (chambre) --- */
+    /* --- Inner modal tables (chambre) labels --- */
+    .modal-body table td {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        padding: 8px 10px !important;
+        border-bottom: 1px solid #eee !important;
+    }
+
+    .modal-body table td:before {
+        content: attr(data-label) " :";
+        font-weight: bold;
+        color: #333;
+        font-size: 12px;
+    }
+
     .flex-between {
         flex-wrap: wrap;
     }
@@ -365,17 +458,57 @@ body{
     .cell-40-check {
         width: 100% !important;
         height: auto !important;
-        padding: 5px 0;
+        padding: 0 !important;
         min-height: unset !important;
+        text-align: right !important;
     }
 
-    .row-height-50 {
-        height: auto !important;
+    .modal-body table tr {
+        display: block !important;
+        margin-bottom: 15px !important;
+        border: 1px solid #ddd !important;
+        border-radius: 8px !important;
+        overflow: hidden;
     }
 
-    .modal-body {
-        padding: 10px;
-        font-size: 14px;
+    .modal-body table thead {
+        display: none !important;
+    }
+
+    .cell-40-check {
+        display: flex !important;
+        justify-content: flex-end !important;
+        align-items: center;
+    }
+
+    /* Icons only for action buttons in table and header on mobile */
+    @media (max-width: 767px) {
+
+        .btn-fixed-130,
+        .btn-fixed-139,
+        .table-service-main .btn-xs {
+            width: 45px !important;
+            height: 45px !important;
+            padding: 0 !important;
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            font-size: 0 !important;
+            /* Hide text */
+        }
+
+        .btn-fixed-130 i,
+        .btn-fixed-139 i,
+        .table-service-main .btn-xs i {
+            font-size: 18px !important;
+            margin: 0 !important;
+        }
+
+        /* Adjust header buttons container */
+        #div2>div[style*="display: flex"] {
+            justify-content: flex-start !important;
+            gap: 10px !important;
+        }
     }
 }
 
@@ -541,8 +674,9 @@ body{
     }
 
     /* Inputs et selects */
-    .test {
+    .test, .form-control {
         width: 100% !important;
+        max-width: 100% !important;
     }
 
     /* Bandeau titre : suppression de la marge négative */
@@ -631,8 +765,9 @@ body{
     }
 
     /* Inputs, selects et textarea */
-    .test {
+    .test, .form-control {
         width: 100% !important;
+        max-width: 100% !important;
         height: auto !important;
         font-size: 15px;
     }
@@ -1018,7 +1153,7 @@ body{
     }
 
     .header-icon-main {
-        margin-top: -71px !important;
+        margin-top: -91px !important;
         margin-left: 0 !important;
     }
 

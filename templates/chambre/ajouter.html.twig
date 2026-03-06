@@ -1,42 +1,30 @@
 {% extends 'home/index.html.twig' %}
 {% block body %}
-<style>
-    #div4 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 20px;
-			padding-bottom: 60px;
-			width: 1300px;
-			margin-left: -70px;
-			margin-top: 10px;
-			background-color: white;
-		}
-</style>
+	<link rel="stylesheet" href="{{ asset('css/css_support.css') }}">
 
-
-<div style="border-radius: 8px; text-align: left; margin-bottom: 10px; margin-left: -70px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding-left: 10px; display: inline-block;">
-<img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
-    Ajouter Support 
-</div>
-<div id="div4">
+	<div class="support-add-title">
+		<img class="support-add-title-logo" src="{{ asset('images/ler.png') }}">
+		Ajouter Support 
+	</div>
+	<div class="support-add-container">
 		<form action="{{path('app_ajouter_chambre')}}" method="post" enctype="multipart/form-data" >
-			<table style="width: 100%;">
+			<table class="support-add-table">
 				<tr>
-					<td style="width: 33%; padding-bottom:10px;">
+					<td class="support-add-cell">
 						<div class="control-label">
 							<label  class=" control-label">Nom Support :
 							</label>
-							<input type="text" name="nom" class="form-control" style="width: 95%;">
+							<input type="text" name="nom" class="form-control support-add-input">
 						</div>
 
 					</td>
 
-					<td style="width: 33%; padding-bottom:10px;">
+					<td class="support-add-cell">
 						<div class="control-label">
 							<label class=" control-label">
 								Support :
 							</label>
-							<select class="form-control" name="typesupport" id="typesupport" style="width: 95%;">
+							<select class="form-control support-add-input" name="typesupport" id="typesupport">
 								<option selected="selected" value='Box-Ip'>Box-Ip</option>
 								<option value='Samsung'>Samsung</option>
 								<option value='Samsung Tizen'>Samsung Tizen
@@ -49,13 +37,13 @@
 
 					</td>
 
-					<td style="width: 33%; padding-bottom:10px;">
+					<td class="support-add-cell">
 						<div class="control-label">
 							<label  class=" control-label">Type :
 							</label>
 
 
-							<select class="form-control" name="type" id="type" style="width: 95%;">
+							<select class="form-control support-add-input" name="type" id="type">
 
 								<option value='ip'>ip</option>
 								<option value='coax'>coax</option>
@@ -70,30 +58,30 @@
 				
                 <tr>
 
-					<td style="width: 33%; padding-bottom:10px;">
+					<td class="support-add-cell">
 
 						<div class="control-label">
 							<label  class=" control-label">Mac :
 							</label>
-							<input type="text" name="mac" id="mac" class="form-control" style="width: 95%;" placeholder="xx:xx:xx:xx:xx:xx">
+							<input type="text" name="mac" id="mac" class="form-control support-add-input" placeholder="xx:xx:xx:xx:xx:xx">
 						</div>
 
 					</td>
 
-					<td style="width: 33%; padding-bottom:10px;">
+					<td class="support-add-cell">
 						<div class="control-label">
 							<label class=" control-label">Chambre :
 							</label>
-							<input type="text" name="etage" class="form-control" style="width: 95%;">
+							<input type="text" name="etage" class="form-control support-add-input">
 						</div>
 
 					</td>
 
-					<td style="width: 33%; padding-bottom:10px;">
+					<td class="support-add-cell">
 						<div class="control-label">
 							<label  class=" control-label">Ip :
 							</label>
-							<input type="text" name="ip" id="ip" class="form-control" style="width: 95%;" placeholder="127.0.0.1">
+							<input type="text" name="ip" id="ip" class="form-control support-add-input" placeholder="127.0.0.1">
 						</div>
 					</td>
 
@@ -101,12 +89,12 @@
 				
                 <tr>
 
-					<td style="width: 33%; padding-bottom:10px;">
+					<td class="support-add-cell">
 						<div class="control-label">
 							<label  class=" control-label">
 								Service :
 							</label>
-							<select class="form-control" name="Service" id="Service" style="width: 95%;">
+							<select class="form-control support-add-input" name="Service" id="Service">
 								{% for serv in serviceasc %}
 									<option value="{{serv.id}}">{{serv.nom|capitalize}}</option>
 								{% endfor %}
@@ -115,7 +103,7 @@
 						</div>
 
 					</td>
-                    <td style="width: 33%; padding-bottom:10px;">
+					<td class="support-add-cell">
                         <div  class="control-label" >
                         <label    class=" control-label">Type d'affichage : </label><label class="glyphicon glyphicon-question-sign" title="
                             Règle :   
@@ -138,7 +126,7 @@
                         -> dés qu'on la rallume elle se remet directement sur la chaine sélectionnée
                     "   data-placement="top" ></label>
 
-                    <select name="typeaffichage" class="form-control typeaffichage" style="width: 95%;">
+					<select name="typeaffichage" class="form-control typeaffichage support-add-input">
                     
                         <option selected="selected" value="1" >Alteripso</option>
                         <option  value="2" >Dynamique</option>
@@ -147,12 +135,11 @@
                         </div>
 
                     </td>
-
-                    <td style="width: 33%; padding-bottom:10px;" class="listechaine">
+					<td class="support-add-cell listechaine">
                         <div  class="control-label" >
                             <label  class=" control-label ">Liste chaines </label>
 
-                    <select name="listechaine" class="form-control" style="width: 95%;">
+					<select name="listechaine" class="form-control support-add-input">
                     
                     {% for ch in listechaine %}
 
@@ -169,7 +156,7 @@
 				
                    <tr>
 					
-							<td style="width: 33%; padding-bottom:10px;">
+							<td class="support-add-cell">
 								<div class="control-label">
 									<label  class=" control-label">
 										Fond d'écran :
@@ -183,7 +170,7 @@
 													<input type="radio" name="back" value="{{back}}">
 												</td>
 												<td>
-													<img style="width:150px;height:100px;text-align:center;margin-left: 10px;" src="{{ path('afficher_image', { filename: back|split('/')|last, directory: 'etablissement_directory' }) }}" alt="..." class="img-rounded img-responsive center-block">
+													<img src="{{ path('afficher_image', { filename: back|split('/')|last, directory: 'etablissement_directory' }) }}" alt="..." class="img-rounded img-responsive center-block support-add-bg-thumb">
 											
 												</td>
 											</tr>
@@ -218,12 +205,12 @@
 			</table>
 
 			<br>
-			<div style="float:right;margin-right:20px;">
-    		<a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/chambre">
-        		<i class="glyphicon glyphicon-remove"></i> Annuler
-    		</a>
-    		<button id="submit" type="submit" class="btn btn-primary mt-3" name="valider" style="width:130px" onclick='return CheckForm();'>
-                <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
+			<div class="support-add-actions">
+			<a class="btn btn-danger btn-md support-add-btn" id = "annulerButton" href="/chambre">
+				<i class="glyphicon glyphicon-remove"></i><span class="support-btn-label"> Annuler</span>
+			</a>
+			<button id="submit" type="submit" class="btn btn-primary mt-3 support-add-btn" name="valider" onclick='return CheckForm();'>
+				<i class="glyphicon glyphicon-floppy-disk"></i><span class="support-btn-label"> Enregistrer</span>
             </button>
 			</div>
 			 

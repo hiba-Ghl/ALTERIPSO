@@ -1,0 +1,903 @@
+/* CSS pour la page Support Connecté (chambre/index.html.twig) */
+
+/* ========================= */
+/* CONTENEUR PRINCIPAL */
+/* ========================= */
+body {
+    line-height: 2.42857143;
+}
+
+#div1 {
+    border-radius: 25px;
+    border: 2px solid #3087ce;
+    padding: 43px;
+    width: 1091px;
+    height: 300px;
+    margin-left: -70px;
+    margin-top: 10px;
+}
+
+/* ========================= */
+/* FILE UPLOAD */
+/* ========================= */
+.fileUpload {
+    position: relative;
+    overflow: hidden;
+}
+
+.fileUpload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+
+/* ========================= */
+/* UTILITAIRES */
+/* ========================= */
+.w {
+    width: 70px;
+}
+
+/* ========================= */
+/* TABLE HEADER FIXED */
+/* ========================= */
+.header-fixed {
+    width: 1200px;
+}
+
+.header-fixed>thead,
+.header-fixed>tbody,
+.header-fixed>thead>tr,
+.header-fixed>tbody>tr,
+.header-fixed>thead>tr>th,
+.header-fixed>tbody>tr>td {
+    display: block;
+}
+
+.header-fixed>tbody>tr:after,
+.header-fixed>thead>tr:after {
+    content: ' ';
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+
+.header-fixed>tbody {
+    overflow-y: auto;
+    height: 400px;
+}
+
+.header-fixed>tbody>tr>td,
+.header-fixed>thead>tr>th {
+    float: left;
+}
+
+/* ========================= */
+/* PAGINATION */
+/* ========================= */
+.paginate_button {
+    margin-left: 2px;
+}
+
+.dt-buttons .btn {
+    margin-right: 5px;
+}
+
+/* ========================= */
+/* TITRE DE LA PAGE */
+/* ========================= */
+.support-titre {
+    border-radius: 8px;
+    text-align: left;
+    margin-bottom: 10px;
+    margin-left: -130px;
+    color: white;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 300px;
+    padding-left: 10px;
+    display: inline-block;
+}
+
+.support-titre img {
+    margin-top: -51px;
+    margin-left: -10px;
+    width: 45px;
+    float: left;
+}
+
+/* ========================= */
+/* BARRE D'ACTIONS */
+/* ========================= */
+.support-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 3px;
+}
+
+/* ========================= */
+/* MESSAGE D'ALERTE LICENCE */
+/* ========================= */
+.licence-warning {
+    color: red;
+    font-size: 18px;
+}
+
+/* ========================= */
+/* FILTRE RECHERCHE SERVICE */
+/* ========================= */
+.support-filter {
+    width: 400px;
+    display: flex;
+    gap: 10px;
+    margin-left: 500px;
+    position: absolute;
+    margin-top: 0px;
+    height: 30px;
+}
+
+.support-filter label {
+    font-weight: normal;
+    width: 300px;
+}
+
+.support-filter select {
+    height: 100%;
+    width: 200px;
+}
+
+/* Alignement vertical de la barre de recherche avec le filtre service (desktop) */
+div.dataTables_wrapper div.dataTables_filter {
+    margin-top: -5px;
+}
+
+/* ========================= */
+/* MODÈLE EXTRACTION */
+/* ========================= */
+.extraction-label {
+    color: red;
+    font-size: 14px;
+}
+
+/* ========================= */
+/* TABLEAU PRINCIPAL */
+/* ========================= */
+.support-table {
+    width: 100%;
+    height: 300px;
+}
+
+.support-table th,
+.support-table td {
+    text-align: center;
+    height: 50px;
+}
+
+/* Largeurs colonnes thead */
+.col-identifiant {
+    width: 100px;
+}
+
+.col-connexion {
+    width: 60px;
+}
+
+.col-ip {
+    width: 100px;
+}
+
+.col-modele {
+    width: 60px;
+}
+
+.col-date {
+    width: 100px;
+}
+
+.col-etage {
+    width: 60px;
+}
+
+.col-service {
+    width: 60px;
+}
+
+.col-droit {
+    width: 60px;
+}
+
+.col-affichage {
+    width: 60px;
+}
+
+.col-fond {
+    width: 100px;
+}
+
+.col-actions {
+    width: 100px;
+}
+
+/* Largeurs colonnes tbody */
+.td-identifiant {
+    width: 122px;
+}
+
+.td-connexion {
+    width: 82px;
+}
+
+.td-ip {
+    width: 122px;
+}
+
+.td-modele {
+    width: 82px;
+}
+
+.td-date {
+    width: 122px;
+}
+
+.td-etage {
+    width: 82px;
+}
+
+.td-service {
+    width: 82px;
+}
+
+.td-droit {
+    width: 82px;
+}
+
+.td-affichage {
+    width: 82px;
+}
+
+.td-fond {
+    width: 122px;
+}
+
+.td-actions {
+    width: 122px;
+}
+
+/* ========================= */
+/* STATUT CONNEXION */
+/* ========================= */
+.status-off {
+    color: red;
+}
+
+.status-on {
+    color: green;
+}
+
+/* ========================= */
+/* TYPE AFFICHAGE DYNAMIQUE */
+/* ========================= */
+.chaine-dynamique {
+    color: red;
+}
+
+/* ========================= */
+/* CHECK-IN / CHECK-OUT */
+/* ========================= */
+.checkin-status {
+    color: green;
+}
+
+.checkout-status {
+    color: red;
+}
+
+/* ========================= */
+/* FOND D'ECRAN - IMAGE MINIATURE */
+/* ========================= */
+.fond-ecran-img {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+}
+
+/* ========================= */
+/* MODAL CHECK-IN */
+/* ========================= */
+.modal-search-select {
+    width: 200px;
+    margin-top: -39px;
+    margin-left: 175px;
+}
+
+.modal-search-input {
+    width: 200px;
+    margin-top: -39px;
+    margin-left: 175px;
+}
+
+.modal-scroll-container {
+    height: 500px;
+    overflow-y: scroll;
+}
+
+/* ========================= */
+/* PAGE AJOUTER SUPPORT */
+/* ========================= */
+
+.support-add-title {
+    border-radius: 8px;
+    text-align: left;
+    margin-bottom: 10px;
+    margin-left: -70px;
+    color: white;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 300px;
+    padding-left: 10px;
+    display: inline-block;
+}
+
+.support-add-title-logo {
+    margin-top: -51px;
+    margin-left: -10px;
+    width: 45px;
+    float: left;
+}
+
+.support-add-container {
+    border-radius: 25px;
+    border: 2px solid #3087ce;
+    padding: 20px;
+    padding-bottom: 60px;
+    width: 1300px;
+    margin-left: -70px;
+    margin-top: 10px;
+    background-color: white;
+}
+
+.support-add-table {
+    width: 100%;
+}
+
+.support-add-cell {
+    width: 33%;
+    padding-bottom: 10px;
+    vertical-align: top;
+}
+
+.support-add-input {
+    width: 95%;
+}
+
+.support-add-bg-thumb {
+    width: 150px;
+    height: 100px;
+    text-align: center;
+    margin-left: 10px;
+}
+
+.support-add-actions {
+    float: right;
+    margin-right: 20px;
+}
+
+.support-add-btn {
+    width: 130px;
+}
+
+/* ========================= */
+/* PAGE MODIFIER SUPPORT */
+/* ========================= */
+
+.support-edit-title {
+    border-radius: 8px;
+    text-align: left;
+    margin-bottom: 10px;
+    margin-left: -70px;
+    color: white;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 500px;
+    padding-left: 10px;
+    display: inline-block;
+}
+
+.support-edit-title-logo {
+    margin-top: -51px;
+    margin-left: -10px;
+    width: 45px;
+    float: left;
+}
+
+.support-edit-container {
+    border-radius: 25px;
+    border: 2px solid #3087ce;
+    padding: 20px;
+    padding-bottom: 60px;
+    width: 1300px;
+    margin-left: -70px;
+    margin-top: 10px;
+    background-color: white;
+}
+
+.support-edit-table {
+    width: 100%;
+}
+
+.support-edit-cell {
+    width: 33%;
+    padding-bottom: 10px;
+    vertical-align: top;
+}
+
+.support-edit-input {
+    width: 95%;
+}
+
+.support-edit-bg-thumb {
+    width: 150px;
+    height: 100px;
+    text-align: center;
+    margin-left: 10px;
+}
+
+.support-edit-actions {
+    float: right;
+    margin-right: 20px;
+}
+
+.support-edit-btn {
+    width: 130px;
+}
+
+/* ========================= */
+/* RESPONSIVITÉ */
+/* ========================= */
+
+@media (max-width: 1200px) {
+
+    #div2,
+    #div1,
+    .header-fixed {
+        width: 100% !important;
+        margin-left: 0 !important;
+        height: auto !important;
+    }
+
+    .support-add-container,
+    .support-edit-container {
+        width: 100% !important;
+        margin-left: 0 !important;
+        padding-left: 15px;
+        padding-right: 15px;
+        box-sizing: border-box;
+    }
+
+    /* Formulaires ajouter / modifier en pleine largeur sur tablette */
+    .support-add-table,
+    .support-add-table tr,
+    .support-add-table td,
+    .support-edit-table,
+    .support-edit-table tr,
+    .support-edit-table td {
+        display: block;
+        width: 100% !important;
+    }
+
+    .support-add-cell,
+    .support-edit-cell {
+        width: 100%;
+    }
+
+    .support-add-input,
+    .support-edit-input {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    .center-block {
+        display: block;
+        margin-left: inherit;
+        margin-right: auto;
+    }
+      /* La barre de recherche DataTables sur une ligne seule */
+    div.dataTables_wrapper div.dataTables_filter {
+        float: none !important;
+        display: block !important;
+        width: 100% !important;
+        clear: both !important;
+        text-align: left !important;
+        margin-top: 10px;
+    }
+
+    div.dataTables_wrapper div.dataTables_filter input {
+        width: 100% !important;
+        max-width: 300px !important;
+    }
+    div.dataTables_wrapper div.dataTables_filter input{
+        font-size: 12px !important;
+    }
+}
+
+@media (max-width: 992px) {
+
+    #div2,
+    #div1 {
+        padding: 20px;
+        width: 100% !important;
+        margin-left: 0 !important;
+        height: auto !important;
+    }
+
+    .support-titre {
+        margin-left: 0;
+        width: 40%;
+    }
+
+    .support-titre img {
+        margin-top:-51px;
+    }
+
+    .support-filter {
+        position: relative;
+        margin-left: 0;
+        width: 100%;
+        margin-top: 15px;
+        flex-direction: row;
+        align-items: center;
+        height: auto;
+    }
+
+    .support-filter label {
+        width: auto;
+        flex: 0 0 auto;
+    }
+
+    .support-filter select {
+        width: auto;
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .support-add-container {
+        padding: 20px;
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+
+    .support-edit-container {
+        padding: 20px;
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+}
+
+@media (max-width: 992px) {
+
+    #div2,
+    #div1 {
+        padding: 15px;
+        border-radius: 10px;
+    }
+
+    .support-add-title {
+        margin-left: 0;
+    }
+
+    .support-edit-title {
+        margin-left: 0;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .support-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .support-actions .btn {
+        /* width: 100%; */
+        margin-bottom: 5px;
+    }
+
+    .support-add-table,
+    .support-add-table tr,
+    .support-add-table td {
+        display: inline-block;
+        width: 100% !important;
+    }
+
+    .support-add-cell {
+        width: 100%;
+    }
+
+    .support-add-input {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    .support-add-actions {
+        float: none;
+        margin-right: 0;
+        text-align: right;
+        margin-top: 20px;
+    }
+
+    .support-add-btn {
+        width: 100%;
+        max-width: 220px;
+        margin-bottom: 10px;
+        align-items: right;
+    }
+
+    .support-edit-table,
+    .support-edit-table tr,
+    .support-edit-table td {
+        display: inline-block;
+        width: 100% !important;
+    }
+
+    .support-edit-cell {
+        width: 100%;
+    }
+
+    .support-edit-input {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .support-edit-actions {
+        float: none;
+        margin-right: 0;
+        text-align: right;
+        margin-top: 20px;
+    }
+
+    .support-edit-btn {
+        width: 100%;
+        max-width: 220px;
+        margin-bottom: 10px;
+    }
+
+    /* Transformation du tableau en cards */
+    .support-table,
+    .support-table thead,
+    .support-table tbody,
+    .support-table th,
+    .support-table td,
+    .support-table tr {
+        display: block !important;
+        width: 100% !important;
+        float: none !important;
+        height: auto !important;
+    }
+
+    .support-table {
+        border: none !important;
+    }
+
+    .support-table thead tr {
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
+    }
+
+    .support-table tr {
+        border: 2px solid #3087ce !important;
+        margin-bottom: 25px !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+        background: #fff !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
+        padding: 10px 0;
+    }
+
+    .support-table td {
+        border: none !important;
+        border-bottom: 1px solid #f0f0f0 !important;
+        position: relative !important;
+        padding-left: 45% !important;
+        text-align: left !important;
+        min-height: 45px !important;
+        display: flex !important;
+        align-items: center !important;
+        font-size: 13px;
+        white-space: normal !important;
+        word-break: break-all;
+    }
+
+    .support-table td:last-child {
+        border-bottom: 0 !important;
+        padding-top: 15px;
+        padding-bottom: 10px;
+    }
+
+    .support-table td:before {
+        position: absolute;
+        left: 10px;
+        width: 40%;
+        padding-right: 10px;
+        white-space: nowrap;
+        font-weight: bold;
+        color: #337ab7;
+        font-size: 12px;
+        text-transform: uppercase;
+    }
+
+    /* Labels pour chaque colonne */
+    .support-table td:nth-of-type(1):before {
+        content: "Identifiant";
+    }
+
+    .support-table td:nth-of-type(2):before {
+        content: "Connexion";
+    }
+
+    .support-table td:nth-of-type(3):before {
+        content: "IP";
+    }
+
+    .support-table td:nth-of-type(4):before {
+        content: "Modèle TV";
+    }
+
+    .support-table td:nth-of-type(5):before {
+        content: "Mise à jour";
+    }
+
+    .support-table td:nth-of-type(6):before {
+        content: "Etage";
+    }
+
+    .support-table td:nth-of-type(7):before {
+        content: "Service";
+    }
+
+    .support-table td:nth-of-type(8):before {
+        content: "Droit TV";
+    }
+
+    .support-table td:nth-of-type(9):before {
+        content: "Affichage";
+    }
+
+    .support-table td:nth-of-type(10):before {
+        content: "Fond écran";
+    }
+
+    .support-table td:nth-of-type(11):before {
+        content: "Actions";
+    }
+
+    .td-actions {
+        justify-content: flex-start !important;
+        align-items: center !important;
+        padding-left: 45% !important;
+        gap: 6px;
+    }
+
+    .td-actions .btn {
+        flex: 0 0 auto;
+        max-width: none;
+        margin: 0 2px;
+    }
+
+    .modal-dialog {
+        width: 95% !important;
+        margin: 10px auto !important;
+    }
+
+    .modal-body label {
+        display: inline-block;
+        width: 40%;
+        margin-bottom: 5px;
+    }
+
+    .modal-search-select,
+    .modal-search-input {
+        display: inline-block;
+        width: 55% !important;
+        margin-left: 0 !important;
+        margin-top: 0 !important;
+    }
+
+    .modal-scroll-container {
+        height: 60vh !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .support-titre {
+        margin-left: 0;
+        width: 70%;
+    }
+    .fond-ecran-img {
+        width: 50px;
+        height: 50px;
+        text-align: center;
+    }
+    .center-block {
+        display: block;
+        margin-left: inherit;
+        margin-right: auto;
+    }
+
+    /* Conteneurs formulaires en pleine largeur et centrés */
+    .support-add-container,
+    .support-edit-container {
+        width: 100% !important;
+        margin-left: 0 !important;
+        padding-left: 15px;
+        padding-right: 15px;
+        box-sizing: border-box;
+    }
+
+    /* Tables et cellules sur toute la largeur */
+    .support-add-table,
+    .support-add-table tr,
+    .support-add-table td,
+    .support-edit-table,
+    .support-edit-table tr,
+    .support-edit-table td {
+        display: block;
+        width: 100% !important;
+    }
+
+    .support-add-cell,
+    .support-edit-cell {
+        width: 100%;
+    }
+
+    /* Inputs plein écran et alignés */
+    .support-add-input,
+    .support-edit-input {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        display: revert;
+        margin: 0 auto 10px auto;
+    }
+    .support-add-actions,
+    .support-edit-actions {
+        float: none;
+        margin-right: 0;
+        text-align: right;
+        margin-top: 20px;
+    }
+
+    .support-add-btn,
+    .support-edit-btn {
+        width: auto;
+        max-width: none;
+        display: inline-block;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    /* Boutons actions: icônes seules sur mobile */
+    .support-btn-label {
+        display: none;
+    }
+
+
+    /* La barre de recherche DataTables sur une ligne seule en mobile */
+    div.dataTables_wrapper div.dataTables_filter {
+        float: none !important;
+        display: block !important;
+        width: 100% !important;
+        clear: both !important;
+        text-align: left !important;
+        margin-top: 10px;
+    }
+}

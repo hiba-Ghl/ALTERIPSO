@@ -85,7 +85,7 @@ const interval = '';
   ],
    aLengthMenu: [[-1, 10, 100, 200],["All", 10, 100, 200]],
            "aaSorting": [[ 2, "asc" ]],
-                responsive: true,
+                responsive: false,
                 dom: 'Bfrtip',
                 info: false,
                 paging: false,
@@ -223,40 +223,29 @@ async function fetchData(id) {
          const logo = service.logo.split('/').pop();
           const imagePath = `/images/${logo}/${directory}`;
             const rowData =  [
-                ` <td >
-                <div class="td1">
+                ` <div class="td1">
                 <div style="width:102px;height: 70px;border-radius:5px;">
         <img src="${imagePath}"  style="width:60px;height:60px;text-align:center;border-radius:5px;" />
                 </div>
-                </div>
-      </td>`,  
-      `<td >
-        <div style="display:flex;align-items:center;justify-content:center;width: 142px;height:60px;">
+                </div>`,  
+      `<div style="display:flex;align-items:center;justify-content:center;width: 142px;height:60px;">
         ${service.nom}
-        </div>
-      </td>`,
+        </div>`,
       `
-      <td >
         <div class="flex-center-60" style="width: 123px;">
          <select {% if app.user.SauvegarderService == '0' %} disabled {% endif %} id="position_service" class="form-control pos-select" name="position_service[${service.Id}]" value="${service.position}">
           <option style="display:none">${service.position}</option>
         </select>
-        </div>
-      </td>`,
+        </div>`,
       `
-      <td >
       <div style="text-align: center; width: 123px;height:60px;display:flex;align-items:center;justify-content:center;">
         <input id="active-${service.Id}" name="active[${service.Id}]" {% if app.user.SauvegarderService == '0' %} disabled {% endif %} type="checkbox" ${service.active === '1' ? 'checked' : ''} value="1">
-        </div>
-      </td>`,
+        </div>`,
       `
-      <td >
       <div style="text-align: center;width: 182px;height:60px;display:flex;align-items:center;justify-content:center;">
       ${service.type}
-      </div>
-      </td>`,
+      </div>`,
       `
-      <td >
       <div style="text-align: center;width: 222px; cursor: pointer;height:60px;display:flex;align-items:center;justify-content:center;">
       <a data-toggle="modal" data-target="#modal-${index}" class="source-link source-link-style" 
            data-type="${service.type}" 
@@ -283,10 +272,8 @@ async function fetchData(id) {
           </div>
         </div>
       </div>
-      </div>
-    </td>`,
+      </div>`,
     `
-    <td >
       <div style="width: 250px;height:60px;display:flex;justify-content:center;gap:5px;align-items:center;">
       <a data-toggle="tooltip" data-placement="top" title="Modifier le service" href="/services/find_service/${service.Id}" class="btn btn-warning btn-xs" {% if app.user.ModifierService == '0' %} disabled {% endif %}>
         <i class="glyphicon glyphicon-pencil"></i>
@@ -304,12 +291,14 @@ async function fetchData(id) {
         <i class="glyphicon glyphicon-minus-sign"></i>
       </a>
       </div>
-      </div>
-    </td>   
-    
-    `,         
+      </div>`,         
             ];
-    const row = await table.row.add(rowData).draw(false);
+    const row = table.row.add(rowData).draw(false).node();
+    const labels = ["Icone", "Nom du Service", "Position", "Active", "Type", "Source", "Actions"];
+    $(row).find('td').each(function(i) {
+        $(this).attr('data-label', labels[i]);
+        $(this).addClass('v-service-td');
+    });
         });
 {# la fonction pour afficher les images de Diapo sur PopUp sous forme slides #}
 const formatTime = (seconds) => {
@@ -624,10 +613,10 @@ document.addEventListener('click', function (event) {
     const tr1 = document.createElement('tr');
     tr1.classList.add("w-100", "row-height-50", "flex-between");
     tr1.innerHTML = `
-        <td class="cell-40-check"><input type="checkbox" value=${chbr.id} name="checked[${i}]" class="boxcheck"/><input style="display:none" type="text" value=${chbr.id} name="chambre[${i}]"></td>
-        <td class="cell-40-center">${capitalize(chbr.nom)}</td>
-        <td class="cell-40-center">${chbr.ip}</td>
-        <td class="cell-40-center">${chbr.Mac}</td>`;
+        <td class="cell-40-check" data-label="Sélection"><input type="checkbox" value=${chbr.id} name="checked[${i}]" class="boxcheck"/><input style="display:none" type="text" value=${chbr.id} name="chambre[${i}]"></td>
+        <td class="cell-40-center" data-label="Chambre">${capitalize(chbr.nom)}</td>
+        <td class="cell-40-center" data-label="Adresse IP">${chbr.ip}</td>
+        <td class="cell-40-center" data-label="Adresse MAC">${chbr.Mac}</td>`;
     tbody.appendChild(tr1);
     i++;
 });
@@ -638,8 +627,8 @@ document.addEventListener('click', function (event) {
       modal.classList.add('show'); 
       modal.style.display = 'block';
       document.body.style.overflow = 'hidden';
-modal.style.overflowY = 'auto';
-modal.style.maxHeight = '90vh';
+      modal.style.overflowY = 'auto';
+      modal.style.maxHeight = '90vh';
       if (!$.fn.dataTable.isDataTable(`#table-${index}`)) {
       $(`#table-${index}`).DataTable({
         language: {
@@ -806,10 +795,10 @@ if (!response.ok) {
     const tr1 = document.createElement('tr');
     tr1.classList.add("w-100", "row-height-50", "flex-between");
     tr1.innerHTML = `
-        <td class="cell-40-check"><input type="checkbox" value=${chbr.id} name="checked[${i}]" class="boxcheck1" checked/><input style="display:none" type="text" value=${chbr.id} name="chambre[${i}]"></td>
-        <td class="cell-40-center">${capitalize(chbr.nom)}</td>
-        <td class="cell-40-center">${chbr.ip}</td>
-        <td class="cell-40-center">${chbr.Mac}</td>`;
+        <td class="cell-40-check" data-label="Sélection"><input type="checkbox" value=${chbr.id} name="checked[${i}]" class="boxcheck1" checked/><input style="display:none" type="text" value=${chbr.id} name="chambre[${i}]"></td>
+        <td class="cell-40-center" data-label="Chambre">${capitalize(chbr.nom)}</td>
+        <td class="cell-40-center" data-label="Adresse IP">${chbr.ip}</td>
+        <td class="cell-40-center" data-label="Adresse MAC">${chbr.Mac}</td>`;
       tbody.appendChild(tr1);
     i++;
 });

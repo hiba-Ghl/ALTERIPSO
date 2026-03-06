@@ -65,7 +65,7 @@
 @media (max-width: 768px) {
 	.gestion-header {
 		margin-left: 0;
-		width: auto;
+		width: 70%;
 		max-width: 100%;
 	}
 
@@ -79,12 +79,15 @@
 	.gestion-actions {
 		margin-left: 0;
 		width: 100%;
-		flex-direction: column;
+		flex-direction: row; /* les boutons l'un à côté de l'autre */
+		align-items: center;
 	}
 
 	.gestion-add-btn,
 	.gestion-cancel-btn {
-		width: 100%;
+		/* largeur naturelle et alignement à gauche sur mobile */
+		width: auto;
+		margin-left: 0;
 		/* masquer le texte et garder uniquement les icônes sur mobile */
 		font-size: 0;
 		white-space: nowrap;
@@ -94,6 +97,159 @@
 	.gestion-cancel-btn i {
 		font-size: 14px; /* taille lisible de l'icône */
 		margin: 0;
+	}
+
+	/* DataTables : en mobile, barre de recherche à gauche à l'intérieur du bloc */
+	#myDiv .dataTables_filter {
+		float: none !important;
+		text-align: left !important;
+		margin: 10px 0 5px 0;
+	}
+
+	/* Même colonne pour boutons, recherche et tableau */
+	#myDiv {
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	/* Transformer le tableau en cartes formulaire sur mobile */
+	.gestion-table thead {
+		display: none;
+	}
+
+	.gestion-table,
+	.gestion-table tbody,
+	.gestion-table tr,
+	.gestion-table td {
+		display: block;
+		width: 100%;
+	}
+
+	.gestion-table tr {
+		margin-bottom: 15px;
+		border: 1px solid #3087ce;
+		border-radius: 10px;
+		padding: 10px;
+		background-color: #ffffff;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+	}
+
+	.gestion-table td {
+		text-align: left;
+		/* label au-dessus, contenu en dessous */
+		padding: 20px 8px 6px 10px;
+		position: relative;
+		border: none;
+	}
+
+	.gestion-table td::before {
+		content: attr(data-label);
+		display: block;
+		margin-bottom: 4px;
+		font-weight: bold;
+		font-size: 12px;
+		/* color: #555; */
+        color:#3087ce;
+	}
+
+	/* Zone d'actions dans la carte */
+	.gestion-table td[data-label="Actions"] {
+		padding-left: 10px;
+	}
+
+	.gestion-table td[data-label="Actions"] a {
+		margin-right: 5px;
+	}
+}
+
+/* Version tablette : même rendu en cartes pour afficher toutes les infos */
+@media (min-width: 769px) and (max-width: 1200px) {
+	/* même logique que le mobile pour boutons, recherche et cartes */
+	.gestion-header {
+		margin-left: 0;
+		width: 70%;
+		max-width: 100%;
+	}
+
+	#div2 {
+		width: 100%;
+		margin: 10px 5px;
+		padding: 10px;
+		height: auto;
+	}
+
+	.gestion-actions {
+		margin-left: 0;
+		width: 100%;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.gestion-add-btn,
+	.gestion-cancel-btn {
+		width: auto;
+		margin-left: 0;
+		font-size: 0;
+		white-space: nowrap;
+	}
+
+	.gestion-add-btn i,
+	.gestion-cancel-btn i {
+		font-size: 14px;
+		margin: 0;
+	}
+
+	#myDiv .dataTables_filter {
+		float: none !important;
+		text-align: left !important;
+		margin: 10px 0 5px 0;
+	}
+
+	#myDiv {
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	/* Transformer le tableau en cartes formulaire sur tablette */
+	.gestion-table thead {
+		display: none;
+	}
+
+	.gestion-table,
+	.gestion-table tbody,
+	.gestion-table tr,
+	.gestion-table td {
+		display: block;
+		width: 100%;
+	}
+
+	.gestion-table tr {
+		margin-bottom: 15px;
+		border: 1px solid #3087ce;
+		border-radius: 10px;
+		padding: 10px;
+		background-color: #ffffff;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+	}
+
+	.gestion-table td {
+		text-align: left;
+		padding: 20px 8px 6px 10px;
+		position: relative;
+		border: none;
+	}
+
+	.gestion-table td::before {
+		content: attr(data-label);
+		display: block;
+		margin-bottom: 4px;
+		font-weight: bold;
+		font-size: 12px;
+		color: #3087ce;
+	}
+
+	.gestion-table td[data-label="Actions"] a {
+		margin-right: 5px;
 	}
 }
 

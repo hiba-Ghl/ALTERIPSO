@@ -1,37 +1,17 @@
 {% extends 'home/index.html.twig' %}
 {% block body %}
+<link rel="stylesheet" href="{{ asset('css/css_annonce.css') }}">
 
-<style>
-    #div2 {
-        border-radius: 25px;
-        border: 2px solid #3087ce;
-        height: auto;
-        display: flex;
-        background-color: white;
-        margin-top: 10px;
-    }
-    .accordion-toggle {
-        cursor: pointer;
-    }
-    .error-message {
-        color: white;
-        font-weight: bold;
-        display: none; 
-        background-color: red;
-        border-radius: 4px;
-    }
 
-    
-</style>
 
 <!-- le header de la page-->
 
-<div style="border-radius: 8px;text-align: left;margin-left: -130px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 300px;padding-left: 10px;">
-    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+<div class="header-ajouter">
+    <img src="{{ asset('images/ler.png') }}">
     Ajouter une annonce
 </div>
 
-<div id="div2">
+<div id="container-ajouter">
 
 <!-- leformulaire contenant les informations -->
     <form id="annonceForm" name="" style="width:100%" method="post" action="{{ path('app_ajouter_annonce') }}" class="form-horizontal"  enctype="multipart/form-data">
@@ -71,7 +51,7 @@
                 </div>
 
                 <!-- les messages d'erreurs -->
-                <div id="error-message" style="color: red;"></div>
+                <div id="error-msg-ajouter"></div>
 
 
                 <!-- Text input section -->
@@ -118,13 +98,13 @@
                                     <div >
         {# <div id="languagesPart" style="width:1005px;margin-left:32px;margin-bottom:15px;margin-top:20px"> #}
             <!--le bouton langues-->
-                <label  class="accordion-toggle col-form-label" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo1">Langues: </label>
+                <label  class="toggle-accordion-annonce col-form-label" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo1">Langues: </label>
                     <!--le bouton de traduction-->
             <div>
                 <button type="button" id="translateBtn1" class="btn btn-info btn-sm">
                     <i class="glyphicon glyphicon-globe"></i> Traduire le texte
                 </button>
-                <a type="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo1">
+                <a type="button" class="toggle-accordion-annonce" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo1">
                     <span><i class="glyphicon glyphicon-plus"></i></span>
                 </a>            <!--les champs des langues-->
                 <div style="width: 100%;margin-bottom: 15px; margin-top: 20px" id ="languagesPart">
@@ -186,7 +166,7 @@
  </div>
 </div>
       <div class="form-group row">
-        <div style="margin-bottom: 5px;margin-left: 250px; color: red">
+        <div class="info-positions-ajouter" style="margin-bottom: 5px; color: red">
             <p style="margin-bottom: 0;">Veuillez cliquer sur le bouton en bas "Photo Dimensions" pour visualiser les positions possibles</p>
         </div>
             <label for="position" class="col-lg-2 col-form-label">Position:</label>
@@ -246,14 +226,14 @@
        
         <!-- les boutons du formulaire -->
 		<div style="float:right;">
-            <a type="button" class="btn-primary btn btn-md" id="dim" style="background-color:  #ED7F10; border:2px solid   #ED7F10;">
-                <i class="glyphicon glyphicon-resize-full"></i> Photo Dimensions 
+            <a type="button" class="btn btn-md btn-orange-dim" id="dim">
+                <i class="glyphicon glyphicon-resize-full"></i> <span>Photo Dimensions</span>
             </a>
-            <a href="{{ path('app_annonce') }}" class="btn btn-danger btn-md" style=" width:130px;">
-                <i class="glyphicon glyphicon-remove"></i> Annuler
+            <a href="{{ path('app_annonce') }}" class="btn btn-danger btn-md btn-ajouter-width">
+                <i class="glyphicon glyphicon-remove"></i> <span>Annuler</span>
             </a>
-            <button type="submit" name="valider" class="btn btn-primary btn-md" style=" width:130px;">
-                <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
+            <button type="submit" name="valider" class="btn btn-primary btn-md btn-ajouter-width">
+                <i class="glyphicon glyphicon-floppy-disk"></i> <span>Enregistrer</span>
             </button>
         </div>
     </form>
@@ -503,7 +483,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('annonceForm').addEventListener('submit', function(event) {
         const type = document.getElementById('type').value;
         const fileInput = document.getElementById('file');
-        const errorMessage = document.getElementById('error-message');
+        const errorMessage = document.getElementById('error-msg-ajouter');
         const file = fileInput.files[0];
         
         // Clear previous messages

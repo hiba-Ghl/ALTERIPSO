@@ -45,14 +45,18 @@
                 {% for user1 in users %}
                     {% if user1.id != user.getId() %}
                         <tr>
-                            <td class="gestion-td-center">{{ user1.username | capitalize }}</td>
-                            <td class="gestion-td-center">{{ user1.email | capitalize }}</td>
-                            <td class="gestion-td-center">
+                            <td class="gestion-td-center" data-label="Identifiant">
+                                {{ user1.username | capitalize }}
+                            </td>
+                            <td class="gestion-td-center" data-label="Email">
+                                {{ user1.email | capitalize }}
+                            </td>
+                            <td class="gestion-td-center" data-label="Fonction">
                                 {% for role in user1.roles %}
                                     {{ role | capitalize }}
                                 {% endfor %}
                             </td>
-                            <td class="gestion-td-center">
+                            <td class="gestion-td-center" data-label="Actions">
                                 <a data-toggle="tooltip" title="Détails de l'utilisateur" href="/DetailUtilisateur/{{ user1.id }}" class="btn btn-default btn-xs">
                                     <i class="glyphicon glyphicon-list-alt"></i>
                                 </a>

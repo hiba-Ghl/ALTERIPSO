@@ -1,85 +1,14 @@
 {% extends 'home/index.html.twig' %}
 {% block body %}
-	<style>
-		#div1 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 43px;
-			width: 1091px;
-			height: 300px;
-			margin-left: -70px;
-			margin-top: 10px;
+	<link rel="stylesheet" href="{{ asset('css/css_support.css') }}">
 
-		}
-
-		.fileUpload {
-			position: relative;
-			overflow: hidden;
-			/* margin: 10px;*/
-		}
-		.fileUpload input.upload {
-			position: absolute;
-			top: 0;
-			right: 0;
-			margin: 0;
-			padding: 0;
-			font-size: 20px;
-			cursor: pointer;
-			opacity: 0;
-			filter: alpha(opacity=0);
-
-		}
-
-		.w {
-			width: 70px;
-		}
-		.header-fixed {
-			width: 1200px;
-		}
-
-		.header-fixed > thead,
-		.header-fixed > tbody,
-		.header-fixed > thead > tr,
-		.header-fixed > tbody > tr,
-		.header-fixed > thead > tr > th,
-		.header-fixed > tbody > tr > td {
-			display: block;
-		}
-
-		.header-fixed > tbody > tr:after,
-		.header-fixed > thead > tr:after {
-			content: ' ';
-			display: block;
-			visibility: hidden;
-			clear: both;
-		}
-
-		.header-fixed > tbody {
-			overflow-y: auto;
-			height: 400px;
-		}
-
-		.header-fixed > tbody > tr > td,
-		.header-fixed > thead > tr > th {
-			/*width: 20%;*/
-			float: left;
-		}
-		.paginate_button {
-			margin-left: 2px;
-		}
-		  .dt-buttons .btn {
-    margin-right: 5px;
-  }
-	</style>
-
-
-	<p id='p'></p>
-<div style="border-radius: 8px; text-align: left; margin-bottom: 10px; margin-left: -130px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding-left: 10px; display: inline-block;">
-<img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+<p id='p'></p>
+<div class="support-titre">
+<img src="{{ asset('images/ler.png') }}">
 		Liste Support Connecté
 </div>
 	<div id="div2">
-	<div style="display:flex;justify-content:space-between;gap:3px;">
+	<div class="support-actions">
 	<div>
 		<button type="button" class="btn btn-info btn-sm" {% if app.user.AjouteServiceEtablissement == '0' %} disabled {% endif %} data-toggle="modal" data-target="#exampleModal"><i class="glyphicon glyphicon-plus"></i>
 			Ajouter Service Etablissement
@@ -91,7 +20,7 @@
 				<i class="glyphicon glyphicon-plus"></i>
 				Ajouter support
 			</a>
-			<div style="color: red;font-size: 18px;">
+			<div class="licence-warning">
 				<i class="glyphicon glyphicon-warning-sign"></i>-vous n'avez pas assez de licences, pour ajouter un support merci d'envoyer un email à : contact@alteripso.com
 			</div>
 		{% else %}
@@ -106,42 +35,42 @@
 		<B>Nombre de Support :
 			{{nb}}
 	</div>
-	<div style="">
+	<div>
 		<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal" {% if not app.user.CheckSupport %} disabled {% endif %}>
 			<i class="glyphicon glyphicon-log-in"></i>
 			Check-in/Check-out
 		</button>
 	</div>
 	</div>
-		<div style="color: red; font-size: 14px;">Choisissez le modèle d'extraction de données:</div>
+		<div class="extraction-label">Choisissez le modèle d'extraction de données:</div>
 		<div class="modnt"></div>
-		<div id="myDiv" style="margin-buttom:25px">
+		<div id="myDiv">
 
-		<div class="dataTables_filter" style="width:400px;display:flex;gap:10px;margin-left: 500px;position:absolute;margin-top: 0px;height:30px;">
-		<label style="font-weight:normal;width:300px;">Recherche par service:</label>
-		<select  style="height:100%;width: 200px;"onchange="getval2(this)" id="form_Active" name="selectservices">
+		<div class="dataTables_filter support-filter">
+		<label>Recherche par service:</label>
+		<select onchange="getval2(this)" id="form_Active" name="selectservices">
 			{% for s in serviceetablissement %}
 				<option value="{{s.nom}}">{{s.nom|upper}}</option>
 			{% endfor %}
 		</select>
 		</div>
 			<!--<table class="table table-striped table-bordered table-hover" id="dataTables-example">-->
-    <table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column" id="dataTables-example" role="none" style="width:100%;height: 300px;">
+    <table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column support-table" id="dataTables-example" role="none">
 				<thead>
 
 					<tr>
-						<th style="text-align: center;  height: 50px;width: 100px;">Identifiant support</th>
-						<th style="text-align: center;height: 50px;width: 60px;">Connexion</th>
-						<th style="text-align: center;height: 50px;width: 100px;">Ip</th>
-						<!--<th style="text-align: center;height: 50px;width: 50px;">Support connecté</th>-->
-						<th style="text-align: center;height: 50px;width: 60px;">Modèle TV</th>
-						<th style="text-align: center;height: 50px;width: 100px;">Date Mise à jour</th>
-						<th style="text-align: center;height: 50px;width: 60px;">Etage</th>
-						<th style="text-align: center;height: 50px;width: 60px;">Service</th>
-						<th style="text-align: center;height: 50px;width: 60px;">Droit TV</th>
-						<th style="text-align: center;height: 50px;width: 60px;">Type Affichage</th>
-						<th style="text-align: center;height: 50px;width: 100px;">Fond d'écran</th>
-						<th style="text-align: center;height: 50px;width: 100px;">Actions</th>
+						<th class="col-identifiant">Identifiant support</th>
+						<th class="col-connexion">Connexion</th>
+						<th class="col-ip">Ip</th>
+						<!--<th>Support connecté</th>-->
+						<th class="col-modele">Modèle TV</th>
+						<th class="col-date">Date Mise à jour</th>
+						<th class="col-etage">Etage</th>
+						<th class="col-service">Service</th>
+						<th class="col-droit">Droit TV</th>
+						<th class="col-affichage">Type Affichage</th>
+						<th class="col-fond">Fond d'écran</th>
+						<th class="col-actions">Actions</th>
 
 
 					</tr>
@@ -154,7 +83,7 @@
 
 
 						<tr class="odd gradeX">
-							<td style="text-align: center;  height: 50px;width: 122px;">{{box.nom}}</td>
+							<td class="td-identifiant">{{box.nom}}</td>
 
 
 
@@ -164,58 +93,58 @@
 							{% if ar[i] == 0 %} 
 
 
-							<td style="text-align: center;  height: 50px;width: 82px;"><p style="text-align: center;" ><i style="color:red;text" class="glyphicon glyphicon-stop"></i> OFF</p></td>
+							<td class="td-connexion"><p><i class="glyphicon glyphicon-stop status-off"></i> OFF</p></td>
 
 							{% else %} 
 
-							<td style="text-align: center;  height: 50px;width: 82px;"><p style="text-align: center;" ><i style="color:green;text" class="glyphicon glyphicon-stop"></i> ON </p></td>
+							<td class="td-connexion"><p><i class="glyphicon glyphicon-stop status-on"></i> ON </p></td>
 
 
 							{% endif  %} 
 
 
-							<td style="text-align: center;  height: 50px;width: 122px;">{{box.Ip}}</td>
+							<td class="td-ip">{{box.Ip}}</td>
 
 
-							<!--<td style="text-align: center;  height: 50px;width: 72px;">{{box.Support}}</td>-->
+							<!--<td>{{box.Support}}</td>-->
 
-							<td style="text-align: center;  height: 50px;width: 82px;">{{box.type}}</td>
-							<td style="text-align: center;  height: 50px;width: 122px;">{{box.date}}</td>
-							<td style="text-align: center;  height: 50px;width: 82px;">{{box.etage}}</td>
-							<td style="text-align: center;  height: 50px;width: 82px;">{{box.service.nom|capitalize}}</td>
+							<td class="td-modele">{{box.type}}</td>
+							<td class="td-date">{{box.date}}</td>
+							<td class="td-etage">{{box.etage}}</td>
+							<td class="td-service">{{box.service.nom|capitalize}}</td>
 							{% if (box.checkval) == 1 %}
-								<td style="text-align: center; height: 50px;width: 82px;color:green;">Check-in</td>
+								<td class="td-droit checkin-status">Check-in</td>
 							{% else %}
-								<td style="text-align: center; height: 50px;width: 82px;color:red;">Check-out
+								<td class="td-droit checkout-status">Check-out
 								</td>
 							{% endif %}
 
 
 							{% if (box.typeaffichage) == 1 %}
-								<td style="text-align: center;  height: 50px;width: 82px;">Alteripso</td>
+								<td class="td-affichage">Alteripso</td>
 							{% else %}
-								<td style="text-align: center;  height: 50px;width: 82px;">Dynamique
-									<br><div style="color:red;">
+								<td class="td-affichage">Dynamique
+									<br><div class="chaine-dynamique">
 										({{box.chaine.nom}})
 									</div>
 								</td>
 							{% endif %}
 
 
-							<td style="text-align: center;  height: 50px;width: 122px;">
+							<td class="td-fond">
 								{% if (box.background) == '' %}
-									<i class="glyphicon glyphicon-remove" style="color: red;"></i>
+									<i class="glyphicon glyphicon-remove status-off"></i>
 								{% elseif ( '.mp4' in box.background ) %}
 									Vidéo
 								{% else %}
-								<img style="width:50px;height:50px;text-align:center" src="{{ path('afficher_image', { filename: box.background|split('/')|last, directory: 'etablissement_directory' }) }}" alt="..." class="img-rounded img-responsive center-block">
+								<img class="fond-ecran-img img-rounded img-responsive center-block" src="{{ path('afficher_image', { filename: box.background|split('/')|last, directory: 'etablissement_directory' }) }}" alt="...">
 
-									{# <img style="width:50px;height:50px;text-align:center" src="{{ asset('images/'~box.background) }}" alt="..." class="img-rounded img-responsive center-block"> #}
+									{# <img class="fond-ecran-img img-rounded img-responsive center-block" src="{{ asset('images/'~box.background) }}" alt="..."> #}
 								{% endif %}
 							</td>
 
 
-<td style="text-align: center;  height: 50px;width: 122px;">
+<td class="td-actions">
 	<a data-toggle="tooltip" data-placement="top"  {% if app.user.RedimarerSupport == '0' %} disabled {% endif %} title="redémarrer le support" href="{{path('app_redemarrer',{'id':box.id})}}"   class="reboot btn btn-info btn-xs">
 		<i class="glyphicon glyphicon-refresh"></i>
 	</a>
@@ -299,30 +228,30 @@
 
 
 					<input type="radio" name="etatcheckin" value="checkin" class="etatcheckin">
-					<label style="color: green;">Check-in</label>
+					<label class="checkin-status">Check-in</label>
 					<br>
 					<input type="radio" name="etatcheckin" value="checkout" class="etatcheckin">
-					<label style="color: red;">Check-out</label>
+					<label class="checkout-status">Check-out</label>
 				</div>
 				<div
 					class="modal-body">
 					<!-- -->
-					<label style="">
+					<label>
 						Recherche par service : &nbsp;&nbsp;&nbsp;
 					</label>
-					<select style="width: 200px;margin-top: -39px;margin-left: 175px;" onchange="getval(this);" name="selectservices" class="form-control">
+					<select class="form-control modal-search-select" onchange="getval(this);" name="selectservices">
 						<option selected value="">Tous les services</option>
 						{% for s in serviceetablissement %}
 							<option value="{{s.nom}}">{{s.nom|upper}}</option>
 						{% endfor %}
 					</select>
 					<br>
-					<label style="">
+					<label>
 						Recherche du support : &nbsp;&nbsp;&nbsp;
 					</label>
-					<input id="myInput" type="text" placeholder="Search.." style="width: 200px;margin-top: -39px;margin-left: 175px;" class="form-control">
+					<input id="myInput" type="text" placeholder="Search.." class="form-control modal-search-input">
 
-					<div style="height:500px;overflow-y: scroll;">
+					<div class="modal-scroll-container">
 						<br><br>
 						<!--<table class="table table-striped table-bordered table-hover" id="dataTables-example">-->
 						<table id="example20" class="table table-striped table-bordered table-hover">
