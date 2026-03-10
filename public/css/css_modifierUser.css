@@ -1,0 +1,276 @@
+/* CSS spécifique à la page gestion_profile/modifier.html.twig */
+body {
+    line-height: 2.42857143;
+}
+
+.modif-user-header {
+	border-radius: 8px;
+	margin-left: -70px;
+	margin-top: 10px;
+	text-align: left;
+	margin-bottom: 10px;
+	color: #ffffff;
+	font-style: oblique;
+	font-size: 20px;
+	background-color: #3087ce;
+	width: 300px;
+	padding-left: 10px;
+	display: inline-block;
+}
+
+.modif-user-header-logo {
+	margin-top: -51px;
+	margin-left: -10px;
+	width: 45px;
+	float: left;
+}
+
+.modif-user-wrapper {
+	background-color: #ffffff;
+	padding-bottom: 100px;
+	width: 1400px;
+}
+
+.modif-user-section-title {
+	color: #3087ce;
+	margin-left: -70px;
+}
+
+.modif-user-section-box {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	border-radius: 25px;
+	border: 2px solid #3087ce;
+	padding: 20px;
+	width: 1400px;
+	background-color: #ffffff;
+	margin-bottom: 20px;
+	margin-left: -70px;
+}
+
+.modif-user-field-row {
+	width: 100%;
+	display: flex;
+	align-items: center;
+}
+
+.modif-user-input {
+	border-radius: 5px;
+	outline: none;
+	border: 1px solid gray;
+}
+
+.modif-user-password-block {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.modif-user-operation-row {
+	display: flex;
+	align-items: flex-start;
+	width: 50%;
+	justify-content: space-between;
+}
+
+.modif-user-actions {
+	float: right;
+	margin-right: 70px;
+}
+
+.modif-user-actions .btn {
+	width: 130px;
+}
+
+/* tableau des onglets autorisés */
+.modif-user-section-box table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.modif-user-section-box table td {
+	vertical-align: top;
+}
+
+/* helpers flex pour les blocs internes (icône + checkbox) */
+.modif-user-flex-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.modif-user-flex-inline {
+	display: flex;
+	gap: 3px;
+	align-items: flex-start;
+}
+
+.modif-user-flex-justify-between {
+	display: flex;
+	justify-content: space-between;
+}
+
+/* Responsive mobile */
+@media (max-width: 768px) {
+	.modif-user-header {
+		margin-left: 0;
+		width: 100%;
+		max-width: 100%;
+	}
+
+	.modif-user-wrapper {
+		width: 100%;
+		padding-bottom: 40px;
+		margin: 10px 5px 0 5px;
+	}
+
+	.modif-user-section-title {
+		margin-left: 0;
+	}
+
+	.modif-user-section-box {
+		width: 100%;
+		margin-left: 0;
+	}
+
+    /* label fixe, champ qui prend toute la place restante */
+    .modif-user-field-row > label {
+        flex: 0 0 auto;
+    }
+
+    .modif-user-field-row > :not(label) {
+        flex: 1 1 auto;
+        width: 100%;
+    } 
+	.modif-user-field-row {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.modif-user-field-row label {
+		margin-bottom: 4px;
+	}
+
+	.modif-user-operation-row {
+		width: 100%;
+	}
+
+	.modif-user-actions {
+		float: none;
+		margin: 20px auto 0 auto;
+		text-align: center;
+	}
+
+	.modif-user-actions .btn {
+		width: 48%;
+	}
+
+	/* table responsive: les rcorners s'affichent en colonne */
+	.modif-user-section-box table {
+		display: block;
+		border-collapse: collapse;
+	}
+
+	.modif-user-section-box table tr {
+		display: block;
+	}
+
+	.modif-user-section-box table td {
+		display: block;
+		width: 100%;
+		margin-bottom: 15px;
+	}
+
+	/* minimiser les blocs rcorners sur mobile */
+	#rcorners1,
+	#rcorners {
+		padding: 10px;
+		margin: 5px 0;
+        width: 100%;
+	}
+
+	#rcorners1 .btn,
+	#rcorners .btn {
+		padding: 3px 6px;
+		font-size: 11px;
+	}
+
+	/* réduire l'espace horizontal entre les groupes de boutons/checkbox */
+	#rcorners1 > div,
+	#rcorners > div {
+		flex-wrap: wrap;
+		justify-content: flex-start !important;
+		column-gap: 10px;
+		row-gap: 10px;
+	}
+    .modif-user-input {
+        width: 100%;
+    }
+}
+
+/* Responsive tablette */
+@media (min-width: 769px) and (max-width: 1200px) {
+	.modif-user-wrapper {
+		width: 100%;
+		margin: 10px 10px 0 10px;
+	}
+    .modif-user-header {
+		margin-left: 0;
+		width: 60%;
+		max-width: 100%;
+	}
+
+	.modif-user-section-title {
+		margin-left: 0;
+	}
+
+	.modif-user-section-box {
+		width: 100%;
+		margin-left: 0;
+	}
+    	/* table responsive: les rcorners s'affichent en colonne */
+	.modif-user-section-box table {
+		display: block;
+		border-collapse: collapse;
+	}
+
+	.modif-user-section-box table tr {
+		display: block;
+        align-items: center;
+	}
+
+	.modif-user-section-box table td {
+		display: block;
+		width: 100%;
+		margin-bottom: 15px;
+	}
+
+	/* Mise en forme des lignes de formulaire comme en mobile */
+	.modif-user-field-row {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.modif-user-field-row label {
+		margin-bottom: 4px;
+	}
+
+	.modif-user-operation-row {
+		width: 100%;
+	}
+
+	.modif-user-actions {
+		float: none;
+		margin: 20px auto 0 auto;
+		text-align: center;
+	}
+
+	.modif-user-actions .btn {
+		width: 48%;
+	}
+    #rcorners1,
+	#rcorners {
+        width: 150% !important;
+    }
+}

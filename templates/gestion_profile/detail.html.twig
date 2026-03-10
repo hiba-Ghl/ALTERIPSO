@@ -11,36 +11,38 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 
 {% endif %}
-<div style="border-radius: 8px;  margin-top:10px;margin-left:-110px;text-align: left; margin-bottom: 10px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding-left: 10px; display: inline-block;">
-    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+<link rel="stylesheet" href="{{ asset('css/css_detailUser.css') }}">
+
+<div class="detail-user-header">
+    <img class="detail-user-header-logo" src="{{ asset('images/ler.png') }}">
         Détails de l'utilisateur : {{user.username | capitalize}}
 </div>
 <div>
-<div style="background-color:white;padding-bottom:100px;width:1400px;margin-left:-50px;">
-<h3 style=" color:#3087ce;margin-left:-50px;">Informations personnelles</h3>
-<div style=" display:flex;flex-direction:column;gap:20px;border-radius: 25px;border: 2px solid #3087ce;padding: 20px; width: 1400px;margin-left:-50px;background-color: white;margin-bottom: 20px;">
-			<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+<div class="detail-user-wrapper">
+<h3 class="detail-user-section-title">Informations personnelles</h3>
+<div class="detail-user-section-box">
+			<div class="detail-user-field-row">
 			<label for="inputEmail">Identifiant:</label>
-			<div style="align-self:flex-start;width:50%;">{{user.username | capitalize }}</div>
+			<div class="detail-user-field-value">{{user.username | capitalize }}</div>
 			</div>
-			<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+			<div class="detail-user-field-row">
 			<label for="inputEmail">Email:</label>
-			<div style="align-self:flex-start;width:50%;">
+			<div class="detail-user-field-value">
 				{{user.email | capitalize }}
 			</div>
 			</div>
-			<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+			<div class="detail-user-field-row">
 			<label for="inputEmail">Fonction:</label>
-			<div style="align-self:flex-start;width:50%;"> 
+			<div class="detail-user-field-value"> 
 				{% for role in user.roles %}{{ role  | capitalize }}{% endfor %}
 			</div>
 			</div>
 </div>
-<h3 style=" color:#3087ce;margin-left:-50px;">
+<h3 class="detail-user-section-title">
 	Liste des opérations autorisées
 </h3>
-<div style=" display:flex;flex-direction:column;gap:20px;border-radius: 25px;border: 2px solid #3087ce;padding: 20px; width: 1400px;margin-left:-50px;background-color: white;margin-bottom: 20px;">
-					 <div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+<div class="detail-user-section-box">
+					 <div class="detail-user-operation-row">
 			<label>Ajouter une catégorie</label>
 			{% if user is defined and user.AjoutCategorie %}
 				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
@@ -48,7 +50,7 @@
 				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
 			{% endif %}
             </div>
-					 <div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+					 <div class="detail-user-operation-row">
             <label>Mettre à jour les TV</label>
 			{% if user is defined and user.MjTv %}
 				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
@@ -56,7 +58,7 @@
 				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
 			{% endif %}
             </div>
-					 <div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+					 <div class="detail-user-operation-row">
 			<label>Changer Catégories page d'acceuil</label>
 			{% if user is defined and user.ChangeCat %}
 				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
@@ -64,7 +66,7 @@
 				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
 			{% endif %}
             </div>
-			<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+			<div class="detail-user-operation-row">
 			<label>Changer font d'écran de page d'accuei</label>
 			{% if user is defined and user.FondEcran %}
 				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
@@ -72,7 +74,7 @@
 				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
 			{% endif %}
             </div>
-					 <div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+					 <div class="detail-user-operation-row">
 			<label>Enregistrer les échanges des catégories de pages d'accueil</label>
 			{% if user is defined and user.SauvegarderAcceuil %}
 				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
@@ -80,7 +82,7 @@
 				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
 			{% endif %}
             </div>
-			<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+			<div class="detail-user-operation-row">
 			<label>Contrôler l’affichage du logo sur TV</label>
 			{% if user is defined and user.CocherLogo %}
 				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
@@ -88,7 +90,7 @@
 				<i class="glyphicon glyphicon-remove" style="color: red;"></i>
 			{% endif %}
             </div>
-					 <div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+					 <div class="detail-user-operation-row">
 			<label>Contrôler l’affichage de la météo sur TV</label>
 			{% if user is defined and user.CocherMeteo %}
 				<i class="glyphicon glyphicon-ok" style="color: green;"></i> 
@@ -97,10 +99,10 @@
 			{% endif %}
             </div>
 </div>
-<h3 style=" color:#3087ce;margin-left:-50px;">
+<h3 class="detail-user-section-title">
 	Liste des onglets autorisés :
 </h3>
-<div style=" display:flex;flex-direction:column;gap:20px;border-radius: 25px;border: 2px solid #3087ce;padding: 20px; width: 1400px;margin-left:-50px;background-color: white;margin-bottom: 20px;">
+<div class="detail-user-section-box">
     <table>
 			<tbody>
 			<tr>
@@ -1488,8 +1490,8 @@
 			</tr>
 		</tbody></table>
 </div>
-<div style="float:right;margin-right:50px;">
-    <a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/gestion/profile">
+<div class="detail-user-actions">
+	<a class="btn btn-danger btn-md" id = "annulerButton" href="/gestion/profile">
         <i class="glyphicon glyphicon-arrow-left"></i> Retour
     </a>
 </div>

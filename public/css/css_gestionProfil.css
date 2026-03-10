@@ -1,5 +1,7 @@
 /* CSS spécifique à la page gestion_profile/index.html.twig */
-
+body {
+    line-height: 2.42857143;
+}
 /* En-tête "Gestion des utilisateurs" */
 .gestion-header {
 	border-radius: 8px;

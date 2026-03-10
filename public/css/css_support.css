@@ -151,11 +151,15 @@ body {
 .support-filter select {
     height: 100%;
     width: 200px;
+    margin-top: 10px;
 }
 
 /* Alignement vertical de la barre de recherche avec le filtre service (desktop) */
-div.dataTables_wrapper div.dataTables_filter {
+/* div.dataTables_wrapper div.dataTables_filter {
     margin-top: -5px;
+} */
+div.dataTables_wrapper div.dataTables_filter input[type="search"]{
+    height: 30% !important;
 }
 
 /* ========================= */
@@ -521,7 +525,7 @@ div.dataTables_wrapper div.dataTables_filter {
     }
 
     div.dataTables_wrapper div.dataTables_filter input {
-        width: 100% !important;
+        width: 70% !important;
         max-width: 300px !important;
     }
     div.dataTables_wrapper div.dataTables_filter input{
@@ -563,12 +567,17 @@ div.dataTables_wrapper div.dataTables_filter {
         flex: 0 0 auto;
     }
 
-    .support-filter select {
+    /* .support-filter select {
         width: auto;
         flex: 1 1 auto;
         min-width: 0;
-    }
+    } */
 
+    .support-filter select {
+        height: 100%;
+        width: 200px;
+        margin-top: 0px;
+    }
     .support-add-container {
         padding: 20px;
         width: 100% !important;
@@ -596,7 +605,7 @@ div.dataTables_wrapper div.dataTables_filter {
 
     .support-edit-title {
         margin-left: 0;
-        width: 100%;
+        width: 60%;
         max-width: 100%;
     }
 
@@ -820,7 +829,7 @@ div.dataTables_wrapper div.dataTables_filter {
 @media (max-width: 767px) {
     .support-titre {
         margin-left: 0;
-        width: 70%;
+        width: 90%;
     }
     .fond-ecran-img {
         width: 50px;
@@ -831,6 +840,13 @@ div.dataTables_wrapper div.dataTables_filter {
         display: block;
         margin-left: inherit;
         margin-right: auto;
+    }
+
+    .support-edit-title {
+        margin-left: 0;
+        width: 100%;
+        max-width: 100%;
+        text-align: center;
     }
 
     /* Conteneurs formulaires en pleine largeur et centrés */

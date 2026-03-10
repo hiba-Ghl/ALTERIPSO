@@ -1,0 +1,260 @@
+/* CSS spécifique à la page gestion_profile/detail.html.twig */
+
+body {
+    line-height: 2.42857143;
+}
+
+.detail-user-header {
+	border-radius: 8px;
+	margin-left: -110px;
+	margin-top: 10px;
+	text-align: left;
+	margin-bottom: 10px;
+	color: #ffffff;
+	font-style: oblique;
+	font-size: 20px;
+	background-color: #3087ce;
+	width: 300px;
+	padding-left: 10px;
+	display: inline-block;
+}
+
+.detail-user-header-logo {
+	margin-top: -51px;
+	margin-left: -10px;
+	width: 45px;
+	float: left;
+}
+
+.detail-user-wrapper {
+	background-color: #ffffff;
+	padding-bottom: 100px;
+	width: 1400px;
+	margin-left: -50px;
+}
+
+.detail-user-section-title {
+	color: #3087ce;
+	margin-left: -50px;
+}
+
+.detail-user-section-box {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	border-radius: 25px;
+	border: 2px solid #3087ce;
+	padding: 20px;
+	width: 1400px;
+	background-color: #ffffff;
+	margin-bottom: 20px;
+	margin-left: -50px;
+}
+
+/* lignes d'informations simples (identifiant, email, fonction) */
+.detail-user-field-row {
+	display: flex;
+	align-items: flex-start;
+	width: 50%;
+	justify-content: space-between;
+}
+
+.detail-user-field-value {
+	align-self: flex-start;
+	width: 50%;
+}
+
+/* lignes d'opérations (libellé + icône) */
+.detail-user-operation-row {
+	display: flex;
+	align-items: flex-start;
+	width: 50%;
+	justify-content: space-between;
+}
+
+.detail-user-actions {
+	float: right;
+	margin-right: 50px;
+}
+
+.detail-user-actions .btn {
+	width: 130px;
+}
+
+/* tableau des onglets autorisés */
+.detail-user-section-box table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.detail-user-section-box table td {
+	vertical-align: top;
+}
+
+/* helpers flex pour d'éventuels blocs internes */
+.detail-user-flex-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.detail-user-flex-inline {
+	display: flex;
+	gap: 3px;
+	align-items: flex-start;
+}
+
+.detail-user-flex-justify-between {
+	display: flex;
+	justify-content: space-between;
+}
+
+/* Responsive mobile */
+@media (max-width: 768px) {
+	.detail-user-header {
+		margin-left: 0;
+		width: 100%;
+		max-width: 100%;
+	}
+
+	.detail-user-wrapper {
+		width: 100%;
+		padding-bottom: 40px;
+		margin: 10px 5px 0 5px;
+	}
+
+	.detail-user-section-title {
+		margin-left: 0;
+	}
+
+	.detail-user-section-box {
+		width: 100%;
+		margin-left: 0;
+	}
+
+	.detail-user-field-row {
+		width: 100%;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.detail-user-field-row label {
+		margin-bottom: 4px;
+	}
+
+	.detail-user-field-value {
+		width: 100%;
+	}
+
+	.detail-user-operation-row {
+		width: 100%;
+	}
+
+	.detail-user-actions {
+		float: none;
+		margin: 20px auto 0 auto;
+		text-align: center;
+	}
+
+	.detail-user-actions .btn {
+		width: 48%;
+	}
+
+	/* table responsive: les rcorners s'affichent en colonne */
+	.detail-user-section-box table {
+		display: block;
+		border-collapse: collapse;
+	}
+
+	.detail-user-section-box table tr {
+		display: block;
+	}
+
+	.detail-user-section-box table td {
+		display: block;
+		width: 100%;
+		margin-bottom: 15px;
+	}
+
+	/* minimiser les blocs rcorners sur mobile */
+	#rcorners1,
+	#rcorners {
+		padding: 10px;
+		margin: 5px 0;
+		width: 100%;
+	}
+
+	#rcorners1 .btn,
+	#rcorners .btn {
+		padding: 3px 6px;
+		font-size: 11px;
+	}
+}
+
+/* Responsive tablette */
+@media (min-width: 769px) and (max-width: 1200px) {
+	.detail-user-wrapper {
+		width: 100%;
+		margin: 10px 10px 0 10px;
+	}
+	.detail-user-header {
+		margin-left: 0;
+		width: 60%;
+		max-width: 100%;
+	}
+
+	.detail-user-section-title {
+		margin-left: 0;
+	}
+
+	.detail-user-section-box {
+		width: 100%;
+		margin-left: 0;
+	}
+
+	/* table responsive: les rcorners s'affichent en colonne */
+	.detail-user-section-box table {
+		display: block;
+		border-collapse: collapse;
+	}
+
+	.detail-user-section-box table tr {
+		display: block;
+	}
+
+	.detail-user-section-box table td {
+		display: block;
+		width: 100%;
+		margin-bottom: 15px;
+	}
+
+	/* Mise en forme des lignes comme en mobile */
+	.detail-user-field-row {
+		width: 100%;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.detail-user-field-row label {
+		margin-bottom: 4px;
+	}
+
+	.detail-user-field-value {
+		width: 100%;
+	}
+
+	.detail-user-operation-row {
+		width: 100%;
+	}
+
+	.detail-user-actions {
+		float: none;
+		margin: 20px auto 0 auto;
+		text-align: center;
+	}
+
+	.detail-user-actions .btn {
+		width: 48%;
+	}
+}
+

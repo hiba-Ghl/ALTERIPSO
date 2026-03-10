@@ -321,3 +321,14 @@ label::first-letter {
 	}
 }
 
+@media (max-width: 425px) {
+	.form-control {
+		width: 80% !important;
+	}
+}
+
+@media (max-width: 360px) {
+	.form-control {
+		width: 50% !important;
+	}
+}

@@ -1,0 +1,278 @@
+/* CSS spécifique à la page gestion_profile/ajouter.html.twig */
+body {
+    line-height: 2.42857143;
+}
+
+.ajout-user-header {
+	border-radius: 8px;
+	margin-left: -70px;
+	margin-top: 10px;
+	text-align: left;
+	margin-bottom: 10px;
+	color: #ffffff;
+	font-style: oblique;
+	font-size: 20px;
+	background-color: #3087ce;
+	width: 300px;
+	padding-left: 10px;
+	display: inline-block;
+}
+
+.ajout-user-header-logo {
+	margin-top: -51px;
+	margin-left: -10px;
+	width: 45px;
+	float: left;
+}
+
+.ajout-user-wrapper {
+	background-color: #ffffff;
+	padding-bottom: 100px;
+	width: 1400px;
+}
+
+.ajout-user-section-title {
+	color: #3087ce;
+	margin-left: -70px;
+}
+
+.ajout-user-section-box {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	border-radius: 25px;
+	border: 2px solid #3087ce;
+	padding: 20px;
+	width: 1400px;
+	background-color: #ffffff;
+	margin-bottom: 20px;
+	margin-left: -70px;
+}
+
+.ajout-user-field-row {
+	width: 100%;
+	display: flex;
+	align-items: center;
+}
+
+.ajout-user-input {
+	border-radius: 5px;
+	outline: none;
+	border: 1px solid gray;
+	/* width: 100%; */
+}
+
+.ajout-user-password-block {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.ajout-user-operation-row {
+	display: flex;
+	align-items: flex-start;
+	width: 50%;
+	justify-content: space-between;
+}
+
+.ajout-user-flex-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.ajout-user-flex-inline {
+	display: flex;
+	gap: 3px;
+	align-items: flex-start;
+}
+
+.ajout-user-flex-justify-between {
+	display: flex;
+	justify-content: space-between;
+}
+
+.ajout-user-actions {
+	float: right;
+	margin-right: 70px;
+}
+
+.ajout-user-actions .btn {
+	width: 130px;
+}
+
+/* tableau des onglets autorisés */
+.ajout-user-section-box table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.ajout-user-section-box table td {
+	vertical-align: top;
+}
+
+/* Responsive mobile */
+@media (max-width: 768px) {
+	.ajout-user-header {
+		margin-left: 0;
+		width: 70%;
+		max-width: 100%;
+	}
+
+	.ajout-user-wrapper {
+		width: 100%;
+		padding-bottom: 40px;
+		margin: 10px 5px 0 5px;
+	}
+
+	.ajout-user-section-title {
+		margin-left: 0;
+	}
+
+	.ajout-user-section-box {
+		width: 100%;
+		margin-left: 0;
+	}
+
+    /* label fixe, champ qui prend toute la place restante */
+    .ajout-user-field-row > label {
+        flex: 0 0 auto;
+    }
+
+    .ajout-user-field-row > :not(label) {
+        flex: 1 1 auto;
+        width: 100%;
+    } 
+	.ajout-user-field-row {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.ajout-user-field-row label {
+		margin-bottom: 4px;
+	}
+
+	.ajout-user-operation-row {
+		width: 100%;
+	}
+
+	.ajout-user-actions {
+		float: none;
+		margin: 20px auto 0 auto;
+		text-align: center;
+	}
+
+	.ajout-user-actions .btn {
+		width: 48%;
+	}
+
+	/* table responsive: les rcorners s'affichent en colonne */
+	.ajout-user-section-box table {
+		display: block;
+		border-collapse: collapse;
+	}
+
+	.ajout-user-section-box table tr {
+		display: block;
+	}
+
+	.ajout-user-section-box table td {
+		display: block;
+		width: 100%;
+		margin-bottom: 15px;
+	}
+
+	/* minimiser les blocs rcorners sur mobile */
+	#rcorners1,
+	#rcorners {
+		padding: 10px;
+		margin: 5px 0;
+        width: 100%;
+	}
+
+	#rcorners1 .btn,
+	#rcorners .btn {
+		padding: 3px 6px;
+		font-size: 11px;
+	}
+
+	/* réduire l'espace horizontal entre les groupes de boutons/checkbox */
+	#rcorners1 > div,
+	#rcorners > div {
+		flex-wrap: wrap;
+		justify-content: flex-start !important;
+		column-gap: 10px;
+		row-gap: 10px;
+	}
+    .ajout-user-input {
+        width: 100%;
+    }
+}
+
+/* Responsive tablette */
+@media (min-width: 769px) and (max-width: 1200px) {
+	.ajout-user-wrapper {
+		width: 100%;
+		margin: 10px 10px 0 10px;
+	}
+    .ajout-user-header {
+		margin-left: 0;
+		width: 70%;
+		max-width: 100%;
+	}
+
+	.ajout-user-section-title {
+		margin-left: 0;
+	}
+
+	.ajout-user-section-box {
+		width: 100%;
+		margin-left: 0;
+	}
+    	/* table responsive: les rcorners s'affichent en colonne */
+	.ajout-user-section-box table {
+		display: block;
+		border-collapse: collapse;
+	}
+
+	.ajout-user-section-box table tr {
+		display: block;
+        align-items: center;
+	}
+
+	.ajout-user-section-box table td {
+		display: block;
+		width: 100%;
+		margin-bottom: 15px;
+	}
+
+	/* Mise en forme des lignes de formulaire comme en mobile */
+	.ajout-user-field-row {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.ajout-user-field-row label {
+		margin-bottom: 4px;
+	}
+
+
+	.ajout-user-operation-row {
+		width: 100%;
+	}
+
+	.ajout-user-actions {
+		float: none;
+		margin: 20px auto 0 auto;
+		text-align: center;
+	}
+
+	.ajout-user-actions .btn {
+		width: 48%;
+	}
+    #rcorners1,
+	#rcorners {
+        width: 150% !important;
+    }
+}
+

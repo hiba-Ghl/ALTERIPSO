@@ -1,6 +1,9 @@
 {% extends 'home/index.html.twig' %}
 {# Cette section concerne la conception de modèles pour l'ajout d'un service.#}
 {% block body %}
+
+<link rel="stylesheet" href="{{ asset('css/css_modifierUser.css') }}">
+
 {% for type, messages in app.flashes %}
     {% for message in messages %}
         <div class="alert alert-{{ type }}">
@@ -16,87 +19,87 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 
 {% endif %}
-<div style="border-radius: 8px;  margin-top:10px;margin-left:-70px;text-align: left; margin-bottom: 10px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding-left: 10px; display: inline-block;">
-    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
-    Mise à jour de l'utilisateur :
+<div class="modif-user-header">
+	<img class="modif-user-header-logo" src="{{ asset('images/ler.png') }}">
+	Mise à jour de l'utilisateur :
 </div>
 <form action="{{path('Update',{'id':users.id})}}" onsubmit="return validateUtilisateur()">
-<div style="background-color:white;padding-bottom:100px;width:1400px">
-<h3 style=" color:#3087ce;margin-left:-70px;">Informations personnelles</h3>
-<div style=" display:flex;flex-direction:column;gap:20px;border-radius: 25px;margin-left:-70px;border: 2px solid #3087ce;padding: 20px; width: 1400px;background-color: white;margin-bottom: 20px;">
-			<div style="width:100%;display:flex;align-items:center">
+<div class="modif-user-wrapper">
+<h3 class="modif-user-section-title">Informations personnelles</h3>
+<div class="modif-user-section-box">
+			<div class="modif-user-field-row">
             <label for="inputNom" class="col-lg-4 control-label required">Identifiant:</label>
 			<div id="requiredNom">
-			<input type="text" value="{{userName ?? users.username | capitalize}}" id="contact_Identifiant" name="contact[Identifiant]"  placeholder="" class="form-control test" style="border-radius:5px;outline:none;border:1px solid gray;">
+			<input type="text" value="{{userName ?? users.username | capitalize}}" id="contact_Identifiant" name="contact[Identifiant]"  placeholder="" class="form-control test modif-user-input">
 			</div>
 			</div>
-            <div style="width:100%;display:flex;align-items:center">
+			<div class="modif-user-field-row">
 			<label for="inputEmail" class="col-lg-4 control-label required">Email:</label>
 			<div id="requiredEmail">
-			<input type="text" value="{{email ?? users.email | capitalize}}" id="contact_email" name="contact[email]"  placeholder="Exemple@gmail.com" class="form-control test" style="border-radius:5px;outline:none;border:1px solid gray;">
+			<input type="text" value="{{email ?? users.email | capitalize}}" id="contact_email" name="contact[email]"  placeholder="Exemple@gmail.com" class="form-control test modif-user-input">
 			</div>
 			</div>
-            <div style="width:100%;display:flex;align-items:center">
+			<div class="modif-user-field-row">
             <label for="inputEmail" class="col-lg-4 control-label required">Fonction:</label>
-			<select id="contact_fonction" name="contact[fonction]" class="form-control test" style="border-radius:5px;outline:none;border:1px solid gray;"> 
+			<select id="contact_fonction" name="contact[fonction]" class="form-control test modif-user-input"> 
                     <option value="Administrateur" {% if users.Roles[0]== 'Administrateur' %}selected{% endif %}>Administrateur</option>  
                     <option value="It manager" {% if users.Roles[0] == 'It manager' %}selected{% endif %}>It manager</option>     
                     <option value="Technicien" {% if users.Roles[0] == 'Technicien' %}selected{% endif %}>Technicien</option>      
                     <option value="Community manager" {% if users.Roles[0] == 'Community manager' %}selected{% endif %}>Community Manager</option> 
-                    <option value="House keeping" {% if users.Roles[0] == 'House keeping' %}selected{% endif %}>House keeping</option></select>
+					<option value="House keeping" {% if users.Roles[0] == 'House keeping' %}selected{% endif %}>House keeping</option></select>
             </div>
-            <div id="contact_plainPassword" style="display:flex;flex-direction:column;gap:20px;">
-                <div style="width:100%;display:flex;align-items:center">
+				<div id="contact_plainPassword" class="modif-user-password-block">
+					<div class="modif-user-field-row">
                     <label for="contact_plainPassword_first" class="required col-lg-4 ">Mot de passe:</label>
                     <div id="requiredFirstPassword">
-					<input type="password" id="contact_plainPassword_first" name="contact[plainPassword][first]" class="form-control test" style="border-radius:5px;outline:none;border:1px solid gray;">
+						<input type="password" id="contact_plainPassword_first" name="contact[plainPassword][first]" class="form-control test modif-user-input">
 					</div>
 				</div>
-                <div style="width:100%;display:flex;align-items:center">
+					<div class="modif-user-field-row">
                     <label for="contact_plainPassword_second" class="required col-lg-4 ">Confirmer mot de passe:</label>
                     <div id="requiredSecondPassword">
-					<input type="password" id="contact_plainPassword_second" name="contact[plainPassword][second]" class="form-control test" style="border-radius:5px;outline:none;border:1px solid gray;">
+						<input type="password" id="contact_plainPassword_second" name="contact[plainPassword][second]" class="form-control test modif-user-input">
 					</div>
 			    </div>
             </div>
 </div>
-<h3 style=" color:#3087ce;margin-left:-70px;">
+<h3 class="modif-user-section-title">
 	Liste des opérations autorisées
 </h3>
-<div style=" display:flex;flex-direction:column;gap:20px;border-radius: 25px;margin-left:-70px;border: 2px solid #3087ce;padding: 20px; width: 1400px;background-color: white;margin-bottom: 20px;">
-		 <div style="display:flex;gap:2px;align-items: start;width:50%;justify-content:space-between;">
+<div class="modif-user-section-box">
+			 <div class="modif-user-operation-row">
 			<label>Ajouter une catégorie</label>
 			<input type="checkbox" id="contact_Ajoutecategorie" name="contact[Ajoutecategorie]" value=1 {% if users.AjoutCategorie %} checked {% endif %}>
-        </div>
-		<div style="display:flex;gap:2px;align-items: start;width:50%;justify-content:space-between;">
+		</div>
+		<div class="modif-user-operation-row">
             <label>Mettre à jour les TV</label>
 			<input type="checkbox" id="contact_maj" name="contact[maj]" value=1 {% if users.MjTv %} checked {% endif %}>
-        </div>
-        <div style="display:flex;gap:2px;align-items: start;width:50%;justify-content:space-between;">
+		</div>
+		<div class="modif-user-operation-row">
 			<label>Changer catégories page d'acceuil</label>
 			<input type="checkbox" id="contact_changecategorie" name="contact[changecategorie]" value=1 {% if users.ChangeCat %} checked {% endif %}>
-        </div>
-		<div style="display:flex;gap:2px;align-items: start;width:50%;justify-content:space-between;">
+		</div>
+		<div class="modif-user-operation-row">
 			<label>Changer font d'ecran de page d'acceuil</label>
 			<input type="checkbox" id="contact_fondEcran" name="contact[fondEcran]" value=1  {% if users.FondEcran %} checked {% endif %}>
         </div>
-		<div style="display:flex;gap:2px;align-items: start;width:50%;justify-content:space-between;">
+		<div class="modif-user-operation-row">
 			<label>Enregistrer les échanges des catégories de pages d'accueil</label>
 			<input type="checkbox" id="contact_SauvegarderAcceuil" name="contact[SauvegarderAcceuil]" value=1  {% if users.SauvegarderAcceuil %} checked {% endif %}>
-        </div>
-		<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+		</div>
+		<div class="modif-user-operation-row">
 			<label>Contrôler l’affichage du logo sur TV</label>
 			<input type="checkbox" id="contact_SauvegarderAcceuil" name="contact[SauvegarderLogo]" value=1 {% if users.CocherLogo %} checked {% endif %}>
-        </div>
-		<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+		</div>
+		<div class="modif-user-operation-row">
 			<label>Contrôler l’affichage de la météo sur TV</label>
 			<input type="checkbox" id="contact_SauvegarderAcceuil" name="contact[SauvegarderMeteo]" value=1 {% if users.CocherMeteo %} checked {% endif %}>
         </div>
-</div>	
-<h3 style=" color:#3087ce;margin-left:-70px;">
+</div>
+	<h3 class="modif-user-section-title">
 			Liste des onglets autorisés :
 </h3>
-<div style=" display:flex;flex-direction:column;gap:20px;border-radius: 25px;margin-left:-70px;border: 2px solid #3087ce;padding: 20px; width: 1400px;background-color: white;margin-bottom: 20px;">
+<div class="modif-user-section-box">
 <table>
 			<tbody>
 				<tr>

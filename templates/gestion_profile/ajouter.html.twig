@@ -2,6 +2,8 @@
 {# Cette section concerne la conception de modèles pour l'ajout d'un service.#}
 {% block body %}
 
+<link rel="stylesheet" href="{{ asset('css/css_ajouterUser.css') }}">
+
 {# offline #}
 {% if appConfig.StatusServeur is same as('Offline') %}
 
@@ -19,87 +21,87 @@
         </div>
     {% endfor %}
 {% endfor %}
-<div style="border-radius: 8px;margin-left:-70px;  margin-top:10px;text-align: left; margin-bottom: 10px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding-left: 10px; display: inline-block;">
-    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+<div class="ajout-user-header">
+	<img class="ajout-user-header-logo" src="{{ asset('images/ler.png') }}">
     Ajouter un utilisateur
 </div>
 <form action="{{ path('ajouterU') }}" onsubmit="return validateUtilisateur()">
-<div style="background-color:white;padding-bottom:100px;width: 1400px;">
-<h3 style=" color:#3087ce;margin-left:-70px;">Informations personnelles</h3>
-<div style=" display:flex;flex-direction:column;gap:20px;border-radius: 25px;border: 2px solid #3087ce;padding: 20px; width: 1400px;background-color: white;margin-bottom: 20px;margin-left:-70px;">
-			<div style="width:100%;display:flex;align-items:center">
+<div class="ajout-user-wrapper">
+<h3 class="ajout-user-section-title">Informations personnelles</h3>
+<div class="ajout-user-section-box">
+			<div class="ajout-user-field-row">
             <label for="inputNom" class="col-lg-4 control-label required">Identifiant:</label>
 			<div id="requiredNom">
-			<input type="text" id="contact_Identifiant" name="contact[Identifiant]" value="{{userName ?? ''}}" placeholder="" class="form-control test" style="border-radius:5px;outline:none;border:1px solid gray;">
+			<input type="text" id="contact_Identifiant" name="contact[Identifiant]" value="{{userName ?? ''}}" placeholder="" class="form-control test ajout-user-input">
 			</div>
 			</div>
-            <div style="width:100%;display:flex;align-items:center">
+			<div class="ajout-user-field-row">
 			<label for="inputEmail" class="col-lg-4 control-label required">Email:</label>
 			<div id="requiredEmail">
-			<input type="text" <input type="text"  id="contact_email" name="contact[email]" placeholder="Exemple@gmail.com" class="form-control test" style="border-radius: 5px; outline: none; border: 1px solid gray;">
+			<input type="text" <input type="text"  id="contact_email" name="contact[email]" placeholder="Exemple@gmail.com" class="form-control test ajout-user-input">
 			</div>
 			</div>
-            <div style="width:100%;display:flex;align-items:center">
+			<div class="ajout-user-field-row">
             <label for="inputEmail" class="col-lg-4 control-label required">Fonction:</label>
-			<select id="contact_fonction" name="contact[fonction]" class="form-control test" style="border-radius:5px;outline:none;border:1px solid gray;"> 
+			<select id="contact_fonction" name="contact[fonction]" class="form-control test ajout-user-input"> 
                     <option value="Administrateur">Administrateur</option>  
                     <option value="It manager">It manager</option>     
                     <option value="Technicien">Technicien</option>      
                     <option value="Community manager">Community Manager</option> 
                     <option value="House keeping">House keeping</option></select>
             </div>
-            <div id="contact_plainPassword" style="display:flex;flex-direction:column;gap:20px;">
-                <div style="width:100%;display:flex;align-items:center">
+			<div id="contact_plainPassword" class="ajout-user-password-block">
+				<div class="ajout-user-field-row">
                     <label for="contact_plainPassword_first" class="required col-lg-4 ">Mot de passe:</label>
                     <div id="requiredFirstPassword">
-					<input type="password" id="contact_plainPassword_first" name="contact[plainPassword][first]"  class="form-control test" style="border-radius:5px;outline:none;border:1px solid gray;" <input type="text" autocomplete="new-password">
+					<input type="password" id="contact_plainPassword_first" name="contact[plainPassword][first]"  class="form-control test ajout-user-input" <input type="text" autocomplete="new-password">
 				</div>
 				</div>
-                <div style="width:100%;display:flex;align-items:center">
+				<div class="ajout-user-field-row">
                     <label for="contact_plainPassword_second" class="required col-lg-4 ">Confirmer mot de passe:</label>
                     <div id="requiredSecondPassword">
-					<input type="password" id="contact_plainPassword_second" name="contact[plainPassword][second]"  class="form-control test" style="border-radius:5px;outline:none;border:1px solid gray;" <input type="text" autocomplete="off">
+					<input type="password" id="contact_plainPassword_second" name="contact[plainPassword][second]"  class="form-control test ajout-user-input" <input type="text" autocomplete="off">
 					</div>
 				</div>
             </div>
 </div>
-<h3 style=" color:#3087ce;margin-left:-70px;">
+<h3 class="ajout-user-section-title">
 	Liste des opérations autorisées
 </h3>
-<div style=" display:flex;flex-direction:column;gap:20px;border-radius: 25px;border: 2px solid #3087ce;padding: 20px; width: 1400px;margin-left:-70px;background-color: white;margin-bottom: 20px;">
-		 <div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+<div class="ajout-user-section-box">
+		 <div class="ajout-user-operation-row">
 			<label>Ajouter une catégorie</label>
 			<input type="checkbox" id="contact_Ajoutecategorie" name="contact[Ajoutecategorie]" value=1>
         </div>
-		<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+		<div class="ajout-user-operation-row">
             <label>Mettre à jour les TV</label>
 			<input type="checkbox" id="contact_maj" name="contact[maj]" value=1>
         </div>
-        <div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+		<div class="ajout-user-operation-row">
 			<label>Changer Catégorie page d'acceuil</label>
 			<input type="checkbox" id="contact_changecategorie" name="contact[changecategorie]" value=1>
         </div>
-		<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+		<div class="ajout-user-operation-row">
 			<label>Changer font d'ecran de page d'acceuil</label>
 			<input type="checkbox" id="contact_fondEcran" name="contact[fondEcran]" value=1>
         </div>
-		<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+		<div class="ajout-user-operation-row">
 			<label>Enregistrer les échanges des catégories de pages d'accueil</label>
 			<input type="checkbox" id="contact_SauvegarderAcceuil" name="contact[SauvegarderAcceuil]" value=1>
         </div>
-		<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+		<div class="ajout-user-operation-row">
 			<label>Contrôler l’affichage du logo sur TV</label>
 			<input type="checkbox" id="contact_SauvegarderLogo" name="contact[SauvegarderLogo]" value=1>
         </div>
-		<div style="display:flex;align-items: start;width:50%;justify-content:space-between;">
+		<div class="ajout-user-operation-row">
 			<label>Contrôler l’affichage de la météo sur TV</label>
 			<input type="checkbox" id="contact_SauvegarderMeteo" name="contact[SauvegarderMeteo]" value=1>
         </div>
 </div>
-<h3 style=" color:#3087ce;margin-left:-70px;">
+<h3 class="ajout-user-section-title">
 			Liste des onglets autorisés :
 </h3>
-<div style=" display:flex;flex-direction:column;gap:20px;border-radius: 25px;border: 2px solid #3087ce;padding: 20px; width: 1400px;margin-left:-70px;background-color: white;margin-bottom: 20px;">
+<div class="ajout-user-section-box">
 <table>
 			<tbody>
 			<tr>
@@ -195,12 +197,12 @@
 				</td>
 				<td>
 					<div id="rcorners1" class="CategorieRadio">
-						<div style="display:flex;gap:3px;align-items: start">
+						<div class="ajout-user-flex-inline">
 							<label>Categorie Radio</label>
 							<input type="checkbox" id="contact_CategorieRadio" name="contact[CategorieRadio]" value=1>
 						</div>
-						<div style="display:flex;align-items:center;justify-content:space-between">
-						<div style="display:flex;gap:3px;align-items: start">
+						<div class="ajout-user-flex-row">
+						<div class="ajout-user-flex-inline">
 						<label>
 							<a data-toggle="tooltip" data-placement="top" data-original-title="Ajouter CategorieRadio" class="btn btn-info  btn-sm" title="Ajouter CategorieRadio">
 								<i class="glyphicon glyphicon-plus"></i>
@@ -237,8 +239,8 @@
 					<label>Radio</label>
 					<input type="checkbox" id="contact_radio" name="contact[radio]" value=1>
 					</div>
-					<div style="display:flex;justify-content:space-between">
-					<div style="display:flex;gap:3px;align-items: start">
+					<div class="ajout-user-flex-justify-between">
+					<div class="ajout-user-flex-inline">
 						<label>
 							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-info  btn-sm" title="Ajouter radio">
 								<i class="glyphicon glyphicon-plus"></i>
@@ -246,7 +248,7 @@
 						</label>
 						<input type="checkbox" id="contact_ajouterradio" name="contact[ajouterradio]" value=1>
 						</div>
-						<div style="display:flex;gap:3px;align-items: start">
+						<div class="ajout-user-flex-inline">
 						<label>
 							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-danger  btn-sm" title="Supprimer radio">
 								<i class="glyphicon glyphicon-trash"></i>
@@ -254,7 +256,7 @@
 						</label>
 						<input type="checkbox" id="contact_supprimerradio" name="contact[supprimerradio]" value=1>
 						</div>
-						<div style="display:flex;gap:3px;align-items: start">
+						<div class="ajout-user-flex-inline">
 						<label>
 							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-success  btn-sm" title="Sauvegarder radio">
 								<i class="glyphicon glyphicon-floppy-disk"></i>
@@ -262,7 +264,7 @@
 						</label>
 						<input type="checkbox" id="contact_sauvegarderradio" name="contact[sauvegarderradio]" value=1>
 						</div>
-						<div style="display:flex;gap:3px;align-items: start">
+						<div class="ajout-user-flex-inline">
 						<label>
 							<a data-toggle="tooltip" data-placement="top" data-original-title="" class="btn btn-primary  btn-sm" title="Lancer/arreter service">
 								<i class="glyphicon glyphicon-play-circle"></i>
@@ -989,11 +991,11 @@
 
 		</tbody></table>
 </div>
-<div style="float:right;margin-right:70px;">
-    <a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/gestion/profile">
+<div class="ajout-user-actions">
+	<a class="btn btn-danger btn-md" id = "annulerButton" href="/gestion/profile">
         <i class="glyphicon glyphicon-remove"></i> Annuler
     </a>
-     <button type="submit" class="btn btn-primary btn-md" style="width:130px;">
+	 <button type="submit" class="btn btn-primary btn-md">
         <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
     </button>
 </div>
