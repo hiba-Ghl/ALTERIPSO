@@ -185,6 +185,9 @@ body{
         gap: 5px;
         /* Plus serré sur petit écran */
     }
+    .category-title-img {
+        margin-top: -95px;
+    }
 
 }
 
@@ -300,7 +303,7 @@ body{
     }
 
     .ajouter-banner-img {
-        margin-top: -77px;
+        margin-top: -88px;
         margin-left: -10px;
         width: 45px;
         float: left;
@@ -383,7 +386,7 @@ body {
 }
 
 .modifier-banner-img {
-    margin-top: -88px;
+    margin-top: -92px;
     margin-left: -10px;
     width: 45px;
     float: left;
@@ -426,7 +429,7 @@ body {
     }
 
     .modifier-banner-img {
-        margin-top: -75px;
+        margin-top: -81px;
         margin-left: -10px;
         width: 45px;
         float: left;

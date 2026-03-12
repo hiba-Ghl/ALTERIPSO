@@ -1,0 +1,710 @@
+/* Styles spécifiques à la page Service en chambre */
+
+/* Définition des styles pour le corps de la page */
+body {
+    font-size: 140%;
+    background-color: #F0F0F0;
+}
+
+/* Styles pour les titres de niveau 2 */
+h2 {
+    text-align: center;
+    padding: 20px 0;
+}
+
+/* Styles pour la légende des tableaux */
+table caption {
+    padding: .5em 0;
+}
+
+/* Styles pour les colonnes des tableaux avec une classe dataTable */
+table.dataTable th,
+table.dataTable td {
+    white-space: nowrap;
+}
+
+/* Styles pour les éléments avec la classe 'p' */
+.p {
+    text-align: center;
+    padding-top: 140px;
+    font-size: 14px;
+}
+
+/* Styles généraux pour tous les éléments */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+/* Styles pour la conteneur des cartes */
+.card-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 50px;
+    overflow-y: scroll;
+    position: relative;
+    height: 80%;
+}
+
+/* Styles pour chaque carte */
+.card {
+    width: 300px;
+    height: 260px;
+    background-color: #F0F0F0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin: 20px;
+}
+
+/* Styles pour les images à l'intérieur des cartes */
+.card img,
+.service-card-image {
+    width: 100%;
+    height: 60%;
+}
+
+/* Styles pour le contenu des cartes */
+.card-content {
+    padding: 16px;
+}
+
+/* Styles pour les titres dans le contenu des cartes */
+.card-content h3,
+.service-card-title {
+    font-size: 28px;
+    margin-bottom: 8px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5px;
+}
+
+/* Styles pour les paragraphes dans le contenu des cartes */
+.card-content p {
+    color: #666;
+    font-size: 15px;
+}
+
+/* Boutons dans le contenu des cartes */
+.card-content .btn1 {
+    display: inline-block;
+    padding: 8px 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: -6px;
+    color: #fff;
+}
+
+.btn1:hover {
+    background-color: grey;
+}
+
+.card-content .btn2 {
+    display: inline-block;
+    padding: 8px 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: -6px;
+    color: #fff;
+}
+
+.btn2:hover {
+    background-color: grey;
+}
+
+.card-content .btn3 {
+    display: inline-block;
+    padding: 8px 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: -6px;
+    color: #fff;
+}
+
+.btn3:hover {
+    background-color: grey;
+}
+
+.card-content .btn4 {
+    display: inline-block;
+    padding: 8px 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: -6px;
+}
+
+/* Bloc d'en-tête "Service en chambre" */
+.service-header {
+    border-radius: 8px;
+    text-align: left;
+    margin-bottom: 10px;
+    margin-left: -120px;
+    color: #fff;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 250px;
+    padding-left: 10px;
+}
+
+.service-header-logo {
+    margin-top: -51px;
+    margin-left: -10px;
+    width: 45px;
+    float: left;
+}
+
+/* Bouton Annuler en haut de page */
+.service-top-cancel {
+    width: 150px;
+}
+
+/* Boutons d'action sur les cartes */
+.service-edit-btn {
+    position: absolute;
+    margin-top: -190px;
+    margin-bottom: 12px;
+    margin-left: 12px;
+}
+
+.service-delete-btn {
+    position: absolute;
+    margin-top: -190px;
+    margin-left: 50px;
+}
+
+.service-position-input {
+    position: absolute;
+    margin-top: -190px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    width: 32px;
+    height: 35px;
+    border-radius: 8px;
+    margin-left: 87px;
+    text-align: center;
+}
+
+.service-active-checkbox {
+    margin-left: 150px;
+    margin-top: 20px;
+}
+
+.disabled-service-btn {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: default;
+}
+
+/* Modal de confirmation / ajout type service */
+.modal-confirm {	
+    color: #636363;
+    width: 400px;
+}
+
+.modal-confirm .modal-content {
+    padding: 20px;
+    border-radius: 5px;
+    border: none;
+    text-align: center;
+    font-size: 14px;
+}
+
+.modal-confirm .modal-header {
+    border-bottom: none;
+    position: relative;
+}
+
+.modal-confirm h4 {
+    text-align: center;
+    font-size: 26px;
+    margin: 30px 0 -10px;
+}
+
+.modal-confirm .close {
+    position: absolute;
+    top: -5px;
+    right: -2px;
+}
+
+.modal-confirm .modal-body {
+    color: #999;
+}
+
+.modal-confirm .modal-footer {
+    border: none;
+    text-align: center;	
+    border-radius: 5px;
+    font-size: 13px;
+    padding: 10px 15px 25px;
+}
+
+.modal-confirm .modal-footer a {
+    color: #999;
+}	
+
+.modal-confirm .icon-box {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    border-radius: 50%;
+    z-index: 9;
+    text-align: center;
+    border: 3px solid #f15e5e;
+}
+
+.modal-confirm .icon-box i {
+    color: #f15e5e;
+    font-size: 46px;
+    display: inline-block;
+    margin-top: 13px;
+}
+
+.modal-confirm .btn,
+.modal-confirm .btn:active {
+    color: #fff;
+    border-radius: 4px;
+    background: #60c7c1;
+    text-decoration: none;
+    transition: all 0.4s;
+    line-height: normal;
+    min-width: 120px;
+    border: none;
+    min-height: 40px;
+    border-radius: 3px;
+    margin: 0 5px;
+}
+
+.modal-confirm .btn-secondary {
+    background: #c1c1c1;
+}
+
+.modal-confirm .btn-secondary:hover,
+.modal-confirm .btn-secondary:focus {
+    background: #a8a8a8;
+}
+
+.modal-confirm .btn-danger {
+    background: #f15e5e;
+}
+
+.modal-confirm .btn-danger:hover,
+.modal-confirm .btn-danger:focus {
+    background: #ee3535;
+}
+
+.trigger-btn {
+    display: inline-block;
+    margin: 100px auto;
+}
+
+/* Titre du modal "Ajouter type service" */
+.modal-title-service {
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 15px;
+}
+
+/* Bouton enregistrer du modal */
+.btn-save-service-type {
+    background-color: #3087ce;
+    border: 2px solid #3087ce;
+}
+
+/* ==========================================
+   Page Ajout Service en chambre (ajouter)
+   ========================================== */
+
+/* Conteneur principal du formulaire d'ajout */
+#service-add-container {
+    border-radius: 25px;
+    border: 2px solid #3087ce;
+    width: 100%;
+    max-width: 1091px;
+    margin: 10px auto;
+    padding: 20px 20px 60px;
+    background-color: #ffffff;
+}
+
+/* En-tête spécifique à la page d'ajout */
+.service-add-header {
+    border-radius: 8px;
+    text-align: left;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-left: 10px;
+    color: #ffffff;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 350px;
+    padding-left: 10px;
+}
+
+.service-add-header-logo {
+    margin-top: -51px;
+    margin-left: -10px;
+    width: 45px;
+    float: left;
+}
+
+/* Marge standard utilisée dans les form-rows */
+.service-add-row-margin {
+    margin-left: 0;
+}
+
+/* Chaque bloc de champ occupe toute la largeur de la ligne */
+.service-add-row-margin .form-group {
+    width: 100%;
+}
+
+.service-add-col-margin {
+    margin-left: 0;
+}
+
+.service-add-form-margin {
+    margin-left: 30px;
+}
+
+.service-add-label-offset {
+    margin-left: 6px;
+}
+
+.service-add-input-full {
+    width: 100%;
+}
+
+/* Bloc des langues */
+.service-add-languages-block {
+    width: 100%;
+    max-width: 900px;
+    margin-left: 30px;
+    margin-bottom: 5px;
+    margin-top: 20px;
+}
+
+.service-add-languages-label {
+    margin-right: 20px;
+}
+
+.service-add-lang-flag {
+    width: 30px;
+}
+
+/* Radio prix normal / prix par quantité */
+.service-add-radio-group {
+    margin-left: 47px;
+}
+
+/* Tableau des prix par quantité */
+.service-add-price-table {
+    margin-left: 27px;
+}
+
+.service-add-price-cell {
+    width: 500px;
+}
+
+.service-add-addprice-btn {
+    margin-left: 27px;
+    margin-top: 14px;
+}
+
+/* Bloc durée de livraison */
+.service-add-duration-block {
+    margin-left: 25px;
+    margin-right: 17px;
+}
+
+/* Liste des requêtes */
+.service-add-list-btn-wrapper {
+    margin-left: 15px;
+    margin-top: 23px;
+}
+
+.service-add-menu-section {
+    width: 100%;
+    max-width: 1000px;
+    margin-left: 30px;
+    margin-bottom: 25px;
+}
+
+/* Flex pour les horaires de prise de rendez-vous */
+.service-add-flex-row {
+    display: flex;
+}
+
+.service-add-flex-group {
+    display: flex;
+}
+
+.service-add-day-block {
+    margin-left: 30px;
+}
+
+.service-add-day-block-large {
+    margin-left: 100px;
+}
+
+/* Boutons de bas de formulaire */
+.service-add-footer-actions {
+    display: flex;
+    justify-content: right;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.service-add-cancel-btn {
+    width: 130px;
+}
+
+.service-add-submit-btn {
+    margin-left: 0;
+}
+
+/* Champ en erreur (validation) */
+.service-add-error {
+    box-shadow: 0 0 5px #FF0000;
+}
+
+/* ==========================
+   Responsive - Tablettes
+   ========================== */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    body {
+        font-size: 130%;
+    }
+
+    .card-container {
+        justify-content: center;
+        height: auto;
+        overflow-y: visible;
+        margin-top: 30px;
+    }
+
+    /* Conteneur principal de la page Service en chambre (index) */
+    #div2 {
+        margin-left: 0 !important;
+        margin-right: 0;
+        width: 100%;
+    }
+
+    /* Conteneur principal du formulaire d'ajout */
+    #service-add-container {
+        max-width: 900px;
+        margin: 10px auto;
+        padding: 20px;
+    }
+
+    .service-add-header {
+        margin-left: 0;
+        width: auto;
+    }
+
+    .service-add-languages-block,
+    .service-add-menu-section {
+        margin-left: 0;
+        max-width: 100%;
+    }
+
+    .card {
+        width: 90%;
+        max-width: 500px;
+        margin: 15px auto;
+    }
+
+    .service-header {
+        margin-left: 0;
+        width: auto;
+        margin-right: 10px;
+    }
+
+    /* Boutons d'action principaux : n'afficher que les icônes */
+    #div2 > a.btn,
+    #div2 > button.btn {
+        font-size: 0;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #div2 > a.btn i,
+    #div2 > button.btn i {
+        font-size: 18px;
+        margin: 0;
+    }
+
+    /* Sur tablette, présenter les actions de carte comme un petit formulaire */
+    .service-edit-btn,
+    .service-delete-btn,
+    .service-position-input,
+    .service-active-checkbox {
+        position: static;
+        margin: 8px 6px 0 0;
+    }
+
+    .service-position-input {
+        width: 50px;
+        height: 32px;
+    }
+
+    .service-active-checkbox {
+        vertical-align: middle;
+    }
+}
+
+/* ==========================
+   Responsive - Mobiles
+   ========================== */
+@media (max-width: 767.98px) {
+    body {
+        font-size: 120%;
+    }
+
+    .card-container {
+        flex-direction: column;
+        align-items: center;
+        height: auto;
+        overflow-y: visible;
+        margin-top: 20px;
+        padding: 0 10px;
+    }
+
+    /* Conteneur principal de la page Service en chambre (index) */
+    #div2 {
+        margin-left: 0 !important;
+        margin-right: 0;
+        width: 100%;
+    }
+
+    /* Formulaire d'ajout - plein écran sur mobile */
+    #service-add-container {
+        max-width: 100%;
+        margin: 10px 5px 20px 5px;
+        padding: 15px;
+    }
+
+    .service-add-header {
+        margin-left: 0;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .service-add-languages-block,
+    .service-add-menu-section,
+    .service-add-duration-block,
+    .service-add-form-margin {
+        margin-left: 0;
+        margin-right: 0;
+        max-width: 100%;
+    }
+
+    .service-add-row-margin {
+        margin-left: 0;
+    }
+
+    /* Alignement spécifique du champ Logo et de son label en mobile */
+    #logo_input {
+        width: 100%;
+    }
+
+    label[for="logo_input"] {
+        display: block;
+        margin-left: 6px;
+    }
+
+    /* Boutons Annuler / Enregistrer en mode icône seule */
+    .service-add-footer-actions {
+        justify-content: flex-end;
+    }
+
+    .service-add-cancel-btn,
+    .service-add-submit-btn {
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        font-size: 0; /* masque le texte, garde l’icône */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .service-add-cancel-btn i,
+    .service-add-submit-btn i {
+        font-size: 20px;
+        margin: 0;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 360px;
+        margin: 10px 0;
+    }
+
+    .service-header {
+        margin-left: 0;
+        width: 100%;
+        max-width: 280px;
+        margin-right: 0;
+    }
+
+    .service-top-cancel {
+        width: 100%;
+        max-width: 200px;
+        margin-top: 10px;
+    }
+
+    /* Boutons d'action principaux : n'afficher que les icônes */
+    #div2 > a.btn,
+    #div2 > button.btn {
+        font-size: 0;
+        width: 38px;
+        height: 38px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #div2 > a.btn i,
+    #div2 > button.btn i {
+        font-size: 18px;
+        margin: 0;
+    }
+
+    /* Sur mobile, présenter les actions de carte comme un formulaire empilé */
+    .service-edit-btn,
+    .service-delete-btn,
+    .service-position-input,
+    .service-active-checkbox {
+        position: static;
+        margin-top: 8px;
+        margin-right: 6px;
+    }
+
+    .service-position-input {
+        width: 60px;
+        height: 34px;
+    }
+
+    .service-active-checkbox {
+        vertical-align: middle;
+    }
+
+    .modal-confirm {
+        width: 100%;
+        max-width: 380px;
+    }
+}

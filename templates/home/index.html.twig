@@ -45,6 +45,7 @@
 		<link	href="{{ asset('css/style.css') }}"	rel="stylesheet">
 		<link rel="stylesheet" href="{{ asset('css/mycss.css') }}" />
 		{# <link rel="stylesheet" href="{{ asset('css/responsive.css') }}" /> #}
+		<link rel="stylesheet" href="{{ asset('css/css_home.css') }}" />
 		<script src="{{ asset('javascript/serviceIndex.js') }}"></script>
 		<script src="{{ asset('javascript/service.js') }}"></script>
 		<script src="{{ asset('javascript/user.js') }}"></script>
@@ -798,7 +799,7 @@ submenu.style.display = 'none';
 					{% else %}
 						{% set background= path('afficher_image', { filename: etablissement.background|split('/')|last, directory: 'etablissement_directory' })%}
 					{% endif %}
-					<div	class="col-md-12"	style="background:url('{{ background }}'); height:555px; background-size: cover!important;">
+					<div	class="col-md-12"	id="back_img" style="background:url('{{ background }}'); height:555px; background-size: cover!important;">
 
 					<div	class="col-md-12 header-fixed-mobile"	style="background-color: rgba(160, 160, 160, 0.25);height: 80px;margin-bottom: 15px">
 
@@ -813,7 +814,7 @@ submenu.style.display = 'none';
 										<input	name="logoactive"	{% if app.user.CocherLogo == '0' %} disabled {% endif %}  class=""	type="checkbox"	{{ ch }}>
 									<!--Logo de votre société-->
 									</h4>
-									<img src="{{ path('afficher_image', { filename: etablissement.logo|split('/')|last, directory: 'etablissement_directory' }) }}" style="width: 150px;margin-top: -41px;    height: 60px;float: left;margin-right: 8px">
+									<img src="{{ path('afficher_image', { filename: etablissement.logo|split('/')|last, directory: 'etablissement_directory' }) }}" id="logo_active" style="width: 150px;margin-top: -41px;    height: 60px;float: left;margin-right: 8px">
 
 								</a>
 							</div>
@@ -1637,7 +1638,10 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener('DOMContentLoaded',  function () {
     const submitButton = document.getElementById('ExportData'); 
     if (submitButton) {
-        submitButton.addEventListener('click', async function () {
+		submitButton.addEventListener('click', async function (event) {
+				// Empêcher tout comportement par défaut qui pourrait bloquer sur mobile/tablette
+				event.preventDefault();
+				event.stopPropagation();
 				const response = await fetch(`/app_Reinisialiser_password/${app.user.id}`);
         		if (!response.ok) throw new Error(`Erreur serveur: ${response.status}`);
         		const data = await response.json();

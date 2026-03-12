@@ -1,217 +1,10 @@
 {% extends 'home/index.html.twig' %}
   {% block body %}
 
-    <!-- Styles spécifiques à cette page -->
-    <style>
-      /* Définition des styles pour le corps de la page */
-      body { 
-        font-size: 140%; 
-      }
-      /* Styles pour les titres de niveau 2 */
-      h2 {
-        text-align: center;
-        padding: 20px 0;
-      }
-      /* Styles pour la légende des tableaux */
-      table caption {
-        padding: .5em 0;
-      }
-      /* Styles pour les colonnes des tableaux avec une classe dataTable */
-      table.dataTable th,
-      table.dataTable td {
-        white-space: nowrap;
-      }
-      /* Styles pour les éléments avec la classe 'p' */
-      .p {
-        text-align: center;
-        padding-top: 140px;
-        font-size: 14px;
-      }
-      /* Styles pour la div avec l'ID 'div2' */
-        /* Styles généraux pour tous les éléments */
-            *{
-              margin:0px;
-              padding:0px;
-              box-sizing: border-box;
-              font-family: sans-serif;
-          }
-          /* Styles pour le corps de la page */
-          body{
-              background-color: #F0F0F0;
-      
-          }
-          /* Styles pour la conteneur des cartes */
-          .card-container{
-              display: flex;
-              justify-content: center;
-              flex-wrap: wrap;
-              margin-top: 50px;
-              overflow-y:scroll;
-              position:relative;
-              height:80%;
-          }
-          /* Styles pour chaque carte */
-          .card{
-              width: 300PX;
-              height: 260px;
-              background-color: #F0F0F0;
-              border-radius: 8px;
-              overflow: hidden;
-              box-shadow: 0px 2px 4px rgb(0, 0, 0, 2);
-              margin: 20px;
-          }
-        /* Styles pour les images à l'intérieur des cartes */
-          .card img{
-              width: 100%;
-              height: 60%;
-          }
-          /* Styles pour le contenu des cartes */
-          .card-content{
-              padding: 16 px;
-          }
-/* Styles pour les titres dans le contenu des cartes */
-          .card-content h3{
-             font-size: 28px;
-             margin-bottom: 8px;
-          }
-          /* Styles pour les paragraphes dans le contenu des cartes */
-          .card-content p{
-              color: #666;
-              font-size: 15px;
-          }
-        /* Styles pour les boutons dans le contenu des cartes */
-          .card-content .btn1{
-            display: inline-block;
-            padding: 8px 10px;
-            background-color: rgba(0, 0, 0, 0.7);
-            text-decoration: none;
-            border-radius: 4px;
-            margin-top: -6px;
-            color: #fff;
-          }
-          .btn1:hover {
-            background-color: grey;
-          }
-          .card-content .btn2{
-            display: inline-block;
-            padding: 8px 10px;
-            background-color: rgba(0, 0, 0, 0.5);
-            text-decoration: none;
-            border-radius: 4px;
-            margin-top: -6px;
-            color: #fff;
-          }
-          .btn2:hover {
-            background-color: grey;
-          }
-          .card-content .btn3{
-            display: inline-block;
-            padding: 8px 10px;
-            background-color: rgba(0, 0, 0, 0.7);
-            text-decoration: none;
-            border-radius: 4px;
-            margin-top: -6px;
-            color: #fff;
-          }
-          .btn3:hover {
-            background-color: grey;
-          }
-          .card-content .btn4{
-            display: inline-block;
-            padding: 8px 10px;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            margin-top: -6px;
-            color: #fff;
-          }
-          .modal-confirm {		
-            color: #636363;
-            width: 400px;
-          }
-          .modal-confirm .modal-content {
-            padding: 20px;
-            border-radius: 5px;
-            border: none;
-            text-align: center;
-            font-size: 14px;
-          }
-          .modal-confirm .modal-header {
-            border-bottom: none;   
-            position: relative;
-          }
-          .modal-confirm h4 {
-            text-align: center;
-            font-size: 26px;
-            margin: 30px 0 -10px;
-          }
-          .modal-confirm .close {
-            position: absolute;
-            top: -5px;
-            right: -2px;
-          }
-          .modal-confirm .modal-body {
-            color: #999;
-          }
-          .modal-confirm .modal-footer {
-            border: none;
-            text-align: center;		
-            border-radius: 5px;
-            font-size: 13px;
-            padding: 10px 15px 25px;
-          }
-          .modal-confirm .modal-footer a {
-            color: #999;
-          }		
-          .modal-confirm .icon-box {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto;
-            border-radius: 50%;
-            z-index: 9;
-            text-align: center;
-            border: 3px solid #f15e5e;
-          }
-          .modal-confirm .icon-box i {
-            color: #f15e5e;
-            font-size: 46px;
-            display: inline-block;
-            margin-top: 13px;
-          }
-          .modal-confirm .btn, .modal-confirm .btn:active {
-            color: #fff;
-            border-radius: 4px;
-            background: #60c7c1;
-            text-decoration: none;
-            transition: all 0.4s;
-            line-height: normal;
-            min-width: 120px;
-            border: none;
-            min-height: 40px;
-            border-radius: 3px;
-            margin: 0 5px;
-          }
-          .modal-confirm .btn-secondary {
-            background: #c1c1c1;
-          }
-          .modal-confirm .btn-secondary:hover, .modal-confirm .btn-secondary:focus {
-            background: #a8a8a8;
-          }
-          .modal-confirm .btn-danger {
-            background: #f15e5e;
-          }
-          .modal-confirm .btn-danger:hover, .modal-confirm .btn-danger:focus {
-            background: #ee3535;
-          }
-          .trigger-btn {
-            display: inline-block;
-            margin: 100px auto;
-          }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/css_serviceChambre.css') }}" />
     <!-- En-tête de la page -->
-    <div style="border-radius: 8px;text-align: left;margin-bottom: 10px;margin-left: -120px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
-    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+    <div class="service-header">
+    <img class="service-header-logo" src="{{ asset('images/ler.png') }}">
       Service en chambre
 </div>
     <!-- Contenu principal de la page -->
@@ -230,7 +23,7 @@
           <i class="glyphicon glyphicon-inbox"></i>
           Sauvegarder
         </a>
-        	<a type="button" class="btn btn-danger btn-sm" style="width: 150px;" href="{{ path('service_en_chambre') }}">
+		<a type="button" class="btn btn-danger btn-sm service-top-cancel" href="{{ path('service_en_chambre') }}">
 				<i class="glyphicon glyphicon-remove"></i>Annuler</a>
     <!-- Affichage des services en chambre -->
     <div class="card-container">
@@ -241,17 +34,17 @@
           <!-- Affichage des détails du service -->
           <div class="card">
               
-              <!-- Affichage image du service en chambre-->
-              <img src="{{ path('afficher_image', { filename: serviceEnChambre.logo|split('/')|last, directory: 'service_in_room_directory' }) }}" style="position: relative;display: inline-block;"/>
+                <!-- Affichage image du service en chambre-->
+                <img src="{{ path('afficher_image', { filename: serviceEnChambre.logo|split('/')|last, directory: 'service_in_room_directory' }) }}" class="service-card-image"/>
               <div class="card-content">
                   <!-- Affichage le nom de service en chambre -->
-                  <h3 style="text-align: center; margin-left: auto; margin-right: auto;margin-top:5px">{{ serviceEnChambre.getNom()}}</h3>
+                  <h3 class="service-card-title">{{ serviceEnChambre.getNom()}}</h3>
                   <!-- Affichage le description service en chambre -->
                   
-                <a  {% if app.user.ModifierServiceEnChambre == '0' %} style="pointer-events: none; opacity: 0.5; cursor: default;position: absolute;margin-top:-190px;margin-bottom: 12px;margin-left: 12px;" {% endif %} href="{{ path('page_details_service_en_chambre', {'id': serviceEnChambre.getId()}) }}" class="btn3" style="position: absolute;margin-top:-190px;margin-bottom: 12px;margin-left: 12px;"><i class="glyphicon glyphicon-pencil"></i></a>
-                <a  {% if app.user.SuppServiceEnChambre == '0' %} style="pointer-events: none; opacity: 0.5; cursor: default;position: absolute;margin-top:-190px;margin-left: 50px;" {% endif %} href="{{path('app_supprimer_service_en_chambre',{'id':serviceEnChambre.id})}}"  class="btn1" data-toggle="tooltip" data-placement="top" title="supprimer le service" style="position: absolute;margin-top:-190px;margin-left: 50px;" onclick="return confirm('Voulez-vous vraiment supprimer le service : {{serviceEnChambre.nom}} ?')"><i class="glyphicon glyphicon-trash"></i></a>
-                <input {% if app.user.SauvegarderServiceEnChambre == '0' %} disabled {% endif %} type="text" value="{{ serviceEnChambre.getPosition()}}" id="position_{{ serviceEnChambre.getId() }}" name="position" onchange="updatePosition({{ serviceEnChambre.getId() }})" style="position: absolute;margin-top:-190px;background-color: rgba(0, 0, 0, 0.7);color: white;width: 32px; height:35px;border-radius: 8px;margin-left: 87px;text-align: center; ">
-                <input {% if app.user.SauvegarderServiceEnChambre == '0' %} disabled {% endif %}  type="checkbox" id="Active_{{ serviceEnChambre.getId() }}" {% if serviceEnChambre.isActive() == 0 %}checked{% endif %} onchange="updateActive({{ serviceEnChambre.getId() }})" style="margin-left: 150px;margin-top:20px" name="Active">
+                <a  href="{{ path('page_details_service_en_chambre', {'id': serviceEnChambre.getId()}) }}" class="btn3 service-edit-btn{% if app.user.ModifierServiceEnChambre == '0' %} disabled-service-btn{% endif %}"><i class="glyphicon glyphicon-pencil"></i></a>
+                <a  href="{{path('app_supprimer_service_en_chambre',{'id':serviceEnChambre.id})}}"  class="btn1 service-delete-btn{% if app.user.SuppServiceEnChambre == '0' %} disabled-service-btn{% endif %}" data-toggle="tooltip" data-placement="top" title="supprimer le service" onclick="return confirm('Voulez-vous vraiment supprimer le service : {{serviceEnChambre.nom}} ?')"><i class="glyphicon glyphicon-trash"></i></a>
+                <input {% if app.user.SauvegarderServiceEnChambre == '0' %} disabled {% endif %} type="text" value="{{ serviceEnChambre.getPosition()}}" id="position_{{ serviceEnChambre.getId() }}" name="position" onchange="updatePosition({{ serviceEnChambre.getId() }})" class="service-position-input">
+                <input {% if app.user.SauvegarderServiceEnChambre == '0' %} disabled {% endif %}  type="checkbox" id="Active_{{ serviceEnChambre.getId() }}" {% if serviceEnChambre.isActive() == 0 %}checked{% endif %} onchange="updateActive({{ serviceEnChambre.getId() }})" class="service-active-checkbox" name="Active">
  
               </div>
           </div>
@@ -265,7 +58,7 @@
           <div class="modal-content">
             <form name="" method="post" action="{{path('ajoutercategoriesservice')}}" class="form-horizontal" enctype="multipart/form-data">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel" style="font-weight: bold; font-size: 20px; margin-top:15px;">Ajouter type service</h5>
+                <h5 class="modal-title modal-title-service" id="exampleModalLabel">Ajouter type service</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -290,7 +83,7 @@
               </div>
               <div class="modal-footer">
                 <!-- ... boutton pour ajouter type de service ... -->
-                <button type="submit" href="" class="btn btn-success" style="background-color: #3087ce; border: 2px solid #3087ce;">
+                <button type="submit" href="" class="btn btn-success btn-save-service-type">
                   <i class="glyphicon glyphicon-floppy-disk"></i>
                   Enregistrer</button>
                   <!-- ...  boutton pour annuler le module ... -->

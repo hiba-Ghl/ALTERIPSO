@@ -1,6 +1,8 @@
 {% extends 'home/index.html.twig' %}
   {% block body %}
 
+    <link rel="stylesheet" href="{{ asset('css/css_serviceChambre.css') }}" />
+
 
   {# offline #}
 {% if appConfig.StatusServeur is same as('Offline') %}
@@ -20,77 +22,51 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.4.1/jsgrid.min.js"></script>
 {% endif %}
 
-
-
-
-
-    <!-- Styles spécifiques à cette page -->    
-
-
-
-    <style>
-        /* Styles pour la div avec l'ID 'div2' */
-            #div4 {
-                border-radius: 25px;
-                border: 2px solid #3087ce;
-                width: 1091px;
-                margin-left: 10px;
-                padding:20px;
-                padding-bottom:60px;
-                margin-top: 10px;
-                background-color: white;
-            }
-                 {# overflow: auto; 
-  scrollbar-width: none;  #}
-            {# #div2::-webkit-scrollbar {
-            display: none; 
-            } #}
-            /*champ de couleur qui est vide*/
-            .error {
-              box-shadow: 0 0 5px #FF0000;/* Ombre rouge */
-            }
-            .container1 {
-                display: flex;
-              }
-              .container2 {
-                display: flex;
-              }
-
-       
-    </style>
     <!-- En-tête de la page -->                                  
-    <div style="border-radius: 8px;text-align: left;margin-bottom: 10px;margin-top:10px;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 350px;padding-left: 10px;">
-    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+    <div class="service-add-header">
+    <img class="service-add-header-logo" src="{{ asset('images/ler.png') }}">
         Ajouter un service en chambre 
 </div>
-    <div id="div4">
+    <div id="service-add-container">
     
     <!-- Formulaire d'ajout de service -->
     <form name="" method="post" action="{{ path('ajouterservice') }}" class="form-horizontal" enctype="multipart/form-data">  
            <br>
             <!-- Champs du formulaire pour ajouter un service -->
-           <div class="form-row" style="margin-left:27px">
+           <div class="form-row service-add-row-margin">
                 <div class="form-group col-md-6">
                 <!-- Champ de nom de service en chambre -->
                 <label for="nom">Nom service</label>
                 <input type="text" class="form-control" id="nom" name="nom">
                 </div>
-                <div class="form-group col-md-6" style="margin-left:27px">
+                <div class="form-group col-md-6 service-add-col-margin">
                 <!-- Champ de description de service en chambre -->
                 <label for="Description">Description</label>
                 <input type="text" class="form-control" id="Description" name="Description">
                 </div>
             </div>
-            <div class="form-group" style="margin-left:30px;" >
+            <div class="form-row service-add-row-margin">
               <!-- Champ de logo de service en chambre -->
-                <label for="logo" style="margin-left: 6px;">Logo</label>
-                <input type="file" style="width: 97%;" class="form-control" id="logo" name="logo" accept=".jpg, .jpeg, .png">
+              <div class="form-group col-md-6">
+                <label for="logo_input">Logo</label>
+                <input type="file" class="form-control" id="logo_input" name="logo" accept=".jpg, .jpeg, .png">
+              </div>
+              <!-- Champ Type service en chambre sur la même ligne -->
+              <div class="form-group col-md-6 service-add-col-margin">
+                <label for="type_service_en_chambre">Type service en chambre</label>
+                <!-- Affichage Liste des types services -->
+                <select class="form-control" id="type_service_en_chambre" name="type_service_en_chambre" onchange="toggleSection()">
+                    {% for typeServiceEnChambre in typeserviceEnChambres %}
+                      <option value="{{ typeServiceEnChambre.id }}" data-id="{{ typeServiceEnChambre.id }}" data-nom="{{ typeServiceEnChambre.nom }}">{{ typeServiceEnChambre.nom }}</option>
+                    {% endfor %}
+                </select>
+              </div>
             </div>
            
             <!-- Champs des langues -->
-            <div style="width: 900px; margin-left:30px; margin-bottom: 5px; margin-top: 20px">
+            <div class="service-add-languages-block">
             <!-- le boutons des langues --> 
-            <label style="margin-right: 20px;" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Langues</label>
+            <label class="accordion-toggle service-add-languages-label" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Langues</label>
             <!-- le bouton de traduction -->
             <button type="button" id="translateBtn" class="btn btn-info btn-sm">
                 <i class="glyphicon glyphicon-globe"></i> Traduire le texte
@@ -102,50 +78,50 @@
             <div id="collapseTwo" class="panel-collapse collapse">
                 <div class="panel-body">
                     <div id="inputGroup1">
-                        <div class="form-row" style="margin-left:27px">
+                        <div class="form-row service-add-row-margin">
                             <div class="form-group col-md-6">
-                                <img style="width: 30px" src="{{ asset('images/eng.png') }}">
+                              <img class="service-add-lang-flag" src="{{ asset('images/eng.png') }}">
                                 <label for="EN">English</label>
                                 <input type="text" class="form-control" id="EN" name="EN">
                             </div>
-                            <div class="form-group col-md-6" style="margin-left:27px">
-                                <img style="width: 30px" src="{{ asset('images/es.png') }}">
+                            <div class="form-group col-md-6 service-add-col-margin">
+                              <img class="service-add-lang-flag" src="{{ asset('images/es.png') }}">
                                 <label for="ES">Espagnol</label>
                                 <input type="text" class="form-control" id="ES" name="ES">
                             </div>
                         </div>
-                        <div class="form-row" style="margin-left:27px">
+                        <div class="form-row service-add-row-margin">
                             <div class="form-group col-md-6">
-                                <img style="width: 30px" src="{{ asset('images/pt.png') }}">
+                              <img class="service-add-lang-flag" src="{{ asset('images/pt.png') }}">
                                 <label for="PT">Portugues</label>
                                 <input type="text" class="form-control" id="PT" name="PT">
                             </div>
-                            <div class="form-group col-md-6" style="margin-left:27px">
-                                <img style="width: 30px" src="{{ asset('images/ita.png') }}">
+                            <div class="form-group col-md-6 service-add-col-margin">
+                              <img class="service-add-lang-flag" src="{{ asset('images/ita.png') }}">
                                 <label for="IT">Italiano</label>
                                 <input type="text" class="form-control" id="IT" name="IT">
                             </div>
                         </div>
-                        <div class="form-row" style="margin-left:27px">
+                        <div class="form-row service-add-row-margin">
                             <div class="form-group col-md-6">
-                                <img style="width: 30px" src="{{ asset('images/rus.png') }}">
+                              <img class="service-add-lang-flag" src="{{ asset('images/rus.png') }}">
                                 <label for="RU">Russian</label>
                                 <input type="text" class="form-control" id="RU" name="RU">
                             </div>
-                            <div class="form-group col-md-6" style="margin-left:27px">
-                                <img style="width: 30px" src="{{ asset('images/deu.png') }}">
+                            <div class="form-group col-md-6 service-add-col-margin">
+                              <img class="service-add-lang-flag" src="{{ asset('images/deu.png') }}">
                                 <label for="DE">Deutsch</label>
                                 <input type="text" class="form-control" id="DE" name="DE">
                             </div>
                         </div>
-                        <div class="form-row" style="margin-left:27px">
+                        <div class="form-row service-add-row-margin">
                             <div class="form-group col-md-6">
-                                <img style="width: 30px" src="{{ asset('images/ch.png') }}">
+                              <img class="service-add-lang-flag" src="{{ asset('images/ch.png') }}">
                                 <label for="ZH">China</label>
                                 <input type="text" class="form-control" id="ZH" name="ZH">
                             </div>
-                            <div class="form-group col-md-6" style="margin-left:27px">
-                                <img style="width: 30px" src="{{ asset('images/ma.png') }}">
+                            <div class="form-group col-md-6 service-add-col-margin">
+                              <img class="service-add-lang-flag" src="{{ asset('images/ma.png') }}">
                                 <label for="AR">العربية</label>
                                 <input type="text" class="form-control" id="AR" name="AR">
                             </div>
@@ -163,19 +139,10 @@
               });
             </script>
            
-            <!-- Champ des type de service -->
-            <div class="form-group"  style="margin-left:30px;">
-                <label for="type_service_en_chambre">Type service en chambre</label>
-                 <!-- Affichage Liste des types services -->
-                <select style="width: 97%;" id="type_service_en_chambre" name="type_service_en_chambre" class="form-control" onchange="toggleSection()">
-                    {% for typeServiceEnChambre in typeserviceEnChambres %}
-                      <option value="{{ typeServiceEnChambre.id }}" data-id="{{ typeServiceEnChambre.id }}" data-nom="{{ typeServiceEnChambre.nom }}">{{ typeServiceEnChambre.nom }}</option>
-                    {% endfor %}
-                </select>
-            </div>
+            <!-- Champ des type de service (déplacé sur la ligne avec Logo) -->
             <div id="achatSection" >
               <!--button radio pour choix du forum-->
-              <div style="margin-left: 47px;">
+              <div class="service-add-radio-group">
                 <div class="form-group" style="display: inline-block; margin-right: 20px;">
                     <input type="radio" id="prixRadio" name="typePrix" value="prixnormal1" checked onchange="toggleInput('prix')">
                     <!--button radio pour choix du forum prix normal-->
@@ -189,45 +156,47 @@
                 </div>
               </div> 
               <!--affichage forum prix par prix normal-->
-              <div id="prixnormal">
-                <div class="form-group" style="margin-left:30px;">
-                      <label for="Devise" >Devise</label>
-                      <select style="width: 97%;" id="Devise" name="Devise" class="form-control">
-                            <option value="1">MAD</option>
-                            <option value="2">Dollar</option>
-                            <option value="3">Euro</option>
-                      </select>
+                <div id="prixnormal">
+                  <div class="form-row service-add-row-margin">
+                <div class="form-group col-md-6">
+                    <label for="Devise" >Devise</label>
+                    <select class="form-control" id="Devise" name="Devise">
+                      <option value="1">MAD</option>
+                      <option value="2">Dollar</option>
+                      <option value="3">Euro</option>
+                    </select>
                 </div>
-              
-                <div class="form-group" style="margin-left:30px;" >
-                        <!-- Champ prix -->
-                        <label for="prix" style="margin-left: 6px;">Prix</label>
-                        <input type="number" style="width: 97%;" class="form-control" id="prix" name="prix">
+                  
+                <div class="form-group col-md-6 service-add-col-margin" >
+                  <!-- Champ prix -->
+                  <label for="prix">Prix</label>
+                  <input type="number" class="form-control" id="prix" name="prix">
                 </div>
-                <div class="form-row" style="margin-left:27px">
+                  </div>
+                <div class="form-row service-add-row-margin">
                         <!-- Champ Quantite Min  -->
                         <div class="form-group col-md-6">
                         <label for="qmin">Quantite Min :</label>
                         <input type="number" class="form-control" id="qmin" name="qmin">
                         </div>
                         <!-- Champ Quantite MAX  -->
-                        <div class="form-group col-md-6" style="margin-left:27px">
+                        <div class="form-group col-md-6 service-add-col-margin">
                         <label for="qmax">Quantite MAX :</label>
                         <input type="number" class="form-control" id="qmax" name="qmax">
                         </div>
                 </div>
             </div>
           <!--affichage forum prix par quantite-->
-          <div id="prixquantite">
+            <div id="prixquantite">
             <div id="table-container">
-                <table id="myTable"  style="margin-left: 27px;" style="margin-left: 27px;">
+                <table id="myTable" class="service-add-price-table">
                     <tr>
-                        <td style="width: 500px;"><label for="exampleInputPassword1">Quantité</label><input  type="number" name="inputqte[]" class="form-control"></td>
-                        <td style="width: 500px;"><label for="exampleInputPassword1">Prix</label><input type="number" name="inputprice[]" class="form-control"></td>
+                        <td class="service-add-price-cell"><label for="exampleInputPassword1">Quantité</label><input  type="number" name="inputqte[]" class="form-control"></td>
+                        <td class="service-add-price-cell"><label for="exampleInputPassword1">Prix</label><input type="number" name="inputprice[]" class="form-control"></td>
                     </tr>
                 </table>
             </div>
-            <button type="button" id="add-button" class="btn btn-primary" style="margin-left: 27px;margin-top:14px;">Ajouter Quantité/Prix</button>
+            <button type="button" id="add-button" class="btn btn-primary service-add-addprice-btn">Ajouter Quantité/Prix</button>
 
             <script>
                 document.getElementById("add-button").addEventListener("click", function() {
@@ -242,7 +211,7 @@
 							
           </div>
           <!--affichage duree-->
-          <div style="margin-left: 25px; margin-right:17px;">
+          <div class="service-add-duration-block">
               <label>Durée (min): pour livrer commande en chambre</label><br>
               {% for i in 1..60 %}
                   <label>
@@ -262,33 +231,33 @@
                     <input type="text" class="form-control" id="requete" name="requete" maxlength="40" placeholder="Entrez une requete">
                 </div>
                 <!-- boutton pour ajout des requetes  -->
-                <div class="form-group col-md-1" style="margin-left: 15px;margin-top:23px">
-                    <a  class="btn btn-success form-control" onclick="addText()" style="margin-top: 10000 px;"><i class="glyphicon glyphicon-plus"></i> </a>
+                <div class="form-group col-md-1 service-add-list-btn-wrapper">
+                  <a  class="btn btn-success form-control" onclick="addText()"><i class="glyphicon glyphicon-plus"></i> </a>
                 </div>
             </div>
-            <div class="form-group" style="margin-left:30px;" >
-                <label for="listrequte" style="margin-left: 6px;">Liste requetes</label>
-                <textarea class="form-control"  style="width: 97%;" id="listrequte" value="listrequte" name="listrequte" readonly></textarea>
+            <div class="form-group service-add-form-margin" >
+              <label for="listrequte" class="service-add-label-offset">Liste requetes</label>
+              <textarea class="form-control service-add-input-full" id="listrequte" value="listrequte" name="listrequte" readonly></textarea>
             </div>
           </div>
 
           <!--Table du Menu-->
-          <div id="menuSection" style=" width:1000px; margin-left:30px;margin-bottom:25px;display: none;">
+          <div id="menuSection" class="service-add-menu-section" style="display: none;">
             <div class="alert alert-info">
               <strong>Info!</strong>Veuillez remplir le menu.
             </div>
           </div>
           <!--formulaire prise rendez vous-->
           <div id="priseSection" style="display: none;">
-            <div class="form-group" style="margin-left:30px;" >
+            <div class="form-group service-add-form-margin" >
               
-                  <label for="Descriptionprise" style="margin-left: 6px;">Description</label>
-                  <input type="text" style="width: 97%;" class="form-control" id="Descriptionprise" name="Descriptionprise">
+                  <label for="Descriptionprise" class="service-add-label-offset">Description</label>
+                  <input type="text" class="form-control service-add-input-full" id="Descriptionprise" name="Descriptionprise">
             </div>
-            <div class="container1">
+            <div class="service-add-flex-row">
               <label  style="margin-left: 27px;">Horaires</label>
-              <div class="container2">
-                <div class="container1" style="margin-left: 30px;">
+              <div class="service-add-flex-group">
+                <div class="service-add-flex-row service-add-day-block">
                   <label style="margin-left: 27px;">Lundi</label>
                   <div class="form-row" style="margin-left:27px" >
                     <div class="form-group col-md-6" style="width: 150px;">
@@ -304,7 +273,7 @@
                   </div>
                 </div>
               </div>
-              <div class="container1" style="margin-left: 100px;">
+              <div class="service-add-flex-row service-add-day-block-large">
                   <label >Mardi</label>
                   <div class="form-row" style="margin-left:27px" >
                     <div class="form-group col-md-6" style="width: 150px;">
@@ -320,8 +289,8 @@
                   </div>
                 </div>
               </div>
-              <div class="container2">
-                <div class="container1" style="margin-left: 80px;">
+              <div class="service-add-flex-group">
+                <div class="service-add-flex-row service-add-day-block">
                   <label style="margin-left: 27px;">Merecredi</label>
                   <div class="form-row" style="margin-left:27px" >
                     <div class="form-group col-md-6" style="width: 150px;">
@@ -336,7 +305,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="container1" style="margin-left: 75px;">
+                <div class="service-add-flex-row service-add-day-block">
                   <label style="margin-left: 27px;">Jeudi</label>
                   <div class="form-row" style="margin-left:27px" >
                     <div class="form-group col-md-6" style="width: 150px;">
@@ -352,8 +321,8 @@
                   </div>
                 </div>
               </div>
-              <div class="container2">
-                <div class="container1" style="margin-left: 87px;">
+              <div class="service-add-flex-group">
+                <div class="service-add-flex-row service-add-day-block">
                   <label style="margin-left: 27px;">Vendredi</label>
                   <div class="form-row" style="margin-left:27px" >
                     <div class="form-group col-md-6" style="width: 150px;">
@@ -368,7 +337,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="container1" style="margin-left: 60px;">
+                <div class="service-add-flex-row service-add-day-block">
                   <label style="margin-left: 27px;">Samedi</label>
                   <div class="form-row" style="margin-left:27px" >
                     <div class="form-group col-md-6" style="width: 150px;">
@@ -384,7 +353,7 @@
                   </div>
                 </div>
               </div>
-              <div class="container1" style="margin-left: 80px;">
+              <div class="service-add-flex-row service-add-day-block">
                 <label style="margin-left: 27px;">Dimanche</label>
                 <div class="form-row" style="margin-left:27px" >
                   <div class="form-group col-md-6" style="width: 150px;">
@@ -401,11 +370,11 @@
               </div>
             </div>
           <!-- button enregistrer et annuler  -->
-           <div style="float:right;margin-right:20px;">
-          <a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/serviceenchambre">
+           <div class="service-add-footer-actions">
+          <a class="btn btn-danger btn-md service-add-cancel-btn" id = "annulerButton" href="/serviceenchambre">
               <i class="glyphicon glyphicon-remove"></i> Annuler
           </a>
-          <button type="submit" class="btn btn-primary btn-md" name="valider" >
+          <button type="submit" class="btn btn-primary btn-md service-add-submit-btn" name="valider" >
               <i class="glyphicon glyphicon-floppy-disk"></i>
               Enregistrer
           </button>
@@ -536,7 +505,7 @@
         // Récupérer les valeurs des champs
         console.log("test");
         var nom = document.getElementById("nom");
-        var logo = document.getElementById("logo");
+        var logo = document.getElementById("logo_input");
         var EN = document.getElementById("EN");
         var ES = document.getElementById("ES");
         var PT = document.getElementById("PT");
@@ -558,28 +527,28 @@
         &&AR.value.trim() === ''
         ) {
             // Appliquer la classe d'erreur au champ
-            nom.classList.add("error");
-            logo.classList.add("error");
-            EN.classList.add("error");
-            ES.classList.add("error");
-            PT.classList.add("error");
-            IT.classList.add("error");
-            RU.classList.add("error");
-            DE.classList.add("error");
-            ZH.classList.add("error");
-            AR.classList.add("error");
+          nom.classList.add("service-add-error");
+          logo.classList.add("service-add-error");
+          EN.classList.add("service-add-error");
+          ES.classList.add("service-add-error");
+          PT.classList.add("service-add-error");
+          IT.classList.add("service-add-error");
+          RU.classList.add("service-add-error");
+          DE.classList.add("service-add-error");
+          ZH.classList.add("service-add-error");
+          AR.classList.add("service-add-error");
         } else {
             // Retirer la classe d'erreur si le champ est rempli
-            nom.classList.remove("error");
-            logo.classList.remove("error");
-            EN.classList.remove("error");
-            ES.classList.remove("error");
-            PT.classList.remove("error");
-            IT.classList.remove("error");
-            RU.classList.remove("error");
-            DE.classList.remove("error");
-            ZH.classList.remove("error");
-            AR.classList.remove("error");
+          nom.classList.remove("service-add-error");
+          logo.classList.remove("service-add-error");
+          EN.classList.remove("service-add-error");
+          ES.classList.remove("service-add-error");
+          PT.classList.remove("service-add-error");
+          IT.classList.remove("service-add-error");
+          RU.classList.remove("service-add-error");
+          DE.classList.remove("service-add-error");
+          ZH.classList.remove("service-add-error");
+          AR.classList.remove("service-add-error");
         }
 
         // Vérifier si au moins un champ est vide

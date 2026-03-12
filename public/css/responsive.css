@@ -37,6 +37,14 @@
         margin-bottom: 8px !important;
         float: right !important;
     }
+
+    /* S'assurer que le bouton Exporter reste cliquable sur tablette */
+    #ExportData {
+        position: relative;
+        z-index: 10;
+        display: inline-flex;
+        align-items: center;
+    }
 }
 
 @media (max-width: 768px) {
@@ -106,6 +114,14 @@
     /* Modals */
     .modal-dialog {
         margin: 10px;
+    }
+
+    /* Priorité au bouton Exporter sur mobile (éviter tout chevauchement) */
+    #ExportData {
+        position: relative;
+        z-index: 10;
+        display: inline-flex;
+        align-items: center;
     }
 }
 
