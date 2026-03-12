@@ -48,7 +48,7 @@ label::first-letter {
 	border: 2px solid #73AD21;
 	padding: 20px;
 	width: 1091px;
-	height: 676px;
+	height: auto;
 	margin-left: 10px;
 	margin-top: 10px;
 	background-color: white;

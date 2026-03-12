@@ -643,14 +643,15 @@ tr {
 
     .table-modal td {
         display: flex !important;
-        justify-content: space-between;
-        align-items: center;
+        justify-content: flex-start !important;
+        align-items: flex-start !important;
+        gap: 8px !important;
         min-width: 0 !important;
         height: auto !important;
         padding: 12px 0;
         border-bottom: 1px solid #f5f5f5;
         font-size: 14px;
-        text-align: right !important;
+        text-align: left !important;
     }
 
     .table-modal td:last-child {
@@ -665,6 +666,23 @@ tr {
         font-size: 12px;
         text-transform: uppercase;
         flex-shrink: 0;
+    }
+
+    /* Ligne vide DataTables : message sur toute la largeur, texte qui revient à la ligne */
+    .table-modal td.dataTables_empty,
+    #div2 .modal-body td.dataTables_empty {
+        display: block !important;
+        width: 100% !important;
+        text-align: left !important;
+        white-space: normal !important;
+        padding: 10px 5px !important;
+        font-size: 13px !important;
+    }
+
+    .table-modal td.dataTables_empty::before,
+    #div2 .modal-body td.dataTables_empty::before {
+        content: '' !important;
+        margin: 0 !important;
     }
 
     /* Formulaires responsives */
@@ -758,14 +776,15 @@ tr {
 
     #div2 .modal-body td {
         display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
+        justify-content: flex-start !important;
+        align-items: flex-start !important;
+        gap: 8px !important;
         width: 100% !important;
         border: none !important;
         border-bottom: 1px solid #eee !important;
         padding: 10px 5px !important;
         height: auto !important;
-        text-align: right !important;
+        text-align: left !important;
     }
 
     #div2 .modal-body td:last-child {
@@ -1271,5 +1290,28 @@ tr {
     .journal-table td::before {
         margin-bottom: 4px;
         font-size: 12px;
+    }
+}
+
+/* Très petit mobile : forcer le bouton Supprimer à passer à la ligne
+   en laissant les autres boutons sur la première ligne si possible */
+@media screen and (max-width: 390px) {
+    /* La cellule Actions peut se mettre sur deux lignes */
+    .cell-actions {
+        flex-wrap: wrap !important;
+        justify-content: flex-start !important;
+    }
+
+    /* Le dernier bouton (Supprimer) prend toute la largeur disponible
+       et se place naturellement sur une nouvelle ligne */
+    .cell-actions > div:last-child {
+        flex-basis: 100% !important;
+        text-align: center !important;
+    }
+
+    .cell-actions > div:last-child .btn {
+        width: 100% !important;
+        max-width: 40px;
+        justify-content: center !important;
     }
 }

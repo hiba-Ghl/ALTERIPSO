@@ -80,15 +80,15 @@
 			dropdowns.forEach(function(dropdown) {
 				var submenu = dropdown.querySelector('.dropdown-menu');
 
-				// Ajouter un gestionnaire de survol pour le menu déroulant et le sous-menu
+				// Ajouter un gestionnaire de survol pour le menu dÃ©roulant et le sous-menu
 				dropdown.addEventListener('mouseover', function() {  
 					dropdown.classList.add('active');
 					submenu.style.display = 'block';
 				});
 
-				// Ajouter un gestionnaire de sortie pour le menu déroulant et le sous-menu
+				// Ajouter un gestionnaire de sortie pour le menu dÃ©roulant et le sous-menu
 				dropdown.addEventListener('mouseout', function(event) {
-					// Vérifier si la souris est sortie du menu déroulant ou du sous-menu
+					// VÃ©rifier si la souris est sortie du menu dÃ©roulant ou du sous-menu
 					if (!dropdown.contains(event.relatedTarget) && !submenu.contains(event.relatedTarget)) {
 						dropdown.classList.remove('active');
 						submenu.style.display = 'none';
@@ -101,7 +101,7 @@
 				});
 
 				submenu.addEventListener('mouseout', function(event) {
-					// Vérifier si la souris est sortie du menu déroulant ou du sous-menu
+					// VÃ©rifier si la souris est sortie du menu dÃ©roulant ou du sous-menu
 					if (!dropdown.contains(event.relatedTarget) && !submenu.contains(event.relatedTarget)) {
 						dropdown.classList.remove('active');
 						submenu.style.display = 'none';
@@ -109,42 +109,7 @@
 				});
 			});
 		});
-</script>
-
-<script>
-/*
-document.addEventListener("DOMContentLoaded", function () {
-
-var dropdowns = document.querySelectorAll('.dropdown');
-
-dropdowns.forEach(function (dropdown) {
-dropdown.addEventListener('mouseover', function () {
-var submenu = dropdown.querySelector('.dropdown-menu');
-submenu.style.display = 'block';
-
-// Ajouter un gestionnaire de survol pour le sous-menu
-submenu.addEventListener('mouseover', function () {
-submenu.style.display = 'block';
-});
-
-// Ajouter un gestionnaire de sortie pour le sous-menu
-submenu.addEventListener('mouseout', function () {
-submenu.style.display = 'none';
-});
-});
-
-dropdown.addEventListener('mouseout', function (event) {
-var submenu = dropdown.querySelector('.dropdown-menu');
-
-// Vérifier si la souris est sortie du menu déroulant ou du sous-menu
-if (! dropdown.contains(event.relatedTarget) && ! submenu.contains(event.relatedTarget)) {
-submenu.style.display = 'none';
-}
-});
-});
-});
-*/
-</script>
+	</script>
 
 
 				<!-- changements -->
@@ -1007,7 +972,14 @@ submenu.style.display = 'none';
 								</div>
 							</div>
 							<div	class="modal-footer">
-								<button 	id='btn6'	data-modal-id="mcontenu"	type="button"	class="btn btn-primary conf "	name="contenu"	<a data-toggle="tooltip" data-placement="top" title=" Mise à jour générale">
+								<button 	id='btn6'
+									data-modal-id="mcontenu"
+									type="button"
+									class="btn btn-primary conf"
+									name="contenu"
+									data-toggle="tooltip"
+									data-placement="top"
+									title="Mise à jour générale">
 									<i	class="glyphicon glyphicon-floppy-disk"></i>
 									Mise à jour contenu
 								</button>
@@ -1636,18 +1608,28 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener('DOMContentLoaded',  function () {
-    const submitButton = document.getElementById('ExportData'); 
-    if (submitButton) {
-		submitButton.addEventListener('click', async function (event) {
-				// Empêcher tout comportement par défaut qui pourrait bloquer sur mobile/tablette
-				event.preventDefault();
-				event.stopPropagation();
-				const response = await fetch(`/app_Reinisialiser_password/${app.user.id}`);
-        		if (!response.ok) throw new Error(`Erreur serveur: ${response.status}`);
-        		const data = await response.json();
-                $('#exampleModal3').modal('show');
-        });
-    }
+	const submitButton = document.getElementById('ExportData');
+	if (submitButton) {
+		submitButton.addEventListener('click', function (event) {
+			// EmpÃªcher tout comportement par dÃ©faut qui pourrait bloquer sur mobile/tablette
+			event.preventDefault();
+			event.stopPropagation();
+
+			fetch('/app_Reinisialiser_password/' + {{ app.user.id }})
+				.then(function (response) {
+					if (!response.ok) {
+						throw new Error('Erreur serveur: ' + response.status);
+					}
+					return response.json();
+				})
+				.then(function () {
+					$('#exampleModal3').modal('show');
+				})
+				.catch(function (error) {
+					console.error('Error:', error);
+				});
+		});
+	}
 });
 </script>
 	<!--  Scripts -->

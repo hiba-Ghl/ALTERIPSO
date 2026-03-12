@@ -167,6 +167,20 @@ body {
         margin: 10px;
     }
 
+    /* Modal "update_categories" : taille mobile et scroll interne pour garder les boutons cliquables */
+    #update_categories .modal-dialog {
+        width: 95% !important;
+        max-width: 95% !important;
+        margin: 10px auto !important;
+    }
+
+    #update_categories .modal-content {
+        width: 100% !important;
+        max-height: 90vh !important;
+        height: auto !important;
+        overflow-y: auto !important;
+    }
+
     /* Inputs/selects avec largeurs fixes dans les modals (ex: selectservices) */
     .modal-dialog .form-control,
     .modal-dialog select[style*="width:"],
@@ -174,6 +188,7 @@ body {
         width: 100% !important;
         max-width: 100% !important;
         margin-left: 0 !important;
+        margin-top: 4px !important; /* annule les marges négatives inline et espace sous le label */
     }
 
     /* Afficher les labels au-dessus des champs dans les modals */
@@ -190,6 +205,16 @@ body {
         margin-left: 0 !important;
         /* padding: 5px !important; */
         width: 100% !important;
+    }
+
+    /* S'assurer que le bouton Exporter reste cliquable sur mobile
+       sans passer devant les modals */
+    #ExportData {
+        position: relative !important;
+        z-index: 10 !important; /* en dessous des modals Bootstrap (1050) */
+        display: inline-flex !important;
+        align-items: center !important;
+        pointer-events: auto !important;
     }
 
 
