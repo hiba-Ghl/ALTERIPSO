@@ -436,7 +436,9 @@ body {
     .modal-body table td {
         display: flex !important;
         flex-direction: row !important;
-        justify-content: space-between !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        gap: 6px !important;
         padding: 8px 10px !important;
         border-bottom: 1px solid #eee !important;
     }
@@ -460,7 +462,7 @@ body {
         height: auto !important;
         padding: 0 !important;
         min-height: unset !important;
-        text-align: right !important;
+        text-align: left !important;
     }
 
     .modal-body table tr {
@@ -477,7 +479,7 @@ body {
 
     .cell-40-check {
         display: flex !important;
-        justify-content: flex-end !important;
+        justify-content: flex-start !important;
         align-items: center;
     }
 

@@ -75,6 +75,15 @@
         border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
         padding-left: 25px !important;
     }
+
+    /* Sur mobile/tablette, les sous-menus ne doivent pas se décaler à droite */
+    .navbar-nav .dropdown-menu .dropdown-menu {
+        position: static !important;
+        left: 0 !important;
+        top: auto !important;
+        float: none !important;
+        width: 100% !important;
+    }
 }
 
 /* Specific Background for Visibility (320px - 768px) */
@@ -165,9 +174,11 @@
     }
 }
 
-/* Nested Dropdown Styles */
-.dropdown-menu .dropdown-menu {
-    position: absolute;
-    left: 100%;
-    top: 0;
+/* Nested Dropdown Styles (desktop uniquement) */
+@media (min-width: 1025px) {
+    .dropdown-menu .dropdown-menu {
+        position: absolute;
+        left: 100%;
+        top: 0;
+    }
 }

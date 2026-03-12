@@ -369,4 +369,95 @@
     .radio-modal-content-responsive {
         border-radius: 0 !important;
     }
+
+    /* -------- MODAL RADIO : RECHERCHE + TABLEAU EN CARTE SUR MOBILE -------- */
+
+    /* Aligner le label "Recherche" et son input à gauche, sur toute la largeur */
+    .radio-modal-content-responsive .dataTables_filter {
+        float: none !important;
+        width: 100% !important;
+        margin: 10px 0 !important;
+        text-align: left !important;
+    }
+
+    .radio-modal-content-responsive .dataTables_filter label {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 4px !important;
+        font-size: 14px !important;
+    }
+
+    .radio-modal-content-responsive .dataTables_filter input[type="search"] {
+        width: 100% !important;
+        margin-left: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Affichage en cartes pour le tableau de choix des supports */
+    .radio-modal-content-responsive table.header-fixed {
+        width: 100% !important;
+    }
+
+    .radio-modal-content-responsive table.header-fixed thead {
+        display: none !important; /* on masque l'entête sur mobile */
+    }
+
+    .radio-modal-content-responsive table.header-fixed tbody {
+        display: block !important;
+        width: 100% !important;
+    }
+
+    .radio-modal-content-responsive table.header-fixed tbody tr {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        margin-bottom: 12px !important;
+        border: 1px solid #3087ce !important;
+        border-radius: 8px !important;
+        padding: 8px !important;
+        background: #fff !important;
+    }
+
+    .radio-modal-content-responsive table.header-fixed tbody td {
+        display: flex !important;
+        width: 100% !important;
+        padding: 6px 4px !important;
+        border: 0 !important;
+        text-align: left !important;
+        align-items: center !important;
+    }
+
+    /* Libellés fixes pour chaque champ (formulaire) */
+    .radio-modal-content-responsive table.header-fixed tbody td::before {
+        font-weight: bold;
+        width: 120px;
+        min-width: 120px;
+        color: #3087ce;
+        font-size: 12px;
+        text-transform: uppercase;
+        margin-right: 6px;
+    }
+
+    .radio-modal-content-responsive table.header-fixed tbody td:nth-child(1)::before {
+        content: "Sélection";
+    }
+
+    .radio-modal-content-responsive table.header-fixed tbody td:nth-child(2)::before {
+        content: "Chambre";
+    }
+
+    .radio-modal-content-responsive table.header-fixed tbody td:nth-child(3)::before {
+        content: "Adresse IP";
+    }
+
+    .radio-modal-content-responsive table.header-fixed tbody td:nth-child(4)::before {
+        content: "Adresse MAC";
+    }
+
+    /* Les cases à cocher restent compactes dans la première ligne */
+    .radio-modal-content-responsive table.header-fixed tbody td:first-child input[type="checkbox"] {
+        margin-right: 4px;
+    }
 }

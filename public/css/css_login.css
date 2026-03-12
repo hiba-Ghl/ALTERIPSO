@@ -141,6 +141,17 @@
                 margin-left: 2.5% !important;
                 margin-right: 2.5% !important;
             }
+            h5 {
+                border-radius: 10px;
+                width: 40%;
+                padding: 10px;
+                background-color: #3087ce;
+                color: white;
+                font-size: 18px;
+            }
+            .container {
+                justify-content: center;
+            }
         }
 
         @media (max-width: 768px) {

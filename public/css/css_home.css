@@ -167,6 +167,23 @@ body {
         margin: 10px;
     }
 
+    /* Inputs/selects avec largeurs fixes dans les modals (ex: selectservices) */
+    .modal-dialog .form-control,
+    .modal-dialog select[style*="width:"],
+    .modal-dialog input[style*="width:"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-left: 0 !important;
+    }
+
+    /* Afficher les labels au-dessus des champs dans les modals */
+    .modal-dialog label {
+        display: block !important;
+        width: 100% !important;
+        margin-bottom: 4px !important;
+        text-align: left !important;
+    }
+
     /* Home Page Body Responsiveness (Buttons moved to 1024px media query for tablet support) */
 
     .backp {

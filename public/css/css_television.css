@@ -399,6 +399,38 @@
     justify-content: space-between;
 }
 
+/*
+ * Ajustement de la largeur du tableau uniquement
+ * dans les modals "Lancer la TV" et "Arrêter la TV".
+ * On neutralise le min-width de .header-fixed pour
+ * éviter que le tableau dépasse du modal, en mobile
+ * comme en desktop.
+ */
+
+.tv-modal-custom-size .header-fixed {
+    min-width: 0 !important;
+    width: 100% !important;
+    table-layout: auto;
+}
+
+.tv-modal-custom-size .tv-table-modal {
+    width: 100% !important;
+}
+
+@media (max-width: 768px) {
+    .tv-modal-custom-size {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto;
+    }
+
+    .tv-modal-custom-size .tv-table-modal {
+        display: block;
+        width: 100% !important;
+        overflow-x: auto;
+    }
+}
+
 .tv-td-modal {
     width: 120px;
     height: 40px;
@@ -442,6 +474,12 @@
 
 .tv-modal-ml-200 {
     margin-left: -200px !important;
+}
+
+/* Modal d'import TV (#myModal6) : assurer la visibilité des boutons sur mobile */
+.tv-modal-1000 .modal-content {
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 /* ==========================================================================
@@ -501,6 +539,114 @@
         width: 100% !important;
         max-width: 200px;
         margin-left: 70%;
+    }
+
+    /* -------- MODAL TV : RECHERCHE + TABLEAU EN CARTE SUR TABLETTE/MOBILE -------- */
+
+    /* Barre de recherche du modal TV alignée à gauche et sur toute la largeur */
+    .tv-modal-body-font-black ~ .dataTables_wrapper .dataTables_filter {
+        float: none !important;
+        width: 100% !important;
+        margin: 10px 0 !important;
+        text-align: left !important;
+    }
+
+    .tv-modal-body-font-black ~ .dataTables_wrapper .dataTables_filter label {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 4px !important;
+        font-size: 14px !important;
+    }
+
+    .tv-modal-body-font-black ~ .dataTables_wrapper .dataTables_filter input[type="search"] {
+        width: 100% !important;
+        margin-left: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Cartes formulaire pour le tableau tv-table-modal dans le modal */
+    .tv-table-modal.header-fixed {
+        width: 100% !important;
+        min-width: unset !important;
+        border: none !important;
+        display: block !important;
+    }
+
+    .tv-table-modal.header-fixed thead {
+        display: none !important;
+    }
+
+    .tv-table-modal.header-fixed tbody {
+        display: block !important;
+        width: 100% !important;
+    }
+
+    .tv-table-modal.header-fixed tbody tr {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        margin-bottom: 16px !important;
+        border: 1px solid #3087ce !important;
+        border-radius: 8px !important;
+        padding: 12px 10px !important;
+        background: #fff !important;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    /* Augmenter la hauteur des cartes (lignes) dans les modals TV sur mobile */
+    .tv-tr-modal {
+        height: auto !important;
+        min-height: 120px;
+    }
+
+    .tv-table-modal.header-fixed tbody td,
+    .tv-table-modal.header-fixed tbody .tv-td-modal,
+    .tv-table-modal.header-fixed tbody .tv-td-modal-center {
+        display: flex !important;
+        width: 100% !important;
+        padding: 8px 4px !important;
+        border: 0 !important;
+        text-align: left !important;
+        align-items: center !important;
+    }
+
+    /* Laisser un petit espace visuel entre chaque "ligne" de la carte */
+    .tv-table-modal.header-fixed tbody td:not(:last-child) {
+        margin-bottom: 4px !important;
+    }
+
+    /* Libellés de chaque champ dans la carte */
+    .tv-table-modal.header-fixed tbody td::before {
+        font-weight: bold;
+        width: 120px;
+        min-width: 120px;
+        color: #3087ce;
+        font-size: 12px;
+        text-transform: uppercase;
+        margin-right: 6px;
+    }
+
+    .tv-table-modal.header-fixed tbody td:nth-child(1)::before {
+        content: "Sélection";
+    }
+
+    .tv-table-modal.header-fixed tbody td:nth-child(2)::before {
+        content: "Chambre";
+    }
+
+    .tv-table-modal.header-fixed tbody td:nth-child(3)::before {
+        content: "Adresse IP";
+    }
+
+    .tv-table-modal.header-fixed tbody td:nth-child(4)::before {
+        content: "Adresse MAC";
+    }
+
+    /* Case à cocher alignée à gauche */
+    .tv-table-modal.header-fixed tbody td:first-child {
+        justify-content: flex-start !important;
     }
 
     /* Transformer la table en cartes pour Tablette ET Mobile */
@@ -605,6 +751,19 @@
     .tv-modal-460 {
         width: 95%;
         margin: 0 auto;
+    }
+
+    /* Rendre aussi le modal d'import TV responsive, avec footer visible */
+    .tv-modal-1000 {
+        width: 95% !important;
+        margin: 20px auto !important;
+    }
+
+    .tv-modal-1000 .modal-content {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 90vh !important;
+        overflow-y: auto !important;
     }
 }
 

@@ -173,6 +173,23 @@ body {
 /* Mobile */
 @media (max-width: 767px) {
 
+    /* S'assurer que le bouton burger est bien visible sur mobile */
+    .navbar-smart .navbar-header {
+        width: 100%;
+        float: none;
+        overflow: visible;
+    }
+
+    .navbar-smart .navbar-toggle {
+        display: block;
+        float: right;
+        margin-top: 8px;
+        margin-bottom: 8px;
+        margin-right: 15px;
+        position: relative;
+        z-index: 1000;
+    }
+
     .navbar-nav>li {
         border-right: none !important;
         border-bottom: 1px solid #00356d;
