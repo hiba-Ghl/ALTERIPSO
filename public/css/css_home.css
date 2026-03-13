@@ -364,13 +364,26 @@ body {
     }
     /* remonter le bloc des menus à l'intérieur du fond TV */
     #back_img > .col-sm-12{
-            margin-top: -40px !important; /* réduit davantage la zone vide sous le logo */
+			margin-top: -60px !important; /* remonte davantage "Menu fixe centré" et ses icônes */
     }
     #logo_active{
         width: 50px !important;
         height: 20px !important;
-        margin-top: -40px !important; /* remonte davantage le logo dans la TV */
-        margin-left: 0px !important;
+        margin-top: -5px !important; /* logo légèrement descendu pour rester bien dans la TV */
+        margin-left: 10px !important;
+    }
+
+    /* Placer la checkbox "logoactive" directement sur le logo en mobile */
+    .header-fixed-mobile .logo-container-mobile {
+        position: relative !important;
+    }
+
+    .header-fixed-mobile input[name="logoactive"] {
+        position: absolute !important;
+        top: 4px !important;   /* à l'intérieur de la TV, non au-dessus */
+        left: -2px !important;
+        margin: 0 !important;
+        z-index: 20 !important;
     }
 
      /* Icônes des catégories encore plus petites sur petit mobile
@@ -403,6 +416,7 @@ body {
         left: 0 !important;
         z-index: 5 !important;
         padding: 2px !important;
+        width: 15px !important;
     }
 
     /* Titre "Menu déroulant à gauche" : réduire encore l'espace sur mobile */
@@ -436,8 +450,15 @@ body {
     #logo_active{
         width: 50px !important;
         height: 20px !important;
-        margin-top: -40px !important; /* remonte davantage le logo sur 390px */
+        margin-top: -5px !important; /* logo un peu plus bas sur très petit écran */
         margin-left: 0px !important;
+    }
+
+    /* Ajuster légèrement la position de la checkbox sur les très petits écrans */
+    .header-fixed-mobile input[name="logoactive"] {
+        top: 2px !important; /* encore un peu plus bas mais toujours sur le logo */
+        left: -4px !important;
+        width: 14px !important;
     }
 
     /* Réduire encore les images des menus (div 80x80 avec img width:100%;height:100%) sur écran 390px */
@@ -462,7 +483,7 @@ body {
     /* Remonter un peu le bloc d'icônes à l'intérieur de la TV pour
        dégager de la place en bas et éviter qu'elles sortent du cadre */
     #back_img > .col-sm-12 {
-        margin-top: -50px !important;
+		margin-top: -70px !important; /* encore plus haut sur les très petits écrans */
     }
 
 }
