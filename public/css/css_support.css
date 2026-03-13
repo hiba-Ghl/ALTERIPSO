@@ -917,3 +917,41 @@ div.dataTables_wrapper div.dataTables_filter input[type="search"]{
         margin-top: 10px;
     }
 }
+
+/* Très petits écrans (largeur < 320px) :
+   compacter le filtre "Recherche par service" et la barre de recherche */
+@media (max-width: 320px) {
+    /* Filtre service : label plus petit et sur une seule ligne, input/ select plus étroit */
+    .support-filter {
+        width: 100% !important;
+        margin-left: 0 !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 4px !important;
+    }
+
+    .support-filter label {
+        font-size: 12px !important;
+        width: 100% !important;
+        white-space: normal !important;
+    }
+
+    .support-filter select {
+        width: 80% !important;
+        max-width: 80% !important;
+        margin-top: 0 !important;
+        padding: 2px 4px !important;
+        box-sizing: border-box !important;
+        margin-bottom: 5px !important;
+    }
+
+    /* Barre de recherche DataTables : réduire largeur et padding */
+    div.dataTables_wrapper div.dataTables_filter input[type="search"],
+    div.dataTables_wrapper div.dataTables_filter input {
+        width: 50% !important;
+        max-width: 220px !important;
+        padding: 2px 4px !important;
+        font-size: 11px !important;
+        box-sizing: border-box !important;
+    }
+}

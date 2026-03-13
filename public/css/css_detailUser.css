@@ -258,3 +258,12 @@ body {
 	}
 }
 
+/*  */
+@media (max-width: 320px) {
+	#rcorners.television,
+	#rcorners.questionnaire {
+		height: auto !important;      /* laisse la div grandir selon le contenu */
+		min-height: 200px !important; /* minimum pour éviter que ça coupe */
+	}
+}
+

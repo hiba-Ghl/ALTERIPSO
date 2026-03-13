@@ -291,11 +291,10 @@ body {
         font-size: 13px !important;
         width: 100% !important;
         margin-top: 5px !important;
-        /* Reduced top margin */
-        margin-bottom: 5px !important;
         position: relative !important;
         text-align: left !important; /* titres alignés à gauche sur toute la largeur de la TV */
         padding-left: 10px !important;
+        margin-left: 0 !important;
     }
 
     /* Specific override for the 185px margin-top to shift the second menu up */
@@ -355,6 +354,7 @@ body {
    
     #back_img{
         height: 233px !important;
+        margin-top: 0 !important; /* pas d'espace vide au-dessus de la TV sur petit mobile */
     }
     
     .header-fixed-mobile{
@@ -362,14 +362,14 @@ body {
 		padding: 0 !important;
 		margin-bottom: 0 !important; /* supprime l'espace sous le header dans la TV */
     }
-        /* remonter le bloc des menus à l'intérieur du fond TV */
-        #back_img > .col-sm-12{
-    			margin-top: -40px !important; /* réduit davantage la zone vide sous le logo */
-    	}
+    /* remonter le bloc des menus à l'intérieur du fond TV */
+    #back_img > .col-sm-12{
+            margin-top: -40px !important; /* réduit davantage la zone vide sous le logo */
+    }
     #logo_active{
         width: 50px !important;
         height: 20px !important;
-        margin-top: -15px !important;
+        margin-top: -40px !important; /* remonte davantage le logo dans la TV */
         margin-left: 0px !important;
     }
 
@@ -392,7 +392,7 @@ body {
         height: 14px !important;
         margin: 0 1px !important;
 		position: relative !important;
-		top: -8px !important; /* remonte réellement la case à cocher, plus proche de l'icône */
+		top: -28px !important; /* remonte la case à cocher plus près de l'image */
     }
 
     /* S'assurer que la zone cog (bouton + checkbox) reste en haut à gauche
@@ -428,6 +428,7 @@ body {
 @media (max-width: 390px) {
     #back_img{
         height: 193px !important;
+        margin-top: 0 !important; /* aucun margin-top sur la TV pour les très petits écrans */
     }
     .header-fixed-mobile{
         height: 10px !important;
@@ -435,7 +436,7 @@ body {
     #logo_active{
         width: 50px !important;
         height: 20px !important;
-        margin-top: -10px !important;
+        margin-top: -40px !important; /* remonte davantage le logo sur 390px */
         margin-left: 0px !important;
     }
 
@@ -443,6 +444,25 @@ body {
     .backp div[style*="width: 80px"][style*="height: 80px"] img {
         width: 24px !important;
         height: 24px !important;
+    }
+
+    /* Encore compacter les icônes et les remonter pour tenir dans la TV
+       sur les très petits écrans (<390px) */
+    .backp [style*="width: 80px"][style*="height: 80px"] {
+        width: 26px !important;
+        height: 26px !important;
+    }
+
+    /* Réduire légèrement la taille du texte sous les icônes */
+    .backp .caption label {
+        font-size: 6px !important;
+        margin-top: -8px !important;
+    }
+
+    /* Remonter un peu le bloc d'icônes à l'intérieur de la TV pour
+       dégager de la place en bas et éviter qu'elles sortent du cadre */
+    #back_img > .col-sm-12 {
+        margin-top: -50px !important;
     }
 
 }

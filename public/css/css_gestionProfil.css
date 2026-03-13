@@ -255,3 +255,18 @@ body {
 	}
 }
 
+/* Très petits écrans (largeur < 320px) : réduire la barre de recherche */
+@media (max-width: 320px) {
+	.gestion-header {
+		width: 100%;
+	}
+	
+	#myDiv .dataTables_filter input[type="search"],
+	#myDiv .dataTables_filter input {
+		width: 100% !important; /* plus étroit que la largeur du bloc */
+		padding: 2px 4px !important; /* padding réduit pour gagner de la place */
+		font-size: 11px !important;
+		box-sizing: border-box !important;
+	}
+}
+

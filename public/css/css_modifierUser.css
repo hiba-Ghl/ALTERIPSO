@@ -274,3 +274,13 @@ body {
         width: 150% !important;
     }
 }
+
+
+@media (max-width: 320px) {
+	#rcorners.television,
+	#rcorners.questionnaire,
+	#rcorners.jeux {
+		height: auto !important;      /* la div s'adapte au contenu */
+		min-height: 200px !important; /* minimum pour éviter que les éléments dépassent */
+	}
+}

@@ -276,3 +276,13 @@ body {
     }
 }
 
+/* Très petits écrans (largeur < 320px) :
+   augmenter la hauteur du bloc Télévision pour que
+   tous les éléments restent à l'intérieur de la carte */
+@media (max-width: 320px) {
+	#rcorners.television {
+		height: auto !important;      /* laisse la div grandir selon le contenu */
+		min-height: 260px !important; /* un minimum pour éviter que ça coupe */
+	}
+}
+
