@@ -1,0 +1,384 @@
+/* Styles spécifiques à la page super_admin */
+
+/* Bloc principal */
+#div4 {
+    border-radius: 25px;
+    border: 2px solid #3087ce;
+    padding: 20px;
+    width: 1400px;
+    height: 600px;
+    margin-left: -130px;
+    background-color: #ffffff;
+    margin-bottom: 20px;
+}
+
+/* Filtre DataTables */
+.dataTables_filter {
+    float: right;
+    width: 25%;
+    margin-top: -30px;
+}
+
+/* Titre "Administration" */
+.admin-header {
+    border-radius: 8px;
+    margin-top: 10px;
+    text-align: left;
+    margin-bottom: 10px;
+    margin-left: -130px;
+    color: #ffffff;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 300px;
+    padding-left: 10px;
+    display: inline-block;
+}
+
+.admin-header-logo {
+    margin-top: -51px;
+    margin-left: -10px;
+    width: 45px;
+    float: left;
+}
+
+/* Boutons d'action au-dessus du tableau */
+.admin-actions {
+    display: flex;
+    gap: 2px;
+    width: 200px;
+}
+
+.admin-btn-cancel {
+    width: 130px;
+}
+
+/* Tableau des établissements */
+#dataTables-example {
+    width: 100%;
+    height: 400px;
+}
+
+#dataTables-example th,
+#dataTables-example td {
+    text-align: center;
+}
+
+/* Largeurs des colonnes (même valeurs que les styles inline d'origine) */
+#dataTables-example th:nth-child(1),
+#dataTables-example td:nth-child(1) {
+    width: 300px;
+}
+
+#dataTables-example th:nth-child(2) {
+    width: 430px;
+}
+
+#dataTables-example td:nth-child(2) {
+    width: 480px;
+}
+
+#dataTables-example th:nth-child(3),
+#dataTables-example td:nth-child(3) {
+    width: 200px;
+}
+
+#dataTables-example th:nth-child(4),
+#dataTables-example td:nth-child(4) {
+    width: 200px;
+}
+
+/* Cellule d'actions (icônes) */
+.admin-actions-cell {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    flex-wrap: nowrap;
+}
+
+.admin-actions-cell a,
+.admin-actions-cell div {
+    display: inline-block;
+}
+
+/* Modals (copier / exporter établissement) */
+.admin-modal-dialog {
+    width: 1000px;
+}
+
+.admin-modal-content-80 {
+    margin-left: 80px;
+}
+
+.admin-modal-content-200 {
+    margin-left: 200px;
+}
+
+.admin-modal-header {
+    margin-top: 30px;
+}
+
+.admin-modal-title {
+    border-radius: 8px;
+    text-align: left;
+    margin: 10px 0;
+    color: #ffffff;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 300px;
+    padding: 5px 10px;
+    display: inline-block;
+}
+
+.admin-modal-logo {
+    margin-top: -55px;
+    margin-left: -10px;
+    width: 45px;
+    float: left;
+}
+
+.admin-field {
+    padding: 10px;
+}
+
+.admin-password-wrapper {
+    position: relative;
+    display: flex;
+}
+
+.admin-password-toggle {
+    position: absolute;
+    right: 0px;
+    width: 10%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.admin-modal-btn {
+    width: 130px;
+}
+
+/* =========================
+   Responsivité tablette (garde le tableau, ajuste les tailles)
+   ========================= */
+
+@media (min-width: 769px) and (max-width: 1024px) {
+
+    #div4 {
+        width: 100%;
+        height: auto;
+        margin-left: 0;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+
+    .admin-header {
+        margin-left: 0;
+        width: 40%;
+    }
+
+    .admin-actions {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .admin-btn-cancel {
+        width: auto;
+        min-width: 130px;
+    }
+
+    .dataTables_filter {
+        float: none;
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        text-align: left;
+    }
+
+    .dataTables_filter label {
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    .dataTables_filter input {
+        margin-left: 0;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    #dataTables-example {
+        height: auto;
+    }
+
+    #dataTables-example th,
+    #dataTables-example td {
+        font-size: 13px;
+        white-space: nowrap;
+    }
+
+    /* Réduire les largeurs de colonnes pour tablette */
+    #dataTables-example th:nth-child(1),
+    #dataTables-example td:nth-child(1) {
+        width: 120px;
+    }
+
+    #dataTables-example th:nth-child(2) {
+        width: 260px;
+    }
+
+    #dataTables-example td:nth-child(2) {
+        width: 280px;
+    }
+
+    #dataTables-example th:nth-child(3),
+    #dataTables-example td:nth-child(3) {
+        width: 150px;
+    }
+
+    #dataTables-example th:nth-child(4),
+    #dataTables-example td:nth-child(4) {
+        width: 180px;
+    }
+
+    /* Autoriser le scroll horizontal si nécessaire */
+    #myDiv {
+        overflow-x: auto;
+    }
+
+    /* Modals tablette : centrées et plus étroites */
+    .admin-modal-dialog {
+        width: 90%;
+        max-width: 700px;
+        margin: 30px auto;
+    }
+
+    .admin-modal-content-80,
+    .admin-modal-content-200 {
+        margin-left: 0;
+    }
+
+    .admin-modal-title {
+        width: 100%;
+    }
+}
+
+/* =========================
+   Responsivité mobile
+   - Transformation du tableau en cartes formulaire
+   ========================= */
+
+@media (max-width: 768px) {
+
+    /* Conteneur principal plus fluide */
+    #div4 {
+        width: 100%;
+        height: auto;
+        margin-left: 0;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .admin-header {
+        margin-left: 0;
+        width: 60%;
+    }
+
+    .admin-actions {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .admin-btn-cancel {
+        width: 100%;
+    }
+
+    .dataTables_filter {
+        float: none;
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        text-align: left;
+    }
+
+    .dataTables_filter label {
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    .dataTables_filter input {
+        margin-left: 0;
+        width: 100%;
+        max-width: 100%;
+        padding: -5px;
+    }
+
+    /* Tableau en cartes */
+    #dataTables-example {
+        border: 0;
+        height: auto;
+    }
+
+    #dataTables-example thead {
+        display: none;
+    }
+
+    #dataTables-example tbody,
+    #dataTables-example tr,
+    #dataTables-example td {
+        display: block;
+        width: 100%;
+    }
+
+    #dataTables-example tr {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+        background-color: #f9f9f9;
+    }
+
+    #dataTables-example td {
+        text-align: left;
+        padding: 6px 10px;
+        font-size: 14px;
+    }
+
+    /* Afficher le label de la colonne avant la valeur, façon formulaire */
+    #dataTables-example td::before {
+        content: attr(data-label) " : ";
+        font-weight: 600;
+        display: block;
+        margin-bottom: 2px;
+        color: #555;
+    }
+
+    /* Ligne Actions en mode carte */
+    #dataTables-example td.admin-actions-cell::before {
+        margin-bottom: 6px;
+    }
+
+    /* Modals mobile : plein écran et boutons 100% */
+    .admin-modal-dialog {
+        width: 100%;
+        max-width: 100%;
+        margin: 20px auto;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+
+    .admin-modal-content-80,
+    .admin-modal-content-200 {
+        margin-left: 0;
+    }
+
+    .admin-modal-title {
+        width: 100%;
+        font-size: 18px;
+    }
+
+    .admin-modal-btn {
+        width: 100%;
+        margin-top: 5px;
+    }
+}

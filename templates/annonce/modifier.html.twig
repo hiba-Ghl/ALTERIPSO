@@ -33,6 +33,7 @@
                     <option value="PDF" {% if ann.type == 'PDF' %}selected {% endif %}>PDF</option>
                     <option value="Message" {% if ann.type == 'Message' %}selected {% endif %}>Message</option>
                     <option value="Localtv" {% if ann.type == 'Localtv' %}selected {% endif %}>Localtv</option>
+                    <option value="Flux RSS" {% if ann.type == 'Flux RSS' %}selected {% endif %}>Flux RSS</option>
                 </select>
 
                 <!-- localtv ip adress section -->
@@ -55,6 +56,12 @@
                 <div id="textInput" style="display: none;">
                     <label for="text" class="control-label">Entrer un texte:</label>
                     <textarea class="form-control" name="text" id="text" rows="3" style="margin-bottom: 5px;margin-top: 5px;">{{ann.url}}</textarea>
+
+                    <!-- Section spécifique Flux RSS : temps de vitess -->
+                    <div id="fluxRssSpeed" style="display:none; margin-top:10px;">
+                        <label for="rss_speed" class="control-label">Temps de vitess :</label>
+                        <input type="number" class="form-control" name="rss_speed" id="rss_speed" min="1" step="1" />
+                    </div>
                       
                                 <!-- Font selection -->
                                 <div id="fontSelection" style="display: none;" class="form-row">
@@ -118,7 +125,7 @@
             <!--les champs des langues-->
                 <div style="width: 100%;margin-bottom: 15px; margin-top: 20px" id ="languagesPart">
                 <div id="collapseTwo1" class="panel-collapse collapse" style="width:100%">
-                        <div  class="form-row" style="width:1180px;">
+                        <div  class="form-row" style="width:100%;">
                             <div class="form-group col-md-6">
                                 <img style="width: 30px" src="{{ asset('images/eng.png') }}">
                                 <label for="ENMessage">English</label>
@@ -130,7 +137,7 @@
                                 <input type="text" class="form-control" id="ESMessage" name="ESMessage" value={{ann.esMessage}}></input>
                             </div>
                         </div>
-                        <div  class="form-row" style="width:1180px;">
+                        <div  class="form-row" style="width:100%;">
                             <div class="form-group col-md-6">
                                 <img style="width: 30px" src="{{ asset('images/pt.png') }}">
                                 <label for="PTMessage">Portugues</label>
@@ -142,7 +149,7 @@
                                 <input type="text" class="form-control" id="ITMessage" name="ITMessage" value={{ann.itMessage}} ></input>
                             </div>
                         </div>
-                        <div  class="form-row" style="width:1180px;">
+                        <div  class="form-row" style="width:100%;">
                             <div class="form-group col-md-6">
                                 <img style="width: 30px" src="{{ asset('images/rus.png') }}">
                                 <label for="RUMessage">Russian</label>
@@ -154,7 +161,7 @@
                                 <input type="text" class="form-control" id="DEMessage" name="DEMessage" value={{ann.deMessage}}></input>
                             </div>
                         </div>
-                        <div  class="form-row" style="width:1180px;">
+                        <div  class="form-row" style="width:100%;">
                             <div class="form-group col-md-6">
                                 <img style="width: 30px" src="{{ asset('images/ch.png') }}">
                                 <label for="ZHMessage">China</label>
@@ -421,13 +428,17 @@ document.addEventListener('DOMContentLoaded', function () {
         var textInput = document.getElementById('textInput');
         var fontSelection = document.getElementById('fontSelection');
         var languagesPart = document.getElementById('languagesPart');
+        var fluxRssSpeed = document.getElementById('fluxRssSpeed');
 
-        if (type === 'Message' ) {
+        if (type === 'Message' || type === 'Flux RSS') {
             fileUpload.style.display = 'none';
             textInput.style.display = 'block';
             fontSelection.style.display = 'block';
             languagesPart.style.display = 'block';
             ipAddress.style.display = 'none';
+            if (type === 'Flux RSS' && fluxRssSpeed) {
+                fluxRssSpeed.style.display = 'block';
+            }
         } else if (type === 'Image' || type === 'Video' || type === 'PDF') {
             fileUpload.style.display = 'block';
             textInput.style.display = 'none';
@@ -453,9 +464,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const positionSelect = document.getElementById('position');
-        const positions = type === 'Video' || type === 'Localtv' || type === 'PDF'
-            ? ['Milieu']
-            : ['Haut', 'Bas', 'Gauche', 'Droite', 'Milieu'];
+        let positions;
+        if (type === 'Flux RSS') {
+            positions = ['Bas'];
+        } else if (type === 'Video' || type === 'Localtv' || type === 'PDF') {
+            positions = ['Milieu'];
+        } else {
+            positions = ['Haut', 'Bas', 'Gauche', 'Droite', 'Milieu'];
+        }
 
         const selectedValue = positionSelect.getAttribute("value");
         positionSelect.innerHTML = '';
@@ -561,6 +577,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var fontSelection = document.getElementById('fontSelection');
         var ipAddress = document.getElementById('ipAddress');
         var languagesPart = document.getElementById('languagesPart');
+        var fluxRssSpeed = document.getElementById('fluxRssSpeed');
         
         // Hide the file path
         fileUpload.style.display = 'none'; 
@@ -568,6 +585,9 @@ document.addEventListener('DOMContentLoaded', function () {
         fontSelection.style.display = 'none'; 
         ipAddress.style.display = 'none'; 
         languagesPart.style.display = 'none'; 
+        if (fluxRssSpeed) {
+            fluxRssSpeed.style.display = 'none';
+        }
 
         // Clear input values
         const ip = document.getElementById('ip');
@@ -580,10 +600,13 @@ document.addEventListener('DOMContentLoaded', function () {
         if(text)
             text.value= '';
         console.log(fileUpload,type);
-        if (type === 'Message') {
+        if (type === 'Message' || type === 'Flux RSS') {
             textInput.style.display = 'block';
             fontSelection.style.display = 'block';
             languagesPart.style.display = 'block';
+            if (type === 'Flux RSS' && fluxRssSpeed) {
+                fluxRssSpeed.style.display = 'block';
+            }
         } else if (type === 'Image' || type === 'Video' || type === 'PDF') {
             fileUpload.style.display = 'block';
             if(type === 'Image')
@@ -603,9 +626,14 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('type').addEventListener('change', function() {
         const type = this.value;
         const positionSelect = document.getElementById('position');
-        const positions = type === 'Video' || type === 'Localtv' || type === 'PDF'
-            ? ['Milieu']
-            : ['Haut', 'Bas', 'Gauche', 'Droite', 'Milieu'];
+        let positions;
+        if (type === 'Flux RSS') {
+            positions = ['Bas'];
+        } else if (type === 'Video' || type === 'Localtv' || type === 'PDF') {
+            positions = ['Milieu'];
+        } else {
+            positions = ['Haut', 'Bas', 'Gauche', 'Droite', 'Milieu'];
+        }
 
         // Clear previous options
         positionSelect.innerHTML = '';

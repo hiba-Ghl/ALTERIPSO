@@ -321,7 +321,8 @@ label::first-letter {
 	}
 }
 
-@media (max-width: 425px) {
+
+@media (max-width: 485px) {
 	.form-control {
 		width: 80% !important;
 	}
@@ -337,10 +338,10 @@ label::first-letter {
 	}
 
 	#rcorners4 .form-control {
-		width: 90% !important; /* légèrement plus étroit que le bloc pour ne pas toucher la bordure */
-		max-width: 90% !important;
-		margin-left: auto !important;
-		margin-right: auto !important; /* centré dans la div verte */
+		width: 60% !important; /* pleine largeur sous le label */
+		max-width: 100% !important;
+		margin-left: 0 !important;
+		margin-right: 0 !important; /* aligné à gauche dans la div verte */
 		box-sizing: border-box !important;
 	}
 }
@@ -349,7 +350,12 @@ label::first-letter {
 	.form-control {
 		width: 50% !important;
 	}
-
+	.config-section-title,
+	.config-section-title--small,
+	.config-section-title--medium {
+		width: 100% !important;
+		padding: 5px !important;
+	}
 	/* Même comportement sur les très petits écrans */
 	#rcorners4 {
 		text-align: left !important;
@@ -360,10 +366,10 @@ label::first-letter {
 	}
 
 	#rcorners4 .form-control {
-		width: 100% !important;
+		width: 50% !important;
 		max-width: 100% !important;
 		margin-left: 0 !important;
-		margin-right: auto !important;
+		margin-right: 0 !important;
 		box-sizing: border-box !important;
 	}
 }
@@ -371,7 +377,13 @@ label::first-letter {
 /* Très petits écrans (moins de 320px) :
    garder exactement la même largeur pour les 3 blocs */
 @media (max-width: 320px) {
-	#rcorners2 .form-control,
+	#rcorners2 .form-control {
+		width: 50% !important;
+		max-width: 100% !important;
+		margin-left: 0 !important;
+		margin-right: 0 !important;
+		box-sizing: border-box !important;
+	}
 	#rcorners4 .form-control {
 		width: 50% !important;
 		max-width: 100% !important;

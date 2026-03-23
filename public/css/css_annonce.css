@@ -27,6 +27,10 @@ tr {
     table-layout: fixed;
 }
 
+.rss-text {
+    animation: scroll linear infinite;
+}
+
 .frame {
     width: 100%;
     max-width: 1000px;
@@ -668,7 +672,8 @@ tr {
         flex-shrink: 0;
     }
 
-    /* Ligne vide DataTables : message sur toute la largeur, texte qui revient à la ligne */
+    /* Ligne vide DataTables : message sur toute la largeur, texte aligné à gauche (table principale + modals) */
+    .table-annonces td.dataTables_empty,
     .table-modal td.dataTables_empty,
     #div2 .modal-body td.dataTables_empty {
         display: block !important;

@@ -183,7 +183,10 @@
                 </td> 
             </tr>
             <tr>
-                <td> <div id="chart_div" class="chart-container"></div> </td>
+                <td>
+                    <div id="chart_div" class="chart-container"></div>
+                    <div id="chart_legend" class="chart-legend"></div>
+                </td>
             </tr>
 </table>
 
@@ -195,6 +198,8 @@
         {# Charger la bibliothèque de Google Charts #}
         google.charts.load("current", {packages:["corechart"]});
         google.charts.setOnLoadCallback(drawPieChart);
+
+        var pieColors = ['#3366CC', '#109618', '#FF9900', '#DC3912', '#990099'];
 
         function getDataArray() {
             var voteCountsJson = '{{ voteCountsJson | e('js') }}';
@@ -220,6 +225,28 @@
             return dataArray;
         }
 
+        function renderCustomLegend(data) {
+            var legendDiv = document.getElementById('chart_legend');
+            if (!legendDiv) return;
+
+            // Seulement pour mobile
+            if (window.innerWidth > 767) {
+                legendDiv.innerHTML = '';
+                return;
+            }
+
+            var html = '';
+            for (var i = 0; i < data.getNumberOfRows(); i++) {
+                var label = data.getValue(i, 0);
+                var color = pieColors[i % pieColors.length];
+                html += '<div class="chart-legend-item">'
+                    + '<span class="chart-legend-color" style="background-color:' + color + ';"></span>'
+                    + '<span class="chart-legend-label">' + label + '</span>'
+                    + '</div>';
+            }
+            legendDiv.innerHTML = html;
+        }
+
         function drawPieChart() {
         var data = google.visualization.arrayToDataTable(getDataArray());
         var totalVotes = 0;
@@ -228,104 +255,275 @@
             totalVotes += data.getValue(i, 1);
         }
 
+        // Gérer le cas où il n'y a aucun vote pour éviter NaN%
         for (var i = 0; i < data.getNumberOfRows(); i++) {
-            var percentage = ((data.getValue(i, 1) / totalVotes) * 100).toFixed(2);
-            var labelText = data.getValue(i, 0).split(' (')[0];  // Supprime l'ancien pourcentage si présent
+            var value = data.getValue(i, 1);
+            var percentage;
+
+            if (totalVotes === 0) {
+                percentage = '0.00';
+            } else {
+                percentage = ((value / totalVotes) * 100).toFixed(2);
+            }
+
+            var labelText = data.getValue(i, 0).split(' (')[0]; // Supprime l'ancien pourcentage si présent
             data.setValue(i, 0, labelText + ' (' + percentage + '%)'); // Ajoute le pourcentage au texte du label
         }
 
-        var options = {
-            title: 'Les statistiques des résultats du questionnaire',
-            pieHole: 0.4,
-            is3D:true,
-            pieSliceText: 'percentage', // Affiche uniquement le pourcentage dans le diagramme
-            tooltip: { text: 'percentage' }, // Le tooltip affiche aussi les pourcentages
-            chartArea: {
-                left: 80,
-                width: '200%',
-            },
-            sliceVisibilityThreshold: 0,
-            pieSliceTextStyle: {
-                fontSize: 14, // Taille du texte pour les pourcentages
-                color: 'white', // Couleur noire pour le texte des pourcentages
-            },
-            legend: { 
-                position: 'right', // Position de la légende
-                textStyle: { 
-                    fontSize: 16 // Taille du texte dans la légende
-                }
+        // Options responsive : desktop vs mobile
+        function getPieOptions() {
+            var isMobile = window.innerWidth <= 767;
+
+            if (isMobile) {
+                // Sur mobile : on masque la légende Google et on utilise une légende HTML personnalisée
+                return {
+                    title: 'Les statistiques des résultats du questionnaire',
+                    pieHole: 0.4,
+                    is3D: true,
+                    pieSliceText: 'percentage',
+                    tooltip: { text: 'percentage' },
+                    colors: pieColors,
+                    chartArea: {
+                        left: 20,
+                        top: 40,
+                        width: '80%',
+                        height: '60%'
+                    },
+                    sliceVisibilityThreshold: 0,
+                    pieSliceTextStyle: {
+                        fontSize: 10,
+                        color: 'white',
+                    },
+                    legend: 'none'
+                };
+            } else {
+                // Desktop / tablette : légende à droite comme avant
+                return {
+                    title: 'Les statistiques des résultats du questionnaire',
+                    pieHole: 0.4,
+                    is3D: true,
+                    pieSliceText: 'percentage',
+                    tooltip: { text: 'percentage' },
+                    colors: pieColors,
+                    chartArea: {
+                        left: 60,
+                        width: '70%',
+                    },
+                    sliceVisibilityThreshold: 0,
+                    pieSliceTextStyle: {
+                        fontSize: 12,
+                        color: 'white',
+                    },
+                    legend: {
+                        position: 'right',
+                        textStyle: {
+                            fontSize: 12
+                        }
+                    }
+                };
             }
-        };
+        }
+
+        var options = getPieOptions();
 
         var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
         chart.draw(data, options);
 
-        // Make chart responsive
+    // Légende HTML personnalisée pour mobile
+    renderCustomLegend(data);
+
+        // Make chart responsive : recalculer les options selon la largeur
         window.addEventListener('resize', function() {
+            options = getPieOptions();
             chart.draw(data, options);
+            renderCustomLegend(data);
         });
     }
 
     function drawBarChart() {
         var data = google.visualization.arrayToDataTable(getDataArray());
-        var options = {
-            title: 'Les statistiques des résultats du questionnaire',
-            chartArea: {width: '70%'},
-        };
+        function getBarOptions() {
+            var isMobile = window.innerWidth <= 767;
+
+            if (isMobile) {
+                // Mobile : maximiser l'espace pour voir le texte complet des labels
+                return {
+                    title: 'Les statistiques des résultats du questionnaire',
+                    chartArea: {
+			left: 150,   // marge plus large pour éviter "Extrê..."
+			top: 40,
+			width: '50%',
+			height: '60%'
+                    },
+                    legend: {
+                        position: 'none'
+                    },
+                    vAxis: {
+                        textStyle: {
+				fontSize: 9
+                        }
+                    }
+                };
+            } else {
+                return {
+                    title: 'Les statistiques des résultats du questionnaire',
+                    chartArea: {width: '70%'},
+                };
+            }
+        }
+
+        var options = getBarOptions();
 
         var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
         chart.draw(data, options);
 
+        // Pas de légende HTML personnalisée pour ce diagramme
+        var legendDiv = document.getElementById('chart_legend');
+        if (legendDiv) {
+            legendDiv.innerHTML = '';
+        }
+
         window.addEventListener('resize', function() {
+            options = getBarOptions();
             chart.draw(data, options);
         });
     }
 
     function drawLineChart() {
         var data = google.visualization.arrayToDataTable(getDataArray());
-        var options = {
-            title: 'Les statistiques des résultats du questionnaire',
-            chartArea: {width: '80%'},
-        };
+        function getLineOptions() {
+            var isMobile = window.innerWidth <= 767;
+
+            if (isMobile) {
+                return {
+                    title: 'Les statistiques des résultats du questionnaire',
+                    chartArea: {
+                        left: 80,
+                        top: 40,
+                        width: '75%',
+                        height: '60%'
+                    },
+                    legend: { position: 'none' },
+                    hAxis: {
+                        slantedText: true,
+                        slantedTextAngle: 40,
+                        textStyle: { fontSize: 10 }
+                    }
+                };
+            } else {
+                return {
+                    title: 'Les statistiques des résultats du questionnaire',
+                    chartArea: { width: '80%' }
+                };
+            }
+        }
+
+        var options = getLineOptions();
 
         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
         chart.draw(data, options);
 
+        var legendDiv = document.getElementById('chart_legend');
+        if (legendDiv) {
+            legendDiv.innerHTML = '';
+        }
+
         window.addEventListener('resize', function() {
+            options = getLineOptions();
             chart.draw(data, options);
         });
     }
 
     function drawColumnChart() {
         var data = google.visualization.arrayToDataTable(getDataArray());
-        var options = {
-            title: 'Les statistiques des résultats du questionnaire',
-            chartArea: {width: '80%'},
-            hAxis: {
-                slantedText: true, // Incline le texte des labels pour éviter le chevauchement
-                slantedTextAngle: 20 // Angle d'inclinaison des labels
-            },}
-          
+        function getColumnOptions() {
+            var isMobile = window.innerWidth <= 767;
+
+            if (isMobile) {
+                return {
+                    title: 'Les statistiques des résultats du questionnaire',
+                    chartArea: {
+                        left: 80,
+                        top: 40,
+                        width: '75%',
+                        height: '60%'
+                    },
+                    legend: { position: 'none' },
+                    hAxis: {
+                        slantedText: true,
+                        slantedTextAngle: 40,
+                        textStyle: { fontSize: 10 }
+                    }
+                };
+            } else {
+                return {
+                    title: 'Les statistiques des résultats du questionnaire',
+                    chartArea: { width: '80%' },
+                    hAxis: {
+                        slantedText: true,
+                        slantedTextAngle: 20
+                    }
+                };
+            }
+        }
+
+        var options = getColumnOptions();
 
         var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
         chart.draw(data, options);
 
+        var legendDiv = document.getElementById('chart_legend');
+        if (legendDiv) {
+            legendDiv.innerHTML = '';
+        }
+
         window.addEventListener('resize', function() {
+            options = getColumnOptions();
             chart.draw(data, options);
         });
     }
 
     function drawAreaChart() {
         var data = google.visualization.arrayToDataTable(getDataArray());
-        var options = {
-            title: 'Les statistiques des résultats du questionnaire',
-            chartArea: {width: '80%'},
-        };
+        function getAreaOptions() {
+            var isMobile = window.innerWidth <= 767;
+
+            if (isMobile) {
+                return {
+                    title: 'Les statistiques des résultats du questionnaire',
+                    chartArea: {
+                        left: 80,
+                        top: 40,
+                        width: '75%',
+                        height: '60%'
+                    },
+                    legend: { position: 'none' },
+                    hAxis: {
+                        slantedText: true,
+                        slantedTextAngle: 40,
+                        textStyle: { fontSize: 10 }
+                    }
+                };
+            } else {
+                return {
+                    title: 'Les statistiques des résultats du questionnaire',
+                    chartArea: { width: '80%' }
+                };
+            }
+        }
+
+        var options = getAreaOptions();
 
         var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
         chart.draw(data, options);
 
+        var legendDiv = document.getElementById('chart_legend');
+        if (legendDiv) {
+            legendDiv.innerHTML = '';
+        }
+
         window.addEventListener('resize', function() {
+            options = getAreaOptions();
             chart.draw(data, options);
         });
     }

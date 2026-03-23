@@ -1,23 +1,6 @@
 {% extends 'home/index.html.twig' %}
 {% block body %}
-	<style>
-		#div4 {
-			border-radius: 25px;
-            border: 2px solid #3087ce;
-            padding: 20px;
-            width: 1400px;
-            height: 600px;
-            margin-left: -130px;
-            background-color: white;
-            margin-bottom: 20px;
-		}
-    .dataTables_filter{
-    float: right;
-    width: 25%;
-    margin-top: -30px;
-}
-
-	</style>
+<link rel="stylesheet" href="{{ asset('css/css_admin.css') }}">
     <!-- Ajouter Bootstrap Icons (CDN) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
@@ -40,34 +23,34 @@
 <script src="{{ asset('javascript/datatables2.min.js') }}"></script>
 {% endif %}
 
-<div style="border-radius: 8px;  margin-top:10px;text-align: left; margin-bottom: 10px; margin-left: -130px; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding-left: 10px; display: inline-block;">
-    <img style="margin-top: -51px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}">
+<div class="admin-header">
+    <img class="admin-header-logo" src="{{ asset('images/ler.png') }}">
     Administration
 </div>
 <div id="div4">
-    <div style="display:flex;gap:2px;width:200px;" >
-        <a class="btn btn-danger btn-sm" id = "annulerButton" style="width:130px;" href="/home">
+    <div class="admin-actions" >
+        <a class="btn btn-danger btn-sm admin-btn-cancel" id = "annulerButton" href="/home">
         <i class="glyphicon glyphicon-remove"></i> Annuler
     </a>
     </div>
   <div id="myDiv">
-    <table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column" id="dataTables-example" role="none" style="width:100%;height: 400px;">
+    <table class="table table-striped header-fixed table-bordered table-hover table-checkable order-column" id="dataTables-example" role="none">
             <thead>
                 <tr >
-                    <th style="text-align: center;width:300px;">ID établissement</th>
-                    <th style="text-align: center;width:430px;">Nom établissement</th>
-                    <th style="text-align: center;width:200px;">Utilisateur</th>
-                    <th style="text-align: center;width:200px;">Actions</th>
+                    <th>ID établissement</th>
+                    <th>Nom établissement</th>
+                    <th>Utilisateur</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {% for etablissement in etablissements %}
                         {% if app.user.getEtablissement() and etablissement["etablissement"].id != app.user.getEtablissement().id %}
                         <tr>
-                            <td style="text-align: center;width:300px;">{{ etablissement["etablissement"].id }}</td>
-                            <td style="text-align: center;width:480px;">{{ etablissement["etablissement"].getNomEtablissement() | capitalize }}</td>
-                            <td style="text-align: center;width:200px;">{{ etablissement["user"].getUsername()| capitalize }}</td>
-                            <td style="text-align: center;width:200px;display:flex;gap:5px;justify-content:center;">
+                            <td data-label="ID établissement">{{ etablissement["etablissement"].id }}</td>
+                            <td data-label="Nom établissement">{{ etablissement["etablissement"].getNomEtablissement() | capitalize }}</td>
+                            <td data-label="Utilisateur">{{ etablissement["user"].getUsername()| capitalize }}</td>
+                            <td class="admin-actions-cell" data-label="Actions">
                                 <a data-toggle="tooltip" title="Supprimer l'etablissement" href="/delateEtablissement/{{etablissement["etablissement"].id}}" class="btn btn-danger btn-xs" onclick="return confirm('Voulez-vous vraiment supprimer cet etablissement ?');">
                                     <i class="glyphicon glyphicon-trash"></i>
                                 </a>
@@ -108,11 +91,11 @@ function createModal2(Id,IdEt) {
     popUP.setAttribute("aria-hidden", "true");
 
     popUP.innerHTML = `
-            <div class="modal-dialog" role="document" style="width:1000px">
-                <div class="modal-content" style="margin-left:80px;">
-                    <div class="modal-header" style="margin-top:30px">
-                        <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding: 5px 10px; display: inline-block;">
-                            <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+            <div class="modal-dialog admin-modal-dialog" role="document">
+                <div class="modal-content admin-modal-content-80">
+                    <div class="modal-header admin-modal-header">
+                        <div class="admin-modal-title">
+                            <img class="admin-modal-logo" src="{{ asset('images/ler.png') }}" alt="Icon">
                             Exporter un établissement
                         </div>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -127,8 +110,8 @@ function createModal2(Id,IdEt) {
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="close1 btn btn-danger" data-dismiss="modal" style="width:130px;"><i class="glyphicon glyphicon-remove"></i> Annuler</button>
-                        <button	type="submit" id ="submit" class="btn btn-primary" style="width:130px;" data-user-id="${IdEt}" data-id="${Id}">
+                        <button type="button" class="close1 btn btn-danger admin-modal-btn" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Annuler</button>
+                        <button	type="submit" id ="submit" class="btn btn-primary admin-modal-btn" data-user-id="${IdEt}" data-id="${Id}">
 				        <i class="glyphicon glyphicon-floppy-disk"></i>
 					        Enregistrer
 				        </button>
@@ -290,11 +273,11 @@ function createModal(Id,IdEt) {
     popUP.setAttribute("aria-hidden", "true");
 
     popUP.innerHTML = `
-            <div class="modal-dialog" role="document" style="width:1000px">
-                <div class="modal-content" style="margin-left:80px;">
-                    <div class="modal-header" style="margin-top:30px">
-                        <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding: 5px 10px; display: inline-block;">
-                            <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+            <div class="modal-dialog admin-modal-dialog" role="document">
+                <div class="modal-content admin-modal-content-80">
+                    <div class="modal-header admin-modal-header">
+                        <div class="admin-modal-title">
+                            <img class="admin-modal-logo" src="{{ asset('images/ler.png') }}" alt="Icon">
                             Copier un établissement
                         </div>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -309,8 +292,8 @@ function createModal(Id,IdEt) {
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="close1 btn btn-danger" data-dismiss="modal" style="width:130px;"><i class="glyphicon glyphicon-remove"></i> Annuler</button>
-                        <button type="submit" id="copyEt" class="btn btn-primary" style="width:130px;" data-etablissement-id="${IdEt}" data-id="${Id}"><i class="glyphicon glyphicon-floppy-disk"></i>Enregistrer</button>
+                        <button type="button" class="close1 btn btn-danger admin-modal-btn" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Annuler</button>
+                        <button type="submit" id="copyEt" class="btn btn-primary admin-modal-btn" data-etablissement-id="${IdEt}" data-id="${Id}"><i class="glyphicon glyphicon-floppy-disk"></i>Enregistrer</button>
                     </div>
             </form>
             </div>
@@ -346,11 +329,11 @@ function createModal1(Id) {
     popUP.setAttribute("aria-hidden", "true");
 
     popUP.innerHTML = `
-            <div class="modal-dialog" role="document" style="width:1000px;padding:10px;">
-                <div class="modal-content" style="margin-left:200px;">
-                    <div class="modal-header" style="margin-top:30px">
-                        <div style="border-radius: 8px; text-align: left; margin: 10px 0; color: white; font-style: oblique; font-size: 20px; background-color: #3087ce; width: 300px; padding: 5px 10px; display: inline-block;">
-                            <img style="margin-top: -55px; margin-left: -10px; width: 45px; float: left;" src="{{ asset('images/ler.png') }}" alt="Icon">
+            <div class="modal-dialog admin-modal-dialog" role="document">
+                <div class="modal-content admin-modal-content-200">
+                    <div class="modal-header admin-modal-header">
+                        <div class="admin-modal-title">
+                            <img class="admin-modal-logo" src="{{ asset('images/ler.png') }}" alt="Icon">
                             Copier un établissement
                         </div>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -359,35 +342,35 @@ function createModal1(Id) {
                     </div>
                     <form id="CopierForm"  method="post" enctype="multipart/form-data">
                     <div class="modal-body2" id="modal-body2">
-                        <div style="padding:10px;" id="divNom">
+                        <div class="admin-field" id="divNom">
                             <label>Entrez nouveau Identifiant :</label>
                             <input type="text" class="nomInput form-control" name="nom" id="nom" />
                         </div>
-                        <div style="padding:10px;" id="divEmail">
+                        <div class="admin-field" id="divEmail">
                             <label>Entrez nouveau email :</label>
                             <input type="text" class="emailInput form-control" name="email" id="email"/>
                         </div>
-                        <div style="padding:10px;" id="divPassword">
+                        <div class="admin-field" id="divPassword">
                             <label>Entrez nouveau mot de passe :</label>
-                                <div style=" position:relative;display:flex;">
+								<div class="admin-password-wrapper">
                             <input type="password" id="first_password" class="passwordInput form-control" name="password1" autocomplete="new-password" />
-                            <span class="input-group-addon" style="position:absolute;right:0px;width:10%;height:100%;cursor: pointer;" onclick="togglePasswordVisibility('first_password', this)">
-                <i class="bi bi-eye-fill"></i>   </i>
+								<span class="input-group-addon admin-password-toggle" onclick="togglePasswordVisibility('first_password', this)">
+				<i class="bi bi-eye-fill"></i>
             </span>
             </div>
                         </div>
-                         <div style="padding:10px;" id="divPasswordConfirm">
+                         <div class="admin-field" id="divPasswordConfirm">
                             <label>Confirmer le mot de passe :</label>
-                            <div style=" position:relative;display:flex;">
+							<div class="admin-password-wrapper">
                             <input type="password" id="confirmPassword" class="ConfirmpasswordInput form-control" name="Confirmpassword1" autocomplete="new-password"/>
-                            <span class="input-group-addon" style="position:absolute;right:0px;width:10%;height:100%;cursor: pointer;" onclick="togglePasswordVisibility('confirmPassword', this)">
+							<span class="input-group-addon admin-password-toggle" onclick="togglePasswordVisibility('confirmPassword', this)">
 <i class="bi bi-eye-fill"></i>        </span>
             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="close1 btn btn-danger" data-dismiss="modal" style="width:130px;"><i class="glyphicon glyphicon-remove"></i>Annuler</button>
-				 <button type="submit" id="copyEt" class="btn btn-primary" style="width:130px;" data-etablissement-id="${Id}">
+                        <button type="button" class="close1 btn btn-danger admin-modal-btn" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i>Annuler</button>
+				 <button type="submit" id="copyEt" class="btn btn-primary admin-modal-btn" data-etablissement-id="${Id}">
 				<i class="glyphicon glyphicon-floppy-disk"></i>
 					Enregistrer
 				</button>

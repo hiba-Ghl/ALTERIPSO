@@ -217,6 +217,15 @@ body {
         pointer-events: auto !important;
     }
 
+    /* S'assurer que le bouton Importer reste cliquable sur mobile */
+    #importData {
+        position: relative !important;
+        z-index: 10 !important; /* en dessous des modals Bootstrap (1050) */
+        display: inline-flex !important;
+        align-items: center !important;
+        pointer-events: auto !important;
+    }
+
 
 
     /* Header inside TV - shift up */

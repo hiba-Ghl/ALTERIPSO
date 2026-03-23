@@ -177,6 +177,31 @@ tr {
     height: 500px;
 }
 
+.chart-legend {
+    margin-top: 8px;
+    text-align: left;
+    font-size: 13px;
+}
+
+.chart-legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.chart-legend-color {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 6px;
+    border-radius: 2px;
+}
+
+.chart-legend-label {
+    display: inline-block;
+    white-space: normal; /* permet le retour à la ligne complet, pas de ... */
+}
+
 @media print {
     h1 {
         margin-left: 2%;
@@ -308,6 +333,10 @@ tr {
         height: 300px !important;
         width: 100% !important;
     }
+
+	.chart-legend {
+		font-size: 11px;
+	}
 
     /* Stack chart control buttons */
     #buttons td {
