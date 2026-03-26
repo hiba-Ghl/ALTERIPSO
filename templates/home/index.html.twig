@@ -688,7 +688,7 @@
 						</button>
 					</div>
 					<div	class="form-group ">
-						<a	style="display:flex;gap:5px;align-items:center;"	href=""	id=""	{% if app.user.MjTv == '0' %} disabled {% endif %} name="send"	class="btn-danger btn" data-toggle="modal"	data-target="#update_categories">
+						<a	style="display:flex;gap:5px;align-items:center;"	href="" id="btnUpdateCategories"	{% if app.user.MjTv == '0' %} disabled {% endif %} name="send"	class="btn-danger btn" data-toggle="modal"	data-target="#update_categories">
 							<i	class="glyphicon glyphicon-send"></i>
 							Mise à jour
 						</a>
@@ -702,9 +702,9 @@
 						</button>
 						</div>
 						
-						<div class="form-group">
-						
-						<button type="button" id="alla" class="btn-success btn">
+						<div	class="form-group">
+
+							<a	 style="display:flex;gap:5px;align-items:center;" {% if app.user.FondEcran == '0' %} disabled {% endif %} style="width: 100%"	href="" id="btnBackground" name="send"	class="btn-info btn  "	data-toggle="modal"	data-target="#backa">
 						<i class="glyphicon glyphicon-check"></i>
 						Cocher tout
 						</button>
@@ -734,7 +734,7 @@
 					</div>-->
 					
 					<div class="form-group ">
-						<button	 style="display:flex;gap:5px;align-items:center;" type="button"	{% if app.user.AjoutCategorie == '0' %} disabled {% endif %} class="btn btn-primary"	data-toggle="modal"	data-target="#exampleModal">
+						<button	 style="display:flex;gap:5px;align-items:center;" type="button"	{% if app.user.AjoutCategorie == '0' %} disabled {% endif %} class="btn btn-primary" id="btnAddCategory"	data-toggle="modal"	data-target="#exampleModal">
 							<i	class="glyphicon glyphicon-wrench"></i>
 							Ajouter catégorie
 						</button>
@@ -1156,11 +1156,11 @@
 								</strong>
 
 								<div	class="form-group">
-									<label	for="logo"	class="col-lg-2 control-label">
+									<label	for="logo_input"	class="col-lg-2 control-label">
 										logo
 									</label>
 									<div	class="col-lg-10">
-										<input	type="file"	class="form-control"	id="logo"	name="logo">
+										<input	type="file"	class="form-control"	id="logo_input"	name="logo">
 									</div>
 								</div>
 								<div	class="form-group">
@@ -1391,20 +1391,20 @@
 							</div>
 
 						</div>
-						<div	class="modal-footer">
+						<div	class="modal-footer-icons-mobile">
 							<button	type="submit"	class="button btn btn-primary btn-sm">
 								<i	class="glyphicon glyphicon-floppy-disk"></i>
-								Enregistrer
+								<span class="btn-text-label"> Enregistrer </span>
 							</button>
 
 							<a	data-toggle="tooltip"	data-placement="top"	href="{{ path('home') }}"	class="btn btn-danger btn-sm"	onclick="return(confirm('voulez vous vraiment supprimer cette image ?'));">
 								<i	class="glyphicon glyphicon-trash"></i>
-								Supprimer image
+								<span class="btn-text-label"> Supprimer image </span>
 							</a>
 
 							<button	type="button"	class="btn btn-default btn-sm"	data-dismiss="modal">
 								<i	class="glyphicon glyphicon-remove"></i>
-								Fermer
+								<span class="btn-text-label"> Fermer </span>
 							</button>
 
 						</div>

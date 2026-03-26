@@ -3,6 +3,13 @@ body {
     line-height: 2.42857143;
 }
 
+.modal-footer-icons-mobile {
+    margin-bottom: 10px !important;
+    padding: 0px 5px !important;
+    text-align: right; /* tous les boutons alignés à droite */
+
+}
+
 /* General responsive adjustments */
 @media (max-width: 1200px) {
 
@@ -84,6 +91,7 @@ body {
         height: 400px !important;
         margin-top: 1px;
     }
+    
 
     .form-horizontal .control-label {
         text-align: left;
@@ -167,6 +175,16 @@ body {
         margin: 10px;
     }
 
+    /* S'assurer que la croix de fermeture du modal reste
+       bien cliquable et en haut à droite sur mobile */
+    .modal-header .close {
+        position: absolute;
+        top: 4px;
+        right: 10px;
+        z-index: 2000;
+        pointer-events: auto;
+    }
+
     /* Modal "update_categories" : taille mobile et scroll interne pour garder les boutons cliquables */
     #update_categories .modal-dialog {
         width: 95% !important;
@@ -207,17 +225,13 @@ body {
         width: 100% !important;
     }
 
-    /* S'assurer que le bouton Exporter reste cliquable sur mobile
-       sans passer devant les modals */
-    #ExportData {
-        position: relative !important;
-        z-index: 10 !important; /* en dessous des modals Bootstrap (1050) */
-        display: inline-flex !important;
-        align-items: center !important;
-        pointer-events: auto !important;
-    }
-
-    /* S'assurer que le bouton Importer reste cliquable sur mobile */
+    /* S'assurer que les boutons principaux restent cliquables sur mobile
+       sans être couverts par d'autres éléments (TV, overlays, etc.) */
+    #form_Sauvegarder,
+    #btnUpdateCategories,
+    #btnBackground,
+    #btnAddCategory,
+    #ExportData,
     #importData {
         position: relative !important;
         z-index: 10 !important; /* en dessous des modals Bootstrap (1050) */
@@ -446,7 +460,26 @@ body {
         width: 50px;
         height: 50px;
     }
-    /* Minimize buttons */
+/* Minimize buttons */
+    .modal-footer-icons-mobile {
+        display: block;
+        padding: 5px 0 !important;
+        text-align: right; /* tous les boutons alignés à droite */
+        white-space: nowrap; /* éviter le retour à la ligne des icônes */
+        margin-right: 30px !important;
+        margin-bottom: 10px !important; /* espace sous les boutons pour éviter qu'ils soient collés au bord de la TV */
+    }
+
+    .modal-footer-icons-mobile .btn-text-label { 
+        display:none;
+    }
+
+    .modal-footer-icons-mobile .btn {
+        display: inline-block !important;
+        width: auto !important;
+        margin: 0 0 0 4px !important;
+    }
+    
 }
 @media (max-width: 390px) {
     #back_img{
