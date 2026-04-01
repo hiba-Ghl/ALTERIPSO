@@ -91,10 +91,18 @@
                                                         <option value="scroll">Défilement horizontal</option>
                                                         <option value="bounce">Défilement rebond</option>
                                                         <option value="fade">Apparition / disparition</option>
+                                                        <option value="snake">Serpent classique</option>
+                                                        <option value="snake-wave">Serpent ondulé</option>
+                                                        <option value="snake-zigzag">Serpent zigzag</option>
+                                                        <option value="rotate">Rotation</option>
+                                                        <option value="zoom">Zoom</option>
+                                                        <option value="shake">Tremblement</option>
+                                                        <option value="rainbow">Arc-en-ciel</option>
+                                                        <option value="typing">Effet machine à écrire</option>
                                                     </select>
                                                     <div id="bgColorDefilementBlock" style="margin-top:10px; display:none;">
                                                         <label for="bgColorDefilement" style="margin-bottom:6px; white-space:nowrap;">Couleur de la bande :</label>
-                                                        <input type="color" class="form-control colors_picker" id="bgColorDefilement" name="bgColorDefilement" value="transparent" style="width:130px; margin-bottom:0; padding:2px;">
+                                                        <input type="color" class="form-control colors_picker" id="bgColorDefilement" name="bgColorDefilement" value="#FFFFFF" style="width:130px; margin-bottom:0; padding:2px;">
                                                     </div>
                                                 </div>
                                             </div>
@@ -290,6 +298,14 @@
                     if (animationSelect.value === 'scroll') animClass = 'ia-scroll';
                     if (animationSelect.value === 'bounce') animClass = 'ia-bounce';
                     if (animationSelect.value === 'fade') animClass = 'ia-fade';
+                    if (animationSelect.value === 'snake') animClass = 'ia-snake';
+                    if (animationSelect.value === 'snake-wave') animClass = 'ia-snake-wave';
+                    if (animationSelect.value === 'snake-zigzag') animClass = 'ia-snake-zigzag';
+                    if (animationSelect.value === 'rotate') animClass = 'ia-rotate';
+                    if (animationSelect.value === 'zoom') animClass = 'ia-zoom';
+                    if (animationSelect.value === 'shake') animClass = 'ia-shake';
+                    if (animationSelect.value === 'rainbow') animClass = 'ia-rainbow';
+                    if (animationSelect.value === 'typing') animClass = 'ia-typing';
 
                     // Apply speed to all animations in preview
                     if (vitesse && !isNaN(vitesse) && vitesse > 0) {
@@ -315,8 +331,27 @@
             textarea.addEventListener('input', updatePreview);
             [fontSelect, fontSizeSelect, animationSelect, styleSelect, textColorInput, bgColorInput].forEach(sel => {
                 if (sel) sel.addEventListener('change', updatePreview);
+                if (sel && sel.type === 'color') sel.addEventListener('input', updatePreview);
             });
+
+            // Affiche/cacher les couleurs selon le type
+            const typeSelect = document.getElementById('type');
+            function toggleColorFieldsAjout() {
+                const show = typeSelect.value === 'Message défilant';
+                if (textColorInput) textColorInput.disabled = !show;
+                if (bgColorInput) bgColorInput.disabled = !show;
+                const textColorBlock = document.getElementById('textColorDefilementBlock');
+                const bgColorBlock = document.getElementById('bgColorDefilementBlock');
+                if (textColorBlock) textColorBlock.style.display = show ? '' : 'none';
+                if (bgColorBlock) bgColorBlock.style.display = show ? '' : 'none';
+            }
+            if (typeSelect) {
+                typeSelect.addEventListener('change', toggleColorFieldsAjout);
+                toggleColorFieldsAjout();
+            }
             if (vitesseInput) vitesseInput.addEventListener('input', updatePreview);
+            // Mise à jour immédiate au chargement
+            updatePreview();
         });
         </script>
         <div class="form-group row">

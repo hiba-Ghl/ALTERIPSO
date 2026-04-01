@@ -31,6 +31,66 @@
     min-height: 32px;
     font-size: 1.1em;
 }
+
+/* Animation Rotation */
+.ia-rotate {
+    display: inline-block;
+    animation: ia-rotate-anim 1.5s linear infinite;
+}
+@keyframes ia-rotate-anim {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Animation Zoom */
+.ia-zoom {
+    display: inline-block;
+    animation: ia-zoom-anim 1.2s ease-in-out infinite;
+}
+@keyframes ia-zoom-anim {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.25); }
+}
+
+/* Animation Shake */
+.ia-shake {
+    display: inline-block;
+    animation: ia-shake-anim 0.5s cubic-bezier(.36,.07,.19,.97) infinite;
+}
+@keyframes ia-shake-anim {
+    10%, 90% { transform: translateX(-2px); }
+    20%, 80% { transform: translateX(4px); }
+    30%, 50%, 70% { transform: translateX(-8px); }
+    40%, 60% { transform: translateX(8px); }
+    100% { transform: translateX(0); }
+}
+
+/* Animation Arc-en-ciel (rainbow) */
+.ia-rainbow {
+    display: inline-block;
+    animation: ia-rainbow-anim 2s linear infinite;
+    background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+@keyframes ia-rainbow-anim {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
+}
+
+/* Animation Typing (clignotement) */
+.ia-typing {
+    display: inline-block;
+    border-right: 2px solid #3087ce;
+    animation: ia-typing-anim 1s steps(1) infinite;
+}
+@keyframes ia-typing-anim {
+    0%, 100% { border-color: #3087ce; }
+    50% { border-color: transparent; }
+}
+
 /* Styles pour le tableau des annonces */
 body {
     line-height: 2.42857143;
@@ -699,10 +759,10 @@ tr {
         content: attr(data-label);
         font-weight: bold;
         color: #3087ce;
-        min-width: 120px;
-        font-size: 12px;
+        text-align: left;
+        flex: 1;
         text-transform: uppercase;
-        flex-shrink: 0;
+        font-size: 12px;
     }
 
     /* Ligne vide DataTables : message sur toute la largeur, texte aligné à gauche (table principale + modals) */

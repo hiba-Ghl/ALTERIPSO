@@ -92,7 +92,7 @@
                                             </select>
                                             <div id="bgColorDefilementBlock" style="margin-top:10px; display:none;">
                                                 <label for="bgColorDefilement" style="margin-bottom:6px; white-space:nowrap;">Couleur de la bande :</label>
-                                                <input type="color" class="form-control colors_picker" id="bgColorDefilement" name="bgColorDefilement" value="transparent" style="width:130px; margin-bottom:0; padding:2px;">
+                                                <input type="color" class="form-control colors_picker" id="bgColorDefilement" name="bgColorDefilement" value="#FFFFFF" style="width:130px; margin-bottom:0; padding:2px;">
                                             </div>
                                         </div>
                                     </div>
@@ -347,53 +347,125 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-	const traduireButton1 = document.getElementById('translateBtn1');
-	 const languageInputs = {
-            en: document.getElementById("ENMessage"),
-            es: document.getElementById("ESMessage"),
-            pt: document.getElementById("PTMessage"),
-            it: document.getElementById("ITMessage"),
-            ru: document.getElementById("RUMessage"),
-            de: document.getElementById("DEMessage"),
-            zh: document.getElementById("ZHMessage"),
-            ar: document.getElementById("ARMessage"),
-        };
-        let translations = {};
-        async function translateAll(text) {
-            const languages = Object.keys(languageInputs);
-            let results = [];
-             while(1)
-             {
-                results = await translate(text, languages, 'fr');
-                if(results)
-                    break;
-             }
-            languages.forEach((lang, index) => {
-                translations[lang] = results[index];
-            });
+    // Traduction (inchangé)
+    const traduireButton1 = document.getElementById('translateBtn1');
+    const languageInputs = {
+        en: document.getElementById("ENMessage"),
+        es: document.getElementById("ESMessage"),
+        pt: document.getElementById("PTMessage"),
+        it: document.getElementById("ITMessage"),
+        ru: document.getElementById("RUMessage"),
+        de: document.getElementById("DEMessage"),
+        zh: document.getElementById("ZHMessage"),
+        ar: document.getElementById("ARMessage"),
+    };
+    let translations = {};
+    async function translateAll(text) {
+        const languages = Object.keys(languageInputs);
+        let results = [];
+        while(1) {
+            results = await translate(text, languages, 'fr');
+            if(results)
+                break;
         }
-        if (traduireButton1) {
-            traduireButton1.addEventListener('click', async(event) => {
-                const textInput1 = document.getElementById("text");
-                const text = textInput1.value.trim() ;
-                if (text === '') {
-                    alert("Veuillez entrer un message à traduire.");
-                    return;
+        languages.forEach((lang, index) => {
+            translations[lang] = results[index];
+        });
+    }
+    if (traduireButton1) {
+        traduireButton1.addEventListener('click', async(event) => {
+            const textInput1 = document.getElementById("text");
+            const text = textInput1.value.trim() ;
+            if (text === '') {
+                alert("Veuillez entrer un message à traduire.");
+                return;
+            }
+            if(configApp.Status === 'Offline') {
+                alert("Aucun internet disponible : vous pouvez faire la traduction manuellement");
+                return ;
+            }
+            await translateAll(text);
+            Object.keys(languageInputs).forEach(lang => {
+                if (translations[lang]) {
+                    languageInputs[lang].value = translations[lang];
                 }
-                if(configApp.Status === 'Offline')
-                {
-                    alert("Aucun internet disponible : vous pouvez faire la traduction manuellement");
-                    return ;
-                }
-                await translateAll(text);
-                Object.keys(languageInputs).forEach(lang => {
-                    if (translations[lang]) {
-                        languageInputs[lang].value = translations[lang];
-                        console.log("languageInputs[lang].value",languageInputs[lang].value)
-                    }
-                });
             });
+        });
+    }
+
+    // Aperçu dynamique du texte défilant (comme sur ajouter)
+    const textarea = document.getElementById('text');
+    const textPreview = document.getElementById('text-preview');
+    const fontSelect = document.getElementById('font');
+    const fontSizeSelect = document.getElementById('fontSize');
+    const animationSelect = document.getElementById('animation');
+    const styleSelect = document.getElementById('style');
+    const vitesseInput = document.getElementById('vitesseDefilement');
+    const textColorInput = document.getElementById('textColorDefilement');
+    const bgColorInput = document.getElementById('bgColorDefilement');
+
+    function getStyledText(text, vitesse) {
+        let style = '';
+        if (fontSelect && fontSelect.value) style += `font-family:${fontSelect.value};`;
+        if (fontSizeSelect && fontSizeSelect.value) style += `font-size:${fontSizeSelect.value}px;`;
+        if (textColorInput && textColorInput.value && textColorInput.value !== 'transparent') style += `color:${textColorInput.value};`;
+        if (bgColorInput && bgColorInput.value && bgColorInput.value !== 'transparent') style += `background-color:${bgColorInput.value};`;
+        if (bgColorInput && bgColorInput.value && bgColorInput.value !== 'transparent') style += 'padding:2px 10px; border-radius:3px;';
+        if (styleSelect && styleSelect.value) {
+            if (styleSelect.value === 'Gras') style += 'font-weight:bold;';
+            if (styleSelect.value === 'Italique') style += 'font-style:italic;';
+            if (styleSelect.value === 'Souligné') style += 'text-decoration:underline;';
+            if (styleSelect.value === 'Barré') style += 'text-decoration:line-through;';
         }
+        let animClass = '';
+        let animStyle = '';
+        if (animationSelect && animationSelect.value) {
+            if (animationSelect.value === 'scroll') animClass = 'ia-scroll';
+            if (animationSelect.value === 'bounce') animClass = 'ia-bounce';
+            if (animationSelect.value === 'fade') animClass = 'ia-fade';
+            if (vitesse && !isNaN(vitesse) && vitesse > 0) {
+                const duration = Math.max(0.3, 50 / vitesse);
+                animStyle = `animation-duration:${duration}s;`;
+            }
+        }
+        return `<span style="${style}${animStyle}" class="${animClass}">${text}</span>`;
+    }
+
+    function updatePreview() {
+        const text = textarea.value;
+        const vitesse = vitesseInput ? parseFloat(vitesseInput.value) : null;
+        if (text.trim() !== '') {
+            textPreview.innerHTML = getStyledText(text, vitesse);
+            textPreview.style.display = '';
+        } else {
+            textPreview.style.display = 'none';
+        }
+    }
+
+    [fontSelect, fontSizeSelect, animationSelect, styleSelect, textColorInput, bgColorInput].forEach(sel => {
+        if (sel) sel.addEventListener('change', updatePreview);
+        if (sel && sel.type === 'color') sel.addEventListener('input', updatePreview);
+    });
+    if (vitesseInput) vitesseInput.addEventListener('input', updatePreview);
+    textarea.addEventListener('input', updatePreview);
+
+    // Affiche/cacher les couleurs selon le type
+    const typeSelect = document.getElementById('type');
+    function toggleColorFieldsModif() {
+        const show = typeSelect.value === 'Message défilant';
+        if (textColorInput) textColorInput.disabled = !show;
+        if (bgColorInput) bgColorInput.disabled = !show;
+        const textColorBlock = document.getElementById('textColorDefilementBlock');
+        const bgColorBlock = document.getElementById('bgColorDefilementBlock');
+        if (textColorBlock) textColorBlock.style.display = show ? '' : 'none';
+        if (bgColorBlock) bgColorBlock.style.display = show ? '' : 'none';
+    }
+    if (typeSelect) {
+        typeSelect.addEventListener('change', toggleColorFieldsModif);
+        toggleColorFieldsModif();
+    }
+    // Initialisation à l'ouverture
+    updatePreview();
 });
 
 </script>
@@ -528,6 +600,11 @@ document.addEventListener('DOMContentLoaded', function () {
             textInput.style.display = 'block';
             fontSelection.style.display = 'block';
             languagesPart.style.display = 'block';
+            // Cacher les émoticons si type Message
+            var emojiBar = document.getElementById('emojiBar');
+            if (emojiBar) {
+                emojiBar.style.display = (type === 'Message') ? 'none' : 'block';
+            }
             if (animationSelection) {
                 animationSelection.style.display = (type === 'Message défilant') ? 'block' : 'none';
             }
@@ -592,7 +669,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const positionSelect = document.getElementById('position');
         let positions;
         if (type === 'Message défilant') {
-            positions = ['Bas'];
+            positions = ['Bas', 'Haut'];
         } else if (type === 'Video' || type === 'Localtv' || type === 'PDF') {
             positions = ['Milieu'];
         } else {
@@ -742,10 +819,15 @@ document.addEventListener('DOMContentLoaded', function () {
         if(text)
             text.value= '';
         console.log(fileUpload,type);
-        if (type === 'Message' || type === 'Message défilant' || type === 'Flux RSS') {
+        if (type === 'Message' || type === 'Message défilant') {
             textInput.style.display = 'block';
             fontSelection.style.display = 'block';
             languagesPart.style.display = 'block';
+            // Cacher les émoticons si type Message
+            var emojiBar = document.getElementById('emojiBar');
+            if (emojiBar) {
+                emojiBar.style.display = (type === 'Message') ? 'none' : 'block';
+            }
             if (animationSelection) {
                 animationSelection.style.display = (type === 'Message défilant') ? 'block' : 'none';
             }
@@ -758,9 +840,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (textColorDefilementBlock) {
                 textColorDefilementBlock.style.display = (type === 'Message défilant') ? '' : 'none';
             }
-            if (type === 'Flux RSS' && fluxRssSpeed) {
-                fluxRssSpeed.style.display = 'block';
-            }
+            ipAddress.style.display = 'none';
         } else if (type === 'Image' || type === 'Video' || type === 'PDF') {
             fileUpload.style.display = 'block';
             if(type === 'Image')
@@ -781,8 +861,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const type = this.value;
         const positionSelect = document.getElementById('position');
         let positions;
-        if (type === 'Flux RSS' || type === 'Message défilant') {
-            positions = ['Bas'];
+        if (type === 'Message défilant') {
+            positions = ['Bas', 'Haut'];
         } else if (type === 'Video' || type === 'Localtv' || type === 'PDF') {
             positions = ['Milieu'];
         } else {

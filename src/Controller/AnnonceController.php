@@ -105,6 +105,14 @@ class AnnonceController extends AbstractController
         $animation = $request->get("animation");
         $vitesseDefilement = $request->get("vitesseDefilement");
 
+        // Ajout récupération couleur texte et couleur bande
+        $couleur = null;
+        $couleurBande = null;
+        if ($type === 'Message défilant') {
+            $couleur = $request->get("textColorDefilement");
+            $couleurBande = $request->get("bgColorDefilement");
+        }
+
 
         
         $taille = !empty($taille) ? (int) $taille : null; //convert the string to int
@@ -163,6 +171,8 @@ class AnnonceController extends AbstractController
 
             $annonce->setAnimation($animation);
             $annonce->setVitesseDefilement($type === 'Message défilant' ? $vitesseDefilement : null);
+            $annonce->setCouleur($couleur);
+            $annonce->setCouleurBande($couleurBande);
 
 
             //la persistance de l'entite et l'enregistrement dans la base dee donnees     
@@ -250,8 +260,8 @@ class AnnonceController extends AbstractController
     //la methode de modification d'une annonce**************************************************************************************************
     #[Route('/annonce/modifier/{id}', name: 'app_modifier_annonce')]
     public function modifierAnnonce(EntityManagerInterface $entityManager, Request $request, int $id): Response
+        // Ajout récupération couleur texte et couleur bande
     {
-
         if( !$this->getUser())
             return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
@@ -275,7 +285,12 @@ class AnnonceController extends AbstractController
         $datedebut = $request->get("datedebut");
         $datefin = $request->get("datefin");
         $duree = $request->get("duree");
-  
+        $couleur = null;
+        $couleurBande = null;
+        if ($type === 'Message défilant') {
+            $couleur = $request->get("textColorDefilement");
+            $couleurBande = $request->get("bgColorDefilement");
+        }
 
         $frMessage = $request->get("FRMessage");
         $enMessage = $request->get("ENMessage");
@@ -349,6 +364,8 @@ class AnnonceController extends AbstractController
             $annonce->setActive($active);
             $annonce->setAnimation($animation);
             $annonce->setVitesseDefilement($type === 'Message défilant' ? $vitesseDefilement : null);
+            $annonce->setCouleur($couleur);
+            $annonce->setCouleurBande($couleurBande);
 
 
 

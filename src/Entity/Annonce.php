@@ -44,8 +44,35 @@ class Annonce
 
     
 
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $couleur = null; // Couleur du texte
+
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $couleurBande = null; // Couleur de la bande
+
     #[ORM\OneToMany(mappedBy: 'annonce', targetEntity: HistoriqueAnnonce::class)]
     private Collection $historiqueAnnonces;
+    public function getCouleur(): ?string
+    {
+        return $this->couleur;
+    }
+
+    public function setCouleur(?string $couleur): static
+    {
+        $this->couleur = $couleur;
+        return $this;
+    }
+
+    public function getCouleurBande(): ?string
+    {
+        return $this->couleurBande;
+    }
+
+    public function setCouleurBande(?string $couleurBande): static
+    {
+        $this->couleurBande = $couleurBande;
+        return $this;
+    }
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $police = null;
