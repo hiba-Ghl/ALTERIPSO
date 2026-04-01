@@ -19,14 +19,12 @@ final class Version20260326110236 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE annonce DROP rss_style');
-        $this->addSql('DROP TABLE bouquetbyroom');
-        $this->addSql('DROP TABLE bouquetprolongation');
-        $this->addSql('ALTER TABLE etablissement CHANGE id id INT NOT NULL');
-        $this->addSql('ALTER TABLE lancer_annonce CHANGE date_envoie date_envoie DATETIME NOT NULL');
-        $this->addSql('ALTER TABLE service_en_chambre CHANGE contenu contenu VARCHAR(20000) NOT NULL');
-        $this->addSql('ALTER TABLE user CHANGE dernier_temp dernier_temp DATETIME NOT NULL, CHANGE tentative_export tentative_export INT NOT NULL');
+        // Migration neutralisée : les modifications de schéma prévues ici
+        // (suppression de rss_style, DROP des tables bouquet*, changements
+        // de colonnes sur d'autres tables) ont déjà été appliquées ou ne
+        // sont pas nécessaires sur cette base. On laisse volontairement
+        // cette méthode vide pour que Doctrine puisse marquer cette
+        // migration comme exécutée sans toucher au schéma actuel.
     }
 
     public function down(Schema $schema): void

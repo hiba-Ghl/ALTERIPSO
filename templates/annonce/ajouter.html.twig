@@ -31,6 +31,7 @@
                     <option value="Video">Video</option>
                     <option value="PDF">PDF</option>
                     <option value="Message">Message</option>
+                    <option value="Message défilant"> Message défilant </option>
                     <option value="Localtv">Localtv</option>
                 </select>
 
@@ -58,11 +59,21 @@
                 <div id="textInput" style="display: none;">
                     <label for="text" class="control-label">Entrer un texte :</label>
                     <textarea class="form-control" name="text" id="text" rows="3" style="margin-bottom: 5px;margin-top: 5px;"></textarea>
+                    <!-- Aperçu stylé du texte saisi -->
+                    <div id="text-preview" style="display:none; margin-top:8px;padding:5px;border:1px dashed gray; overflow:hidden; width:100%;"></div>
+
+                    <div id="emojiBar" class="emoji-bar" style="margin-bottom:5px;">
+                        <button type="button" class="btn btn-default btn-xs emoji-btn">😊</button>
+                        <button type="button" class="btn btn-default btn-xs emoji-btn">😂</button>
+                        <button type="button" class="btn btn-default btn-xs emoji-btn">😍</button>
+                        <button type="button" class="btn btn-default btn-xs emoji-btn">👍</button>
+                        <button type="button" class="btn btn-default btn-xs emoji-btn">🎉</button>
+                    </div>
 
                                 <!-- Font selection -->
                                         <div id="fontSelection" class="form-row" style="display: none;">
                                             <!-- la police -->
-                                            <div class="form-group col-md-4">
+                                            <div class="form-group col-md-4" style="display:flex; flex-direction:column;">
                                                 <label for="font">Choisir une police:</label>
                                                 <select id="font" name="font" class="form-control" style="width:100%;">
                                                     <option value="">Sélectionner une police</option>
@@ -72,17 +83,36 @@
                                                     <option value="Courier New">Courier New</option>
                                                     <option value="Verdana">Verdana</option>
                                                 </select>
+                                                <!-- Animation juste en dessous de la police -->
+                                                <div id="animationSelection" style="margin-top:10px;">
+                                                    <label for="animation" style="margin-bottom:6px;">Choisir une animation:</label>
+                                                    <select id="animation" name="animation" class="form-control" style="width:100%;">
+                                                        <option value="">Aucune</option>
+                                                        <option value="scroll">Défilement horizontal</option>
+                                                        <option value="bounce">Défilement rebond</option>
+                                                        <option value="fade">Apparition / disparition</option>
+                                                    </select>
+                                                    <div id="bgColorDefilementBlock" style="margin-top:10px; display:none;">
+                                                        <label for="bgColorDefilement" style="margin-bottom:6px; white-space:nowrap;">Couleur de la bande :</label>
+                                                        <input type="color" class="form-control colors_picker" id="bgColorDefilement" name="bgColorDefilement" value="transparent" style="width:130px; margin-bottom:0; padding:2px;">
+                                                    </div>
+                                                </div>
                                             </div>
                                             <!-- la taille -->
-                                            <div class="form-group col-md-4" style="margin-left: 30px">
+                                            <div class="form-group col-md-4" style="margin-left: 30px; display:flex; flex-direction:column;">
                                                 <label for="fontSize">Choisir une taille:</label>
                                                 <select id="fontSize" name="fontSize" class="form-control" style="width:100%; ">
                                                     <option value="">Sélectionner une taille (px)</option>
                                                   
                                                 </select>
+                                                <!-- Vitesse de défilement juste en dessous de la taille -->
+                                                <div id="vitesseDefilementBlock" style="margin-top:10px; display:none;">
+                                                    <label for="vitesseDefilement" style="margin-bottom:6px; white-space:nowrap;">Vitesse de défilement :</label>
+                                                    <input type="number" class="form-control" id="vitesseDefilement" name="vitesseDefilement" min="1" step="1" style="width:130px; margin-bottom:0;" placeholder="px/s">
+                                                </div>
                                             </div>
                                              <!-- le style -->
-                                            <div class="form-group col-md-4" style="margin-left:30px"> 
+                                            <div class="form-group col-md-4" style="margin-left:30px; display:flex; flex-direction:column;"> 
                                                 <label for="style">Choisir un style:</label>
                                                 <select id="style" name="style" class="form-control" style="width:100%; ">
                                                     <option value="">Sélectionner un style</option>
@@ -91,8 +121,19 @@
                                                     <option value="Souligné">Souligné</option>
                                                     <option value="Barré">Barré</option>
                                                 </select>
+                                                <div id="textColorDefilementBlock" style="margin-top:10px; display:none;">
+                                                    <label for="textColorDefilement" style="margin-bottom:6px; white-space:nowrap;">Couleur du texte :</label>
+                                                    <input type="color" class="form-control colors_picker" id="textColorDefilement" name="textColorDefilement" value="transparent" style="width:130px; margin-bottom:0; padding:2px;">
+                                                </div>
                                             </div>
                                         </div>
+
+                                        <div id="animationSelection" class="form-row" style="display:none; margin-top:10px; display:flex; align-items:flex-start; gap:30px;">
+                                            <!-- Animation déplacée dans le bloc police -->
+                                        </div>
+
+                                        <!-- forcer un saut de ligne après le sélecteur d'animation -->
+                                        <div style="clear: both; height:10px;"></div>
 
                             
                                     <div >
@@ -204,17 +245,79 @@
         </div>
         <script>
         window.addEventListener('DOMContentLoaded', () => {
-        const now = new Date();
-        const localNow = now.toISOString().slice(0, 16);
-        const datedebut = document.getElementById('datedebut');
-        const datefin = document.getElementById('datefin');
-        datedebut.min = localNow;
-        datefin.min = localNow;
-        datedebut.addEventListener('change', () => {
-        datefin.min = datedebut.value;
-        });
-        });
+            // Gestion des dates
+            const now = new Date();
+            const localNow = now.toISOString().slice(0, 16);
+            const datedebut = document.getElementById('datedebut');
+            const datefin = document.getElementById('datefin');
+            datedebut.min = localNow;
+            datefin.min = localNow;
+            datedebut.addEventListener('change', () => {
+                datefin.min = datedebut.value;
+            });
 
+            // Affichage de l'aperçu stylé du texte en direct
+            const textarea = document.getElementById('text');
+            const textPreview = document.getElementById('text-preview');
+            const fontSelect = document.getElementById('font');
+            const fontSizeSelect = document.getElementById('fontSize');
+            const animationSelect = document.getElementById('animation');
+            const styleSelect = document.getElementById('style');
+            const vitesseInput = document.getElementById('vitesseDefilement');
+            const textColorInput = document.getElementById('textColorDefilement');
+            const bgColorInput = document.getElementById('bgColorDefilement');
+
+            if (window.jQuery && window.jQuery.fn && typeof window.jQuery.fn.colors_picker === 'function') {
+                window.jQuery('.colors_picker').colors_picker();
+            }
+
+            function getStyledText(text, vitesse) {
+                let style = '';
+                if (fontSelect && fontSelect.value) style += `font-family:${fontSelect.value};`;
+                if (fontSizeSelect && fontSizeSelect.value) style += `font-size:${fontSizeSelect.value}px;`;
+                if (textColorInput && textColorInput.value && textColorInput.value !== 'transparent') style += `color:${textColorInput.value};`;
+                if (bgColorInput && bgColorInput.value && bgColorInput.value !== 'transparent') style += `background-color:${bgColorInput.value};`;
+                if (bgColorInput && bgColorInput.value && bgColorInput.value !== 'transparent') style += 'padding:2px 10px; border-radius:3px;';
+                if (styleSelect && styleSelect.value) {
+                    if (styleSelect.value === 'Gras') style += 'font-weight:bold;';
+                    if (styleSelect.value === 'Italique') style += 'font-style:italic;';
+                    if (styleSelect.value === 'Souligné') style += 'text-decoration:underline;';
+                    if (styleSelect.value === 'Barré') style += 'text-decoration:line-through;';
+                }
+                let animClass = '';
+                let animStyle = '';
+                if (animationSelect && animationSelect.value) {
+                    if (animationSelect.value === 'scroll') animClass = 'ia-scroll';
+                    if (animationSelect.value === 'bounce') animClass = 'ia-bounce';
+                    if (animationSelect.value === 'fade') animClass = 'ia-fade';
+
+                    // Apply speed to all animations in preview
+                    if (vitesse && !isNaN(vitesse) && vitesse > 0) {
+                        const duration = Math.max(0.3, 50 / vitesse);
+                        animStyle = `animation-duration:${duration}s;`;
+                    }
+                }
+                // Ne pas afficher la vitesse dans le preview, juste appliquer la vitesse à l'animation
+                return `<span style="${style}${animStyle}" class="${animClass}">${text}</span>`;
+            }
+
+            function updatePreview() {
+                const text = textarea.value;
+                const vitesse = vitesseInput ? parseFloat(vitesseInput.value) : null;
+                if (text.trim() !== '') {
+                    textPreview.innerHTML = getStyledText(text, vitesse);
+                    textPreview.style.display = '';
+                } else {
+                    textPreview.style.display = 'none';
+                }
+            }
+
+            textarea.addEventListener('input', updatePreview);
+            [fontSelect, fontSizeSelect, animationSelect, styleSelect, textColorInput, bgColorInput].forEach(sel => {
+                if (sel) sel.addEventListener('change', updatePreview);
+            });
+            if (vitesseInput) vitesseInput.addEventListener('input', updatePreview);
+        });
         </script>
         <div class="form-group row">
             <label for="duree" class="col-lg-2 col-form-label">Durée (en secondes):</label>
@@ -408,37 +511,60 @@ document.addEventListener('DOMContentLoaded', function () {
         var type = this.value;
         var fileUpload = document.getElementById('fileUpload');
         var textInput = document.getElementById('textInput');
+        var emojiBar = document.getElementById('emojiBar');
         var fontSelection = document.getElementById('fontSelection');
+        var animationSelection = document.getElementById('animationSelection');
         var ipAddress = document.getElementById('ipAddress');
         var languagesPart = document.getElementById('languagesPart');
+        var vitesseDefilementBlock = document.getElementById('vitesseDefilementBlock');
+        var bgColorDefilementBlock = document.getElementById('bgColorDefilementBlock');
+        var textColorDefilementBlock = document.getElementById('textColorDefilementBlock');
 
-
-
-         
-        // Hide both sections if "Choisir un type" is selected
+        // Hide all by default
         fileUpload.style.display = 'none';
         textInput.style.display = 'none';
         fontSelection.style.display = 'none';
+        animationSelection.style.display = 'none';
         ipAddress.style.display = 'none';
         languagesPart.style.display = 'none';
+        if (emojiBar) emojiBar.style.display = '';
+        if (vitesseDefilementBlock) vitesseDefilementBlock.style.display = 'none';
+        if (bgColorDefilementBlock) bgColorDefilementBlock.style.display = 'none';
+        if (textColorDefilementBlock) textColorDefilementBlock.style.display = 'none';
 
-        
-        if (type === 'Message' ) {
+        if (type === 'Message') {
             fileUpload.style.display = 'none';
             textInput.style.display = 'block';
             fontSelection.style.display = 'block';
+            animationSelection.style.display = 'none';
             languagesPart.style.display = 'block';
             ipAddress.style.display = 'none';
+            if (emojiBar) emojiBar.style.display = 'none';
+            if (bgColorDefilementBlock) bgColorDefilementBlock.style.display = 'none';
+            if (textColorDefilementBlock) textColorDefilementBlock.style.display = 'none';
+        } else if (type === 'Message défilant') {
+            fileUpload.style.display = 'none';
+            textInput.style.display = 'block';
+            fontSelection.style.display = 'block';
+            animationSelection.style.display = 'block';
+            languagesPart.style.display = 'block';
+            ipAddress.style.display = 'none';
+            if (emojiBar) emojiBar.style.display = '';
+            if (vitesseDefilementBlock) vitesseDefilementBlock.style.display = '';
+            if (bgColorDefilementBlock) bgColorDefilementBlock.style.display = '';
+            if (textColorDefilementBlock) textColorDefilementBlock.style.display = '';
         } else if (type === 'Image' || type === 'Video' || type === 'PDF') {
             fileUpload.style.display = 'block';
             textInput.style.display = 'none';
             fontSelection.style.display = 'none';
+            animationSelection.style.display = 'none';
             ipAddress.style.display = 'none';
             languagesPart.style.display = 'none';
         } else if (type === 'Localtv'){
             fileUpload.style.display = 'none';
             textInput.style.display = 'none';
-            fontSelection.style.display = 'none';            
+            fontSelection.style.display = 'none';
+            animationSelection.style.display = 'none';
             ipAddress.style.display = 'block';
             languagesPart.style.display = 'none';
         }
@@ -549,9 +675,12 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('type').addEventListener('change', function() {
         const type = this.value;
         const positionSelect = document.getElementById('position');
-        const positions = type === 'Video' || type === 'Localtv' || type === 'PDF'
-            ? ['Milieu']
-            : ['Haut', 'Bas', 'Gauche', 'Droite', 'Milieu'];
+        const positions =
+            type === 'Video' || type === 'Localtv' || type === 'PDF'
+                ? ['Milieu']
+                : (type === 'Message défilant'
+                    ? ['Bas', 'Haut']
+                    : ['Haut', 'Bas', 'Gauche', 'Droite', 'Milieu']);
 
         // Clear previous options
         positionSelect.innerHTML = '';
@@ -561,6 +690,20 @@ document.addEventListener('DOMContentLoaded', function () {
             option.value = pos;
             option.textContent = pos.charAt(0).toUpperCase() + pos.slice(1);
             positionSelect.appendChild(option);
+        });
+    });
+
+    // Emoji bar behaviour
+    document.querySelectorAll('.emoji-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const textarea = document.getElementById('text');
+            const emoji = btn.textContent;
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const value = textarea.value;
+            textarea.value = value.slice(0, start) + emoji + value.slice(end);
+            textarea.focus();
+            textarea.selectionStart = textarea.selectionEnd = start + emoji.length;
         });
     });
 

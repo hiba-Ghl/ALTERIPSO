@@ -32,8 +32,8 @@
                     <option value="Video" {% if ann.type == 'Video' %}selected {% endif %}>Video</option>
                     <option value="PDF" {% if ann.type == 'PDF' %}selected {% endif %}>PDF</option>
                     <option value="Message" {% if ann.type == 'Message' %}selected {% endif %}>Message</option>
+                    <option value="Message défilant" {% if ann.type == 'Message défilant' %}selected {% endif %}>Message défilant</option>
                     <option value="Localtv" {% if ann.type == 'Localtv' %}selected {% endif %}>Localtv</option>
-                    <option value="Flux RSS" {% if ann.type == 'Flux RSS' %}selected {% endif %}>Flux RSS</option>
                 </select>
 
                 <!-- localtv ip adress section -->
@@ -56,17 +56,22 @@
                 <div id="textInput" style="display: none;">
                     <label for="text" class="control-label">Entrer un texte:</label>
                     <textarea class="form-control" name="text" id="text" rows="3" style="margin-bottom: 5px;margin-top: 5px;">{{ann.url}}</textarea>
+                    <div id="text-preview" style="display:none; margin-top:8px;padding:5px;border:1px dashed gray; overflow:hidden; width:100%;"></div>
 
-                    <!-- Section spécifique Flux RSS : temps de vitess -->
-                    <div id="fluxRssSpeed" style="display:none; margin-top:10px;">
-                        <label for="rss_speed" class="control-label">Temps de vitess :</label>
-                        <input type="number" class="form-control" name="rss_speed" id="rss_speed" min="1" step="1" />
+                    <div id="emojiBar" class="emoji-bar" style="margin-bottom:5px;">
+                        <button type="button" class="btn btn-default btn-xs emoji-btn">😊</button>
+                        <button type="button" class="btn btn-default btn-xs emoji-btn">😂</button>
+                        <button type="button" class="btn btn-default btn-xs emoji-btn">😍</button>
+                        <button type="button" class="btn btn-default btn-xs emoji-btn">👍</button>
+                        <button type="button" class="btn btn-default btn-xs emoji-btn">🎉</button>
                     </div>
+
+
                       
                                 <!-- Font selection -->
                                 <div id="fontSelection" style="display: none;" class="form-row">
                                     <!-- la police -->
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group col-md-4" style="display:flex; flex-direction:column;">
                                         <label for="font">Choisir une police:</label>
                                         <select id="font" name="font" class="form-control"  style="width:100%;" >
                                             <option value="">Sélectionner une police</option>
@@ -76,41 +81,54 @@
                                             <option value="Courier New" {% if ann.police == 'Courier New' %} selected {% endif %} >Courier New</option>
                                             <option value="Verdana" {% if ann.police == 'Verdana' %} selected {% endif %}>Verdana</option>
                                         </select>
+                                        <!-- Animation juste en dessous de la police -->
+                                        <div id="animationSelection" style="margin-top:10px;">
+                                            <label for="animation" style="margin-bottom:6px;">Choisir une animation:</label>
+                                            <select id="animation" name="animation" class="form-control" style="width:100%;">
+                                                <option value="" {% if ann.animation is defined and ann.animation == '' %}selected{% endif %}>Aucune</option>
+                                                <option value="scroll" {% if ann.animation is defined and ann.animation == 'scroll' %}selected{% endif %}>Défilement horizontal</option>
+                                                <option value="bounce" {% if ann.animation is defined and ann.animation == 'bounce' %}selected{% endif %}>Défilement rebond</option>
+                                                <option value="fade" {% if ann.animation is defined and ann.animation == 'fade' %}selected{% endif %}>Apparition / disparition</option>
+                                            </select>
+                                            <div id="bgColorDefilementBlock" style="margin-top:10px; display:none;">
+                                                <label for="bgColorDefilement" style="margin-bottom:6px; white-space:nowrap;">Couleur de la bande :</label>
+                                                <input type="color" class="form-control colors_picker" id="bgColorDefilement" name="bgColorDefilement" value="transparent" style="width:130px; margin-bottom:0; padding:2px;">
+                                            </div>
+                                        </div>
                                     </div>
                                     <!-- la taille -->
-                                    <div class="form-group col-md-4" style="margin-left:30px">
+                                    <div class="form-group col-md-4" style="margin-left:30px; display:flex; flex-direction:column;">
                                         <label for="fontSize">Choisir une taille:</label>
                                         <select id="fontSize" name="fontSize" class="form-control"  style="width:100%;" value="{{ann.taille}}">
                                             <option value="">Sélectionner une taille (px)</option>
+                                            {% for i in 20..40 %}
+                                                <option value="{{ i }}" {% if ann.taille == i %}selected{% endif %}>{{ i }}</option>
+                                            {% endfor %}
                                         </select>
+                                        <!-- Vitesse de défilement juste en dessous de la taille -->
+                                        <div id="vitesseDefilementBlock" style="margin-top:10px; display:none;">
+                                            <label for="vitesseDefilement" style="margin-bottom:6px; white-space:nowrap;">Vitesse de défilement :</label>
+                                            <input type="number" class="form-control" id="vitesseDefilement" name="vitesseDefilement" min="1" step="1" style="width:130px; margin-bottom:0;" placeholder="px/s" value="{{ ann.vitesseDefilement|default('') }}">
+                                        </div>
                                     </div>
-                                    <script>
-		const array1 = Array.from({ length: 21 }, (_, i) => i + 20);
-        const selectTaille = document.getElementById('fontSize');
-		const selectedValue1 = selectTaille.getAttribute("value");
-		array1.forEach(value=>{
-			const option = document.createElement("option");
-			option.value = value;
-			option.textContent = value;
-			if(value == selectedValue1)
-			{
-				option.selected = true;
-			}
-			selectTaille.appendChild(option);
-		})
-	</script>
                                     <!-- le style -->
-                                    <div class="form-group col-md-4" style="margin-left:30px"> 
-                                            <label for="style">Choisir un style:</label>
-                                            <select id="style" name="style" class="form-control" style="width:100%; ">
-                                                    <option value="">Sélectionner un style</option>
-                                                    <option value="Gras" {% if ann.style == 'Gras' %} selected {% endif %} >Gras</option>
-                                                    <option value="Italique" {% if ann.style == 'Italique' %} selected {% endif %}>Italique</option>
-                                                    <option value="Souligné" {% if ann.style == 'Souligné' %} selected {% endif %}>Souligné</option>
-                                                    <option value="Barré" {% if ann.style == 'Barré' %} selected {% endif %}>Barré</option>
-                                            </select>
+                                    <div class="form-group col-md-4" style="margin-left:30px; display:flex; flex-direction:column;"> 
+                                        <label for="style">Choisir un style:</label>
+                                        <select id="style" name="style" class="form-control" style="width:100%; ">
+                                            <option value="">Sélectionner un style</option>
+                                            <option value="Gras" {% if ann.style == 'Gras' %} selected {% endif %} >Gras</option>
+                                            <option value="Italique" {% if ann.style == 'Italique' %} selected {% endif %}>Italique</option>
+                                            <option value="Souligné" {% if ann.style == 'Souligné' %} selected {% endif %}>Souligné</option>
+                                            <option value="Barré" {% if ann.style == 'Barré' %} selected {% endif %}>Barré</option>
+                                        </select>
+                                        <div id="textColorDefilementBlock" style="margin-top:10px; display:none;">
+                                            <label for="textColorDefilement" style="margin-bottom:6px; white-space:nowrap;">Couleur du texte :</label>
+                                            <input type="color" class="form-control colors_picker" id="textColorDefilement" name="textColorDefilement" value="transparent" style="width:130px; margin-bottom:0; padding:2px;">
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- forcer un saut de ligne après le sélecteur d'animation -->
+                                <div style="clear: both; height:10px;"></div>
                                     <div>
             <label class="toggle-accordion-annonce col-form-label" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo1">Langues</label>
             
@@ -417,6 +435,77 @@ document.addEventListener('DOMContentLoaded', function () {
 
 </script>
 
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const textarea = document.getElementById('text');
+        const textPreview = document.getElementById('text-preview');
+        const fontSelect = document.getElementById('font');
+        const fontSizeSelect = document.getElementById('fontSize');
+        const animationSelect = document.getElementById('animation');
+        const styleSelect = document.getElementById('style');
+        const vitesseInput = document.getElementById('vitesseDefilement');
+        const textColorInput = document.getElementById('textColorDefilement');
+        const bgColorInput = document.getElementById('bgColorDefilement');
+
+        if (window.jQuery && window.jQuery.fn && typeof window.jQuery.fn.colors_picker === 'function') {
+            window.jQuery('.colors_picker').colors_picker();
+        }
+
+        if (!textarea || !textPreview) {
+            return;
+        }
+
+        function getStyledText(text, vitesse) {
+            let style = '';
+            if (fontSelect && fontSelect.value) style += `font-family:${fontSelect.value};`;
+            if (fontSizeSelect && fontSizeSelect.value) style += `font-size:${fontSizeSelect.value}px;`;
+            if (textColorInput && textColorInput.value && textColorInput.value !== 'transparent') style += `color:${textColorInput.value};`;
+            if (bgColorInput && bgColorInput.value && bgColorInput.value !== 'transparent') style += `background-color:${bgColorInput.value};`;
+            if (bgColorInput && bgColorInput.value && bgColorInput.value !== 'transparent') style += 'padding:2px 10px; border-radius:3px;';
+            if (styleSelect && styleSelect.value) {
+                if (styleSelect.value === 'Gras') style += 'font-weight:bold;';
+                if (styleSelect.value === 'Italique') style += 'font-style:italic;';
+                if (styleSelect.value === 'Souligné') style += 'text-decoration:underline;';
+                if (styleSelect.value === 'Barré') style += 'text-decoration:line-through;';
+            }
+
+            let animClass = '';
+            let animStyle = '';
+            if (animationSelect && animationSelect.value) {
+                if (animationSelect.value === 'scroll') animClass = 'ia-scroll';
+                if (animationSelect.value === 'bounce') animClass = 'ia-bounce';
+                if (animationSelect.value === 'fade') animClass = 'ia-fade';
+
+                if (vitesse && !isNaN(vitesse) && vitesse > 0) {
+                    const duration = Math.max(0.3, 50 / vitesse);
+                    animStyle = `animation-duration:${duration}s;`;
+                }
+            }
+
+            return `<span style="${style}${animStyle}" class="${animClass}">${text}</span>`;
+        }
+
+        function updatePreview() {
+            const text = textarea.value || '';
+            const vitesse = vitesseInput ? parseFloat(vitesseInput.value) : null;
+            if (text.trim() !== '') {
+                textPreview.innerHTML = getStyledText(text, vitesse);
+                textPreview.style.display = '';
+            } else {
+                textPreview.style.display = 'none';
+            }
+        }
+
+        textarea.addEventListener('input', updatePreview);
+        [fontSelect, fontSizeSelect, animationSelect, styleSelect, textColorInput, bgColorInput].forEach(sel => {
+            if (sel) sel.addEventListener('change', updatePreview);
+        });
+        if (vitesseInput) vitesseInput.addEventListener('input', updatePreview);
+
+        updatePreview();
+    });
+</script>
+
 <!-- l'affichage les champs et positions associees au type des le telechagement de la page-->
 <script>
     
@@ -428,22 +517,47 @@ document.addEventListener('DOMContentLoaded', function () {
         var textInput = document.getElementById('textInput');
         var fontSelection = document.getElementById('fontSelection');
         var languagesPart = document.getElementById('languagesPart');
-        var fluxRssSpeed = document.getElementById('fluxRssSpeed');
+        // var fluxRssSpeed = document.getElementById('fluxRssSpeed');
+        var animationSelection = document.getElementById('animationSelection');
+        var vitesseDefilementBlock = document.getElementById('vitesseDefilementBlock');
+        var bgColorDefilementBlock = document.getElementById('bgColorDefilementBlock');
+        var textColorDefilementBlock = document.getElementById('textColorDefilementBlock');
 
-        if (type === 'Message' || type === 'Flux RSS') {
+        if (type === 'Message' || type === 'Message défilant') {
             fileUpload.style.display = 'none';
             textInput.style.display = 'block';
             fontSelection.style.display = 'block';
             languagesPart.style.display = 'block';
-            ipAddress.style.display = 'none';
-            if (type === 'Flux RSS' && fluxRssSpeed) {
-                fluxRssSpeed.style.display = 'block';
+            if (animationSelection) {
+                animationSelection.style.display = (type === 'Message défilant') ? 'block' : 'none';
             }
+            if (vitesseDefilementBlock) {
+                vitesseDefilementBlock.style.display = (type === 'Message défilant') ? '' : 'none';
+            }
+            if (bgColorDefilementBlock) {
+                bgColorDefilementBlock.style.display = (type === 'Message défilant') ? '' : 'none';
+            }
+            if (textColorDefilementBlock) {
+                textColorDefilementBlock.style.display = (type === 'Message défilant') ? '' : 'none';
+            }
+            ipAddress.style.display = 'none';
         } else if (type === 'Image' || type === 'Video' || type === 'PDF') {
             fileUpload.style.display = 'block';
             textInput.style.display = 'none';
             fontSelection.style.display = 'none';
             languagesPart.style.display = 'none';
+            if (animationSelection) {
+                animationSelection.style.display = 'none';
+            }
+            if (vitesseDefilementBlock) {
+                vitesseDefilementBlock.style.display = 'none';
+            }
+            if (bgColorDefilementBlock) {
+                bgColorDefilementBlock.style.display = 'none';
+            }
+            if (textColorDefilementBlock) {
+                textColorDefilementBlock.style.display = 'none';
+            }
             ipAddress.style.display = 'none';
             const file = document.getElementById('file');
             if(type === 'Image')
@@ -459,13 +573,25 @@ document.addEventListener('DOMContentLoaded', function () {
             fileUpload.style.display = 'none';
             textInput.style.display = 'none';
             fontSelection.style.display = 'none';            
+            if (animationSelection) {
+                animationSelection.style.display = 'none';
+            }
+            if (vitesseDefilementBlock) {
+                vitesseDefilementBlock.style.display = 'none';
+            }
+            if (bgColorDefilementBlock) {
+                bgColorDefilementBlock.style.display = 'none';
+            }
+            if (textColorDefilementBlock) {
+                textColorDefilementBlock.style.display = 'none';
+            }
             ipAddress.style.display = 'block';
             languagesPart.style.display = 'none';
         }
 
         const positionSelect = document.getElementById('position');
         let positions;
-        if (type === 'Flux RSS') {
+        if (type === 'Message défilant') {
             positions = ['Bas'];
         } else if (type === 'Video' || type === 'Localtv' || type === 'PDF') {
             positions = ['Milieu'];
@@ -578,6 +704,10 @@ document.addEventListener('DOMContentLoaded', function () {
         var ipAddress = document.getElementById('ipAddress');
         var languagesPart = document.getElementById('languagesPart');
         var fluxRssSpeed = document.getElementById('fluxRssSpeed');
+        var animationSelection = document.getElementById('animationSelection');
+        var vitesseDefilementBlock = document.getElementById('vitesseDefilementBlock');
+        var bgColorDefilementBlock = document.getElementById('bgColorDefilementBlock');
+        var textColorDefilementBlock = document.getElementById('textColorDefilementBlock');
         
         // Hide the file path
         fileUpload.style.display = 'none'; 
@@ -587,6 +717,18 @@ document.addEventListener('DOMContentLoaded', function () {
         languagesPart.style.display = 'none'; 
         if (fluxRssSpeed) {
             fluxRssSpeed.style.display = 'none';
+        }
+        if (animationSelection) {
+            animationSelection.style.display = 'none';
+        }
+        if (vitesseDefilementBlock) {
+            vitesseDefilementBlock.style.display = 'none';
+        }
+        if (bgColorDefilementBlock) {
+            bgColorDefilementBlock.style.display = 'none';
+        }
+        if (textColorDefilementBlock) {
+            textColorDefilementBlock.style.display = 'none';
         }
 
         // Clear input values
@@ -600,10 +742,22 @@ document.addEventListener('DOMContentLoaded', function () {
         if(text)
             text.value= '';
         console.log(fileUpload,type);
-        if (type === 'Message' || type === 'Flux RSS') {
+        if (type === 'Message' || type === 'Message défilant' || type === 'Flux RSS') {
             textInput.style.display = 'block';
             fontSelection.style.display = 'block';
             languagesPart.style.display = 'block';
+            if (animationSelection) {
+                animationSelection.style.display = (type === 'Message défilant') ? 'block' : 'none';
+            }
+            if (vitesseDefilementBlock) {
+                vitesseDefilementBlock.style.display = (type === 'Message défilant') ? '' : 'none';
+            }
+            if (bgColorDefilementBlock) {
+                bgColorDefilementBlock.style.display = (type === 'Message défilant') ? '' : 'none';
+            }
+            if (textColorDefilementBlock) {
+                textColorDefilementBlock.style.display = (type === 'Message défilant') ? '' : 'none';
+            }
             if (type === 'Flux RSS' && fluxRssSpeed) {
                 fluxRssSpeed.style.display = 'block';
             }
@@ -627,7 +781,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const type = this.value;
         const positionSelect = document.getElementById('position');
         let positions;
-        if (type === 'Flux RSS') {
+        if (type === 'Flux RSS' || type === 'Message défilant') {
             positions = ['Bas'];
         } else if (type === 'Video' || type === 'Localtv' || type === 'PDF') {
             positions = ['Milieu'];

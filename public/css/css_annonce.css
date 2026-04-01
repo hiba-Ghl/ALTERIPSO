@@ -1,3 +1,36 @@
+/* Styles pour l'aperçu IA et les animations */
+.ia-scroll {
+    display: inline-block;
+    white-space: nowrap;
+    animation: ia-scroll-anim 8s linear infinite;
+}
+@keyframes ia-scroll-anim {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+.ia-bounce {
+    display: inline-block;
+    animation: ia-bounce-anim 1s infinite alternate;
+}
+@keyframes ia-bounce-anim {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-10px); }
+}
+.ia-fade {
+    display: inline-block;
+    animation: ia-fade-anim 2s infinite alternate;
+}
+@keyframes ia-fade-anim {
+    0% { opacity: 1; }
+    100% { opacity: 0.2; }
+}
+#ia-preview {
+    border: 1px dashed #aaa;
+    padding: 8px;
+    background: #f9f9f9;
+    min-height: 32px;
+    font-size: 1.1em;
+}
 /* Styles pour le tableau des annonces */
 body {
     line-height: 2.42857143;
@@ -889,6 +922,32 @@ tr {
     margin-left: 250px;
 }
 
+/* Espace vertical après le sélecteur d'animation
+   pour qu'il soit clairement au-dessus de la ligne
+   "Traduire le texte" / icône + */
+#animationSelection {
+    margin-bottom: 20px;
+}
+
+/* Bloc des langues (page Ajouter) : forcer les lignes à rester dans le conteneur */
+#languagesPart {
+    width: 100%;
+}
+
+#collapseTwo1 .form-row {
+    width: 100% !important;
+    margin: 0 0 15px 0 !important;
+}
+
+#collapseTwo1 .form-group {
+    width: 50% !important;
+    margin-left: 0 !important;
+}
+
+#collapseTwo1 .form-group textarea {
+    width: 100% !important;
+}
+
 @media screen and (max-width: 1200px) {
     .header-ajouter {
         margin-left: 10px !important;
@@ -1318,5 +1377,21 @@ tr {
         width: 100% !important;
         max-width: 40px;
         justify-content: center !important;
+    }
+}
+
+/* Animation pour ia-scroll : défilement de droite à gauche */
+.ia-scroll {
+    display: inline-block;
+    white-space: nowrap;
+    animation: scroll-right 10s linear infinite;
+}
+
+@keyframes scroll-right {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
     }
 }

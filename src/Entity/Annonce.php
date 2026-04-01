@@ -57,6 +57,9 @@ class Annonce
     private ?string $style = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    private ?string $animation = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $esMessage = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -86,6 +89,20 @@ class Annonce
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $enMessage = null;
 
+
+
+    #[ORM\Column(name: 'vitesse_defilement', type: 'integer', nullable: true)]
+    private ?int $vitesseDefilement = null;
+    public function getVitesseDefilement(): ?int
+    {
+        return $this->vitesseDefilement;
+    }
+
+    public function setVitesseDefilement(?int $vitesseDefilement): static
+    {
+        $this->vitesseDefilement = $vitesseDefilement;
+        return $this;
+    }
     public function __construct()
     {
         $this->historiqueAnnonces = new ArrayCollection();
@@ -266,6 +283,19 @@ class Annonce
     public function setStyle(?string $style): static
     {
         $this->style = $style;
+
+        return $this;
+    }
+
+
+    public function getAnimation(): ?string
+    {
+        return $this->animation;
+    }
+
+    public function setAnimation(?string $animation): static
+    {
+        $this->animation = $animation;
 
         return $this;
     }

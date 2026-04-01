@@ -507,38 +507,37 @@
 				<tbody class="tv-table-tbody-auto">
 					<tr class="odd gradeX tv-bg-white">
 						<td class="tv-th-name">
-							<label><input  {% if app.user.AjoutTV == '0' %} disabled {% endif %}name='nom' type="text" value="" class="form-control tv-font-11"></label>
-
+							<label for="ajout-nom" class="tv-label-mobile only-mobile" style="font-weight:bold;text-transform:uppercase;">Nom télévision</label>
+							<input id="ajout-nom" {% if app.user.AjoutTV == '0' %} disabled {% endif %} name='nom' type="text" value="" class="form-control tv-font-11">
 						</td>
 						<td class="tv-th-ip">
-							<label>
-								<textarea {% if app.user.AjoutTV == '0' %} disabled {% endif %} name='ip' class="form-control tv-textarea-ip"></textarea>
-							</label>
+							<label for="ajout-ip" class="tv-label-mobile only-mobile" style="font-weight:bold;text-transform:uppercase;">Ip</label>
+							<textarea id="ajout-ip" {% if app.user.AjoutTV == '0' %} disabled {% endif %} name='ip' class="form-control tv-textarea-ip"></textarea>
 						</td>
 
 
 						<td class="tv-th-port">
-							<label><input {% if app.user.AjoutTV == '0' %} disabled {% endif %} name='port' type="text" value="" class="form-control tv-font-11"></label>
-
+							<label for="ajout-port" class="tv-label-mobile only-mobile" style="font-weight:bold;text-transform:uppercase;">Port</label>
+							<input id="ajout-port" {% if app.user.AjoutTV == '0' %} disabled {% endif %} name='port' type="text" value="" class="form-control tv-font-11">
 						</td>
 
 
 						<td class="tv-th-numero">
-							<label><input {% if app.user.AjoutTV == '0' %} disabled {% endif %} name='numero' type="number" value="" class="form-control tv-font-11"></label>
+							<label for="ajout-numero" class="tv-label-mobile only-mobile" style="font-weight:bold;text-transform:uppercase;">Numéro</label>
+							<input id="ajout-numero" {% if app.user.AjoutTV == '0' %} disabled {% endif %} name='numero' type="number" value="" class="form-control tv-font-11">
 						</td>
 
 						<td class="tv-th-icons">
-
-
+							<label for="ajout-logo" class="tv-label-mobile only-mobile" style="font-weight:bold;text-transform:uppercase;">Icons</label>
 							<div class="fileUpload tv-logo-container" id="mainform0">
 								<img id="preview-0" src="{{ asset('images/no_image.png') }}" alt="..." class="img-rounded img-responsive center-block tv-logo-container">
-								<input {% if app.user.AjoutTV == '0' %} disabled {% endif %} id="0" type="file" class="upload tv-logo-container" name="logo" accept=".jpg, .jpeg, .png"/>
+								<input {% if app.user.AjoutTV == '0' %} disabled {% endif %} id="ajout-logo" type="file" class="upload tv-logo-container" name="logo" accept=".jpg, .jpeg, .png"/>
 							</div>
 						</td>
 
 						<td class="tv-th-pays">
-							<label>
-								<select {% if app.user.AjoutTV == '0' %} disabled {% endif %} class="form-control tv-select-full-font-11" name='pays'>
+							<label for="ajout-pays" class="tv-label-mobile only-mobile" style="font-weight:bold;text-transform:uppercase;">Pays</label>
+							<select id="ajout-pays" {% if app.user.AjoutTV == '0' %} disabled {% endif %} class="form-control tv-select-full-font-11" name='pays'>
 
 									<option value="France">France</option>
 									<option value="Afghanistan">Afghanistan</option>
@@ -810,7 +809,8 @@
 							</label>
 						</td>
 						<td class="tv-th-protocole">
-							<select {% if app.user.AjoutTV == '0' %} disabled {% endif %} class="form-control tv-select-full-font-11" name='protocole'>
+							<label for="ajout-protocole" class="tv-label-mobile only-mobile" style="font-weight:bold;text-transform:uppercase;">Protocole</label>
+							<select id="ajout-protocole" {% if app.user.AjoutTV == '0' %} disabled {% endif %} class="form-control tv-select-full-font-11" name='protocole'>
 								<option value="http://">HTTP</option>
 								<option value="coax">COAX</option>
 								<option value="udp://@">UDP</option>
@@ -818,13 +818,16 @@
 							</select>
 						</td>
 						<td class="tv-th-active">
-							<label><input {% if app.user.AjoutTV == '0' %} disabled {% endif %} name='active' type="checkbox"></label>
+							<label for="ajout-active" class="tv-label-mobile only-mobile" style="font-weight:bold;text-transform:uppercase;">Active</label>
+							<input id="ajout-active" {% if app.user.AjoutTV == '0' %} disabled {% endif %} name='active' type="checkbox">
 						</td>
 						<td class="tv-th-gratuite">
-							<label><input {% if app.user.AjoutTV == '0' %} disabled {% endif %} name='gratuite' type="checkbox"></label>
+							<label for="ajout-gratuite" class="tv-label-mobile only-mobile" style="font-weight:bold;text-transform:uppercase;">Gratuite</label>
+							<input id="ajout-gratuite" {% if app.user.AjoutTV == '0' %} disabled {% endif %} name='gratuite' type="checkbox">
 						</td>
 						<td class="tv-th-actions">
-							<button {% if app.user.AjoutTV == '0' %} disabled {% endif %} type="submit" data-toggle="tooltip" data-placement="top" title="Ajouter une chaîne" id="" href="{{path('ajouter_chaine')}}" class="btn btn-info btn-xs">
+							<label for="ajout-actions" class="tv-label-mobile only-mobile" style="font-weight:bold;text-transform:uppercase;">Action</label>
+							<button {% if app.user.AjoutTV == '0' %} disabled {% endif %} type="submit" data-toggle="tooltip" data-placement="top" title="Ajouter une chaîne" id="ajout-actions" href="{{path('ajouter_chaine')}}" class="btn btn-info btn-xs">
 								<i data-toggle="tooltip" data-placement="top" title="Ajouter une chaîne" class="glyphicon glyphicon-plus"></i>
 							</button>
 						</td>

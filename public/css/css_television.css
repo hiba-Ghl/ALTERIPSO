@@ -1,3 +1,78 @@
+/* Labels mobiles pour le formulaire d'ajout de chaîne TV */
+@media (max-width: 768px) {
+    .tv-label-mobile.only-mobile {
+        display: block !important;
+        color: #3087ce !important;
+        font-weight: bold;
+        text-transform: uppercase;
+        text-align: left;
+        margin-bottom: 4px;
+        margin-left: -130px;
+        font-size: 12px;
+        letter-spacing: 0.5px;
+        position: relative;
+    }
+    /* Suppression des deux-points automatiques après les labels mobiles du formulaire d'ajout */
+    .tv-label-mobile.only-mobile::after {
+        content: '';
+        margin-left: 0;
+    }
+    /* Correction : label d'abord, puis le deux-points */
+    .tv-table-tbody-auto label.tv-label-mobile.only-mobile {
+        display: inline-block !important;
+        color: #3087ce !important;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 0;
+        margin-right: 10px;
+        font-size: 12px;
+        letter-spacing: 0.5px;
+        min-width: 110px;
+        width: 110px;
+        vertical-align: middle;
+        position: relative;
+    }
+    .tv-table-tbody-auto label.tv-label-mobile.only-mobile::before {
+        content: '';
+    }
+    .tv-table-tbody-auto label.tv-label-mobile.only-mobile::after {
+        content: ' :';
+        color: #3087ce;
+        margin-left: 2px;
+        font-weight: bold;
+        font-size: 13px;
+        position: relative;
+        right: 0;
+    }
+    .tv-table-tbody-auto > tr > td {
+        display: flex !important;
+        align-items: center !important;
+        padding: 8px 4px !important;
+        border: none !important;
+        border-bottom: 1px solid #f0f0f0 !important;
+        text-align: left !important;
+        height: auto !important;
+        white-space: normal !important;
+        box-sizing: border-box;
+    }
+    .tv-table-tbody-auto > tr > td:last-child {
+        border-bottom: none !important;
+    }
+    .tv-table-tbody-auto input,
+    .tv-table-tbody-auto textarea,
+    .tv-table-tbody-auto select {
+        flex: 1 1 auto;
+        min-width: 0;
+        width: auto;
+        margin: 0;
+    }
+}
+
+@media (min-width: 769px) {
+    .tv-label-mobile.only-mobile {
+        display: none !important;
+    }
+}
 /* Custom CSS for Television List */
 
 #div1 {
@@ -823,4 +898,11 @@
         display: inline-block !important;
         vertical-align: middle !important;
     }
+}
+
+@media (max-width: 768px) {
+  /* Supprimer les deux-points générés par data-label dans toutes les colonnes du formulaire d'ajout */
+  .tv-table-tbody-auto td:before {
+    content: '' !important;
+  }
 }

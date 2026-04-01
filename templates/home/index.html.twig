@@ -711,10 +711,10 @@
 					</div>-->
 					<div	class="form-group">
 
-						<a	 style="display:flex;gap:5px;align-items:center;" {% if app.user.FondEcran == '0' %} disabled {% endif %} style="width: 100%"	href=""	id=""	name="send"	class="btn-info btn  "	data-toggle="modal"	data-target="#backa">
+						<button type="button" id="btnBackground" {% if app.user.FondEcran == '0' %}disabled{% endif %} class="btn btn-info" style="display:flex; gap:5px; align-items:center; width:100%;" data-toggle="modal" data-target="#backa">
 							<i	class="glyphicon glyphicon-picture"></i>
 							Fond d'écran
-						</a>
+						</button>
 
 					</div>
 					<!--<div class="form-group ">

@@ -59,7 +59,7 @@ class AnnonceController extends AbstractController
 
     //la methode d'ajout d'une annonce**************************************************************************************************
     #[Route('/annonce/ajouter', name: 'app_ajouter_annonce')]
-    public function ajouterAnnonce(EntityManagerInterface $entityManager): Response
+    public function ajouterAnnonce(EntityManagerInterface $entityManager, Request $request): Response
     {
 
 
@@ -80,9 +80,6 @@ class AnnonceController extends AbstractController
             $configArray = ['Status'=>'online'];
         }
         $configJson = json_encode($configArray);
-        $request = Request::createFromGlobals();
-
-
         //recuperation des donnees du formulaire 
         $valider = $request->get("valider");
         $nom = $request->get("nom");
@@ -105,9 +102,13 @@ class AnnonceController extends AbstractController
         $style = $request->get("style");
         $active = $request->get("active");
 
+        $animation = $request->get("animation");
+        $vitesseDefilement = $request->get("vitesseDefilement");
+
 
         
         $taille = !empty($taille) ? (int) $taille : null; //convert the string to int
+        $vitesseDefilement = !empty($vitesseDefilement) ? (int) $vitesseDefilement : null;
         
         $themee = $request->get("themee"); //themee double e recupere les themse del a base de donnees 
         if ($themee == 'autre')
@@ -117,7 +118,7 @@ class AnnonceController extends AbstractController
 
         $file = null; //initialisation du file
 
-        if (isset($valider)) {
+        if ($request->isMethod('POST')) {
 
             $annonce = new Annonce(); // creation d'une instance de l'entite Annonce
 
@@ -125,7 +126,7 @@ class AnnonceController extends AbstractController
                 // cette partie est pour la colonne URL 
             if ($type == 'Localtv') {
                 $file = $request->get("ip");
-            } else if ($type == 'Message'){
+            } else if ($type == 'Message' || $type == 'Message défilant'){
                 $file = $request->get("text");
             } else {
                 $fileName = ' ';
@@ -159,6 +160,9 @@ class AnnonceController extends AbstractController
             $annonce->setTaille($taille);
             $annonce->setStyle($style);
             $annonce->setActive($active);
+
+            $annonce->setAnimation($animation);
+            $annonce->setVitesseDefilement($type === 'Message défilant' ? $vitesseDefilement : null);
 
 
             //la persistance de l'entite et l'enregistrement dans la base dee donnees     
@@ -245,7 +249,7 @@ class AnnonceController extends AbstractController
 
     //la methode de modification d'une annonce**************************************************************************************************
     #[Route('/annonce/modifier/{id}', name: 'app_modifier_annonce')]
-    public function modifierAnnonce(EntityManagerInterface $entityManager, int $id): Response
+    public function modifierAnnonce(EntityManagerInterface $entityManager, Request $request, int $id): Response
     {
 
         if( !$this->getUser())
@@ -264,8 +268,6 @@ class AnnonceController extends AbstractController
             $configArray = ['Status'=>'online'];
         }
         $configJson = json_encode($configArray);
-        $request = Request::createFromGlobals();
-
         $valider = $request->get("valider");
         $nom = $request->get("nom");
         $type = $request->get("type");
@@ -288,10 +290,13 @@ class AnnonceController extends AbstractController
         $taille = $request->get("fontSize");
         $style = $request->get("style");
         $active = $request->get("active");
+        $animation = $request->get("animation");
+        $vitesseDefilement = $request->get("vitesseDefilement");
 
 
 
         $taille = !empty($taille) ? (int) $taille : null;//conversion vert type int
+    $vitesseDefilement = !empty($vitesseDefilement) ? (int) $vitesseDefilement : null;
         
         $themee = $request->get("themee"); //themee double e recupere les themse del a base de donnees 
         if ($themee == 'autre')
@@ -300,14 +305,14 @@ class AnnonceController extends AbstractController
             $theme = $themee;
 
         // $file = null;
-        if (isset($valider)) {
+        if ($request->isMethod('POST')) {
 
 
                 // cette partie est pour la colonne URL 
             if ($type == 'Localtv') {
-                    $annonce->setUrl($request->get("ip"));
-                }
-            else if ($type == 'Message'){
+                $annonce->setUrl($request->get("ip"));
+            }
+            else if ($type == 'Message' || $type == 'Message défilant'){
                 $annonce->setUrl($request->get("text"));
             } else {
                 $fileName = ' ';
@@ -342,6 +347,8 @@ class AnnonceController extends AbstractController
             $annonce->setTaille($taille);
             $annonce->setStyle($style);
             $annonce->setActive($active);
+            $annonce->setAnimation($animation);
+            $annonce->setVitesseDefilement($type === 'Message défilant' ? $vitesseDefilement : null);
 
 
 
