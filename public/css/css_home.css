@@ -281,17 +281,29 @@ body {
 
     /* Minimize the cog icon (edit button) on mobile */
     .backp .cog .btn-xs {
-        padding: 1px 2px !important;
-        height: 5px !important;
+        padding: 1px !important;
+        height: auto !important;
+        display: block !important;
+        margin: 0 auto !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
     }
 
     .backp .cog .glyphicon-cog {
-        font-size: 8px !important;
+        font-size: 9px !important;
     }
 
     .backp .caption label {
         font-size: 7px !important;
         margin-top: -10px !important;
+        pointer-events: none !important; /* Empêche le label de bloquer le clic du lien */
+    }
+
+    /* Garantir que le lien prenne bien toute la place et soit cliquable */
+    .backp a[href*="categories/"] {
+        position: relative !important;
+        z-index: 5 !important;
+        display: block !important;
     }
 
     .backp .col-sm-1 {
@@ -424,22 +436,23 @@ body {
     /* Inputs de sélection de catégorie (name="cat[...]", class="caf")
        plus petits mais toujours bien visibles sur mobile */
     .backp input.caf {
-        width: 14px !important;
-        height: 14px !important;
-        margin: 0 1px !important;
-		position: relative !important;
-		top: -28px !important; /* remonte la case à cocher plus près de l'image */
+        width: 9px !important;
+        height: 9px !important;
+        margin: -3px auto 0 !important;
+		position: static !important;
+		display: block !important;
     }
 
     /* S'assurer que la zone cog (bouton + checkbox) reste en haut à gauche
        de chaque icône, au-dessus de l'image, sur mobile */
     .backp .cog {
         position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        z-index: 5 !important;
+        top: -5px !important;
+        left: -5px !important;
+        z-index: 10 !important;
         padding: 2px !important;
-        width: 15px !important;
+        width: 18px !important;
+        background-color: transparent !important;
     }
 
     /* Titre "Menu déroulant à gauche" : réduire encore l'espace sur mobile */
@@ -520,6 +533,7 @@ body {
     .backp .caption label {
         font-size: 6px !important;
         margin-top: -8px !important;
+        pointer-events: none !important;
     }
 
     /* Remonter un peu le bloc d'icônes à l'intérieur de la TV pour

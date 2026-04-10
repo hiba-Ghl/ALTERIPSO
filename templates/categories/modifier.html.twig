@@ -1,43 +1,16 @@
 {% extends 'home/index.html.twig' %}
 {% block body %}
 
-<style>
-		#div1 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 20px;
-			width: 1091px;
-			height: 300px;
-			margin-left: 10px;
-			margin-top: 10px;
-			
-			padding: 43px;
+<link rel="stylesheet" href="{{ asset('css/css_categories.css') }}" />
 
-		}
-		#div4 {
-			border-radius: 25px;
-			border: 2px solid #3087ce;
-			padding: 20px;
-            padding-bottom:50px;
-            background-color:white;
-			width: 1091px;
-			margin-left: 10px;
-			margin-top: 10px;
-		}
-
-        .img {         
-    width: 100px;
-    height: 100px;
-        }
-	</style>
 <!-- ajouter categories                                                      -->
 
-<div style="border-radius: 8px;text-align: left;margin-left: 10px;color: white;font-style: oblique;font-size: 20px;background-color: #3087ce;width: 250px;padding-left: 10px;">
-    <img style="margin-top: -51px;margin-left: -10px;width: 45px;float: left;" src="{{ asset('images/ler.png') }}">
+<div class="category-title-container">
+    <img class="category-title-img" src="{{ asset('images/ler.png') }}">
     Modifier  {{categorie.nom}}
 </div>
 
-<div id="div4">
+<div class="category-form-container">
 
    
     <form name="" method="post" action="{{ path('modifiercategories', {'id': categorie.id}) }}" class="form-horizontal" enctype="multipart/form-data">
@@ -123,33 +96,23 @@
                 </div>
     
             <br>
-            <strong>Média
-            </strong>
+            <strong>Média</strong>
     
-    
-    <table style="width: 100%;display: flex;justify-content: space-evenly;flex-direction: row;">
-        <tr>
-            <td>
-                <div class="form-group"  style="display:flex;justify-content:space-between;">
-                    <label for="logo" class="col-lg-2 control-label">logo</label>
-                    <div style="display:flex;flex-direction:column;justify-content:center;gap:5px;align-items:center">
-                    <img  src="{{ path('afficher_image', { filename: categorie.logo|split('/')|last, directory: 'categories_directory' }) }}" class="img"/>
+            <div class="category-media-wrapper">
+                <div class="category-media-item">
+                    <label for="logo" class="control-label">logo</label>
+                    <img src="{{ path('afficher_image', { filename: categorie.logo|split('/')|last, directory: 'categories_directory' }) }}" class="category-img"/>
                     <input type="file" class="form-control-file" id="logo" name="logo">
-                    </div>
                 </div>
-            </td>
-            <td>
-                <div class="form-group"  style="display:flex;justify-content:space-between;">
-                    <label for="background" class="col-lg-2 control-label" >background</label>
-                    <div style="display:flex;flex-direction:column;justify-content:center;gap:5px;align-items:center">
-                        <img src="{{ categorie.background ? path('afficher_image', { filename: categorie.background|split('/')|last, directory: 'categories_directory' }) : asset('images/no_image.png') }}" class="img"/>
-                        <input type="file" class="form-control-file" id="background" name="background">
-                    </div>
+                
+                <div class="category-media-item">
+                    <label for="background" class="control-label">background</label>
+                    <img src="{{ categorie.background ? path('afficher_image', { filename: categorie.background|split('/')|last, directory: 'categories_directory' }) : asset('images/no_image.png') }}" class="category-img"/>
+                    <input type="file" class="form-control-file" id="background" name="background">
                 </div>
-            </td>
-        </tr>
-    </table>
-            <label style="margin-right: 20px;" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Langues</label>
+            </div>
+
+            <label style="margin-right: 20px; margin-top: 20px;" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Langues</label>
             <!-- le bouton de traduction -->
             <button type="button" id="translateBtn" class="btn btn-info btn-sm">
                 <i class="glyphicon glyphicon-globe"></i> Traduire le texte
@@ -166,70 +129,63 @@
         </script>
         <div id="collapseTwo" class="panel-collapse collapse">
             <div class="panel-body">
-                <table class="lang-table" style="width: 100%; border-spacing: 20px;">
-                <tr>
-                    <td>
-                        <img style="width: 30px" src=" {{asset('images/eng.png')}}">
-                        <label class="control-label required" for="EN">English</label>
-                        <input style="margin-right: 150px;" type="text" id="EN" name="EN" class="form-control" value="{{categorie.en}}">
-                    </td>
-                    <td>
-                        <img style="width: 30px" src="{{asset('images/es.png')}}">
-                        <label class="control-label required" for="ES">Espagnol</label>
-                        <input style="margin-right: 150px;" type="text" id="ES" name="ES" class="form-control" value="{{categorie.es}}">
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <img style="width: 30px" src=" {{asset('images/pt.png')}}">
-                        <label class="control-label required" for="PT">Portugues</label>
-                        <input type="text" id="PT" name="PT" class="form-control" value="{{categorie.pt}}">
-                    </td>
-                    <td>
-                        <img style="width: 30px" src=" {{asset('images/ita.png')}}">
-                        <label class="control-label required" for="IT">Italiano</label>
-                        <input type="text" id="IT" name="IT" class="form-control" value="{{categorie.it}}">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <img style="width: 30px" src=" {{asset('images/rus.png')}}">
-                        <label class="control-label required" for="RU">Russian</label>
-                        <input type="text" id="RU" name="RU" class="form-control" value="{{categorie.ru}}">
-                    </td>
-                    <td>
-                        <img style="width: 30px" src=" {{asset('images/deu.png')}}">
-                        <label class="control-label required" for="DE">Deutsch</label>
-                        <input type="text" id="DE" name="DE" class="form-control" value="{{categorie.de}}">
-                    </td>
-
-                </tr>
-
-                <tr>
-                    <td>
-                        <img style="width: 30px" src=" {{asset('images/ch.png')}}">
-                        <label class="control-label required" for="ZH">China</label>
-                        <input type="text" id="ZH" name="ZH" class="form-control" value="{{categorie.zh}}">
-                    </td>
-                    <td>
-                        <img style="width: 30px" src=" {{asset('images/ma.png')}}">
-                        <label class="control-label required" for="AR">العربية</label>
-                        <input type="text" id="AR" name="AR" class="form-control" value="{{categorie.ar}}">
-                    </td>
-                </tr>
-                </table>
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="language-item">
+                            <img src="{{asset('images/eng.png')}}">
+                            <label class="control-label" for="EN">English</label>
+                            <input type="text" id="EN" name="EN" class="form-control" value="{{categorie.en}}">
+                        </div>
+                        <div class="language-item">
+                            <img src="{{asset('images/pt.png')}}">
+                            <label class="control-label" for="PT">Portugues</label>
+                            <input type="text" id="PT" name="PT" class="form-control" value="{{categorie.pt}}">
+                        </div>
+                        <div class="language-item">
+                            <img src="{{asset('images/rus.png')}}">
+                            <label class="control-label" for="RU">Russian</label>
+                            <input type="text" id="RU" name="RU" class="form-control" value="{{categorie.ru}}">
+                        </div>
+                        <div class="language-item">
+                            <img src="{{asset('images/ch.png')}}">
+                            <label class="control-label" for="ZH">China</label>
+                            <input type="text" id="ZH" name="ZH" class="form-control" value="{{categorie.zh}}">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="language-item">
+                            <img src="{{asset('images/es.png')}}">
+                            <label class="control-label" for="ES">Espagnol</label>
+                            <input type="text" id="ES" name="ES" class="form-control" value="{{categorie.es}}">
+                        </div>
+                        <div class="language-item">
+                            <img src="{{asset('images/ita.png')}}">
+                            <label class="control-label" for="IT">Italiano</label>
+                            <input type="text" id="IT" name="IT" class="form-control" value="{{categorie.it}}">
+                        </div>
+                        <div class="language-item">
+                            <img src="{{asset('images/deu.png')}}">
+                            <label class="control-label" for="DE">Deutsch</label>
+                            <input type="text" id="DE" name="DE" class="form-control" value="{{categorie.de}}">
+                        </div>
+                        <div class="language-item">
+                            <img src="{{asset('images/ma.png')}}">
+                            <label class="control-label" for="AR">العربية</label>
+                            <input type="text" id="AR" name="AR" class="form-control" value="{{categorie.ar}}">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         
-       <div style="float:right;margin-left:30px;">
-    <a class="btn btn-danger btn-md" id = "annulerButton" style="width:130px;" href="/home">
-        <i class="glyphicon glyphicon-remove"></i> Annuler
-    </a>
-     <button type="submit" class="btn btn-primary btn-md" style="width:130px;">
-        <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
-    </button>
-</div>
+       <div class="category-action-buttons">
+            <a class="btn btn-danger btn-md" id="annulerButton" style="width:130px;" href="/home">
+                <i class="glyphicon glyphicon-remove"></i> Annuler
+            </a>
+             <button type="submit" class="btn btn-primary btn-md" style="width:130px;">
+                <i class="glyphicon glyphicon-floppy-disk"></i> Enregistrer
+            </button>
+        </div>
         </form>
 </div>
 <br> <br> <br> <br>

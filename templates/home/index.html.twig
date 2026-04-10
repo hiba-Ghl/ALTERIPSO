@@ -819,26 +819,26 @@
 									{% if (categorie.typemenu == 'centre') %}
 										<div	class="col-sm-1"	style="margin-right: 10px;">
 											<div	style="margin-top: 5px; width: 80px; height: 80px; margin-left: 5px; position: relative;">
-												<div	class="cog"	style="position: absolute; padding: 3px;">
-													<button	{% if app.user.ChangeCat == '0' %} disabled {% endif %} data-toggle="modal"	data-target="#changeposition{{ categorie.id }}"	style="background-color: #f9f9f9; color: #333; border-width: 0px;"	type="button"	class="btn btn-default btn-xs">
+												<div	class="cog"	style="position: absolute; top: -5px; padding: 3px; z-index: 10;">
+													<button	{% if app.user.ChangeCat == '0' %} disabled {% endif %} data-toggle="modal"	data-target="#changeposition{{ categorie.id }}"	style="background-color: #f9f9f9; color: #333; border-width: 0px; margin-bottom: 2px;"	type="button"	class="btn btn-default btn-xs">
 														<span	class="glyphicon glyphicon-cog"	aria-hidden="true"></span>
 													</button>
 
-													<input	{% if app.user.ChangeCat == '0' %} disabled {% endif %} name="cat[{{ categorie.Id }}]"	class="caf"	style="width: 100%;"	type="checkbox"	{{ ch }}>
+													<input	{% if app.user.ChangeCat == '0' %} disabled {% endif %} name="cat[{{ categorie.Id }}]"	class="caf"	style="width: 100%; cursor: pointer; margin: 0; display: block;"	type="checkbox"	{{ ch }}>
 												</div>
 
-												<!--<img	src="{#{ asset(categorie.logo) }#}"	style="width: 80px; height: 80px; border-radius: 9px;">-->
-												<img src="{{ categorie.logo ? path('afficher_image', { filename: categorie.logo|split('/')|last, directory: 'categories_directory' }) : path('afficher_image', { filename: 'no_image.png', directory: 'images_directory' }) }}" style="width: 80px; height: 80px; border-radius: 9px;">
+												<a href="categories/{{ categorie.Id }}" style="display: block; width: 100%; height: 100%; text-decoration: none; {% if app.user.ChangeCat == '0' %} pointer-events: none; opacity: 0.5; cursor: default; {% else %} cursor: pointer; {% endif %}">
+													<!--<img	src="{#{ asset(categorie.logo) }#}"	style="width: 80px; height: 80px; border-radius: 9px;">-->
+													<img src="{{ categorie.logo ? path('afficher_image', { filename: categorie.logo|split('/')|last, directory: 'categories_directory' }) : path('afficher_image', { filename: 'no_image.png', directory: 'images_directory' }) }}" style="width: 80px; height: 80px; border-radius: 9px;">
 
-												{# <img src="{{ categorie.logo ? asset(categorie.logo) : asset('images/no_image.png') }}" style="width: 80px; height: 80px; border-radius: 9px;"> #}
+													{# <img src="{{ categorie.logo ? asset(categorie.logo) : asset('images/no_image.png') }}" style="width: 80px; height: 80px; border-radius: 9px;"> #}
 
-												<div class="caption">
-													<a	href="categories/{{ categorie.Id }}"  {% if app.user.ChangeCat == '0' %} style="pointer-events: none; opacity: 0.5; cursor: default;" {% endif %}>
-														<label	name="titre"	class="center-block"	style="margin-top: -34px; font-size: 11px; color: white; text-align: center;">
+													<div class="caption">
+														<label	name="titre"	class="center-block"	style="margin-top: -34px; font-size: 11px; color: white; text-align: center; cursor: pointer;">
 															{{ categorie.titre|capitalize }}
 														</label>
-													</a>
-												</div>
+													</div>
+												</a>
 											</div>
 										</div>
 									{% endif %}
@@ -854,23 +854,23 @@
 									{% endif %}
 									{% if (categorie.typemenu == 'gauche') %}
 										<div	class="col-sm-1"	style="margin-right: 10px;">
-											<div	style="width: 80px;height: 80px;border-radius: 9px;border: solid 2px blue;">
-												<div	class="cog"	style="position: absolute; padding: 3px;">
-													<button	data-toggle="modal"	data-target="#changeposition{{ categorie.id }}" {% if app.user.ChangeCat == '0' %} disabled {% endif %}	style="background-color: #f9f9f9; color: #333; border-width: 0px;"	type="button"	class="btn btn-default btn-xs">
+											<div	style="width: 80px;height: 80px;border-radius: 9px;border: solid 2px blue; position: relative;">
+												<div	class="cog"	style="position: absolute; top: 0px; padding: 3px; z-index: 10;">
+													<button	data-toggle="modal"	data-target="#changeposition{{ categorie.id }}" {% if app.user.ChangeCat == '0' %} disabled {% endif %}	style="background-color: #f9f9f9; color: #333; border-width: 0px; margin-bottom: 2px;"	type="button"	class="btn btn-default btn-xs">
 														<span	class="glyphicon glyphicon-cog"	aria-hidden="true"></span>
 													</button>
 
-													<input	name="cat[{{ categorie.Id }}]"	class="caf"	style="width: 100%;"	{% if app.user.ChangeCat == '0' %} disabled {% endif %} type="checkbox"	{{ ch }}>
+													<input	name="cat[{{ categorie.Id }}]"	class="caf"	style="width: 100%; cursor: pointer; margin: 0; display: block;"	{% if app.user.ChangeCat == '0' %} disabled {% endif %} type="checkbox"	{{ ch }}>
 												</div>
 
-												<img src="{{ path('afficher_image', { filename: categorie.logo|split('/')|last, directory: 'categories_directory' }) }}"	style="width: 100%; height: 100%; border-radius: 9px;">
-												<div	class="caption">
-													<a	 {% if app.user.ChangeCat == '0' %} style="pointer-events: none; opacity: 0.5; cursor: default;" {% endif %} href="categories/{{ categorie.Id }}">
-														<label	name="titre"	 class="center-block"	style="margin-top: -34px;font-size: 11px;color: blue;text-align: center;">
+												<a href="categories/{{ categorie.Id }}" style="display: block; width: 100%; height: 100%; text-decoration: none; {% if app.user.ChangeCat == '0' %} pointer-events: none; opacity: 0.5; cursor: default; {% else %} cursor: pointer; {% endif %}">
+													<img src="{{ path('afficher_image', { filename: categorie.logo|split('/')|last, directory: 'categories_directory' }) }}"	style="width: 100%; height: 100%; border-radius: 9px;">
+													<div	class="caption">
+														<label	name="titre"	 class="center-block"	style="margin-top: -34px;font-size: 11px;color: blue;text-align: center; cursor: pointer;">
 															{{ categorie.titre|capitalize }}
 														</label>
-													</a>
-												</div>
+													</div>
+												</a>
 											</div>
 										</div>
 									{% endif %}
@@ -997,7 +997,7 @@
 			</div>
 
 			<!-- Modal d'envoie -->
-			<div	id="ConfirmModal"	class="modal fade"	role="dialog"	style="padding-right: 25px;margin-left: 343px;margin-top: 32px;">
+			<div	id="ConfirmModal"	class="modal fade"	role="dialog">
 				<div	class="modal-dialog">
 
 					<!-- Modal content-->
@@ -1012,7 +1012,7 @@
 								</h4>
 							</div>
 
-							<div	id="checkedmodal"	style="height:500px;overflow-y: scroll;"	class="modal-body"></div>
+							<div	id="checkedmodal"	style="max-height:calc(100vh - 200px);overflow-y: auto;"	class="modal-body"></div>
 							<div	class="modal-footer">
 								<button	id="mcontenu"	type="submit"	name="contenu"	class="confmodal btn btn-primary">
 									Confirmer

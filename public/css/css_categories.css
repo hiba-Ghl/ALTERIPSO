@@ -1,0 +1,115 @@
+.category-title-container {
+    border-radius: 8px;
+    text-align: left;
+    color: white;
+    font-style: oblique;
+    font-size: 20px;
+    background-color: #3087ce;
+    width: 250px;
+    padding-left: 10px;
+    margin-left: 10px;
+    position: relative;
+    max-width: 100%;
+}
+
+.category-title-img {
+    margin-top: -51px;
+    margin-left: -10px;
+    width: 45px;
+    float: left;
+}
+
+.category-form-container {
+    border-radius: 25px;
+    border: 2px solid #3087ce;
+    padding: 20px;
+    padding-bottom: 50px;
+    background-color: white;
+    max-width: 1091px;
+    width: 100%;
+    margin-left: 10px;
+    margin-top: 10px;
+    box-sizing: border-box;
+}
+
+.category-img {         
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.category-media-wrapper {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.category-media-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.language-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.language-item img {
+    width: 30px;
+    margin-right: 10px;
+}
+
+.language-item label {
+    margin-bottom: 0;
+    min-width: 80px;
+}
+
+.language-item input {
+    flex: 1;
+    min-width: 150px;
+}
+
+.category-action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    margin-right: 30px;
+    flex-wrap: wrap;
+}
+
+/* Responsive fixes for mobile devices */
+@media (max-width: 768px) {
+    .category-form-container {
+        margin-left: 0;
+        padding: 15px;
+    }
+    
+    .category-title-container {
+        margin-left: 0;
+        margin-top: 60px; /* Offset for the floating image */
+    }
+    
+    .category-media-wrapper {
+        flex-direction: column;
+    }
+    
+    .language-item {
+        flex-direction: row;
+    }
+    
+    .category-action-buttons {
+        justify-content: stretch;
+        margin-right: 0;
+        width: 100%;
+    }
+    
+    .category-action-buttons .btn {
+        width: 100% !important;
+    }
+}
