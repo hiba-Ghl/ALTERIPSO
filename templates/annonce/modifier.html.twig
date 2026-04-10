@@ -58,12 +58,87 @@
                     <textarea class="form-control" name="text" id="text" rows="3" style="margin-bottom: 5px;margin-top: 5px;">{{ann.url}}</textarea>
                     <div id="text-preview" style="display:none; margin-top:8px;padding:5px;border:1px dashed gray; overflow:hidden; width:100%;"></div>
 
-                    <div id="emojiBar" class="emoji-bar" style="margin-bottom:5px;">
-                        <button type="button" class="btn btn-default btn-xs emoji-btn">😊</button>
-                        <button type="button" class="btn btn-default btn-xs emoji-btn">😂</button>
-                        <button type="button" class="btn btn-default btn-xs emoji-btn">😍</button>
-                        <button type="button" class="btn btn-default btn-xs emoji-btn">👍</button>
-                        <button type="button" class="btn btn-default btn-xs emoji-btn">🎉</button>
+                    <!-- Bouton pour ouvrir le bloc d'émoticônes/caractères spéciaux/caricatures -->
+                    <button type="button" id="openEmojiBlock" class="btn btn-secondary btn-sm" style="margin-bottom:8px;">😀</button>
+                    <!-- Bloc d'émoticônes, caractères spéciaux et caricatures -->
+                    <div id="emojiSpecialBlock" style="display:none; border:1px solid #ccc; background:#fff; padding:10px; margin-bottom:8px; max-width:400px; max-height:180px; overflow:auto; z-index:9999; position:fixed; left:50%; top:30%; transform:translate(-50%, 0); box-shadow:0 2px 12px rgba(0,0,0,0.15);">
+                        <div><strong>Émojis :</strong></div>
+                        <div style="margin-bottom:6px;">
+                            <span class="emoji-item" style="cursor:pointer;">😊</span>
+                            <span class="emoji-item" style="cursor:pointer;">😂</span>
+                            <span class="emoji-item" style="cursor:pointer;">😍</span>
+                            <span class="emoji-item" style="cursor:pointer;">🤔</span>
+                            <span class="emoji-item" style="cursor:pointer;">😎</span>
+                            <span class="emoji-item" style="cursor:pointer;">😢</span>
+                            <span class="emoji-item" style="cursor:pointer;">😡</span>
+                            <span class="emoji-item" style="cursor:pointer;">😱</span>
+                            <span class="emoji-item" style="cursor:pointer;">😇</span>
+                            <span class="emoji-item" style="cursor:pointer;">😜</span>
+                            <span class="emoji-item" style="cursor:pointer;">😁</span>
+                            <span class="emoji-item" style="cursor:pointer;">🥳</span>
+                            <span class="emoji-item" style="cursor:pointer;">🤩</span>
+                            <span class="emoji-item" style="cursor:pointer;">😅</span>
+                            <span class="emoji-item" style="cursor:pointer;">😏</span>
+                            <span class="emoji-item" style="cursor:pointer;">🙃</span>
+                            <span class="emoji-item" style="cursor:pointer;">😬</span>
+                            <span class="emoji-item" style="cursor:pointer;">😴</span>
+                            <span class="emoji-item" style="cursor:pointer;">😋</span>
+                            <span class="emoji-item" style="cursor:pointer;">🤗</span>
+                            <span class="emoji-item" style="cursor:pointer;">🥰</span>
+                            <span class="emoji-item" style="cursor:pointer;">👍</span>
+                            <span class="emoji-item" style="cursor:pointer;">🎉</span>
+                        </div>
+                        <div><strong>Caractères spéciaux :</strong></div>
+                        <div style="margin-bottom:6px;">
+                            <span class="emoji-item" style="cursor:pointer;">©</span>
+                            <span class="emoji-item" style="cursor:pointer;">®</span>
+                            <span class="emoji-item" style="cursor:pointer;">™</span>
+                            <span class="emoji-item" style="cursor:pointer;">€</span>
+                            <span class="emoji-item" style="cursor:pointer;">£</span>
+                            <span class="emoji-item" style="cursor:pointer;">¥</span>
+                            <span class="emoji-item" style="cursor:pointer;">$</span>
+                            <span class="emoji-item" style="cursor:pointer;">¢</span>
+                            <span class="emoji-item" style="cursor:pointer;">§</span>
+                            <span class="emoji-item" style="cursor:pointer;">¶</span>
+                            <span class="emoji-item" style="cursor:pointer;">•</span>
+                            <span class="emoji-item" style="cursor:pointer;">†</span>
+                            <span class="emoji-item" style="cursor:pointer;">‡</span>
+                            <span class="emoji-item" style="cursor:pointer;">‰</span>
+                            <span class="emoji-item" style="cursor:pointer;">←</span>
+                            <span class="emoji-item" style="cursor:pointer;">↑</span>
+                            <span class="emoji-item" style="cursor:pointer;">→</span>
+                            <span class="emoji-item" style="cursor:pointer;">↓</span>
+                            <span class="emoji-item" style="cursor:pointer;">↔</span>
+                            <span class="emoji-item" style="cursor:pointer;">↩</span>
+                            <span class="emoji-item" style="cursor:pointer;">↪</span>
+                            <span class="emoji-item" style="cursor:pointer;">⇒</span>
+                            <span class="emoji-item" style="cursor:pointer;">⇔</span>
+                            <span class="emoji-item" style="cursor:pointer;">∞</span>
+                            <span class="emoji-item" style="cursor:pointer;">≈</span>
+                            <span class="emoji-item" style="cursor:pointer;">≠</span>
+                            <span class="emoji-item" style="cursor:pointer;">≤</span>
+                            <span class="emoji-item" style="cursor:pointer;">≥</span>
+                            <span class="emoji-item" style="cursor:pointer;">±</span>
+                            <span class="emoji-item" style="cursor:pointer;">×</span>
+                            <span class="emoji-item" style="cursor:pointer;">÷</span>
+                            <span class="emoji-item" style="cursor:pointer;">√</span>
+                            <span class="emoji-item" style="cursor:pointer;">∑</span>
+                            <span class="emoji-item" style="cursor:pointer;">∆</span>
+                            <span class="emoji-item" style="cursor:pointer;">∫</span>
+                            <span class="emoji-item" style="cursor:pointer;">∂</span>
+                            <span class="emoji-item" style="cursor:pointer;">∇</span>
+                        </div>
+                        <div><strong>Caricatures :</strong></div>
+                        <div style="font-family:monospace; font-size:13px;">
+                            <span class="emoji-item" style="cursor:pointer;">( ͡° ͜ʖ ͡° )</span><br>
+                            <span class="emoji-item" style="cursor:pointer;">(☞ﾟヮﾟ)☞</span><br>
+                            <span class="emoji-item" style="cursor:pointer;">(╯°□°）╯︵ ┻━┻</span><br>
+                            <span class="emoji-item" style="cursor:pointer;">¯\\_(ツ)_/¯</span><br>
+                            <span class="emoji-item" style="cursor:pointer;">(¬‿¬)</span><br>
+                            <span class="emoji-item" style="cursor:pointer;">(ʘ‿ʘ)</span><br>
+                            <span class="emoji-item" style="cursor:pointer;">(ಠ_ಠ)</span><br>
+                            <span class="emoji-item" style="cursor:pointer;">(づ｡◕‿‿◕｡)づ</span><br>
+                        </div>
                     </div>
 
 
@@ -89,6 +164,14 @@
                                                 <option value="scroll" {% if ann.animation is defined and ann.animation == 'scroll' %}selected{% endif %}>Défilement horizontal</option>
                                                 <option value="bounce" {% if ann.animation is defined and ann.animation == 'bounce' %}selected{% endif %}>Défilement rebond</option>
                                                 <option value="fade" {% if ann.animation is defined and ann.animation == 'fade' %}selected{% endif %}>Apparition / disparition</option>
+                                                <option value="snake" {% if ann.animation is defined and ann.animation == 'snake' %}selected{% endif %}>Serpent classique</option>
+                                                <option value="snake-wave" {% if ann.animation is defined and ann.animation == 'snake-wave' %}selected{% endif %}>Serpent ondulé</option>
+                                                <option value="snake-zigzag" {% if ann.animation is defined and ann.animation == 'snake-zigzag' %}selected{% endif %}>Serpent zigzag</option>
+                                                <option value="rotate" {% if ann.animation is defined and ann.animation == 'rotate' %}selected{% endif %}>Rotation</option>
+                                                <option value="zoom" {% if ann.animation is defined and ann.animation == 'zoom' %}selected{% endif %}>Zoom</option>
+                                                <option value="shake" {% if ann.animation is defined and ann.animation == 'shake' %}selected{% endif %}>Tremblement</option>
+                                                <option value="rainbow" {% if ann.animation is defined and ann.animation == 'rainbow' %}selected{% endif %}>Arc-en-ciel</option>
+                                                <option value="typing" {% if ann.animation is defined and ann.animation == 'typing' %}selected{% endif %}>Effet machine à écrire</option>
                                             </select>
                                             <div id="bgColorDefilementBlock" style="margin-top:10px; display:none;">
                                                 <label for="bgColorDefilement" style="margin-bottom:6px; white-space:nowrap;">Couleur de la bande :</label>
@@ -547,13 +630,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (animationSelect.value === 'scroll') animClass = 'ia-scroll';
                 if (animationSelect.value === 'bounce') animClass = 'ia-bounce';
                 if (animationSelect.value === 'fade') animClass = 'ia-fade';
+                if (animationSelect.value === 'snake') animClass = 'ia-snake';
+                if (animationSelect.value === 'snake-wave') animClass = 'ia-snake-wave';
+                if (animationSelect.value === 'snake-zigzag') animClass = 'ia-snake-zigzag';
+                if (animationSelect.value === 'rotate') animClass = 'ia-rotate';
+                if (animationSelect.value === 'zoom') animClass = 'ia-zoom';
+                if (animationSelect.value === 'shake') animClass = 'ia-shake';
+                if (animationSelect.value === 'rainbow') animClass = 'ia-rainbow';
+                if (animationSelect.value === 'typing') animClass = 'ia-typing';
 
+                // Appliquer la vitesse à toutes les animations dans le preview
                 if (vitesse && !isNaN(vitesse) && vitesse > 0) {
                     const duration = Math.max(0.3, 50 / vitesse);
                     animStyle = `animation-duration:${duration}s;`;
                 }
             }
-
             return `<span style="${style}${animStyle}" class="${animClass}">${text}</span>`;
         }
 
@@ -588,8 +679,8 @@ document.addEventListener('DOMContentLoaded', function () {
         var fileUpload = document.getElementById('fileUpload');
         var textInput = document.getElementById('textInput');
         var fontSelection = document.getElementById('fontSelection');
+        var ipAddress = document.getElementById('ipAddress');
         var languagesPart = document.getElementById('languagesPart');
-        // var fluxRssSpeed = document.getElementById('fluxRssSpeed');
         var animationSelection = document.getElementById('animationSelection');
         var vitesseDefilementBlock = document.getElementById('vitesseDefilementBlock');
         var bgColorDefilementBlock = document.getElementById('bgColorDefilementBlock');
@@ -884,8 +975,48 @@ document.addEventListener('DOMContentLoaded', function () {
 
 </script>
 
+<!-- Gérer l'affichage et la sélection depuis le bloc d'émoticônes -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const openEmojiBtn = document.getElementById('openEmojiBlock');
+        const emojiBlock = document.getElementById('emojiSpecialBlock');
+        const textarea = document.getElementById('text');
 
+        if (openEmojiBtn && emojiBlock && textarea) {
+            // Ouvrir/Fermer le bloc d'émojis
+            openEmojiBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                emojiBlock.style.display = emojiBlock.style.display === 'none' ? 'block' : 'none';
+            });
 
+            // Insérer l'émoji et fermer
+            emojiBlock.addEventListener('click', function(e) {
+                if (e.target.classList.contains('emoji-item')) {
+                    const char = e.target.textContent;
+                    
+                    // Insérer à la position du curseur
+                    const startPos = textarea.selectionStart;
+                    const endPos = textarea.selectionEnd;
+                    textarea.value = textarea.value.substring(0, startPos) + char + textarea.value.substring(endPos, textarea.value.length);
+                    
+                    textarea.focus();
+                    textarea.selectionStart = textarea.selectionEnd = startPos + char.length;
+                    
+                    // Mettre à jour l'aperçu
+                    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+                    
+                    emojiBlock.style.display = 'none'; // fermer après sélection
+                }
+            });
 
+            // Fermer si on clique à l'extérieur
+            document.addEventListener('click', function(e) {
+                if (emojiBlock.style.display === 'block' && !emojiBlock.contains(e.target) && e.target !== openEmojiBtn) {
+                    emojiBlock.style.display = 'none';
+                }
+            });
+        }
+    });
+</script>
 
 {% endblock %}

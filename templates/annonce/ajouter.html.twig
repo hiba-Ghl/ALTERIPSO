@@ -11,6 +11,72 @@
     Ajouter une annonce
 </div>
 
+<script>
+// Affichage/Masquage du bloc d'émoticônes
+document.addEventListener('DOMContentLoaded', function() {
+    var btn = document.getElementById('openEmojiBlock');
+    var block = document.getElementById('emojiSpecialBlock');
+    var textarea = document.getElementById('text');
+    var preview = document.getElementById('text-preview');
+
+    function updatePreview() {
+        if (textarea && preview) {
+            if (textarea.value.trim() !== "") {
+                preview.style.display = 'block';
+                preview.textContent = textarea.value;
+            } else {
+                preview.style.display = 'none';
+                preview.textContent = '';
+            }
+        }
+    }
+
+    if (textarea && preview) {
+        textarea.addEventListener('input', updatePreview);
+    }
+
+    if (btn && block && textarea) {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            block.style.display = (block.style.display === 'none' ? 'block' : 'none');
+        });
+        // Clic sur un élément du bloc : insérer dans le textarea
+        block.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('emoji-item')) {
+                insertAtCursor(textarea, e.target.innerText);
+                block.style.display = 'none';
+                updatePreview(); // Mettre à jour l'aperçu après ajout d'un émoji
+            }
+        });
+        // Fermer le bloc si clic ailleurs
+        document.addEventListener('mousedown', function(e) {
+            if (!block.contains(e.target) && e.target !== btn) {
+                block.style.display = 'none';
+            }
+        });
+    }
+    // Fonction d'insertion à la position du curseur
+    function insertAtCursor(myField, myValue) {
+        if (document.selection) {
+            myField.focus();
+            var sel = document.selection.createRange();
+            sel.text = myValue;
+        } else if (myField.selectionStart || myField.selectionStart === 0) {
+            var startPos = myField.selectionStart;
+            var endPos = myField.selectionEnd;
+            myField.value = myField.value.substring(0, startPos)
+                + myValue
+                + myField.value.substring(endPos, myField.value.length);
+            myField.selectionStart = myField.selectionEnd = startPos + myValue.length;
+            myField.focus();
+        } else {
+            myField.value += myValue;
+            myField.focus();
+        }
+    }
+});
+</script>
+
 <div id="container-ajouter">
 
 <!-- leformulaire contenant les informations -->
@@ -62,13 +128,89 @@
                     <!-- Aperçu stylé du texte saisi -->
                     <div id="text-preview" style="display:none; margin-top:8px;padding:5px;border:1px dashed gray; overflow:hidden; width:100%;"></div>
 
-                    <div id="emojiBar" class="emoji-bar" style="margin-bottom:5px;">
-                        <button type="button" class="btn btn-default btn-xs emoji-btn">😊</button>
-                        <button type="button" class="btn btn-default btn-xs emoji-btn">😂</button>
-                        <button type="button" class="btn btn-default btn-xs emoji-btn">😍</button>
-                        <button type="button" class="btn btn-default btn-xs emoji-btn">👍</button>
-                        <button type="button" class="btn btn-default btn-xs emoji-btn">🎉</button>
+                    <!-- Bouton pour ouvrir le bloc d'émoticônes/caractères spéciaux/caricatures -->
+                    <button type="button" id="openEmojiBlock" class="btn btn-secondary btn-sm" style="margin-bottom:8px;">😀</button>
+                    <!-- Bloc d'émoticônes, caractères spéciaux et caricatures -->
+                    <div id="emojiSpecialBlock" style="display:none; border:1px solid #ccc; background:#fff; padding:10px; margin-bottom:8px; max-width:400px; max-height:180px; overflow:auto; z-index:9999; position:fixed; left:50%; top:30%; transform:translate(-50%, 0); box-shadow:0 2px 12px rgba(0,0,0,0.15);">
+                        <div><strong>Émojis :</strong></div>
+                        <div style="margin-bottom:6px;">
+                            <span class="emoji-item" style="cursor:pointer;">😊</span>
+                            <span class="emoji-item" style="cursor:pointer;">😂</span>
+                            <span class="emoji-item" style="cursor:pointer;">😍</span>
+                            <span class="emoji-item" style="cursor:pointer;">🤔</span>
+                            <span class="emoji-item" style="cursor:pointer;">😎</span>
+                            <span class="emoji-item" style="cursor:pointer;">😢</span>
+                            <span class="emoji-item" style="cursor:pointer;">😡</span>
+                            <span class="emoji-item" style="cursor:pointer;">😱</span>
+                            <span class="emoji-item" style="cursor:pointer;">😇</span>
+                            <span class="emoji-item" style="cursor:pointer;">😜</span>
+                            <span class="emoji-item" style="cursor:pointer;">😁</span>
+                            <span class="emoji-item" style="cursor:pointer;">🥳</span>
+                            <span class="emoji-item" style="cursor:pointer;">🤩</span>
+                            <span class="emoji-item" style="cursor:pointer;">😅</span>
+                            <span class="emoji-item" style="cursor:pointer;">😏</span>
+                            <span class="emoji-item" style="cursor:pointer;">🙃</span>
+                            <span class="emoji-item" style="cursor:pointer;">😬</span>
+                            <span class="emoji-item" style="cursor:pointer;">😴</span>
+                            <span class="emoji-item" style="cursor:pointer;">😋</span>
+                            <span class="emoji-item" style="cursor:pointer;">🤗</span>
+                            <span class="emoji-item" style="cursor:pointer;">🥰</span>
+                            <span class="emoji-item" style="cursor:pointer;">👍</span>
+                            <span class="emoji-item" style="cursor:pointer;">🎉</span>
+                        </div>
+                        <div><strong>Caractères spéciaux :</strong></div>
+                        <div style="margin-bottom:6px;">
+                            <span class="emoji-item" style="cursor:pointer;">©</span>
+                            <span class="emoji-item" style="cursor:pointer;">®</span>
+                            <span class="emoji-item" style="cursor:pointer;">™</span>
+                            <span class="emoji-item" style="cursor:pointer;">€</span>
+                            <span class="emoji-item" style="cursor:pointer;">£</span>
+                            <span class="emoji-item" style="cursor:pointer;">¥</span>
+                            <span class="emoji-item" style="cursor:pointer;">$</span>
+                            <span class="emoji-item" style="cursor:pointer;">¢</span>
+                            <span class="emoji-item" style="cursor:pointer;">§</span>
+                            <span class="emoji-item" style="cursor:pointer;">¶</span>
+                            <span class="emoji-item" style="cursor:pointer;">•</span>
+                            <span class="emoji-item" style="cursor:pointer;">†</span>
+                            <span class="emoji-item" style="cursor:pointer;">‡</span>
+                            <span class="emoji-item" style="cursor:pointer;">‰</span>
+                            <span class="emoji-item" style="cursor:pointer;">←</span>
+                            <span class="emoji-item" style="cursor:pointer;">↑</span>
+                            <span class="emoji-item" style="cursor:pointer;">→</span>
+                            <span class="emoji-item" style="cursor:pointer;">↓</span>
+                            <span class="emoji-item" style="cursor:pointer;">↔</span>
+                            <span class="emoji-item" style="cursor:pointer;">↩</span>
+                            <span class="emoji-item" style="cursor:pointer;">↪</span>
+                            <span class="emoji-item" style="cursor:pointer;">⇒</span>
+                            <span class="emoji-item" style="cursor:pointer;">⇔</span>
+                            <span class="emoji-item" style="cursor:pointer;">∞</span>
+                            <span class="emoji-item" style="cursor:pointer;">≈</span>
+                            <span class="emoji-item" style="cursor:pointer;">≠</span>
+                            <span class="emoji-item" style="cursor:pointer;">≤</span>
+                            <span class="emoji-item" style="cursor:pointer;">≥</span>
+                            <span class="emoji-item" style="cursor:pointer;">±</span>
+                            <span class="emoji-item" style="cursor:pointer;">×</span>
+                            <span class="emoji-item" style="cursor:pointer;">÷</span>
+                            <span class="emoji-item" style="cursor:pointer;">√</span>
+                            <span class="emoji-item" style="cursor:pointer;">∑</span>
+                            <span class="emoji-item" style="cursor:pointer;">∆</span>
+                            <span class="emoji-item" style="cursor:pointer;">∫</span>
+                            <span class="emoji-item" style="cursor:pointer;">∂</span>
+                            <span class="emoji-item" style="cursor:pointer;">∇</span>
+                        </div>
+                        <div><strong>Caricatures :</strong></div>
+                        <div style="font-family:monospace; font-size:13px;">
+                            <span class="emoji-item" style="cursor:pointer;">( ͡° ͜ʖ ͡° )</span><br>
+                            <span class="emoji-item" style="cursor:pointer;">(☞ﾟヮﾟ)☞</span><br>
+                            <span class="emoji-item" style="cursor:pointer;">(╯°□°）╯︵ ┻━┻</span><br>
+                            <span class="emoji-item" style="cursor:pointer;">¯\\_(ツ)_/¯</span><br>
+                            <span class="emoji-item" style="cursor:pointer;">(¬‿¬)</span><br>
+                            <span class="emoji-item" style="cursor:pointer;">(ʘ‿ʘ)</span><br>
+                            <span class="emoji-item" style="cursor:pointer;">(ಠ_ಠ)</span><br>
+                            <span class="emoji-item" style="cursor:pointer;">(づ｡◕‿‿◕｡)づ</span><br>
+                        </div>
                     </div>
+
 
                                 <!-- Font selection -->
                                         <div id="fontSelection" class="form-row" style="display: none;">
