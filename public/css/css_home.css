@@ -58,7 +58,6 @@ body {
 
     .navbar-header {
         line-height: normal;
-        margin: 0 !important;
         float: none !important;
         display: block !important;
         width: 100% !important;
@@ -318,7 +317,6 @@ body {
         display: flex !important;
         flex-wrap: wrap !important;
 		justify-content: center !important; /* aligner les icônes comme sur l'écran TV desktop */
-        margin: 0 !important;
         padding: 0 !important;
     }
 
@@ -417,7 +415,6 @@ body {
         position: absolute !important;
         top: 4px !important;   /* à l'intérieur de la TV, non au-dessus */
         left: -2px !important;
-        margin: 0 !important;
         z-index: 20 !important;
     }
 
@@ -563,4 +560,29 @@ body {
 
 html {
     min-height: 100%;
+}
+
+/* Suppression du contour de focus et du tap-highlight sur l'engrenage / les options de menus */
+.cog, .cog button, .cog input, .cog:focus, .cog:active, .cog button:focus, .cog button:active, .cog input:focus, .cog input:active {
+    outline: none !important;
+    box-shadow: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-focus-ring-color: rgba(0,0,0,0) !important;
+}
+
+
+
+/* Bloquer le défaut d'agrandissement ou de décallage lors du clic (focus/active) sur les menus (catégories) */
+#back_img .col-sm-1 a:focus, #back_img .col-sm-1 a:active,
+#back_img .col-sm-1 div:focus, #back_img .col-sm-1 div:active,
+#back_img button:focus, #back_img button:active {
+    outline: none !important;
+    box-shadow: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    transform: none !important;
+}
+
+#back_img .col-sm-1 a {
+    outline: none !important;
+    -webkit-tap-highlight-color: transparent !important;
 }
