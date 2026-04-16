@@ -1,4 +1,4 @@
-{% extends 'home/index.html.twig' %}
+﻿{% extends 'home/index.html.twig' %}
 {% block body %}
 <link rel="stylesheet" href="{{ asset('css/css_annonce.css') }}">
 
@@ -54,12 +54,100 @@
 
                 <!-- Text input section -->
                 <div id="textInput" style="display: none;">
-                    <label for="text" class="control-label">Entrer un texte:</label>
-                    <textarea class="form-control" name="text" id="text" rows="3" style="margin-bottom: 5px;margin-top: 5px;">{{ann.url}}</textarea>
+                    <label for="text" class="control-label">Entrer un texte :</label>
+
+                    <!-- TOOLBAR (Editeur pour Message Défilant) -->
+                    <div id="fontSelection" style="display: none; width: 100%; margin-bottom: 0;">
+                        <div style="background: #f8f9fa; border: 1px solid #ced4da; border-bottom: none; border-radius: 4px 4px 0 0; padding: 8px; display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end;">
+                            
+                            <!-- Police -->
+                            <div style="display:flex; flex-direction:column;">
+                                <label for="font" style="font-size:12px; margin-bottom:2px; font-weight:normal;">Police:</label>
+                                <select id="font" name="font" class="form-control form-control-sm" style="width:130px; height:30px; padding:2px 5px;">
+                                    <option value="">Sélectionner</option>
+                                    <option value="Arial" {% if ann.police == 'Arial' %} selected {% endif %}>Arial</option>
+                                    <option value="Helvetica" {% if ann.police == 'Helvetica' %} selected {% endif %}>Helvetica</option>
+                                    <option value="Times New Roman" {% if ann.police == 'Times New Roman' %} selected {% endif %}>Times New Roman</option>
+                                    <option value="Courier New" {% if ann.police == 'Courier New' %} selected {% endif %}>Courier New</option>
+                                    <option value="Verdana" {% if ann.police == 'Verdana' %} selected {% endif %}>Verdana</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Taille -->
+                            <div style="display:flex; flex-direction:column;">
+                                <label for="fontSize" style="font-size:12px; margin-bottom:2px; font-weight:normal;">Taille:</label>
+                                <select id="fontSize" name="fontSize" class="form-control form-control-sm" style="width:100px; height:30px; padding:2px 5px;" value="{{ann.taille}}">
+                                      <option value="">Taille (px)</option>
+                                      {% for i in 20..40 %}
+                                          <option value="{{ i }}" {% if ann.taille == i %}selected{% endif %}>{{ i }}</option>
+                                      {% endfor %}
+                                  </select>
+                            </div>
+
+                            <!-- Style -->
+                            <div style="display:flex; flex-direction:column;">
+                                <label for="style" style="font-size:12px; margin-bottom:2px; font-weight:normal;">Style:</label>
+                                <select id="style" name="style" class="form-control form-control-sm" style="width:110px; height:30px; padding:2px 5px;">
+                                    <option value="">Sélectionner</option>
+                                    <option value="Gras" {% if ann.style == 'Gras' %} selected {% endif %}>Gras</option>
+                                    <option value="Italique" {% if ann.style == 'Italique' %} selected {% endif %}>Italique</option>
+                                    <option value="Souligné" {% if ann.style == 'Souligné' %} selected {% endif %}>Souligné</option>
+                                    <option value="Barré" {% if ann.style == 'Barré' %} selected {% endif %}>Barré</option>
+                                </select>
+                            </div>
+
+                            <!-- Couleur du texte -->
+                            <div id="textColorDefilementBlock" style="display:none; flex-direction:column;">
+                                <label for="textColorDefilement" style="font-size:12px; margin-bottom:2px; font-weight:normal;">Couleur texte:</label>
+                                <input type="color" class="form-control colors_picker" id="textColorDefilement" name="textColorDefilement" value="{{ ann.couleurTexte|default('#000000') }}" style="width:70px; height:30px; padding:0; border:none; background:transparent;">
+                            </div>
+
+                            <!-- Couleur de la bande -->
+                            <div id="bgColorDefilementBlock" style="display:none; flex-direction:column;">
+                                <label for="bgColorDefilement" style="font-size:12px; margin-bottom:2px; font-weight:normal;">Couleur bande:</label>
+                                <input type="color" class="form-control colors_picker" id="bgColorDefilement" name="bgColorDefilement" value="{{ ann.couleurBande|default('#FFFFFF') }}" style="width:70px; height:30px; padding:0; border:none; background:transparent;">
+                            </div>
+
+                            <!-- Animation -->
+                            <div id="animationSelection" style="display:flex; flex-direction:column; margin-bottom:0 !important;">
+                                <label for="animation" style="font-size:12px; margin-bottom:2px; font-weight:normal;">Animation:</label>
+                                <select id="animation" name="animation" class="form-control form-control-sm" style="width:140px; height:30px; padding:2px 5px;">
+                                    <option value="">Aucune</option>
+                                    <option value="scroll" {% if ann.animation is defined and ann.animation == 'scroll' %}selected{% endif %}>Défil. horizontal</option>
+                                    <option value="bounce" {% if ann.animation is defined and ann.animation == 'bounce' %}selected{% endif %}>Défil. rebond</option>
+                                    <option value="fade" {% if ann.animation is defined and ann.animation == 'fade' %}selected{% endif %}>Apparition</option>
+                                    <option value="snake" {% if ann.animation is defined and ann.animation == 'snake' %}selected{% endif %}>Serpent class.</option>
+                                    <option value="snake-wave" {% if ann.animation is defined and ann.animation == 'snake-wave' %}selected{% endif %}>Serpent ondulé</option>
+                                    <option value="snake-zigzag" {% if ann.animation is defined and ann.animation == 'snake-zigzag' %}selected{% endif %}>Serpent zigzag</option>
+                                    <option value="rotate" {% if ann.animation is defined and ann.animation == 'rotate' %}selected{% endif %}>Rotation</option>
+                                    <option value="zoom" {% if ann.animation is defined and ann.animation == 'zoom' %}selected{% endif %}>Zoom</option>
+                                    <option value="shake" {% if ann.animation is defined and ann.animation == 'shake' %}selected{% endif %}>Tremblement</option>
+                                    <option value="rainbow" {% if ann.animation is defined and ann.animation == 'rainbow' %}selected{% endif %}>Arc-en-ciel</option>
+                                    <option value="typing" {% if ann.animation is defined and ann.animation == 'typing' %}selected{% endif %}>Machine à écrire</option>
+                                </select>
+                            </div>
+
+                            <!-- Vitesse -->
+                            <div id="vitesseDefilementBlock" style="display:none; flex-direction:column;">
+                                <label for="vitesseDefilement" style="font-size:12px; margin-bottom:2px; font-weight:normal;">Vitesse (px/s):</label>
+                                <input type="number" class="form-control form-control-sm" id="vitesseDefilement" name="vitesseDefilement" min="1" step="1" style="width:80px; height:30px; padding:2px 5px;" placeholder="Ex: 50" value="{{ ann.vitesseDefilement|default('') }}">
+                            </div>
+
+                            <!-- Bouton Emoji -->
+                            <div style="display:flex; flex-direction:column; justify-content:flex-end;">
+                                <button type="button" id="openEmojiBlock" class="btn btn-secondary btn-sm" style="height:30px; padding:2px 10px; margin-bottom:0;" title="Insérer un émoji">😀</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- La zone de texte rattachée à la toolbar -->
+                    <textarea class="form-control" name="text" id="text" rows="3" style="border-radius: 0 0 4px 4px; margin-top: 0; margin-bottom: 5px; border: 1px solid #ced4da;">{{ann.url}}</textarea>
+
+                    <!-- Aperçu stylé du texte saisi -->
                     <div id="text-preview" style="display:none; margin-top:8px;padding:5px;border:1px dashed gray; overflow:hidden; width:100%;"></div>
 
-                    <!-- Bouton pour ouvrir le bloc d'émoticônes/caractères spéciaux/caricatures -->
-                    <button type="button" id="openEmojiBlock" class="btn btn-secondary btn-sm" style="margin-bottom:8px;">😀</button>
+
+
                     <!-- Bloc d'émoticônes, caractères spéciaux et caricatures -->
                     <div id="emojiSpecialBlock" style="display:none; border:1px solid #ccc; background:#fff; padding:10px; margin-bottom:8px; max-width:400px; max-height:180px; overflow:auto; z-index:9999; position:fixed; left:50%; top:30%; transform:translate(-50%, 0); box-shadow:0 2px 12px rgba(0,0,0,0.15);">
                         <div><strong>Émojis :</strong></div>
@@ -142,77 +230,8 @@
                     </div>
 
 
-                      
-                                <!-- Font selection -->
-                                <div id="fontSelection" style="display: none;" class="form-row">
-                                    <!-- la police -->
-                                    <div class="form-group col-md-4" style="display:flex; flex-direction:column;">
-                                        <label for="font">Choisir une police:</label>
-                                        <select id="font" name="font" class="form-control"  style="width:100%;" >
-                                            <option value="">Sélectionner une police</option>
-                                            <option value="Arial" {% if ann.police == 'Arial' %} selected {% endif %}>Arial</option>
-                                            <option value="Helvetica" {% if ann.police == 'Helvetica' %} selected {% endif %} >Helvetica</option>
-                                            <option value="Times New Roman" {% if ann.police == 'Times New Roman' %} selected {% endif %} >Times New Roman</option>
-                                            <option value="Courier New" {% if ann.police == 'Courier New' %} selected {% endif %} >Courier New</option>
-                                            <option value="Verdana" {% if ann.police == 'Verdana' %} selected {% endif %}>Verdana</option>
-                                        </select>
-                                        <!-- Animation juste en dessous de la police -->
-                                        <div id="animationSelection" style="margin-top:10px;">
-                                            <label for="animation" style="margin-bottom:6px;">Choisir une animation:</label>
-                                            <select id="animation" name="animation" class="form-control" style="width:100%;">
-                                                <option value="" {% if ann.animation is defined and ann.animation == '' %}selected{% endif %}>Aucune</option>
-                                                <option value="scroll" {% if ann.animation is defined and ann.animation == 'scroll' %}selected{% endif %}>Défilement horizontal</option>
-                                                <option value="bounce" {% if ann.animation is defined and ann.animation == 'bounce' %}selected{% endif %}>Défilement rebond</option>
-                                                <option value="fade" {% if ann.animation is defined and ann.animation == 'fade' %}selected{% endif %}>Apparition / disparition</option>
-                                                <option value="snake" {% if ann.animation is defined and ann.animation == 'snake' %}selected{% endif %}>Serpent classique</option>
-                                                <option value="snake-wave" {% if ann.animation is defined and ann.animation == 'snake-wave' %}selected{% endif %}>Serpent ondulé</option>
-                                                <option value="snake-zigzag" {% if ann.animation is defined and ann.animation == 'snake-zigzag' %}selected{% endif %}>Serpent zigzag</option>
-                                                <option value="rotate" {% if ann.animation is defined and ann.animation == 'rotate' %}selected{% endif %}>Rotation</option>
-                                                <option value="zoom" {% if ann.animation is defined and ann.animation == 'zoom' %}selected{% endif %}>Zoom</option>
-                                                <option value="shake" {% if ann.animation is defined and ann.animation == 'shake' %}selected{% endif %}>Tremblement</option>
-                                                <option value="rainbow" {% if ann.animation is defined and ann.animation == 'rainbow' %}selected{% endif %}>Arc-en-ciel</option>
-                                                <option value="typing" {% if ann.animation is defined and ann.animation == 'typing' %}selected{% endif %}>Effet machine à écrire</option>
-                                            </select>
-                                            <div id="bgColorDefilementBlock" style="margin-top:10px; display:none;">
-                                                <label for="bgColorDefilement" style="margin-bottom:6px; white-space:nowrap;">Couleur de la bande :</label>
-                                                <input type="color" class="form-control colors_picker" id="bgColorDefilement" name="bgColorDefilement" value="#FFFFFF" style="width:130px; margin-bottom:0; padding:2px;">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- la taille -->
-                                    <div class="form-group col-md-4" style="margin-left:30px; display:flex; flex-direction:column;">
-                                        <label for="fontSize">Choisir une taille:</label>
-                                        <select id="fontSize" name="fontSize" class="form-control"  style="width:100%;" value="{{ann.taille}}">
-                                            <option value="">Sélectionner une taille (px)</option>
-                                            {% for i in 20..40 %}
-                                                <option value="{{ i }}" {% if ann.taille == i %}selected{% endif %}>{{ i }}</option>
-                                            {% endfor %}
-                                        </select>
-                                        <!-- Vitesse de défilement juste en dessous de la taille -->
-                                        <div id="vitesseDefilementBlock" style="margin-top:10px; display:none;">
-                                            <label for="vitesseDefilement" style="margin-bottom:6px; white-space:nowrap;">Vitesse de défilement :</label>
-                                            <input type="number" class="form-control" id="vitesseDefilement" name="vitesseDefilement" min="1" step="1" style="width:130px; margin-bottom:0;" placeholder="px/s" value="{{ ann.vitesseDefilement|default('') }}">
-                                        </div>
-                                    </div>
-                                    <!-- le style -->
-                                    <div class="form-group col-md-4" style="margin-left:30px; display:flex; flex-direction:column;"> 
-                                        <label for="style">Choisir un style:</label>
-                                        <select id="style" name="style" class="form-control" style="width:100%; ">
-                                            <option value="">Sélectionner un style</option>
-                                            <option value="Gras" {% if ann.style == 'Gras' %} selected {% endif %} >Gras</option>
-                                            <option value="Italique" {% if ann.style == 'Italique' %} selected {% endif %}>Italique</option>
-                                            <option value="Souligné" {% if ann.style == 'Souligné' %} selected {% endif %}>Souligné</option>
-                                            <option value="Barré" {% if ann.style == 'Barré' %} selected {% endif %}>Barré</option>
-                                        </select>
-                                        <div id="textColorDefilementBlock" style="margin-top:10px; display:none;">
-                                            <label for="textColorDefilement" style="margin-bottom:6px; white-space:nowrap;">Couleur du texte :</label>
-                                            <input type="color" class="form-control colors_picker" id="textColorDefilement" name="textColorDefilement" value="transparent" style="width:130px; margin-bottom:0; padding:2px;">
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- forcer un saut de ligne après le sélecteur d'animation -->
-                                <div style="clear: both; height:10px;"></div>
-                                    <div>
+                            
+                                                                        <div>
             <label class="toggle-accordion-annonce col-form-label" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo1">Langues</label>
             
             <!--le bouton de traduction-->
@@ -1020,3 +1039,8 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 {% endblock %}
+
+
+
+
+

@@ -138,7 +138,9 @@ body {
 
 .modal-content-large {
     width: 800px;
-    height: 780px;
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .modal-header-margin {
@@ -146,8 +148,10 @@ body {
 }
 
 .form-padding-bottom {
-    height: 100%;
-    padding-bottom: 300px;
+    height: auto;
+    min-height: 100%;
+    padding-bottom: 20px;
+    overflow: hidden;
 }
 
 .w-100 {

@@ -19,22 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
     var textarea = document.getElementById('text');
     var preview = document.getElementById('text-preview');
 
-    function updatePreview() {
-        if (textarea && preview) {
-            if (textarea.value.trim() !== "") {
-                preview.style.display = 'block';
-                preview.textContent = textarea.value;
-            } else {
-                preview.style.display = 'none';
-                preview.textContent = '';
-            }
-        }
-    }
-
-    if (textarea && preview) {
-        textarea.addEventListener('input', updatePreview);
-    }
-
     if (btn && block && textarea) {
         btn.addEventListener('click', function(e) {
             e.preventDefault();
@@ -45,7 +29,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (e.target && e.target.classList.contains('emoji-item')) {
                 insertAtCursor(textarea, e.target.innerText);
                 block.style.display = 'none';
-                updatePreview(); // Mettre à jour l'aperçu après ajout d'un émoji
+                
+                // Déclencher l'événement input pour que le script d'animation le prenne en compte
+                textarea.dispatchEvent(new Event('input', { bubbles: true }));
             }
         });
         // Fermer le bloc si clic ailleurs
@@ -124,12 +110,96 @@ document.addEventListener('DOMContentLoaded', function() {
                 <!-- Text input section -->
                 <div id="textInput" style="display: none;">
                     <label for="text" class="control-label">Entrer un texte :</label>
-                    <textarea class="form-control" name="text" id="text" rows="3" style="margin-bottom: 5px;margin-top: 5px;"></textarea>
+
+                    <!-- TOOLBAR (Editeur pour Message Défilant) -->
+                    <div id="fontSelection" style="display: none; width: 100%; margin-bottom: 0;">
+                        <div style="background: #f8f9fa; border: 1px solid #ced4da; border-bottom: none; border-radius: 4px 4px 0 0; padding: 8px; display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end;">
+                            
+                            <!-- Police -->
+                            <div style="display:flex; flex-direction:column;">
+                                <label for="font" style="font-size:12px; margin-bottom:2px; font-weight:normal;">Police:</label>
+                                <select id="font" name="font" class="form-control form-control-sm" style="width:130px; height:30px; padding:2px 5px;">
+                                    <option value="">Sélectionner</option>
+                                    <option value="Arial">Arial</option>
+                                    <option value="Helvetica">Helvetica</option>
+                                    <option value="Times New Roman">Times New Roman</option>
+                                    <option value="Courier New">Courier New</option>
+                                    <option value="Verdana">Verdana</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Taille -->
+                            <div style="display:flex; flex-direction:column;">
+                                <label for="fontSize" style="font-size:12px; margin-bottom:2px; font-weight:normal;">Taille:</label>
+                                <select id="fontSize" name="fontSize" class="form-control form-control-sm" style="width:100px; height:30px; padding:2px 5px;">
+                                    <option value="">Taille (px)</option>
+                                </select>
+                            </div>
+
+                            <!-- Style -->
+                            <div style="display:flex; flex-direction:column;">
+                                <label for="style" style="font-size:12px; margin-bottom:2px; font-weight:normal;">Style:</label>
+                                <select id="style" name="style" class="form-control form-control-sm" style="width:110px; height:30px; padding:2px 5px;">
+                                    <option value="">Sélectionner</option>
+                                    <option value="Gras">Gras</option>
+                                    <option value="Italique">Italique</option>
+                                    <option value="Souligné">Souligné</option>
+                                    <option value="Barré">Barré</option>
+                                </select>
+                            </div>
+
+                            <!-- Couleur du texte -->
+                            <div id="textColorDefilementBlock" style="display:none; flex-direction:column;">
+                                <label for="textColorDefilement" style="font-size:12px; margin-bottom:2px; font-weight:normal;">Couleur texte:</label>
+                                <input type="color" class="form-control colors_picker" id="textColorDefilement" name="textColorDefilement" value="#000000" style="width:70px; height:30px; padding:0; border:none; background:transparent;">
+                            </div>
+
+                            <!-- Couleur de la bande -->
+                            <div id="bgColorDefilementBlock" style="display:none; flex-direction:column;">
+                                <label for="bgColorDefilement" style="font-size:12px; margin-bottom:2px; font-weight:normal;">Couleur bande:</label>
+                                <input type="color" class="form-control colors_picker" id="bgColorDefilement" name="bgColorDefilement" value="#FFFFFF" style="width:70px; height:30px; padding:0; border:none; background:transparent;">
+                            </div>
+
+                            <!-- Animation -->
+                            <div id="animationSelection" style="display:flex; flex-direction:column; margin-bottom:0 !important;">
+                                <label for="animation" style="font-size:12px; margin-bottom:2px; font-weight:normal;">Animation:</label>
+                                <select id="animation" name="animation" class="form-control form-control-sm" style="width:140px; height:30px; padding:2px 5px;">
+                                    <option value="">Aucune</option>
+                                    <option value="scroll">Défil. horizontal</option>
+                                    <option value="bounce">Défil. rebond</option>
+                                    <option value="fade">Apparition</option>
+                                    <option value="snake">Serpent class.</option>
+                                    <option value="snake-wave">Serpent ondulé</option>
+                                    <option value="snake-zigzag">Serpent zigzag</option>
+                                    <option value="rotate">Rotation</option>
+                                    <option value="zoom">Zoom</option>
+                                    <option value="shake">Tremblement</option>
+                                    <option value="rainbow">Arc-en-ciel</option>
+                                    <option value="typing">Machine à écrire</option>
+                                </select>
+                            </div>
+
+                            <!-- Vitesse -->
+                            <div id="vitesseDefilementBlock" style="display:none; flex-direction:column;">
+                                <label for="vitesseDefilement" style="font-size:12px; margin-bottom:2px; font-weight:normal;">Vitesse (px/s):</label>
+                                <input type="number" class="form-control form-control-sm" id="vitesseDefilement" name="vitesseDefilement" min="1" step="1" style="width:80px; height:30px; padding:2px 5px;" placeholder="Ex: 50">
+                            </div>
+
+                            <!-- Bouton Emoji -->
+                            <div style="display:flex; flex-direction:column; justify-content:flex-end;">
+                                <button type="button" id="openEmojiBlock" class="btn btn-secondary btn-sm" style="height:30px; padding:2px 10px; margin-bottom:0;" title="Insérer un émoji">😀</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- La zone de texte rattachée à la toolbar -->
+                    <textarea class="form-control" name="text" id="text" rows="3" style="border-radius: 0 0 4px 4px; margin-top: 0; margin-bottom: 5px; border: 1px solid #ced4da;"></textarea>
+
                     <!-- Aperçu stylé du texte saisi -->
                     <div id="text-preview" style="display:none; margin-top:8px;padding:5px;border:1px dashed gray; overflow:hidden; width:100%;"></div>
 
-                    <!-- Bouton pour ouvrir le bloc d'émoticônes/caractères spéciaux/caricatures -->
-                    <button type="button" id="openEmojiBlock" class="btn btn-secondary btn-sm" style="margin-bottom:8px;">😀</button>
+
+
                     <!-- Bloc d'émoticônes, caractères spéciaux et caricatures -->
                     <div id="emojiSpecialBlock" style="display:none; border:1px solid #ccc; background:#fff; padding:10px; margin-bottom:8px; max-width:400px; max-height:180px; overflow:auto; z-index:9999; position:fixed; left:50%; top:30%; transform:translate(-50%, 0); box-shadow:0 2px 12px rgba(0,0,0,0.15);">
                         <div><strong>Émojis :</strong></div>
@@ -211,79 +281,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     </div>
 
-
-                                <!-- Font selection -->
-                                        <div id="fontSelection" class="form-row" style="display: none;">
-                                            <!-- la police -->
-                                            <div class="form-group col-md-4" style="display:flex; flex-direction:column;">
-                                                <label for="font">Choisir une police:</label>
-                                                <select id="font" name="font" class="form-control" style="width:100%;">
-                                                    <option value="">Sélectionner une police</option>
-                                                    <option value="Arial">Arial</option>
-                                                    <option value="Helvetica">Helvetica</option>
-                                                    <option value="Times New Roman">Times New Roman</option>
-                                                    <option value="Courier New">Courier New</option>
-                                                    <option value="Verdana">Verdana</option>
-                                                </select>
-                                                <!-- Animation juste en dessous de la police -->
-                                                <div id="animationSelection" style="margin-top:10px;">
-                                                    <label for="animation" style="margin-bottom:6px;">Choisir une animation:</label>
-                                                    <select id="animation" name="animation" class="form-control" style="width:100%;">
-                                                        <option value="">Aucune</option>
-                                                        <option value="scroll">Défilement horizontal</option>
-                                                        <option value="bounce">Défilement rebond</option>
-                                                        <option value="fade">Apparition / disparition</option>
-                                                        <option value="snake">Serpent classique</option>
-                                                        <option value="snake-wave">Serpent ondulé</option>
-                                                        <option value="snake-zigzag">Serpent zigzag</option>
-                                                        <option value="rotate">Rotation</option>
-                                                        <option value="zoom">Zoom</option>
-                                                        <option value="shake">Tremblement</option>
-                                                        <option value="rainbow">Arc-en-ciel</option>
-                                                        <option value="typing">Effet machine à écrire</option>
-                                                    </select>
-                                                    <div id="bgColorDefilementBlock" style="margin-top:10px; display:none;">
-                                                        <label for="bgColorDefilement" style="margin-bottom:6px; white-space:nowrap;">Couleur de la bande :</label>
-                                                        <input type="color" class="form-control colors_picker" id="bgColorDefilement" name="bgColorDefilement" value="#FFFFFF" style="width:130px; margin-bottom:0; padding:2px;">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- la taille -->
-                                            <div class="form-group col-md-4" style="margin-left: 30px; display:flex; flex-direction:column;">
-                                                <label for="fontSize">Choisir une taille:</label>
-                                                <select id="fontSize" name="fontSize" class="form-control" style="width:100%; ">
-                                                    <option value="">Sélectionner une taille (px)</option>
-                                                  
-                                                </select>
-                                                <!-- Vitesse de défilement juste en dessous de la taille -->
-                                                <div id="vitesseDefilementBlock" style="margin-top:10px; display:none;">
-                                                    <label for="vitesseDefilement" style="margin-bottom:6px; white-space:nowrap;">Vitesse de défilement :</label>
-                                                    <input type="number" class="form-control" id="vitesseDefilement" name="vitesseDefilement" min="1" step="1" style="width:130px; margin-bottom:0;" placeholder="px/s">
-                                                </div>
-                                            </div>
-                                             <!-- le style -->
-                                            <div class="form-group col-md-4" style="margin-left:30px; display:flex; flex-direction:column;"> 
-                                                <label for="style">Choisir un style:</label>
-                                                <select id="style" name="style" class="form-control" style="width:100%; ">
-                                                    <option value="">Sélectionner un style</option>
-                                                    <option value="Gras">Gras</option>
-                                                    <option value="Italique">Italique</option>
-                                                    <option value="Souligné">Souligné</option>
-                                                    <option value="Barré">Barré</option>
-                                                </select>
-                                                <div id="textColorDefilementBlock" style="margin-top:10px; display:none;">
-                                                    <label for="textColorDefilement" style="margin-bottom:6px; white-space:nowrap;">Couleur du texte :</label>
-                                                    <input type="color" class="form-control colors_picker" id="textColorDefilement" name="textColorDefilement" value="transparent" style="width:130px; margin-bottom:0; padding:2px;">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div id="animationSelection" class="form-row" style="display:none; margin-top:10px; display:flex; align-items:flex-start; gap:30px;">
-                                            <!-- Animation déplacée dans le bloc police -->
-                                        </div>
-
-                                        <!-- forcer un saut de ligne après le sélecteur d'animation -->
-                                        <div style="clear: both; height:10px;"></div>
 
                             
                                     <div >
@@ -484,8 +481,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (bgColorInput) bgColorInput.disabled = !show;
                 const textColorBlock = document.getElementById('textColorDefilementBlock');
                 const bgColorBlock = document.getElementById('bgColorDefilementBlock');
-                if (textColorBlock) textColorBlock.style.display = show ? '' : 'none';
-                if (bgColorBlock) bgColorBlock.style.display = show ? '' : 'none';
+                if (textColorBlock) textColorBlock.style.display = show ? 'flex' : 'none';
+                if (bgColorBlock) bgColorBlock.style.display = show ? 'flex' : 'none';
             }
             if (typeSelect) {
                 typeSelect.addEventListener('change', toggleColorFieldsAjout);
@@ -712,7 +709,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (type === 'Message') {
             fileUpload.style.display = 'none';
             textInput.style.display = 'block';
-            fontSelection.style.display = 'block';
+            fontSelection.style.display = 'flex';
             animationSelection.style.display = 'none';
             languagesPart.style.display = 'block';
             ipAddress.style.display = 'none';
@@ -722,14 +719,14 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (type === 'Message défilant') {
             fileUpload.style.display = 'none';
             textInput.style.display = 'block';
-            fontSelection.style.display = 'block';
-            animationSelection.style.display = 'block';
+            fontSelection.style.display = 'flex';
+            animationSelection.style.display = 'flex';
             languagesPart.style.display = 'block';
             ipAddress.style.display = 'none';
             if (emojiBar) emojiBar.style.display = '';
-            if (vitesseDefilementBlock) vitesseDefilementBlock.style.display = '';
-            if (bgColorDefilementBlock) bgColorDefilementBlock.style.display = '';
-            if (textColorDefilementBlock) textColorDefilementBlock.style.display = '';
+            if (vitesseDefilementBlock) vitesseDefilementBlock.style.display = 'flex';
+            if (bgColorDefilementBlock) bgColorDefilementBlock.style.display = 'flex';
+            if (textColorDefilementBlock) textColorDefilementBlock.style.display = 'flex';
         } else if (type === 'Image' || type === 'Video' || type === 'PDF') {
             fileUpload.style.display = 'block';
             textInput.style.display = 'none';
