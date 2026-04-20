@@ -138,12 +138,17 @@ tr {
 
 .dataTables_filter label {
     color: #3087ce;
-    font-size: 20px;
+    font-size: 16px !important;
+    font-weight: normal;
 }
 
 .dataTables_filter input {
     color: black;
-    font-size: 16px;
+    font-size: 14px !important;
+    height: 30px !important;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
 }
 
 /* Styles pour le header */
@@ -972,6 +977,10 @@ tr {
     width: 130px;
 }
 
+.btn-action-wide {
+    width: 200px;
+}
+
 .btn-orange-dim {
     background-color: #ED7F10 !important;
     border: 2px solid #ED7F10 !important;
@@ -1265,6 +1274,8 @@ tr {
     align-items: center;
     justify-content: space-between;
     gap: 3px;
+    min-height: 15px;
+    margin-bottom: 5px;
 }
 
 .btn-retour-journal {

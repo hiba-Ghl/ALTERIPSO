@@ -106,7 +106,7 @@
                     <div>
                     <a   data-toggle="tooltip" data-placement="top" title="Modifier l'annonce " href="{{ path('app_modifier_annonce', { 'id': annonce.id }) }}" class="btn btn-warning btn-xs"  {% if app.user.ModifierAnnonce == '0' %}  disabled {% endif %}><i class="glyphicon glyphicon-edit"></i></a>									
                     </div>
-                    <div data-toggle="modal"  data-target="#modal-{{annonce.id}}" data-position="{{ annonce.position }}" data-url="{{ annonce.url }}" data-type="{{ annonce.type }}" class="visualiser">
+                    <div data-toggle="modal"  data-target="#modal-{{annonce.id}}" data-position="{{ annonce.position }}" data-url="{{ annonce.url }}" data-type="{{ annonce.type }}" data-animation="{{ annonce.animation }}" data-couleur="{{ annonce.couleur }}" data-couleur-bande="{{ annonce.couleurBande }}" data-police="{{ annonce.police }}" data-taille="{{ annonce.taille }}" data-style="{{ annonce.style }}" data-vitesse="{{ annonce.vitesseDefilement }}" class="visualiser">
                         <a data-toggle="tooltip"  data-placement="top" title="Pré-visualiser l'annonce"   class="ida btn btn-primary btn-xs" ><i class="glyphicon glyphicon-blackboard"></i></a>
                     </div>
                     <div data-toggle="modal" data-target="#modal2-{{annonce.id}}" data-id ="{{annonce.id}}"  data-name="{{annonce.nom}}" class="lancer-button">
@@ -159,12 +159,52 @@
   const position = PrevisualiserButton.getAttribute('data-position');
   const type = PrevisualiserButton.getAttribute('data-type');
   const url = PrevisualiserButton.getAttribute('data-url');
+  
+  const animation = PrevisualiserButton.getAttribute('data-animation') || 'scroll';
+  const couleur = PrevisualiserButton.getAttribute('data-couleur') || '#FFFFFF';
+  const couleurBande = PrevisualiserButton.getAttribute('data-couleur-bande') || '#FF0000';
+  const police = PrevisualiserButton.getAttribute('data-police') || 'Arial';
+  let taille = PrevisualiserButton.getAttribute('data-taille') || '20';
+  if (!taille.includes('px')) taille += 'px';
+  const style = PrevisualiserButton.getAttribute('data-style') || 'normal';
+  const vitesseStr = PrevisualiserButton.getAttribute('data-vitesse') || '5';
+  
+  let vitesse = 5;
+  switch (vitesseStr) {
+      case 'tres_rapide': vitesse = 1; break;
+      case 'rapide': vitesse = 3; break;
+      case 'normal': vitesse = 5; break;
+      case 'lent': vitesse = 7; break;
+      case 'tres_lent': vitesse = 10; break;
+      default: vitesse = parseInt(vitesseStr) || 5;
+  }
+  
+  let animClass = 'ia-scroll'; // default
+  if (animation === 'bounce') animClass = 'ia-bounce';
+  else if (animation === 'scroll') animClass = 'ia-scroll';
+  else if (animation === 'fade') animClass = 'ia-fade';
+  else if (animation === 'snake') animClass = 'ia-snake';
+  else if (animation === 'snake-wave') animClass = 'ia-snake-wave';
+  else if (animation === 'snake-zigzag') animClass = 'ia-snake-zigzag';
+  else if (animation === 'rotate') animClass = 'ia-rotate';
+  else if (animation === 'zoom') animClass = 'ia-zoom';
+  else if (animation === 'shake') animClass = 'ia-shake';
+  else if (animation === 'rainbow') animClass = 'ia-rainbow';
+  else if (animation === 'typing') animClass = 'ia-typing';
+
+  const animStyle = `animation-duration:${vitesse}s;`;
+  const textStyle = `color:${couleur};font-family:'${police}', sans-serif;font-size:${taille};font-style:${style.includes('italic')?'italic':'normal'};font-weight:${style.includes('bold')?'bold':'normal'};text-decoration:${style.includes('underline')?'underline':'none'};white-space:nowrap;display:inline-block;margin:0 10px;`;
+  const bandeStyle = `background-color:${couleurBande};`;
+  const innerHtml = `<span style="${textStyle}${animStyle}" class="${animClass}">${url}</span>`;
+
   const filename = url.split('/').pop();
-    const finalUrl = `/images/${filename}/annonce_directory`;
+  const finalUrl = `/images/${filename}/annonce_directory`;
   let content = '';
 if (position === "Bas") {
   if (type === "Image") {
     content = `<img style="position:absolute;left:38%;bottom:10%;width:150px;height:150px" src="${finalUrl}" />`;
+  } else if (type === "Message défilant") {
+    content = `<div style="position:absolute;right:0;bottom:8%;width:100%;overflow:hidden;text-align:center;${bandeStyle}">${innerHtml}</div>`;
   } else if (type === "Message") {
     content = `<p style="position:absolute;right:48%;bottom:8%;color:white;background-color:red;">${url}</p>`;
   } else {
@@ -173,6 +213,8 @@ if (position === "Bas") {
 } else if (position === "Haut") {
   if (type === "Image") {
     content = `<img style="position:absolute;right:38%;top:2%;width:150px;height:150px" src="${finalUrl}" />`;
+  } else if (type === "Message défilant") {
+    content = `<div style="position:absolute;right:0;top:4%;width:100%;overflow:hidden;text-align:center;${bandeStyle}">${innerHtml}</div>`;
   } else if (type === "Message") {
     content = `<p style="position:absolute;right:48%;top:4%;color:white;background-color:red;">${url}</p>`;
   } else {
@@ -182,6 +224,8 @@ if (position === "Bas") {
  else if (position === "Gauche") {
   if (type === "Image") {
     content = `<img style ="position:absolute;left:2%;  top:25%;width:150px;height:150px" src="${finalUrl}" />`;
+  } else if (type === "Message défilant") {
+    content = `<div style="position:absolute;left:2%;top:45%;width:40%;max-width:200px;overflow:hidden;text-align:center;${bandeStyle}">${innerHtml}</div>`;
   } else if (type === "Message") {
     content = `<p style="position:absolute;left:2%;top:45%;color:white;background-color:red;">${url}</p>`;
   } else {
@@ -191,9 +235,10 @@ if (position === "Bas") {
  else if (position === "Droite") {
   if (type === "Image") {
     content = `<img style ="position:absolute;right:2%;  top:25%;width:150px;height:150px" src="${finalUrl}" />`;
+  } else if (type === "Message défilant") {
+    content = `<div style="position:absolute;right:5%;top:45%;width:40%;max-width:200px;overflow:hidden;text-align:center;${bandeStyle}">${innerHtml}</div>`;
   } else if (type === "Message") {
-        content = `<p style ="position:absolute;right:5%;  top:45%;color:white;background-color:red;">${url}</p>`;
-
+    content = `<p style="position:absolute;right:5%;top:45%;color:white;background-color:red;">${url}</p>`;
   } else {
     content = `<object data="${finalUrl}" type="application/pdf" style ="position:absolute;right:10%;  top:25%;width:150px;height:150px"></object>`;
   }
@@ -217,7 +262,7 @@ else
     popUP.setAttribute("aria-hidden", "true");
 
     popUP.innerHTML = `
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
             <button id="close" type="button" class="close close3" data-dismiss="modal-${index}" aria-label="Close">
@@ -225,15 +270,16 @@ else
           </button>
           <h4 class="modal-title" style="color: grey;">Pré-visualisation</h4>
         </div>
-        <div class="modal-body" id="modal-body-${index}" >
-          <div class="form-group" style="position:relative">
-          <img src="{{ asset('images/aaa.png') }}"  class="frame">
-            ${content}
+        <div class="modal-body" id="modal-body-${index}" style="text-align: center;">
+          <div class="form-group" style="position:relative; display:inline-block; margin: 0 auto; max-width: 100%;">
+          <img src="{{ asset('images/aaa.png') }}"  class="frame" style="display:block; max-width:100%;">
+            <div style="position:absolute; top:4.5%; bottom:16.5%; left:3.5%; right:3.5%; overflow:hidden; border-radius:2px;">
+              ${content}
+            </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <a class="btn btn-default btn-sm btn-width-fixed" href="/annonce/" role="button"> Fermer</a>    
-              </div>
+        <div class="modal-footer" style="text-align: right;">
+          <a class="btn btn-danger btn-md btn-ajouter-width" href="/annonce/" role="button"><i class="glyphicon glyphicon-remove"></i> <span>Annuler</span></a>    
         </div>
       </div>
     </div>
@@ -285,28 +331,28 @@ function createModal(index,Id,name) {
   popUP.setAttribute("aria-labelledby", "modalLabel1");
   popUP.setAttribute("aria-hidden", "true");
   popUP.innerHTML = `
-    <div class="modal-dialog" role="document">
-      <div class="modal-content modal-content-large">
-        <div class="modal-header modal-header-custom">
-        <button id="close" type="button" class="close close2" data-dismiss="modal2-${index}" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <div class="modal-header-title">
-          <img src="{{ asset('images/ler.png') }}" alt="Icon">
-            Lancer l'annonce ${name}
-          </div>
-        </div>
-        <form style="display: flex; flex-direction: column; height: 100%;" id="form" method="post" enctype="multipart/form-data" action="/annonce/LancerAnnonce/${Id}">
-        <div class="modal-footer" style="text-align: left; padding: 15px; border-bottom: 1px solid #e5e5e5; border-top: none;">
-                  <button id="envoyervod" type="submit" class="btn btn-primary conf" name="envoyervod"> <i class="glyphicon glyphicon-send"></i> Lancer l'annonce</button>
-                  <a class="btn btn-danger btn-width-fixed" href="/annonce/" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a>
-                </div>
-                <div class="modal-body" id="modal-body2-${index}" style="flex: 1; overflow-y: auto;">
-                <div style="font-size:16px;color:black;">Liste Support connecté à choisir</div>
-                </div>
-                </form>
+    <div class="modal-dialog modal-lg" style="width: 800px; max-width: 37vw;" role="document">
+      <div class="modal-content">
+        <form id="form" method="post" enctype="multipart/form-data" action="/annonce/LancerAnnonce/${Id}">
+            <div class="modal-header modal-header-custom">
+            <button id="close" type="button" class="close close2" data-dismiss="modal2-${index}" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <div class="modal-header-title">
+              <img src="{{ asset('images/ler.png') }}" alt="Icon">
+                Lancer l'annonce
+              </div>
             </div>
-        </div>    
+            <div class="modal-body" id="modal-body2-${index}" style="overflow-y: auto; max-height: 60vh;">
+              <div style="font-size:16px;color:black;">Liste Support connecté à choisir</div>
+            </div>
+            <div class="modal-footer" style="text-align: right;">
+              <button id="envoyervod" type="submit" class="btn btn-primary btn-md btn-action-wide" name="envoyervod"> <i class="glyphicon glyphicon-send"></i> Lancer l'annonce</button>
+              <a class="btn btn-danger btn-md btn-action-wide" href="/annonce/" role="button"><i class="glyphicon glyphicon-remove"></i> <span>Annuler</span></a>
+            </div>
+        </form>
+      </div>
+    </div>    
     `;
     return popUP;
 }
@@ -329,9 +375,9 @@ document.addEventListener('click', function (event) {
         return false;
       }
       else{
-        const body = document.getElementById('div2');
+        const bodyContainer = document.body;
         const modal = createModal(index,Id,name);
-        body.appendChild(modal);
+        bodyContainer.appendChild(modal);
     const modalBody1 = document.querySelector(`#modal-body2-${index}`);
     if (modalBody1 && Array.isArray(chambre)) {
       const existeTable = document.getElementById(`table-${index}`);
@@ -339,16 +385,16 @@ document.addEventListener('click', function (event) {
       {
       const table = document.createElement('table');
       table.style.width = "100%";
-      table.setAttribute("class","table table-striped header-fixed table-bordered table-hover table-checkable order-column dataTable no-footer");
+      table.setAttribute("class","table table-striped header-fixed table-bordered table-hover table-checkable order-column dataTable no-footer table-modal");
       table.id = `table-${index}`;
       const thead = document.createElement('thead');
       thead.style.width = "100%";
       thead.innerHTML = `
-        <tr style="width:100%;display:flex;justify-content:space-between">
-          <th style="width:120px;height:60px;display:flex;align-items: center;gap:5px"><input type="checkbox" id="checkAllboxn"/><p style="color:red">Selectionner / Désélectionner</p></th>
-          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Chambre</th>
-          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Adresse IP</th>
-          <th style="width:120px;height:60px;display:flex;align-items: center;justify-content:center">Adresse MAC</th> 
+        <tr>
+          <th><input type="checkbox" id="checkAllboxn"/><!--<p style="color:red; font-size:10px; margin:0;">Selectionner / Désélectionner</p>--></th>
+          <th>Chambre</th>
+          <th>Adresse IP</th>
+          <th>Adresse MAC</th> 
         </tr>`;
       table.appendChild(thead);
       const tbody = document.createElement('tbody');
@@ -356,15 +402,11 @@ document.addEventListener('click', function (event) {
       let i = 0;
       chambre.forEach(chbr => {
     const tr1 = document.createElement('tr');
-    tr1.style.width = "100%";
-    tr1.style.height = "50px";
-    tr1.style.display = "flex";
-    tr1.style.justifyContent = 'space-between';
     tr1.innerHTML = `
-        <td style="width:120px;height:40px;" data-label="Sélection"><input type="checkbox" value=${chbr.id} name="checked[${i}]" class="boxcheck"/><input style="display:none" type="text" value=${chbr.id} name="chambre[${i}]"></td>
-        <td style="width:120px;height:40px;text-align:center;" data-label="Chambre">${capitalize(chbr.nom)}</td>
-        <td style="width:120px;height:40px;text-align:center;" data-label="Adresse IP">${chbr.ip}</td>
-        <td style="width:120px;height:40px;text-align:center;" data-label="Adresse MAC">${chbr.Mac}</td>`;
+        <td data-label="Sélection"><input type="checkbox" value=${chbr.id} name="checked[${i}]" class="boxcheck"/><input style="display:none" type="text" value=${chbr.id} name="chambre[${i}]"></td>
+        <td data-label="Chambre">${capitalize(chbr.nom)}</td>
+        <td data-label="Adresse IP">${chbr.ip}</td>
+        <td data-label="Adresse MAC">${chbr.Mac}</td>`;
     tbody.appendChild(tr1);
     i++;
 });
@@ -375,8 +417,6 @@ document.addEventListener('click', function (event) {
       modal.classList.add('show'); 
       modal.style.display = 'block';
       document.body.style.overflow = 'hidden';
-      modal.style.overflowY = 'auto';
-      modal.style.maxHeight = '90vh';
       if (!$.fn.dataTable.isDataTable(`#table-${index}`)) {
       $(`#table-${index}`).DataTable({
         language: {
@@ -433,7 +473,6 @@ document.addEventListener('click', function (event) {
       modal.classList.add('fade');
       modal.style.display = 'none';
       document.body.style.overflow = '';
-      modal.style.overflowY = '';
       modal.remove();
     }
     if (modalBackdrop[0]) {
@@ -459,26 +498,26 @@ document.addEventListener('click', function (event) {
     popUP.setAttribute("aria-labelledby", "modalLabel2");
     popUP.setAttribute("aria-hidden", "true");
     popUP.innerHTML = `
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" style="width: 800px; max-width: 37vw;" role="document">
             <div class="modal-content">
-                <div class="modal-header" style="margin-top:30px;">
-                <button id="close" type="button" class="close close1" data-dismiss="modal3-${index}" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <div class="modal-header-title">
-                    <img src="{{ asset('images/ler.png') }}" alt="Icon">
-                        Arrêter l'annonce ${name}
+                <form id="form" method="post" enctype="multipart/form-data" action="/annonce/ArreteAnnonce/${Id}">
+                    <div class="modal-header modal-header-custom">
+                    <button id="close" type="button" class="close close1" data-dismiss="modal3-${index}" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <div class="modal-header-title">
+                        <img src="{{ asset('images/ler.png') }}" alt="Icon">
+                            Arrêter l'annonce
+                        </div>
                     </div>
-                </div>
-            <form id="form" method="post" enctype="multipart/form-data" action="/annonce/ArreteAnnonce/${Id}" style="display: flex; flex-direction: column; height: 100%;">
-                <div class="modal-footer" style="text-align: left; padding: 15px; border-bottom: 1px solid #e5e5e5; border-top: none;">
-                  <button id="envoyervod" type="submit" class="btn btn-primary conf" name="envoyervod"> <i class="glyphicon glyphicon-send" style="margin-right:3px"></i>Arrêt l'annonce en cours</button>
-                  <a class="btn btn-danger btn-width-fixed" href="/annonce/" role="button"><i class="glyphicon glyphicon-remove"></i> Annuler</a>
-                </div>
-                <div class="modal-body" id="modal-body3-${index}" style="flex: 1; overflow-y: auto;">
-                <div style="font-size:16px;color:black;">Liste Support connecté à choisir</div>
-                </div>
-            </form>
+                    <div class="modal-body" id="modal-body3-${index}" style="overflow-y: auto; max-height: 60vh;">
+                      <div style="font-size:16px;color:black;">Liste Support connecté à choisir</div>
+                    </div>
+                    <div class="modal-footer" style="text-align: right;">
+                      <button id="envoyervod" type="submit" class="btn btn-primary btn-md btn-action-wide" name="envoyervod"> <i class="glyphicon glyphicon-send" style="margin-right:3px"></i>Arrêt l'annonce en cours</button>
+                      <a class="btn btn-danger btn-md btn-action-wide" href="/annonce/" role="button"><i class="glyphicon glyphicon-remove"></i> <span>Annuler</span></a>
+                    </div>
+                </form>
             </div>
         </div>    
     `;
@@ -511,9 +550,9 @@ if (!response.ok) {
         return false;
       }
       else{
-        const body = document.getElementById('div2');
+        const bodyContainer = document.body;
         const modal = createModal1(index,Id,name);
-        body.appendChild(modal);
+        bodyContainer.appendChild(modal);
     const modalBody1 = document.querySelector(`#modal-body3-${index}`);
     if (modalBody1 && Array.isArray(chambre)) {
       const existeTable = document.getElementById(`table1-${index}`);
@@ -527,7 +566,7 @@ if (!response.ok) {
       thead.style.width = "100%";
       thead.innerHTML = `
         <tr>
-          <th><input type="checkbox" id="checkAllboxn1" checked/></th>
+          <th><input type="checkbox" id="checkAllboxn1" checked/><!--<p style="color:red; font-size:10px; margin:0;">Selectionner / Désélectionner</p>--></th>
           <th>Chambre</th>
           <th>Adresse IP</th>
           <th>Adresse MAC</th> 
@@ -553,13 +592,11 @@ if (!response.ok) {
       modal.classList.add('show'); 
       modal.style.display = 'block';
       document.body.style.overflow = 'hidden';
-      modal.style.overflowY = 'auto';
-      modal.style.maxHeight = '90vh';
      
       if (!$.fn.dataTable.isDataTable(`#table1-${index}`)) {
       $(`#table1-${index}`).DataTable({
           language: {
-        emptyTable: "Cette annonce ne pas lancer dans aucune chambre."
+        emptyTable: `<span style="white-space: nowrap;">Cette annonce ne pas lancer dans aucune chambre.</span>`
     },
         oLanguage: {
    "sSearch": "Recherche:"
@@ -612,7 +649,6 @@ document.addEventListener('click', function (event) {
       modal.classList.add('fade');
       modal.style.display = 'none';
       document.body.style.overflow = '';
-      modal.style.overflowY = '';
       modal.remove();
     }
     if (modalBackdrop[0]) {

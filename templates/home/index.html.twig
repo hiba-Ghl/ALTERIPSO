@@ -678,7 +678,7 @@
 		<div	class="row">
 			<form	action="{{ path('modifierhome') }}"	name="form"	method="post"	enctype="multipart/form-data">
 
-				<div	class="col-xs-12 col-md-2 xith">
+				<div	class="col-xs-12 col-md-2 xith" style="margin-top: 15px;">
 
 					<div	class="form-group">
 
@@ -764,7 +764,7 @@
 					{% else %}
 						{% set background= path('afficher_image', { filename: etablissement.background|split('/')|last, directory: 'etablissement_directory' })%}
 					{% endif %}
-					<div	class="col-md-12"	id="back_img" style="background:url('{{ background }}'); height:555px; background-size: cover!important;">
+					<div	class="col-md-12"	id="back_img" style="background:url('{{ background }}'); height:572px; background-size: cover!important;">
 
 					<div	class="col-md-12 header-fixed-mobile"	style="background-color: rgba(160, 160, 160, 0.25);height: 80px;margin-bottom: 15px">
 

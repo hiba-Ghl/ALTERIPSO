@@ -9,6 +9,14 @@ body {
     text-align: right; /* tous les boutons alignés à droite */
 
 }
+/* @media (max-width: 1199px) {
+    #back_img{
+        height:460px !important;
+        margin-top: 10px;
+        margin-right: 5px;
+        margin-left: 3px;
+    }
+} */
 
 /* General responsive adjustments */
 @media (max-width: 1200px) {
@@ -19,7 +27,7 @@ body {
         height: 50px;
     }
     #back_img{
-        height: 655px !important;
+        height:560px !important;
         margin-top: 10px;
         margin-right: 5px;
         margin-left: 3px;
@@ -30,6 +38,35 @@ body {
         /* padding: 5px !important; */
         width: 100% !important;
         height: 100% !important;
+        float: none !important;
+        clear: both !important;
+    }
+
+    .xith {
+        padding: 10px !important;
+        margin-left: 0 !important;
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        justify-content: center !important; /* ou flex-start si préféré */
+        width: 100% !important;
+        float: none !important;
+        position: relative;
+        z-index: 10;
+    }
+
+    .xith .form-group {
+        margin-bottom: 0 !important;
+        flex: 1 1 auto !important; /* laisser les boutons s'adapter à la largeur dispo */
+        min-width: 140px !important;
+    }
+
+    .xith .btn {
+        width: 100% !important;
+        font-size: 12px !important;
+        padding: 8px 5px !important;
+        justify-content: center !important;
+        white-space: nowrap !important;
     }
 }
 
@@ -71,7 +108,7 @@ body {
     }
 
     .backp {
-        margin-top: 100px !important;
+        margin-top: 10px !important;
     }
 }
 
@@ -386,7 +423,7 @@ body {
     }
    
     #back_img{
-        height: 233px !important;
+        height: 212px !important;
         margin-top: 0 !important; /* pas d'espace vide au-dessus de la TV sur petit mobile */
     }
     
