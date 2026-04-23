@@ -43,6 +43,6 @@ foreach ($tableau_resultat as $element) {
 }
 
 // Afficher le nouveau tableau encodé en JSON
-echo json_encode($nouveau_tableau);
+echo json_encode($nouveau_tableau, JSON_UNESCAPED_UNICODE);
 
 ?>

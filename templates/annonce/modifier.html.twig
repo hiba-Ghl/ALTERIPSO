@@ -349,7 +349,7 @@
             <a href="{{ path('app_annonce') }}" class="btn btn-danger btn-md btn-modifier-width">
                 <i class="glyphicon glyphicon-remove"></i> <span>Annuler</span>
             </a>
-            <button type="submit" name="valider" class="btn btn-primary btn-md btn-modifier-width">
+            <button type="submit" name="valider" class="btn btn-primary btn-md btn-modifier-width" onclick="return confirm('Êtes-vous sûr de vouloir enregistrer ces éléments ?');">
                 <i class="glyphicon glyphicon-floppy-disk"></i> <span>Enregistrer</span>
             </button>
         </div>

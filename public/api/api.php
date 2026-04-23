@@ -17,11 +17,17 @@ class api {
         private $db;
         public function __Construct(){
 	
-	$CONFIG = require 'C:/wamp/www/site_config.php';
-	extract($CONFIG); // crée les variables automatiquement
+	// ob_start();
+	require 'C:/wamp/www/site_config.php';
+	// ob_end_clean();
+	
+	// Si le tableau $CONFIG existe on l'extrait
+	if (isset($CONFIG) && is_array($CONFIG)) {
+	    extract($CONFIG); // crée les variables automatiquement
+    }
 
 			
-			$this->db = new PDO("mysql:charset=utf8;mysql:host=$ServerHostRsmartv;dbname=$DatabaseNameRsmartv", $DatabaseUserRsmartv, $DatabasePassRsmartv);
+			$this->db = new PDO("mysql:charset=utf8mb4;mysql:host=$ServerHostRsmartv;dbname=$DatabaseNameRsmartv", $DatabaseUserRsmartv, $DatabasePassRsmartv);
 			//$this->conn2 = new PDO("mysql:host=$ServerHostPaytv;dbname=$DatabaseNamePaytv", $DatabaseUserPaytv, $DatabasePassPaytv);
 			
         }
@@ -322,38 +328,13 @@ class api {
                 break;
 			case 'getAnnonce':
                 $id = $function["params"]["id"];
-                $ip = $function["params"]["ip"];
-                
-                // Récupérer l'id de la chambre
-                $reqChambre = $this->db->prepare("SELECT id FROM `chambre` WHERE `etablissement_id` = ? AND `ip` = ?");
-                $reqChambre->execute([$id, $ip]);
-                $chambre = $reqChambre->fetch(PDO::FETCH_ASSOC);
-
-                if ($chambre) {
-                    $chambre_id = $chambre['id'];
-                    $now = date('Y-m-d H:i:s');
-                    
-                    // Récupérer les annonces actives, non expirées et liées à cette chambre
-                    $sql = "SELECT a.* FROM `annonce` a 
-                            JOIN `annonce_chambre` ac ON a.id = ac.annonce_id 
-                            WHERE a.etablissement_id = ? 
-                            AND ac.chambre_id = ? 
-                            AND a.active = 1 
-                            AND (a.datedebut IS NULL OR a.datedebut <= ?) 
-                            AND (a.datefin IS NULL OR a.datefin >= ?)";
-                    
-                    $reqAnnonce = $this->db->prepare($sql);
-                    $reqAnnonce->execute([$id, $chambre_id, $now, $now]);
-                    $post_data = $reqAnnonce->fetchAll(PDO::FETCH_ASSOC);
-                } else {
-                    $post_data = [];
-                }
-
+                $req = $this->db->prepare("SELECT * FROM `annonce` WHERE `etablissement_id` = ?");
+                $req->execute([$id]);
+                $post_data = $req->fetchAll(PDO::FETCH_ASSOC);
                 if (empty($post_data)) {
                     $post_data = ['reponse' => 'false'];
                 }
-                
-                $post_data = json_encode(["getAnnonce" => $post_data]);
+                $post_data = json_encode(["getAnnonce" => $post_data], JSON_UNESCAPED_UNICODE);
                 break;
 			/*case 'getService2':
                 $id = $function["params"]["id"];
