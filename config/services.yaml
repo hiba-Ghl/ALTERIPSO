@@ -115,8 +115,9 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-    App\Consumer\MyConsumer:
-        autowire: true
+    # app.my_consumer:
+    #     autowire: true
+        # class: App\Consumer\MyConsumer # Si la classe existe, sinon commentez ou supprimez ce service
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
