@@ -99,13 +99,13 @@
                             <!-- Couleur du texte -->
                             <div id="textColorDefilementBlock" style="display:none; flex-direction:column;">
                                 <label for="textColorDefilement" style="font-size:12px; margin-bottom:2px; font-weight:normal;">Couleur texte:</label>
-                                <input type="color" class="form-control colors_picker" id="textColorDefilement" name="textColorDefilement" value="{{ ann.couleurTexte|default('#000000') }}" style="width:70px; height:30px; padding:0; border:none; background:transparent;">
+                                <input type="color" class="form-control colors_picker" id="textColorDefilement" name="textColorDefilement" value="{{ ann.couleur ?: '#000000' }}" style="width:70px; height:30px; padding:0; border:none; background:transparent;">
                             </div>
 
                             <!-- Couleur de la bande -->
                             <div id="bgColorDefilementBlock" style="display:none; flex-direction:column;">
                                 <label for="bgColorDefilement" style="font-size:12px; margin-bottom:2px; font-weight:normal;">Couleur bande:</label>
-                                <input type="color" class="form-control colors_picker" id="bgColorDefilement" name="bgColorDefilement" value="{{ ann.couleurBande|default('#FFFFFF') }}" style="width:70px; height:30px; padding:0; border:none; background:transparent;">
+                                <input type="color" class="form-control colors_picker" id="bgColorDefilement" name="bgColorDefilement" value="{{ ann.couleurBande ?: '#FFFFFF' }}" style="width:70px; height:30px; padding:0; border:none; background:transparent;">
                             </div>
 
                             <!-- Animation -->
