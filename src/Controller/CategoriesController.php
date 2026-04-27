@@ -45,6 +45,8 @@ class CategoriesController extends AbstractController
             );
         }
 
+        $nbFavoris = $entityManager->getRepository(Categories::class)->count(['etablissement' => $etablissement, 'favori' => true]);
+
         // return new Response('Check out this great product: '.$product->getName());
 
         // or render a template
@@ -53,6 +55,7 @@ class CategoriesController extends AbstractController
          ['categorie' => $categories,
          'configApp'=>$configJson,
         'appConfig' =>$appConfig,
+        'nbFavoris' => $nbFavoris,
         'user' => $this->getUser()
     ]);
     }
@@ -71,7 +74,20 @@ class CategoriesController extends AbstractController
         $position = $request->get("position");
         $html = $request->get("html");
         $typemenu = $request->get("typemenu");
+        $favori = $request->get("favori");
+        
         $categories = new Categories();
+
+        if ($favori == 1) {
+            $nbFavoris = $entityManager->getRepository(Categories::class)->count(['etablissement' => $etablissement, 'favori' => true]);
+            if ($nbFavoris >= 6) {
+                $this->addFlash('warning', 'La limite de 6 favoris a été atteinte. Vous ne pouvez pas ajouter d\'autres favoris.');
+                return $this->redirectToRoute('app_home');
+            }
+            $categories->setFavori(true);
+        } else {
+            $categories->setFavori(false);
+        }
 
         $file1 = $request->files->get('logo');
         $file2 = $request->files->get('background');
@@ -177,6 +193,20 @@ class CategoriesController extends AbstractController
         $position = $request->get("position");
         $html = $request->get("html");
         $typemenu = $request->get("typemenu");
+        $favori = $request->get("favori");
+
+        if ($favori !== null) {
+            $isFavori = $favori == 1;
+            if ($isFavori && !$categories->isFavori()) {
+                $etablissement = $this->getUser()->getEtablissement();
+                $nbFavoris = $entityManager->getRepository(Categories::class)->count(['etablissement' => $etablissement, 'favori' => true]);
+                if ($nbFavoris >= 6) {
+                    $this->addFlash('warning', 'La limite de 6 favoris a été atteinte. Vous ne pouvez pas ajouter d\'autres favoris.');
+                    return $this->redirectToRoute('app_home');
+                }
+            }
+            $categories->setFavori($isFavori);
+        }
     
         $file1 = $request->files->get('logo');
         $file2 = $request->files->get('background');

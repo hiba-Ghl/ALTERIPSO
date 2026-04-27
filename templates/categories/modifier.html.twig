@@ -79,7 +79,7 @@
             </div>
 
              <div class="form-group">
-                    <label for="typemenu" class="col-lg-2 control-label">Active</label>
+                    <label for="typemenu" class="col-lg-2 control-label">Type menu</label>
                     <div class="col-lg-10">
     
                         <select id="typemenu" name="typemenu" class="form-control">
@@ -94,6 +94,34 @@
     
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label for="favori" class="col-lg-2 control-label">Favori</label>
+                    <div class="col-lg-10">
+                        <select id="favori" name="favori" class="form-control" onchange="checkLimitFavoris(this, {{ nbFavoris|default(0) }}, {{ categorie.favori ? 'true' : 'false' }})">
+                            {% if categorie.favori %}
+                            <option value="1">Oui</option>
+                            <option value="0">Non</option>
+                            {% else %}
+                            <option value="0">Non</option>
+                            <option value="1">Oui</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                </div>
+
+                <script>
+                    function checkLimitFavoris(selectElement, currentFavoris, isAlreadyFavori) {
+                        var limit = 6;
+                        if (selectElement.value == "1") {
+                            // Si c'est déjà un favori (pour la page de modification), ça ne compte pas comme un nouvel ajout
+                            if (!isAlreadyFavori && currentFavoris >= limit) {
+                                alert("Vous avez déjà " + limit + " favoris, vous ne pouvez pas en ajouter plus !");
+                                selectElement.value = "0"; // Revient à "Non"
+                            }
+                        }
+                    }
+                </script>
     
             <br>
             <strong>Média</strong>

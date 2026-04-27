@@ -829,7 +829,7 @@
 
 												<a href="categories/{{ categorie.Id }}" style="display: block; width: 100%; height: 100%; text-decoration: none; {% if app.user.ChangeCat == '0' %} pointer-events: none; opacity: 0.5; cursor: default; {% else %} cursor: pointer; {% endif %}">
 													<!--<img	src="{#{ asset(categorie.logo) }#}"	style="width: 80px; height: 80px; border-radius: 9px;">-->
-													<img src="{{ categorie.logo ? path('afficher_image', { filename: categorie.logo|split('/')|last, directory: 'categories_directory' }) : path('afficher_image', { filename: 'no_image.png', directory: 'images_directory' }) }}" style="width: 80px; height: 80px; border-radius: 9px;">
+													<img src="{{ categorie.logo ? path('afficher_image', { filename: categorie.logo|split('/')|last, directory: 'categories_directory' }) : path('afficher_image', { filename: 'no_image.png', directory: 'images_directory' }) }}" style="width: 80px; height: 80px; border-radius: 9px; {% if categorie.favori %}border: 4px solid gold;{% endif %}">
 
 													{# <img src="{{ categorie.logo ? asset(categorie.logo) : asset('images/no_image.png') }}" style="width: 80px; height: 80px; border-radius: 9px;"> #}
 
@@ -864,7 +864,7 @@
 												</div>
 
 												<a href="categories/{{ categorie.Id }}" style="display: block; width: 100%; height: 100%; text-decoration: none; {% if app.user.ChangeCat == '0' %} pointer-events: none; opacity: 0.5; cursor: default; {% else %} cursor: pointer; {% endif %}">
-													<img src="{{ path('afficher_image', { filename: categorie.logo|split('/')|last, directory: 'categories_directory' }) }}"	style="width: 100%; height: 100%; border-radius: 9px;">
+													<img src="{{ path('afficher_image', { filename: categorie.logo|split('/')|last, directory: 'categories_directory' }) }}"	style="width: 100%; height: 100%; border-radius: 9px; {% if categorie.favori %}border: 4px solid gold; box-sizing: border-box;{% endif %}">
 													<div	class="caption">
 														<label	name="titre"	 class="center-block"	style="margin-top: -34px;font-size: 11px;color: blue;text-align: center; cursor: pointer;">
 															{{ categorie.titre|capitalize }}
@@ -1149,6 +1149,37 @@
 										</select>
 									</div>
 								</div>
+								{# ajout favoris (hiba) #}
+								<div	class="form-group">
+									<label	for="favori"	class="col-lg-2 control-label">
+										Favori
+									</label>
+									<div	class="col-lg-10">
+										{% set nb_favoris = 0 %}
+										{% for cat in categories %}
+											{% if cat.favori == 1 %}
+												{% set nb_favoris = nb_favoris + 1 %}
+											{% endif %}
+										{% endfor %}
+										<select	id="favori"	name="favori"	class="form-control" onchange="checkLimitFavorisModal(this, {{ nb_favoris }}, false)">
+											<option	value="0">Non</option>
+											<option	value="1">Oui</option>
+										</select>
+									</div>
+								</div>
+
+								<script>
+									function checkLimitFavorisModal(selectElement, currentFavoris, isAlreadyFavori) {
+										var limit = 6;
+										if (selectElement.value == "1") {
+											// Si c'est déjà un favori, ça ne compte pas comme un nouvel ajout
+											if (!isAlreadyFavori && currentFavoris >= limit) {
+												alert("Vous avez déjà " + limit + " favoris, vous ne pouvez pas en ajouter plus !");
+												selectElement.value = "0"; // Revient à "Non"
+											}
+										}
+									}
+								</script>
 
 								<br>
 								<strong>
@@ -1267,14 +1298,26 @@
 							</div>
 							<div	class="modal-footer">
 
-								<button	type="submit"	class="btn btn-success"	style="background-color: #3087ce; border: 2px solid #3087ce;">
+								<button	type="button"	class="btn btn-danger btn-md modal-btn-cancel"	style="width:130px;"	data-dismiss="modal">
+									<i	class="glyphicon glyphicon-remove"></i>
+									Annuler
+								</button>
+
+								<button	type="submit"	class="btn btn-primary btn-md modal-btn-save"	style="width:130px;">
 									<i	class="glyphicon glyphicon-floppy-disk"></i>
 									Enregistrer
 								</button>
 
-								<button	type="button"	class="btn btn-secondary"	data-dismiss="modal">
-									Fermer
-								</button>
+								<style>
+									@media (max-width: 768px) {
+										.modal-btn-cancel, .modal-btn-save {
+											height: 35px;
+											font-size: 12px;
+											padding: 5px 10px;
+											margin-bottom: 5px;
+										}
+									}
+								</style>
 							</div>
 						</form>
 					</div>

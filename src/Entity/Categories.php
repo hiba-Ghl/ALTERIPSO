@@ -47,6 +47,9 @@ class Categories
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $es = null;
 
+    #[ORM\Column(type: Types::BOOLEAN, nullable: true)]
+    private ?bool $favori = false;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $pt = null;
 
@@ -103,6 +106,18 @@ class Categories
     public function getNom(): ?string
     {
         return $this->nom;
+    }
+
+    public function isFavori(): ?bool
+    {
+        return $this->favori;
+    }
+
+    public function setFavori(?bool $favori): static
+    {
+        $this->favori = $favori;
+
+        return $this;
     }
 
     public function setNom(?string $nom): static
