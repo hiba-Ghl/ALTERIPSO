@@ -42,7 +42,7 @@
 
 				<div class="col-12 col-md-4">
 					<label>Protocole</label>
-					<select class="form-control" name="protocole">
+					<select class="form-control" name="protocole" id="protocole">
 						{% for support in supports %}
 							<option value="{{ support.protocole }}">{{ support.nom|upper }}</option>
 						{% endfor %}
@@ -107,6 +107,9 @@ document.addEventListener("DOMContentLoaded", function () {
             positionSelect.value = firstFree;
         }
     });
+
+	protocoleSelect.dispatchEvent(new Event('change'));
+
 });
 </script>
 

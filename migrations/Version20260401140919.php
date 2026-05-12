@@ -20,20 +20,20 @@ final class Version20260401140919 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE annonce ADD couleur VARCHAR(20) DEFAULT NULL, ADD couleur_bande VARCHAR(20) DEFAULT NULL');
-        $this->addSql('ALTER TABLE etablissement CHANGE id id INT NOT NULL');
-        $this->addSql('ALTER TABLE lancer_annonce CHANGE date_envoie date_envoie DATETIME NOT NULL');
-        $this->addSql('ALTER TABLE service_en_chambre CHANGE contenu contenu VARCHAR(20000) NOT NULL');
-        $this->addSql('ALTER TABLE user CHANGE dernier_temp dernier_temp DATETIME NOT NULL, CHANGE tentative_export tentative_export INT NOT NULL');
+        // $this->addSql('ALTER TABLE annonce ADD couleur VARCHAR(20) DEFAULT NULL, ADD couleur_bande VARCHAR(20) DEFAULT NULL');
+        // $this->addSql('ALTER TABLE etablissement CHANGE id id INT NOT NULL');
+        // $this->addSql('ALTER TABLE lancer_annonce CHANGE date_envoie date_envoie DATETIME NOT NULL');
+        // $this->addSql('ALTER TABLE service_en_chambre CHANGE contenu contenu VARCHAR(20000) NOT NULL');
+        // $this->addSql('ALTER TABLE user CHANGE dernier_temp dernier_temp DATETIME NOT NULL, CHANGE tentative_export tentative_export INT NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE annonce DROP couleur, DROP couleur_bande');
-        $this->addSql('ALTER TABLE etablissement CHANGE id id INT AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE lancer_annonce CHANGE date_envoie date_envoie DATETIME DEFAULT NULL');
-        $this->addSql('ALTER TABLE service_en_chambre CHANGE contenu contenu MEDIUMTEXT NOT NULL');
-        $this->addSql('ALTER TABLE `user` CHANGE dernier_temp dernier_temp DATETIME DEFAULT NULL, CHANGE tentative_export tentative_export INT DEFAULT NULL');
+        // $this->addSql('ALTER TABLE annonce DROP couleur, DROP couleur_bande');
+        // $this->addSql('ALTER TABLE etablissement CHANGE id id INT AUTO_INCREMENT NOT NULL');
+        // $this->addSql('ALTER TABLE lancer_annonce CHANGE date_envoie date_envoie DATETIME DEFAULT NULL');
+        // $this->addSql('ALTER TABLE service_en_chambre CHANGE contenu contenu MEDIUMTEXT NOT NULL');
+        // $this->addSql('ALTER TABLE `user` CHANGE dernier_temp dernier_temp DATETIME DEFAULT NULL, CHANGE tentative_export tentative_export INT DEFAULT NULL');
     }
 }

@@ -149,6 +149,9 @@ class Etablissement
 
     #[ORM\Column]
     private ?int $Volumedemarage = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $rss = null;
     
     public function __construct()
     {
@@ -1110,6 +1113,18 @@ class Etablissement
     public function setVolumeDemarage(int $volume_demarage): static
     {
         $this->Volumedemarage = $volume_demarage;
+
+        return $this;
+    }
+
+    public function getRss(): ?string
+    {
+        return $this->rss;
+    }
+
+    public function setRss(?string $rss): static
+    {
+        $this->rss = $rss;
 
         return $this;
     }

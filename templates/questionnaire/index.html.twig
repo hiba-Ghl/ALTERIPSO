@@ -27,7 +27,7 @@
                     {% set selectedServiceId = app.request.query.get('serviceId') %}
                         <div style="height:40px;">
                         <select id="myselect" class="form-control" name="selectservices">
-                            <option value="" slected>Recherche par service</option>
+                            <option value="">Recherche par service</option>
                             {% for s in serviceetablissement %}
                                 <option value="{{ s.id }}" {% if s.id == selectedServiceId %}selected{% endif %}>{{ s.nom|upper }}</option>
                             {% endfor %}
@@ -50,7 +50,7 @@
         </thead>
         <tbody class="text-center">
         {% for questionnaire in questionnaire %}
-            <tr data-service="{{ questionnaire.service.id }}">
+            <tr class="questionnaire-row" data-service="{{ questionnaire.service.id }}">
                 <td class="text-start question-cell">{{ questionnaire.fr }}</td>
                 <td>{{ questionnaire.position }}</td>
                 <td>{{ questionnaire.service.nom }}</td>
@@ -84,34 +84,9 @@
     </div>
 </div>
 
-{# nos scripts #}
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const rows = document.querySelectorAll('#myTab tbody tr');
-        let actionsVisible = false;
-
-        rows.forEach(row => {
-            const modifierButton = row.querySelector('.btn-modifier');
-            const supprimerButton = row.querySelector('.btn-supprimer');
-
-            if (modifierButton || supprimerButton) {
-                actionsVisible = true;
-            }
-        });
-
-        if (!actionsVisible) {
-            document.querySelector('#myTab thead th:last-child').style.display = 'none';
-            rows.forEach(row => {
-                row.querySelector('td:last-child').style.display = 'none';
-            });
-        }
-    });
-</script>
-
 <script>
     document.getElementById('myselect').addEventListener('change', function() {
-        var selectedService = this.value.toLowerCase();
+        var selectedService = this.value;
         var rows = document.querySelectorAll('.questionnaire-row');
 
         rows.forEach(function(row) {
@@ -126,7 +101,7 @@
 
     // Filtrer les lignes lors du chargement de la page
     window.addEventListener('load', function() {
-        var selectedService = document.getElementById('myselect').value.toLowerCase();
+        var selectedService = document.getElementById('myselect').value;
         var rows = document.querySelectorAll('.questionnaire-row');
 
         rows.forEach(function(row) {
@@ -140,7 +115,7 @@
     });
 
     document.getElementById('checklist').addEventListener('click', function() {
-        var selectedService = document.getElementById('myselect').value.toLowerCase();
+        var selectedService = document.getElementById('myselect').value;
         var checkboxes;
         if (selectedService === "") {
             checkboxes = document.querySelectorAll('.btncheckbox');
