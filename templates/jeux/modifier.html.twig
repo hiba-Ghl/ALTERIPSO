@@ -48,6 +48,15 @@
                         <input type="file" class="form-control" id="logo_input" name="logo">
                     </div>
                 </div>
+                <div class="row mt-3">
+                    <div class="col-12 col-md-4">
+                        <label class="control-label">Favori:</label>
+                        <select class="form-control" name="favoris">
+                            <option value="0" {% if not jeuxFavori %}selected{% endif %}>Non</option>
+                            <option value="1" {% if jeuxFavori %}selected{% endif %}>Oui</option>
+                        </select>
+                    </div>
+                </div>
             </div>
             <div class="row">
             </div>

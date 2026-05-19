@@ -65,6 +65,14 @@ body{
 .table-livreaudio {
     width: 100%;
     margin-bottom: 0;
+    table-layout: fixed;
+}
+
+.table-livreaudio thead th,
+.table-livreaudio tbody td {
+    vertical-align: middle;
+    padding: 12px;
+    text-align: center;
 }
 
 .table-livreaudio thead th {
@@ -72,34 +80,41 @@ body{
     color: #333;
     font-weight: 600;
     border-bottom: 2px solid #3087ce;
-    padding: 12px;
-    text-align: center;
-    vertical-align: middle;
     position: sticky;
     top: 0;
     z-index: 10;
-    min-width: 120px;
+    min-width: 0;
 }
 
 /* Largeur des colonnes */
 .table-livreaudio .col-nom {
-    min-width: 150px;
+    width: 20%;
+    min-width: 0;
 }
 
 .table-livreaudio .col-fichier {
-    min-width: 150px;
+    width: 20%;
+    min-width: 0;
 }
 
 .table-livreaudio .col-categorie {
-    min-width: 150px;
+    width: 18%;
+    min-width: 0;
 }
 
 .table-livreaudio .col-icons {
-    min-width: 100px;
+    width: 12%;
+    min-width: 0;
+}
+
+.table-livreaudio .col-favori {
+    width: 10%;
+    min-width: 0;
 }
 
 .table-livreaudio .col-active {
-    min-width: 120px;
+    width: 10%;
+    min-width: 0;
     padding: 0;
 }
 
@@ -113,13 +128,8 @@ body{
 }
 
 .table-livreaudio .col-action {
-    min-width: 100px;
-}
-
-.table-livreaudio tbody td {
-    vertical-align: middle;
-    padding: 12px;
-    text-align: center;
+    width: 10%;
+    min-width: 0;
 }
 
 .table-livreaudio tbody tr {
@@ -133,7 +143,8 @@ body{
 /* FORMULAIRES */
 .form-control {
     border: 1px solid #ddd;
-    border-radius: 5px;
+        /* width: 10%;
+        min-width: 0; */
     padding: 8px 10px;
 }
 

@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\ConfigApp;
+use App\Entity\Categories;
+use App\Entity\Favoris;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,6 +32,30 @@ class JeuxController extends AbstractController
         $support =$etablissement->getSupports();
         $jeuxsCollection = $etablissement->getJeuxes();
         $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+      $categorieJeux = $entityManager->getRepository(Categories::class)->findOneBy([
+        'etablissement' => $etablissement,
+        'nom' => 'jeux'
+      ]);
+      $favorisJeux = $entityManager->getRepository(Favoris::class)->findBy([
+        'Etablissement' => $etablissement,
+      ]);
+
+      $favorisJeuxIds = [];
+      foreach ($favorisJeux as $favori) {
+        $isFavorite = false;
+
+        if ($categorieJeux !== null && $favori->getCategorie() === $categorieJeux) {
+          $isFavorite = true;
+        }
+
+        if ($favori->getNomCategorie() !== null && strtolower($favori->getNomCategorie()) === 'jeux') {
+          $isFavorite = true;
+        }
+
+        if ($isFavorite && $favori->getIdElement() !== null) {
+          $favorisJeuxIds[] = $favori->getIdElement();
+        }
+      }
         // Convertir la PersistentCollection en tableau PHP
         $jeuxsArray = $jeuxsCollection->toArray();
     
@@ -42,6 +68,7 @@ class JeuxController extends AbstractController
             'jeuxs' => $jeuxsArray,
             'appConfig' => $appConfig,  
             'user' => $this->getUser(),
+          'favorisJeuxIds' => $favorisJeuxIds,
         ]);
     }
     
@@ -64,6 +91,10 @@ class JeuxController extends AbstractController
      $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
  
       $supports = $entityManager->getRepository(Support::class)->findBy(['etablissement' => $etablissement], ['nom' => 'ASC']);
+      $categorieJeux = $entityManager->getRepository(Categories::class)->findOneBy([
+          'etablissement' => $etablissement,
+          'nom' => 'jeux'
+      ]);
 
     $positionsBySupport = [];
     $firstFreePositionBySupport = [];
@@ -99,6 +130,39 @@ class JeuxController extends AbstractController
         $active = $request->get("active");
         $position = $request->get("position");
         $protocole = $request->get("protocole");
+        $favoris = $request->get("favoris", '0');
+
+        $formData = [
+          'nom' => $nom,
+          'package' => $package,
+          'active' => $active,
+          'position' => $position,
+          'protocole' => $protocole,
+          'favoris' => '0',
+        ];
+
+        if ((string) $favoris !== '1') {
+          $this->addFlash('success', 'Le jeu doit d\'abord être ajouté en favori.');
+          return $this->render('jeux/ajouter.html.twig', [
+            'supports' => $supports,
+            'appConfig' => $appConfig,
+            'positionsBySupport' => $positionsBySupport,
+            'firstFreePositionBySupport' => $firstFreePositionBySupport,
+            'formData' => $formData,
+          ]);
+        }
+
+        if (!$this->canPersistNewFavorite($entityManager, $etablissement)) {
+          $this->addFlash('success', 'Vous avez atteint la limite maximale de 6 favoris.');
+          return $this->render('jeux/ajouter.html.twig', [
+            'supports' => $supports,
+            'appConfig' => $appConfig,
+            'positionsBySupport' => $positionsBySupport,
+            'firstFreePositionBySupport' => $firstFreePositionBySupport,
+            'formData' => $formData,
+          ]);
+        }
+
         $file1 = $request->files->get('logo');
         if ($file1) {
          $fileName1 = md5(uniqid()) . '.' . $file1->guessExtension();   
@@ -118,12 +182,30 @@ class JeuxController extends AbstractController
 
           $entityManager->persist($jeux);
           $entityManager->flush();
+
+        $favoriJeux = new Favoris();
+        $favoriJeux->setEtablissement($etablissement);
+        $favoriJeux->setCategorie($categorieJeux);
+        $favoriJeux->setNomCategorie($categorieJeux?->getNom() ?? 'jeux');
+        $favoriJeux->setIdElement($jeux->getId());
+        $favoriJeux->setNomElement($jeux->getNom());
+
+        $entityManager->persist($favoriJeux);
+        $entityManager->flush();
           //return $this->redirectToRoute('app_jeux');
           return $this->redirectToRoute('app_jeux', ['ongletActif' => $supportId->getId()]);
        }
  
        return $this->render('jeux/ajouter.html.twig', array('supports' => $supports,'appConfig' => $appConfig,'positionsBySupport' => $positionsBySupport,
-        'firstFreePositionBySupport' => $firstFreePositionBySupport,));
+        'firstFreePositionBySupport' => $firstFreePositionBySupport,
+        'formData' => [
+          'nom' => '',
+          'package' => '',
+          'active' => '0',
+          'position' => '',
+          'protocole' => $supports[0]->getProtocole() ?? '',
+          'favoris' => '0',
+        ],));
     }
 
     #[Route('/jeux/modifier/{id}', name: 'app_modifier_jeux')]
@@ -142,6 +224,15 @@ class JeuxController extends AbstractController
        $support =  $etablissement->getSupports();
        $jeux = $entityManager->getRepository(Jeux::class)->findById($id)[0]; 
        $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);           
+         $categorieJeux = $entityManager->getRepository(Categories::class)->findOneBy([
+           'etablissement' => $etablissement,
+           'nom' => 'jeux'
+         ]);
+         $favorisJeux = $entityManager->getRepository(Favoris::class)->findBy([
+           'Etablissement' => $etablissement,
+           'idElement' => $jeux->getId(),
+         ]);
+         $jeuxFavori = !empty($favorisJeux);
        $valider = $request->get("valider");
        if (isset($valider)) {
         
@@ -151,6 +242,7 @@ class JeuxController extends AbstractController
         //$active = $request->get("active");
         //$position = $request->get("position");
         $protocole = $request->get("protocole");
+        $favoris = $request->get("favoris", '0');
         $file1 = $request->files->get('logo');
         if ($file1) {
          $fileName1 = md5(uniqid()) . '.' . $file1->guessExtension();   
@@ -169,6 +261,37 @@ class JeuxController extends AbstractController
           $jeux->setLogo($fileName);
          
           $entityManager->persist($jeux);
+
+            if ((string) $favoris === '1') {
+              if (empty($favorisJeux)) {
+                if (!$this->canPersistNewFavorite($entityManager, $etablissement)) {
+                  $this->addFlash('success', 'Vous avez atteint la limite maximale de 6 favoris.');
+                } else {
+                  $favoriJeux = new Favoris();
+                  $favoriJeux->setEtablissement($etablissement);
+                  $favoriJeux->setIdElement($jeux->getId());
+
+                  $favoriJeux->setCategorie($categorieJeux);
+                  $favoriJeux->setNomCategorie($categorieJeux?->getNom() ?? 'jeux');
+                  $favoriJeux->setNomElement($jeux->getNom());
+
+                  $entityManager->persist($favoriJeux);
+                }
+              } else {
+                foreach ($favorisJeux as $favoriJeu) {
+                  $favoriJeu->setCategorie($categorieJeux);
+                  $favoriJeu->setNomCategorie($categorieJeux?->getNom() ?? 'jeux');
+                  $favoriJeu->setNomElement($jeux->getNom());
+
+                  $entityManager->persist($favoriJeu);
+                }
+              }
+            } elseif (!empty($favorisJeux)) {
+              foreach ($favorisJeux as $favoriJeu) {
+                $entityManager->remove($favoriJeu);
+              }
+            }
+
           $entityManager->flush();
           //return $this->redirectToRoute('app_jeux');
           return $this->redirectToRoute('app_jeux', ['ongletActif' => $supportId->getId()]);
@@ -179,7 +302,8 @@ class JeuxController extends AbstractController
      
  
        return $this->render('jeux/modifier.html.twig', array('jeux' => $jeux,'supports' => $support,
-       'appConfig' => $appConfig
+       'appConfig' => $appConfig,
+       'jeuxFavori' => $jeuxFavori
       ));
     }
  
@@ -201,10 +325,36 @@ class JeuxController extends AbstractController
                 'No jeux found for id '.$id
             );
         }
+
+        $categorieJeux = $entityManager->getRepository(Categories::class)->findOneBy([
+          'etablissement' => $etablissement,
+          'nom' => 'jeux'
+        ]);
+
+        $favoris = $entityManager->getRepository(Favoris::class)->findBy([
+          'Etablissement' => $etablissement,
+          'idElement' => $jeux->getId(),
+        ]);
+
+        foreach ($favoris as $favori) {
+          if ($categorieJeux === null || $favori->getCategorie() === $categorieJeux || strtolower((string) $favori->getNomCategorie()) === 'jeux') {
+            $entityManager->remove($favori);
+          }
+        }
+
         $entityManager->remove($jeux);
         $entityManager->flush();
  
         return $this->redirectToRoute('app_jeux');
+    }
+
+    private function canPersistNewFavorite(EntityManagerInterface $entityManager, $etablissement): bool
+    {
+      $totalFavoris = $entityManager->getRepository(Favoris::class)->count([
+        'Etablissement' => $etablissement,
+      ]);
+
+      return $totalFavoris < 6;
     }
 
     #[Route('/jeux/modifierhome', name: 'app_modifier_homejeux')]

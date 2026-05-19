@@ -13,17 +13,17 @@
 			<div class="row">
 				<div class="col-12 col-md-4">
 					<label>Nom jeux </label>
-					<input type="text" name="nom" class="form-control">
+					<input type="text" name="nom" class="form-control" value="{{ formData.nom|default('') }}">
 				</div>
 				<div class="col-12 col-md-4">
 					<label>Package</label>
-					<input type="text" name="package" class="form-control">
+					<input type="text" name="package" class="form-control" value="{{ formData.package|default('') }}">
 				</div>
 				<div class="col-12 col-md-4">
 					<label>Active</label>
 					<select class="form-control" name="active">
-						<option value="0">0</option>
-						<option value="1">1</option>
+						<option value="0" {% if formData.active|default('0') == '0' %}selected{% endif %}>0</option>
+						<option value="1" {% if formData.active|default('0') == '1' %}selected{% endif %}>1</option>
 					</select>
 				</div>
 			</div>
@@ -31,7 +31,7 @@
             <div class="row mt-3">
 				<div class="col-12 col-md-4">
 					<label>Position</label>
-					<select class="form-control" name="position" id="positionSelect">
+					<select class="form-control" name="position" id="positionSelect" data-selected-position="{{ formData.position|default('') }}">
 					  <option selected="selected" value=''></option>
 					</select>
 				</div>
@@ -44,8 +44,18 @@
 					<label>Protocole</label>
 					<select class="form-control" name="protocole" id="protocole">
 						{% for support in supports %}
-							<option value="{{ support.protocole }}">{{ support.nom|upper }}</option>
+							<option value="{{ support.protocole }}" {% if formData.protocole|default('') == support.protocole %}selected{% endif %}>{{ support.nom|upper }}</option>
 						{% endfor %}
+					</select>
+				</div>
+			</div>
+
+			<div class="row mt-3">
+				<div class="col-12 col-md-4">
+					<label>Favori</label>
+					<select class="form-control" name="favoris">
+						<option value="0" {% if formData.favoris|default('0') == '0' %}selected{% endif %}>Non</option>
+						<option value="1" {% if formData.favoris|default('0') == '1' %}selected{% endif %}>Oui</option>
 					</select>
 				</div>
 			</div>
@@ -77,6 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const positionsBySupport = {{ positionsBySupport|json_encode|raw }};
     const firstFreePositionBySupport = {{ firstFreePositionBySupport|json_encode|raw }};
+	const selectedPosition = positionSelect.dataset.selectedPosition || '';
 
     if (!protocoleSelect || !positionSelect) {
         console.error("Un des éléments (protocole ou positionSelect) est introuvable.");
@@ -103,7 +114,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Sélectionne la première position libre
         const firstFree = firstFreePositionBySupport[protocole];
-        if (firstFree) {
+		if (selectedPosition) {
+			positionSelect.value = selectedPosition;
+		} else if (firstFree) {
             positionSelect.value = firstFree;
         }
     });

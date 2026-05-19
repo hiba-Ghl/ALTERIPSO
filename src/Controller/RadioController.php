@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\CategorieRadio;
+use App\Entity\Categories;
 use App\Entity\Chambre;
 use App\Entity\ConfigApp;
+use App\Entity\Favoris;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -43,6 +45,26 @@ class RadioController extends AbstractController
         $radio  = $repository->findBy(['etablissement' => $etablissement],['nom' => 'ASC']);
         $categorieradio =  $entityManager->getRepository(CategorieRadio::class)->findBy(['etablissement' => $etablissement],['nom' => 'ASC']);
         $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $categorieFavori = $this->getRadioFavoriteCategory($entityManager, $etablissement);
+        $favorisRadio = $entityManager->getRepository(Favoris::class)->findBy([
+            'Etablissement' => $etablissement,
+        ]);
+        $favorisRadioIds = [];
+        foreach ($favorisRadio as $favori) {
+            $isRadioFavorite = false;
+
+            if ($categorieFavori !== null && $favori->getCategorie() === $categorieFavori) {
+                $isRadioFavorite = true;
+            }
+
+            if ($favori->getNomCategorie() !== null && strtolower($favori->getNomCategorie()) === 'radio') {
+                $isRadioFavorite = true;
+            }
+
+            if ($isRadioFavorite && $favori->getIdElement() !== null) {
+                $favorisRadioIds[] = $favori->getIdElement();
+            }
+        }
         $chambre = $entityManager->getRepository(Chambre::class)->findBy(['etablissement' =>$etablissement]);
         $chambreArray = [];
         foreach ($chambre as $chambre) {
@@ -55,6 +77,7 @@ class RadioController extends AbstractController
         return $this->render('radio/index.html.twig', [
             'radio' => $radio , 'categorieradio' => $categorieradio,'appConfig' => $appConfig,'user' => $this->getUser(),
             'chambre' => $chambreJson,
+            'favorisRadioIds' => $favorisRadioIds,
 
         ]);
     }
@@ -84,7 +107,14 @@ class RadioController extends AbstractController
         $protocole = $request->get("protocole");
         $active = $request->get("active");
         $catradio = $request->get("catradio");
+        $favoris = $request->get("favoris", '0');
         $categorieradio =  $entityManager->getRepository(CategorieRadio::class)->findById($catradio)[0];
+        $categorieFavori = $this->getRadioFavoriteCategory($entityManager, $etablissement);
+
+        if ((string) $favoris === '1' && !$this->canPersistNewFavorite($entityManager, $etablissement)) {
+            $this->addFlash('success', 'Vous avez atteint la limite maximale de 6 favoris.');
+            return $this->redirectToRoute('app_radio');
+        }
     
 
        $file1 = $request->files->get('logo');
@@ -106,8 +136,7 @@ class RadioController extends AbstractController
        }
        else 
        $fileName = 'images/no_image.png';
-       
-       
+        
        
 
        
@@ -131,6 +160,18 @@ class RadioController extends AbstractController
         $entityManager->persist($radio);
         $entityManager->flush();
 
+        if ((string) $favoris === '1') {
+            $favoriRadio = new Favoris();
+            $favoriRadio->setEtablissement($etablissement);
+            $favoriRadio->setCategorie($categorieFavori);
+            $favoriRadio->setNomCategorie($categorieFavori?->getNom() ?? 'radio');
+            $favoriRadio->setIdElement($radio->getId());
+            $favoriRadio->setNomElement($radio->getNom());
+
+            $entityManager->persist($favoriRadio);
+            $entityManager->flush();
+        }
+
         return $this->redirectToRoute('app_radio');
         
     }
@@ -153,6 +194,18 @@ class RadioController extends AbstractController
             );
         }
 
+        $categorieFavori = $this->getRadioFavoriteCategory($entityManager, $etablissement);
+        $favoris = $entityManager->getRepository(Favoris::class)->findBy([
+            'Etablissement' => $etablissement,
+            'idElement' => $radio->getId(),
+        ]);
+
+        foreach ($favoris as $favori) {
+            if ($categorieFavori === null || $favori->getCategorie() === $categorieFavori || strtolower((string) $favori->getNomCategorie()) === 'radio') {
+                $entityManager->remove($favori);
+            }
+        }
+
         $entityManager->remove($radio);
         $entityManager->flush();
 
@@ -172,6 +225,7 @@ class RadioController extends AbstractController
             $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
             return $this->redirectToRoute('home');        }
        $radio  = $repository->findBy(['etablissement' => $etablissement]);
+                $categorieFavori = $this->getRadioFavoriteCategory($entityManager, $etablissement);
         foreach ($radio as $tele) {
             $tele->setActive('0');
             $entityManager->persist($tele);
@@ -245,6 +299,59 @@ class RadioController extends AbstractController
                     $entityManager->flush();
                 }
             }
+
+        $favoris = $request->get("listefavoris", []);
+        if (isset($favoris)) {
+            $remainingFavoriteSlots = $this->getRemainingFavoriteSlots($entityManager, $etablissement);
+            $favoriteLimitReached = false;
+
+            foreach ($radio as $tele) {
+                $radioFavoris = $entityManager->getRepository(Favoris::class)->findBy([
+                    'Etablissement' => $etablissement,
+                    'idElement' => $tele->getId(),
+                ]);
+
+                $isFavorite = array_key_exists($tele->getId(), $favoris);
+
+                if ($isFavorite) {
+                    if (empty($radioFavoris)) {
+                        if ($remainingFavoriteSlots <= 0) {
+                            $favoriteLimitReached = true;
+                            continue;
+                        }
+
+                        $remainingFavoriteSlots--;
+
+                        $favoriRadio = new Favoris();
+                        $favoriRadio->setEtablissement($etablissement);
+                        $favoriRadio->setIdElement($tele->getId());
+                        $favoriRadio->setCategorie($categorieFavori);
+                        $favoriRadio->setNomCategorie($categorieFavori?->getNom() ?? 'radio');
+                        $favoriRadio->setNomElement($tele->getNom());
+
+                        $entityManager->persist($favoriRadio);
+                    } else {
+                        foreach ($radioFavoris as $favoriRadio) {
+                            $favoriRadio->setCategorie($categorieFavori);
+                            $favoriRadio->setNomCategorie($categorieFavori?->getNom() ?? 'radio');
+                            $favoriRadio->setNomElement($tele->getNom());
+
+                            $entityManager->persist($favoriRadio);
+                        }
+                    }
+                } elseif (!empty($radioFavoris)) {
+                    foreach ($radioFavoris as $favoriRadio) {
+                        if ($categorieFavori === null || $favoriRadio->getCategorie() === $categorieFavori || strtolower((string) $favoriRadio->getNomCategorie()) === 'radio') {
+                            $entityManager->remove($favoriRadio);
+                        }
+                    }
+                }
+            }
+
+            if ($favoriteLimitReached) {
+                $this->addFlash('success', 'La limite maximale de 6 favoris a été atteinte. Certains favoris sélectionnés n\'ont pas été enregistrés.');
+            }
+        }
       
         $file1 = $request->files->get('listelogo');
             if (isset($file1) and !empty($file1)) {
@@ -366,6 +473,32 @@ public function RemoveRadio(EntityManagerInterface $entityManager, int $idRadio)
     return $this->redirectToRoute('app_radio');
 }
 
+
+    private function getRadioFavoriteCategory(EntityManagerInterface $entityManager, $etablissement): ?Categories
+    {
+        return $entityManager->getRepository(Categories::class)->findOneBy([
+            'etablissement' => $etablissement,
+            'nom' => 'radio',
+        ]);
+    }
+
+    private function canPersistNewFavorite(EntityManagerInterface $entityManager, $etablissement): bool
+    {
+        $totalFavoris = $entityManager->getRepository(Favoris::class)->count([
+            'Etablissement' => $etablissement,
+        ]);
+
+        return $totalFavoris < 6;
+    }
+
+    private function getRemainingFavoriteSlots(EntityManagerInterface $entityManager, $etablissement): int
+    {
+        $totalFavoris = $entityManager->getRepository(Favoris::class)->count([
+            'Etablissement' => $etablissement,
+        ]);
+
+        return max(0, 6 - $totalFavoris);
+    }
 
 
 #[Route('/radio/GetAllchambreLancerRadio/{idRadio}',name:'GetAllchambreLancerRadio',methods:'GET')]

@@ -33,6 +33,7 @@
 						<th class="col-fichier">Fichier Livre Audio</th>
 						<th class="col-categorie">Catégorie</th>
 						<th class="col-icons">Icons</th>
+						<th class="col-favori">Favorie</th>
 						<th class="col-active">
 							<div class="col-active-content">
 								<span>Active</span>
@@ -80,7 +81,11 @@
 							{% if (tele.active) == 1 %}
 								{% set ch = 'checked' %}
 							{% endif %}
+							{% set isFavorite = tele.id in favorisLivreaudioIds %}
 							
+							<td class="col-favori">
+								<input {% if app.user.SauvegarderLiveAudio == '0' %} disabled {% endif %} name='listefavoris[{{tele.Id}}]' type="checkbox" {% if isFavorite %}checked{% endif %} class="jpCheckbox">
+							</td>
 							<td class="col-active">
 								<input {% if app.user.SauvegarderLiveAudio == '0' %} disabled {% endif %}  name='listeactive[{{tele.Id}}]' type="checkbox" {{ch}} class="jpCheckbox">
 							</td>
@@ -96,7 +101,7 @@
 			</table>
 			<!-- Formulaire d'ajout -->
 		<form action="{{ path('ajouter_livreaudio')}}" name="form" method="post" enctype="multipart/form-data" onsubmit="return validateIpForm();">
- 		<table class="table table-striped table-bordered table-hover table-livreaudio">
+	 		<table class="table table-striped table-bordered table-hover table-livreaudio">
 				<tbody>
 					<tr>
 						<!--le nom-->
@@ -127,6 +132,9 @@
 							</div>
 
 						</td>				
+						<td class="col-favori">
+							<input {% if app.user.AjoutLiveAudio == '0' %}	disabled {% endif %} name='favoris' type="checkbox" class="jpCheckbox">
+						</td>
 						<!--le status active-->
 						<td class="col-active">
 							<input {% if app.user.AjoutLiveAudio == '0' %}	disabled {% endif %} name='active' type="checkbox" class="jpCheckbox">
@@ -135,7 +143,7 @@
 						<td class="col-action">
 						<button type="submit" {% if app.user.AjoutLiveAudio == '0' %}	disabled {% endif %} class="btn btn-info btn-sm">
 								<i data-bs-toggle="tooltip" data-bs-placement="top" title="Ajouter un livre audio" class="glyphicon glyphicon-plus"></i>
-							</button>
+						</button>
 						</td>
 					</tr>
 				</tbody>

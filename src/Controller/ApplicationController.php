@@ -8,6 +8,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Support;
 use App\Entity\Application;
 use App\Entity\ConfigApp;
+use App\Entity\Categories;
+use App\Entity\Favoris;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 class ApplicationController extends AbstractController
@@ -36,6 +38,30 @@ class ApplicationController extends AbstractController
         return $this->redirectToRoute('home');     }
         $applicationsCollection = $etablissement->getApplications();
         $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement'=>$etablissement]);
+        $categorieApplication = $entityManager->getRepository(Categories::class)->findOneBy([
+            'etablissement' => $etablissement,
+            'nom' => 'application'
+        ]);
+        $favorisApplication = $entityManager->getRepository(Favoris::class)->findBy([
+            'Etablissement' => $etablissement,
+        ]);
+
+        $favorisApplicationIds = [];
+        foreach ($favorisApplication as $favori) {
+            $isApplicationFavorite = false;
+
+            if ($categorieApplication !== null && $favori->getCategorie() === $categorieApplication) {
+                $isApplicationFavorite = true;
+            }
+
+            if ($favori->getNomCategorie() !== null && strtolower($favori->getNomCategorie()) === 'application') {
+                $isApplicationFavorite = true;
+            }
+
+            if ($isApplicationFavorite && $favori->getIdElement() !== null) {
+                $favorisApplicationIds[] = $favori->getIdElement();
+            }
+        }
     
         
         // Convertir la PersistentCollection en tableau PHP
@@ -50,6 +76,7 @@ class ApplicationController extends AbstractController
             'supports' => $support,
             'applications' => $applicationsArray,
             'appConfig' =>$appConfig,
+            'favorisApplicationIds' => $favorisApplicationIds,
         ]);
     }
     
@@ -108,6 +135,38 @@ public function ajouterapplication(EntityManagerInterface $entityManager): Respo
         $active = $request->get("active");
         $position = $request->get("position");
         $protocole = $request->get("protocole");
+        $favoris = $request->get("favoris", '0');
+
+        $formData = [
+            'nom' => $nom,
+            'package' => $package,
+            'active' => $active,
+            'position' => $position,
+            'protocole' => $protocole,
+            'favoris' => '0',
+        ];
+
+        if ((string) $favoris !== '1') {
+            $this->addFlash('success', 'L\'application doit d\'abord être ajoutée en favori.');
+            return $this->render('application/ajouter.html.twig', [
+                'supports' => $supports,
+                'appConfig' => $configApp,
+                'positionsBySupport' => $positionsBySupport,
+                'firstFreePositionBySupport' => $firstFreePositionBySupport,
+                'formData' => $formData,
+            ]);
+        }
+
+        if (!$this->canPersistNewFavorite($entityManager, $etablissement)) {
+            $this->addFlash('success', 'Vous avez atteint la limite maximale de 6 favoris.');
+            return $this->render('application/ajouter.html.twig', [
+                'supports' => $supports,
+                'appConfig' => $configApp,
+                'positionsBySupport' => $positionsBySupport,
+                'firstFreePositionBySupport' => $firstFreePositionBySupport,
+                'formData' => $formData,
+            ]);
+        }
 
         $file1 = $request->files->get('logo');
         if ($file1) {
@@ -133,6 +192,21 @@ public function ajouterapplication(EntityManagerInterface $entityManager): Respo
         $entityManager->persist($application);
         $entityManager->flush();
 
+        $categorieApplication = $entityManager->getRepository(Categories::class)->findOneBy([
+            'etablissement' => $etablissement,
+            'nom' => 'application'
+        ]);
+
+        $favori = new Favoris();
+        $favori->setEtablissement($etablissement);
+        $favori->setCategorie($categorieApplication);
+        $favori->setNomCategorie($categorieApplication?->getNom() ?? 'application');
+        $favori->setIdElement($application->getId());
+        $favori->setNomElement($application->getNom());
+
+        $entityManager->persist($favori);
+        $entityManager->flush();
+
         return $this->redirectToRoute('app_application', ['ongletActif' => $supportId->getId()]);
     }
 
@@ -141,6 +215,14 @@ public function ajouterapplication(EntityManagerInterface $entityManager): Respo
         'appConfig' => $configApp,
         'positionsBySupport' => $positionsBySupport,
         'firstFreePositionBySupport' => $firstFreePositionBySupport,
+        'formData' => [
+            'nom' => '',
+            'package' => '',
+            'active' => '0',
+            'position' => '',
+            'protocole' => $supports[0]->getProtocole() ?? '',
+            'favoris' => '0',
+        ],
     ]);
 }
 
@@ -160,6 +242,15 @@ public function ajouterapplication(EntityManagerInterface $entityManager): Respo
        $support =   $etablissement->getSupports();
        $application = $entityManager->getRepository(Application::class)->findById($id)[0]; 
        $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement'=>$etablissement]);           
+       $categorieApplication = $entityManager->getRepository(Categories::class)->findOneBy([
+           'etablissement' => $etablissement,
+           'nom' => 'application'
+       ]);
+       $favoriApplication = $entityManager->getRepository(Favoris::class)->findOneBy([
+           'Etablissement' => $etablissement,
+           'idElement' => $application->getId(),
+       ]);
+       $applicationFavori = $favoriApplication !== null;
        $valider = $request->get("valider");
        if (isset($valider)) {
         
@@ -169,6 +260,7 @@ public function ajouterapplication(EntityManagerInterface $entityManager): Respo
         //$active = $request->get("active");
         //$position = $request->get("position");
         $protocole = $request->get("protocole");
+        $favoris = $request->get("favoris", '0');
         $file1 = $request->files->get('logo');
         if ($file1) {
          $fileName1 = md5(uniqid()) . '.' . $file1->guessExtension();   
@@ -188,16 +280,33 @@ public function ajouterapplication(EntityManagerInterface $entityManager): Respo
           $application->setLogo($fileName);
          
           $entityManager->persist($application);
+          
+          if ((string) $favoris === '1') {
+              if ($favoriApplication === null && !$this->canPersistNewFavorite($entityManager, $etablissement)) {
+                  $this->addFlash('success', 'Vous avez atteint la limite maximale de 6 favoris.');
+              } else {
+                  if ($favoriApplication === null) {
+                      $favoriApplication = new Favoris();
+                      $favoriApplication->setEtablissement($etablissement);
+                      $favoriApplication->setIdElement($application->getId());
+                  }
+
+                  $favoriApplication->setCategorie($categorieApplication);
+                  $favoriApplication->setNomCategorie($categorieApplication?->getNom() ?? 'application');
+                  $favoriApplication->setNomElement($application->getNom());
+
+                  $entityManager->persist($favoriApplication);
+              }
+          } elseif ($favoriApplication !== null) {
+              $entityManager->remove($favoriApplication);
+          }
+
           $entityManager->flush();
-          //return $this->redirectToRoute('app_application');
+
           return $this->redirectToRoute('app_application', ['ongletActif' => $supportId->getId()]);
      
        }
- 
- 
-     
- 
-       return $this->render('application/modifier.html.twig', array('application' => $application,'supports' => $support,'appConfig' =>$appConfig));
+         return $this->render('application/modifier.html.twig', array('application' => $application,'supports' => $support,'appConfig' =>$appConfig, 'applicationFavori' => $applicationFavori));
     }
  
     #[Route('/application/supprimer/{id}', name: 'app_supprimer_application')]
@@ -216,6 +325,22 @@ public function ajouterapplication(EntityManagerInterface $entityManager): Respo
             throw $this->createNotFoundException(
                 'No application found for id '.$id
             );
+        }
+
+        $categorieApplication = $entityManager->getRepository(Categories::class)->findOneBy([
+            'etablissement' => $etablissement,
+            'nom' => 'application'
+        ]);
+
+        $favoris = $entityManager->getRepository(Favoris::class)->findBy([
+            'Etablissement' => $etablissement,
+            'idElement' => $application->getId(),
+        ]);
+
+        foreach ($favoris as $favori) {
+            if ($categorieApplication === null || $favori->getCategorie() === $categorieApplication || strtolower((string) $favori->getNomCategorie()) === 'application') {
+                $entityManager->remove($favori);
+            }
         }
  
         $entityManager->remove($application);
@@ -283,6 +408,15 @@ public function ajouterapplication(EntityManagerInterface $entityManager): Respo
      return $this->redirectToRoute('app_application', ['ongletActif' => $ongletActif]);
  
       
+    }
+
+    private function canPersistNewFavorite(EntityManagerInterface $entityManager, $etablissement): bool
+    {
+        $totalFavoris = $entityManager->getRepository(Favoris::class)->count([
+            'Etablissement' => $etablissement,
+        ]);
+
+        return $totalFavoris < 6;
     }
   
   

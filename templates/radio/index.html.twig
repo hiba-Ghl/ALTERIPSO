@@ -80,7 +80,7 @@
 					{% for tele in radio %}
 
 
-						<tr class="odd gradeX">
+						<tr class="odd gradeX {% if tele.Id in favorisRadioIds %}radio-favori-row{% endif %}">
 							<td class="radio-td-std" data-label="Nom Radio">
 								<label><input name='listenom[{{tele.Id}}]' type="text" value="{{tele.nom}}" class="form-control radio-input-small" ></label>
 								<label class="radio-label-hidden">{{tele.nom}}</label>
@@ -423,6 +423,30 @@
 								<label><input name='listeactive[{{tele.Id}}]' type="checkbox" {{ch}} class="jpCheckbox" {% if app.user.ModifierRadio == '0' %}	 disabled {% endif %}></label>
 							</td>
 							<td class="radio-td-actions" data-label="Actions">
+								<div style="display:inline-block; margin-right:4px;">
+									<label class="btn btn-warning btn-xs radio-favori-toggle"
+									       style="margin-bottom:0; cursor:pointer;">
+
+									    <input
+									        {% if app.user.ModifierRadio == '0' %} disabled {% endif %}
+									        name="listefavoris[{{tele.Id}}]"
+									        type="checkbox"
+									        value="1"
+									        {% if tele.Id in favorisRadioIds %}checked{% endif %}
+									        class="radio-favori-checkbox"
+									        onchange="toggleRadioFavoriteState(this)"
+									        style="display:none;"
+									    >
+
+									    <i class="glyphicon {% if tele.Id in favorisRadioIds %}glyphicon-star{% else %}glyphicon-star-empty{% endif %}"
+									       style="
+									            font-size:16px;
+									            color:{% if tele.Id in favorisRadioIds %}#3087ce{% else %}#ffffff{% endif %};
+									       ">
+									    </i>
+
+									</label>
+								</div>
 								<div data-toggle="modal" data-target="#modal2-{{tele.id}}" data-id ="{{tele.id}}"  data-name="{{tele.nom}}" class="lancer-button">
 								<a data-toggle="modal" {% if app.user.lancerRadio == '0' %} disabled {% endif %} data-target="#myModal5" name="send" class="btn btn-info btn-xs" >
 									<i data-toggle="tooltip"   data-placement="top" title="lancer la chaîne" class="glyphicon glyphicon-play-circle"></i>
@@ -797,6 +821,27 @@
 
 
 						<td class="radio-td-std" data-label="Actions">
+								<button type="button" class="btn btn-warning btn-xs radio-favori-toggle"
+								       style="margin-bottom:0; cursor:pointer;"
+								       onclick="toggleRadioFavorite(this)">
+
+								    <input
+								        {% if app.user.AjoutRadio == '0' %} disabled {% endif %}
+								        name="favoris"
+								        type="checkbox"
+								        value="1"
+								        class="radio-favori-checkbox"
+								        onchange="toggleRadioFavoriteIcon(this)"
+								        style="display:none;"
+								    >
+
+								    <i class="glyphicon glyphicon-star-empty"
+								       style="
+								            font-size:16px;
+								            color:#ffffff;
+								       ">
+								    </i>
+								</button>
 
 
 							<button {% if app.user.AjoutRadio == '0' %} disabled {% endif %} type="submit" data-toggle="tooltip" data-placement="top" title="Ajouter une chaîne" id="" href="{{path('ajouter_chaine')}}" class="btn btn-info btn-xs">
@@ -849,10 +894,48 @@
 
 
 		<script>
-			function readURL(input) {
+		function toggleRadioFavoriteIcon(checkbox) {
+
+		    const toggle = checkbox.closest('.radio-favori-toggle');
+
+		    if (!toggle) return;
+
+		    const icon = toggle.querySelector('i');
+
+		    if (!icon) return;
+
+		    icon.classList.toggle('glyphicon-star', checkbox.checked);
+		    icon.classList.toggle('glyphicon-star-empty', !checkbox.checked);
+
+		    // Bleu si coché, blanc sinon
+		    icon.style.color = checkbox.checked ? '#20aaef' : '#ffffff';
+		}
+
+		function toggleRadioFavoriteRow(checkbox) {
+		    const row = checkbox.closest('tr');
+
+		    if (!row) return;
+
+		    row.classList.toggle('radio-favori-row', checkbox.checked);
+		}
+
+		function toggleRadioFavoriteState(checkbox) {
+		    toggleRadioFavoriteIcon(checkbox);
+		    toggleRadioFavoriteRow(checkbox);
+		}
+
+		function toggleRadioFavorite(button) {
+		    const checkbox = button.querySelector('.radio-favori-checkbox');
+		    if (!checkbox || checkbox.disabled) {
+		        return;
+		    }
+		    checkbox.checked = !checkbox.checked;
+		    toggleRadioFavoriteState(checkbox);
+		}
+
+		function readURL(input) {
 if (input.files && input.files[0]) {
 var reader = new FileReader();
-
 reader.onload = function (e) {
 imgId = '#preview-' + $(input).attr('id');
 $(imgId).attr('src', e.target.result);

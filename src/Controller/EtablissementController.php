@@ -140,7 +140,7 @@ class EtablissementController extends AbstractController
         if( !$this->getUser())
         return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
-        $etablissement = $entityManager->getRepository(etablissement::class)->find($id);
+        $etablissement = $entityManager->getRepository(Etablissement::class)->find($id);
 
         // Récupérez le formulaire Twig pour le modifier
         $nometablissement = $request->get('nom_etablissement');

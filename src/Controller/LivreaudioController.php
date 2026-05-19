@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Categories;
 use App\Entity\CategorieLivreaudio;
 use App\Entity\ConfigApp;
+use App\Entity\Favoris;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,9 +34,39 @@ class LivreaudioController extends AbstractController
         $repository = $entityManager->getRepository(Livreaudio::class);
         $livreaudio  = $repository->findBy(['etablissement' => $etablissement],['nom' => 'ASC']);
         $categorielivreaudio =  $entityManager->getRepository(CategorieLivreaudio::class)->findBy(['etablissement' => $etablissement],['nom' => 'ASC']);
+        #huba favoris
+        $categorieFavori = $entityManager->getRepository(Categories::class)->findOneBy([
+            'etablissement' => $etablissement,
+            'nom' => 'Livre audio'
+        ]);
+        if ($categorieFavori === null) {
+            $categorieFavori = $entityManager->getRepository(Categories::class)->findOneBy([
+                'etablissement' => $etablissement,
+                'nom' => 'Livre audio'
+            ]);
+        }
+        $favorisLivreaudio = $entityManager->getRepository(Favoris::class)->findBy([
+            'Etablissement' => $etablissement,
+        ]);
+
+        $favorisLivreaudioIds = [];
+        foreach ($favorisLivreaudio as $favori) {
+            $isFavorite = false;
+            if ($categorieFavori !== null && $favori->getCategorie() === $categorieFavori) {
+                $isFavorite = true;
+            }
+            if ($favori->getNomCategorie() !== null && in_array(strtolower($favori->getNomCategorie()), ['livreaudio', 'livreaudio'], true)) {
+                $isFavorite = true;
+            }
+            if ($isFavorite && $favori->getIdElement() !== null) {
+                $favorisLivreaudioIds[] = $favori->getIdElement();
+            }
+        }
         // dd($livreaudio);
         return $this->render('livreaudio/index.html.twig', [
             'livreaudio' => $livreaudio , 'categorielivreaudio' => $categorielivreaudio,'appConfig' => $configApp,'user' => $this->getUser(),
+            #huba favoris
+            'favorisLivreaudioIds' => $favorisLivreaudioIds,
         ]);
     }
 
@@ -54,6 +86,18 @@ class LivreaudioController extends AbstractController
         $nom = $request->get("nom");
         $ip = $request->get("ip");
         $active = $request->get("active");
+        $categorieFavori = $entityManager->getRepository(Categories::class)->findOneBy([
+            'etablissement' => $etablissement,
+            'nom' => 'Livre audio'
+        ]);
+        if ($categorieFavori === null) {
+            $categorieFavori = $entityManager->getRepository(Categories::class)->findOneBy([
+                'etablissement' => $etablissement,
+                'nom' => 'Livre audio'
+            ]);
+        }
+        #hiba favoris
+        $favoris = $request->get("favoris", '0');
         $catlivreaudio = $request->get("catlivreaudio");
         $categorielivreaudio =  $entityManager->getRepository(CategorieLivreaudio::class)->findById($catlivreaudio)[0];
     
@@ -95,7 +139,24 @@ class LivreaudioController extends AbstractController
 
         $entityManager->persist($livreaudio);
         $entityManager->flush();
+        #hiba favorie
 
+        if ((string) $favoris === '1') {
+            if ($this->canPersistNewFavorite($entityManager, $etablissement)) {
+                $favoriLivreaudio = new Favoris();
+                $favoriLivreaudio->setEtablissement($etablissement);
+                $favoriLivreaudio->setCategorie($categorieFavori);
+                $favoriLivreaudio->setNomCategorie($categorieFavori?->getNom() ?? 'LivreAudio');
+                $favoriLivreaudio->setIdElement($livreaudio->getId());
+                $favoriLivreaudio->setNomElement($livreaudio->getNom());
+
+                $entityManager->persist($favoriLivreaudio);
+                $entityManager->flush();
+            } else {
+                $this->addFlash('success', 'Vous avez atteint la limite maximale de 6 favoris.');
+            }
+        }
+        #fin hiba favorie
         return $this->redirectToRoute('app_livreaudio');
         
     }
@@ -139,6 +200,18 @@ class LivreaudioController extends AbstractController
             return $this->redirectToRoute('home');      
         }
        $livreaudio  = $repository->findBy(['etablissement' => $etablissement]);
+       #huba favoris
+        $categorieFavori = $entityManager->getRepository(Categories::class)->findOneBy([
+            'etablissement' => $etablissement,
+            'nom' => 'Livre audio'
+        ]);
+        if ($categorieFavori === null) {
+            $categorieFavori = $entityManager->getRepository(Categories::class)->findOneBy([
+                'etablissement' => $etablissement,
+                'nom' => 'Livre audio'
+            ]);
+        }
+       #fin huba favoris
         foreach ($livreaudio as $tele) {
             $tele->setActive('0');
             $entityManager->persist($tele);
@@ -187,7 +260,45 @@ class LivreaudioController extends AbstractController
                     $entityManager->flush();
                 }
             }
-      
+        #hiba favoris
+
+        $favoris = $request->get("listefavoris", []);
+        $currentFavoriteCount = $entityManager->getRepository(Favoris::class)->count([
+            'Etablissement' => $etablissement,
+        ]);
+
+            foreach ($livreaudio as $tele) {
+                $favoriLivreAudio = $entityManager->getRepository(Favoris::class)->findOneBy([
+                    'Etablissement' => $etablissement,
+                    'idElement' => $tele->getId(),
+                ]);
+
+                $isFavorite = array_key_exists($tele->getId(), $favoris);
+
+                if ($isFavorite) {
+                    if ($favoriLivreAudio === null) {
+                        if ($currentFavoriteCount >= 6) {
+                            $this->addFlash('success', 'Vous avez atteint la limite maximale de 6 favoris.');
+                            continue;
+                        }
+
+                        $favoriLivreAudio = new Favoris();
+                        $favoriLivreAudio->setEtablissement($etablissement);
+                        $favoriLivreAudio->setIdElement($tele->getId());
+                        $currentFavoriteCount++;
+                    }
+
+                    $favoriLivreAudio->setCategorie($categorieFavori);
+                    $favoriLivreAudio->setNomCategorie($categorieFavori?->getNom() ?? 'LivreAudio');
+                    $favoriLivreAudio->setNomElement($tele->getNom());
+
+                    $entityManager->persist($favoriLivreAudio);
+                } elseif ($favoriLivreAudio !== null) {
+                    $entityManager->remove($favoriLivreAudio);
+                    $currentFavoriteCount--;
+                }
+            }
+      #fin hiba favoris
         $file1 = $request->files->get('listelogo');
             if (isset($file1) and !empty($file1)) {
                 foreach ($file1 as $key => $k) {
@@ -206,6 +317,15 @@ class LivreaudioController extends AbstractController
             }
         return $this->redirectToRoute('app_livreaudio');
         
+    }
+
+    private function canPersistNewFavorite(EntityManagerInterface $entityManager, $etablissement): bool
+    {
+        $totalFavoris = $entityManager->getRepository(Favoris::class)->count([
+            'Etablissement' => $etablissement,
+        ]);
+
+        return $totalFavoris < 6;
     }
 
    

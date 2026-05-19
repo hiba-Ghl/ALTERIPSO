@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Categories;
+use App\Entity\Favoris;
 use App\Entity\ServiceEtablissement;
 use App\Entity\Chambre;
 use App\Entity\ConfigApp;
@@ -56,6 +57,10 @@ public function image(string $filename, string $directory)
         $repositorys = $entityManager->getRepository(ServiceEtablissement::class);
         $serviceetablissement  = $repositorys->findBy(['etablissement' => $etablissement]);
         $chambres  =  $entityManager->getRepository(Chambre::class)->findBy(['etablissement' => $etablissement]);
+        $favoris = $entityManager->getRepository(Favoris::class)->findBy(
+            ['Etablissement' => $etablissement],
+            ['nomCategorie' => 'ASC', 'nomElement' => 'ASC']
+        );
         $serviceEtablissementRepo = $entityManager->getRepository(ServiceEtablissement::class);
         $services = $serviceEtablissementRepo->findBy(['etablissement' => $etablissement], ['nom' => 'ASC']);
         $appConfig = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
@@ -72,6 +77,7 @@ public function image(string $filename, string $directory)
             'categories' => $categories,
             'servicebox' => $serviceetablissement,  
             'boxs' => $chambres,
+            'favoris' => $favoris,
             'services' => $services,
             'appConfig' => $appConfig,
             'configApp' => $configJson,
@@ -143,6 +149,27 @@ public function image(string $filename, string $directory)
                 $etablissement->setMeteoactive(1);
             }
             $entityManager->flush();
+        return $this->redirectToRoute('app_home');
+    }
+
+    #[Route('/favori/supprimer/{id}', name: 'supprimer_favori')]
+    public function supprimerFavori(EntityManagerInterface $entityManager, int $id): Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $etablissement = $this->getUser()->getEtablissement();
+        $favori = $entityManager->getRepository(Favoris::class)->findOneBy([
+            'id' => $id,
+            'Etablissement' => $etablissement,
+        ]);
+
+        if ($favori) {
+            $entityManager->remove($favori);
+            $entityManager->flush();
+        }
+
         return $this->redirectToRoute('app_home');
     }
 }

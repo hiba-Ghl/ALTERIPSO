@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Chambre;
+use App\Entity\Categories;
 use App\Entity\ConfigApp;
+use App\Entity\Favoris;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,9 +37,35 @@ class TelevisionController extends AbstractController
             $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
             return $this->redirectToRoute('home');        }
         $repository = $entityManager->getRepository(Television::class);
+        $categorieTelevision = $this->getTelevisionCategory($entityManager, $etablissement);
 
         $idetablissement = $etablissement->getId();
         $television  = $repository->findBy(['etablissement' => $etablissement],['numero' => 'ASC']);
+        $favorisTelevision = $entityManager->getRepository(Favoris::class)->findBy(['Etablissement' => $etablissement]);
+        $hasTelevisionCategoryBackfill = false;
+        if ($categorieTelevision !== null) {
+            foreach ($favorisTelevision as $favori) {
+                $isTelevisionFavorite = $favori->getNomCategorie() !== null && strtolower($favori->getNomCategorie()) === 'télevision';
+                if ($isTelevisionFavorite && $favori->getCategorie() === null) {
+                    $favori->setCategorie($categorieTelevision);
+                    $entityManager->persist($favori);
+                    $hasTelevisionCategoryBackfill = true;
+                }
+            }
+
+            if ($hasTelevisionCategoryBackfill) {
+                $entityManager->flush();
+            }
+        }
+        $favorisTelevisionIds = [];
+        foreach ($favorisTelevision as $favori) {
+            $isTelevisionFavorite = ($categorieTelevision !== null && $favori->getCategorie() !== null && $favori->getCategorie()->getId() === $categorieTelevision->getId())
+                || ($favori->getNomCategorie() !== null && strtolower($favori->getNomCategorie()) === 'télevision');
+
+            if ($isTelevisionFavorite && $favori->getIdElement() !== null) {
+                $favorisTelevisionIds[] = $favori->getIdElement();
+            }
+        }
        //////////////// date debut et fin cas gratuité defini  avec type gratuité//////////////////////
        $directory_xml = $this->getParameter('xml_directory');
         if (file_exists($directory_xml."\chaine_gratuite_".$idetablissement.".xml")) {
@@ -66,6 +94,7 @@ class TelevisionController extends AbstractController
             'television' => $television,'typegratuite' => $typegratuite, 'dd' => $dd, 'df' => $df,'appConfig' => $configApp,       
              'user' => $this->getUser(),
              'chambre' => $chambreJson,
+               'favorisTelevisionIds' => $favorisTelevisionIds,
 
         ]);
     }
@@ -78,6 +107,7 @@ class TelevisionController extends AbstractController
             return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
         $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $categorieTelevision = $this->getTelevisionCategory($entityManager, $etablissement);
         $Acce = $this->getUser()->getAjoutTV() && $this->getUser()->getTELEVISION() && $configApp->getEnableTELEVISION()=="1" ;
         if (!$Acce) {
             $this->addFlash('success',"Vous n'avez pas le droit d'accéder à cette page.");
@@ -92,6 +122,12 @@ class TelevisionController extends AbstractController
         $protocole = $request->get("protocole");
         $active = $request->get("active");
         $gratuite = $request->get("gratuite");
+        $favoris = $request->get("favoris", '0');
+
+        if ((string) $favoris === '1' && !$this->canPersistNewFavorite($entityManager, $etablissement)) {
+            $this->addFlash('success', 'Vous avez atteint la limite maximale de 6 favoris.');
+            return $this->redirectToRoute('app_television');
+        }
     
 
        $file1 = $request->files->get('logo');
@@ -141,6 +177,20 @@ class TelevisionController extends AbstractController
         $entityManager->persist($television);
         $entityManager->flush();
 
+        if ((string) $favoris === '1' && $this->canPersistNewFavorite($entityManager, $etablissement)) {
+            $favoriTelevision = new Favoris();
+            $favoriTelevision->setEtablissement($etablissement);
+            $favoriTelevision->setNomCategorie('Télevision');
+            if ($categorieTelevision !== null) {
+                $favoriTelevision->setCategorie($categorieTelevision);
+            }
+            $favoriTelevision->setIdElement($television->getId());
+            $favoriTelevision->setNomElement($television->getNom());
+
+            $entityManager->persist($favoriTelevision);
+            $entityManager->flush();
+        }
+
         return $this->redirectToRoute('app_television');
         
     }
@@ -165,6 +215,15 @@ class TelevisionController extends AbstractController
             );
         }
 
+        $favoris = $entityManager->getRepository(Favoris::class)->findBy([
+            'Etablissement' => $etablissement,
+            'idElement' => $television->getId(),
+        ]);
+
+        foreach ($favoris as $favori) {
+            $entityManager->remove($favori);
+        }
+
         $entityManager->remove($television);
         $entityManager->flush();
 
@@ -179,6 +238,7 @@ class TelevisionController extends AbstractController
             return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
         $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $categorieTelevision = $this->getTelevisionCategory($entityManager, $etablissement);
 
         $Acce = $this->getUser()->getModifierTv() && $this->getUser()->getTELEVISION() && $configApp->getEnableTELEVISION()=="1";
         if (!$Acce) {
@@ -193,6 +253,8 @@ class TelevisionController extends AbstractController
             $entityManager->flush();
           }
         $request = Request::createFromGlobals();
+
+                $favoris = $request->get("listefavoris", []);
 
       
     
@@ -268,6 +330,59 @@ class TelevisionController extends AbstractController
                     $entityManager->flush();
                 }
             }
+
+        if (isset($favoris)) {
+            $remainingFavoriteSlots = $this->getRemainingFavoriteSlots($entityManager, $etablissement);
+            $favoriteLimitReached = false;
+
+            foreach ($television as $tele) {
+                $televisionFavoris = $entityManager->getRepository(Favoris::class)->findBy([
+                    'Etablissement' => $etablissement,
+                    'idElement' => $tele->getId(),
+                ]);
+
+                $isFavorite = array_key_exists($tele->getId(), $favoris);
+
+                if ($isFavorite) {
+                    if (empty($televisionFavoris)) {
+                        if ($remainingFavoriteSlots <= 0) {
+                            $favoriteLimitReached = true;
+                            continue;
+                        }
+
+                        $remainingFavoriteSlots--;
+
+                        $favoriTelevision = new Favoris();
+                        $favoriTelevision->setEtablissement($etablissement);
+                        $favoriTelevision->setNomCategorie('Télevision');
+                        if ($categorieTelevision !== null) {
+                            $favoriTelevision->setCategorie($categorieTelevision);
+                        }
+                        $favoriTelevision->setIdElement($tele->getId());
+                        $favoriTelevision->setNomElement($tele->getNom());
+
+                        $entityManager->persist($favoriTelevision);
+                    } else {
+                        foreach ($televisionFavoris as $favoriTelevision) {
+                            $favoriTelevision->setNomCategorie('Télevision');
+                            if ($categorieTelevision !== null) {
+                                $favoriTelevision->setCategorie($categorieTelevision);
+                            }
+                            $favoriTelevision->setNomElement($tele->getNom());
+                            $entityManager->persist($favoriTelevision);
+                        }
+                    }
+                } elseif (!empty($televisionFavoris)) {
+                    foreach ($televisionFavoris as $favoriTelevision) {
+                        $entityManager->remove($favoriTelevision);
+                    }
+                }
+            }
+
+            if ($favoriteLimitReached) {
+                $this->addFlash('success', 'La limite maximale de 6 favoris a été atteinte. Certains favoris sélectionnés n\'ont pas été enregistrés.');
+            }
+        }
         $file1 = $request->files->get('listelogo');
             if (isset($file1) and !empty($file1)) {
                 foreach ($file1 as $key => $k) {
@@ -578,6 +693,33 @@ class TelevisionController extends AbstractController
         }
             return $this->redirectToRoute('app_television');
     }
+
+
+        private function canPersistNewFavorite(EntityManagerInterface $entityManager, $etablissement): bool
+        {
+            $totalFavoris = $entityManager->getRepository(Favoris::class)->count([
+                'Etablissement' => $etablissement,
+            ]);
+
+            return $totalFavoris < 6;
+        }
+
+        private function getRemainingFavoriteSlots(EntityManagerInterface $entityManager, $etablissement): int
+        {
+            $totalFavoris = $entityManager->getRepository(Favoris::class)->count([
+                'Etablissement' => $etablissement,
+            ]);
+
+            return max(0, 6 - $totalFavoris);
+        }
+
+        private function getTelevisionCategory(EntityManagerInterface $entityManager, $etablissement): ?Categories
+        {
+            return $entityManager->getRepository(Categories::class)->findOneBy([
+                'etablissement' => $etablissement,
+                'nom' => 'Télevision',
+            ]);
+        }
 
 #[Route('/television/ArreteTV/{idTV}',name:'ArretTV')]
 public function RemoveTV(EntityManagerInterface $entityManager, int $idTV)

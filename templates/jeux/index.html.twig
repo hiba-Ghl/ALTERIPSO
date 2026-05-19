@@ -45,12 +45,18 @@
 						<div class="tab-pane fade" id="{{support.id}}" role="tabpanel" aria-labelledby="nav-profile-tab">
 							{% for jeux in jeuxs %}
 								{% if support.protocole == jeux.protocole %}
+									{% set isFavorite = jeux.id in favorisJeuxIds %}
 									{% set ch=' ' %}
 									{% if(jeux.active=='1') %}
 										{% set ch='checked' %}
 									{% endif %}
 									<div class="col-sm-6 col-md-2 col-md-2-14" >
-										<div class="thumbnail" style="padding:1px;background-color: rgba(255, 119, 1, 0);border: 1px solid #545658;">
+										<div class="thumbnail" style="position:relative;padding:1px;background-color: rgba(255, 119, 1, 0);border: 2px solid {% if isFavorite %}#f1c40f{% else %}#545658{% endif %}; box-shadow: {% if isFavorite %}0 0 10px rgba(241, 196, 15, 0.8){% else %}none{% endif %};">
+											{% if isFavorite %}
+												<span style="position:absolute;top:8px;right:8px;z-index:2;color:#f1c40f;font-size:22px;text-shadow:0 0 4px rgba(0,0,0,0.6);">
+													<i class="glyphicon glyphicon-star"></i>
+												</span>
+											{% endif %}
 											<img style="width:90%;margin-left:auto;margin-right:auto;margin-top:8px;margin-bottom:4px;height: 138px;" src="{{ path('afficher_image', { filename: jeux.logo|split('/')|last,directory:'jeux_directory' }) }}" alt="..." class="img-rounded img-responsive center-block">
 											<div class="caption" style="background: #020202bd;padding:1px">
 												<h5 style="text-align: center;color:#fff;margin-bottom: 4px;">{{jeux.nom}}</h5>
