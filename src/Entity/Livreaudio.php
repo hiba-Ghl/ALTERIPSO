@@ -14,7 +14,7 @@ class Livreaudio
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'livreaudios')]
-    private ?etablissement $etablissement = null;
+    private ?Etablissement $etablissement = null;
 
     #[ORM\ManyToOne(inversedBy: 'livreaudios')]
     private ?CategorieLivreaudio $categorie = null;
@@ -45,12 +45,12 @@ class Livreaudio
         return $this->id;
     }
 
-    public function getEtablissement(): ?etablissement
+    public function getEtablissement(): ?Etablissement
     {
         return $this->etablissement;
     }
 
-    public function setEtablissement(?etablissement $etablissement): static
+    public function setEtablissement(?Etablissement $etablissement): static
     {
         $this->etablissement = $etablissement;
 

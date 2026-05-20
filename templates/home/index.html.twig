@@ -1483,14 +1483,14 @@
 											<th style="width:120px;">Action</th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody id="favoritesModalBody">
 										{% if favoris is defined and favoris is not empty %}
 											{% for favori in favoris %}
-												<tr>
+												<tr data-favori-id="{{ favori.id }}">
 													<td>{{ favori.nomCategorie }}</td>
 													<td>{{ favori.nomElement }}</td>
 													<td>
-														<a href="{{ path('supprimer_favori', { id: favori.id }) }}" class="btn btn-danger btn-xs" onclick="return confirm('Retirer ce favori ?')">
+														<a href="{{ path('supprimer_favori', {'id': favori.id}) }}" class="btn btn-danger btn-xs" onclick="return confirm('Retirer ce favori ?')">
 															<i class="glyphicon glyphicon-trash"></i>
 															Retirer
 														</a>
@@ -1512,6 +1512,12 @@
 					</div>
 				</div>
 			</div>
+
+					<script>
+						function removeFavoriteFromModal() {
+							return false;
+						}
+					</script>
 
 		<!-- Modal changement position categories -->
 		{% for categorie in categories %}

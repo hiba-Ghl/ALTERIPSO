@@ -519,6 +519,49 @@
     text-align: center;
 }
 
+.tv-favori-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #3087ce;
+    background-color: #ffffff;
+    color: #3087ce;
+    padding: 2px 2px;
+    border-radius: 4px;
+    min-width: 25px;
+    min-height: 25px;
+}
+
+.tv-favori-toggle.is-favorite {
+    border-color: #3087ce;
+    color: #3087ce;
+}
+
+.tv-favori-toggle .tv-favori-star {
+    color: #3087ce;
+    text-shadow: 0 0 1px #3087ce, 0 0 1px #3087ce, 0 0 1px #3087ce;
+}
+
+.tv-favori-toggle.is-favorite .tv-favori-star {
+    color: #3087ce;
+}
+
+.tv-favori-toggle.btn-warning {
+    background-color: #ffffff !important;
+}
+
+.tv-favori-action {
+    display: inline-block;
+    margin-right: 2px;
+    vertical-align: middle;
+}
+
+tr.tv-favorite-row {
+    border: 2px solid #f1c40f !important;
+    box-sizing: border-box;
+    box-shadow: inset 0 0 0 1px rgba(241, 196, 15, 0.15);
+}
+
 .tv-display-none {
     display: none;
 }

@@ -33,7 +33,6 @@
 						<th class="col-fichier">Fichier Livre Audio</th>
 						<th class="col-categorie">Catégorie</th>
 						<th class="col-icons">Icons</th>
-						<th class="col-favori">Favorie</th>
 						<th class="col-active">
 							<div class="col-active-content">
 								<span>Active</span>
@@ -45,7 +44,7 @@
 				</thead>
 				<tbody id="myTable"> 
 					{% for tele in livreaudio %}
-						<tr>
+						<tr class="{% if tele.id in favorisLivreaudioIds %}livreaudio-favori-row{% endif %}">
 							<!--le nom-->
 							<td class="col-nom">
 								<input {% if app.user.SauvegarderLiveAudio == '0' %} disabled {% endif %} name='listenom[{{tele.Id}}]' type="text" value="{{tele.nom|capitalize}}" class="form-control form-control-sm">
@@ -82,41 +81,54 @@
 								{% set ch = 'checked' %}
 							{% endif %}
 							{% set isFavorite = tele.id in favorisLivreaudioIds %}
-							
-							<td class="col-favori">
-								<input {% if app.user.SauvegarderLiveAudio == '0' %} disabled {% endif %} name='listefavoris[{{tele.Id}}]' type="checkbox" {% if isFavorite %}checked{% endif %} class="jpCheckbox">
-							</td>
 							<td class="col-active">
 								<input {% if app.user.SauvegarderLiveAudio == '0' %} disabled {% endif %}  name='listeactive[{{tele.Id}}]' type="checkbox" {{ch}} class="jpCheckbox">
 							</td>
 							<!--l'action-->
 							<td class="col-action">
-								<a data-bs-toggle="tooltip" data-bs-placement="top" {% if app.user.SupprimerLiveAudio == '0' %} disabled {% endif %} title="supprimer la chaîne"  href="{{path('supprimer_livreaudio',{'id':tele.id})}}"  class="btn btn-danger btn-sm" onclick="return confirm('Voulez-vous vraiment supprimer le Livre Audio : {{tele.nom}} ?')">
-									<i class="glyphicon glyphicon-trash"></i>
-								</a>
+								<div class="livreaudio-action-item">
+									<label class="btn btn-warning btn-xs livreaudio-favori-toggle" style="margin-bottom:0; cursor:pointer;">
+										<input
+											{% if app.user.SauvegarderLiveAudio == '0' %} disabled {% endif %}
+											name="listefavoris[{{tele.Id}}]"
+											type="checkbox"
+											value="1"
+											{% if isFavorite %}checked{% endif %}
+											class="livreaudio-favori-checkbox"
+											onchange="toggleLivreaudioFavoriteState(this)"
+											style="display:none;"
+										>
+
+										<i class="glyphicon {% if isFavorite %}glyphicon-star{% else %}glyphicon-star-empty{% endif %}" style="font-size:16px;color:#3087ce;"></i>
+									</label>
+								</div>
+								<div class="livreaudio-action-item">
+									<a data-bs-toggle="tooltip" data-bs-placement="top" {% if app.user.SupprimerLiveAudio == '0' %} disabled {% endif %} title="supprimer la chaîne"  href="{{path('supprimer_livreaudio',{'id':tele.id})}}"  class="btn btn-danger btn-sm" onclick="return confirm('Voulez-vous vraiment supprimer le Livre Audio : {{tele.nom}} ?')">
+										<i class="glyphicon glyphicon-trash"></i>
+									</a>
+								</div>
 							</td>
 						</tr>
 					{% endfor %}				
 				</tbody>
 			</table>
-			<!-- Formulaire d'ajout -->
-		<form action="{{ path('ajouter_livreaudio')}}" name="form" method="post" enctype="multipart/form-data" onsubmit="return validateIpForm();">
-	 		<table class="table table-striped table-bordered table-hover table-livreaudio">
+
+			<table class="table table-striped table-bordered table-hover table-livreaudio">
 				<tbody>
 					<tr>
 						<!--le nom-->
 						<td class="col-nom">
-							<input {% if app.user.AjoutLiveAudio == '0' %}	disabled {% endif %} name='nom' type="text" value="" class="form-control form-control-sm" placeholder="Nom...">
+							<input {% if app.user.AjoutLiveAudio == '0' %} disabled {% endif %} form="ajouter_livreaudio_form" name='nom' type="text" value="" class="form-control form-control-sm" placeholder="Nom...">
 						</td>
 
 						<!--le nom du fichier -->
 						<td class="col-fichier">
-							<input {% if app.user.AjoutLiveAudio == '0' %}	disabled {% endif %} name='ip' class="form-control form-control-sm" placeholder="Fichier..."></input>
+							<input {% if app.user.AjoutLiveAudio == '0' %} disabled {% endif %} form="ajouter_livreaudio_form" name='ip' class="form-control form-control-sm" placeholder="Fichier..."></input>
 						</td>
 
 						<!--la categorie-->
 						<td class="col-categorie">
-							<select {% if app.user.AjoutLiveAudio == '0' %}	disabled {% endif %} class="form-select form-select-sm" name='catlivreaudio'> 								
+							<select {% if app.user.AjoutLiveAudio == '0' %} disabled {% endif %} form="ajouter_livreaudio_form" class="form-select form-select-sm" name='catlivreaudio'>								
 								{% for a in categorielivreaudio %}      
 								  <option value ='{{a.id}}'>{{a.nom|capitalize }}</option>
 								  {% endfor %} 
@@ -128,30 +140,36 @@
 						<td class="col-icons">
 							<div class="fileUpload" id="mainform0" >
 								<img id="preview-0" style="width:50px;height:50px;" src="{{ asset('images/no_image.png') }}" alt="Logo" class="img-rounded img-responsive center-block">
-								<input {% if app.user.AjoutLiveAudio == '0' %}	disabled {% endif %} id="0" type="file" class="upload" name="logo" accept=".jpg, .jpeg, .png"/>
+								<input {% if app.user.AjoutLiveAudio == '0' %} disabled {% endif %} form="ajouter_livreaudio_form" id="0" type="file" class="upload" name="logo" accept=".jpg, .jpeg, .png"/>
 							</div>
 
 						</td>				
-						<td class="col-favori">
-							<input {% if app.user.AjoutLiveAudio == '0' %}	disabled {% endif %} name='favoris' type="checkbox" class="jpCheckbox">
-						</td>
 						<!--le status active-->
 						<td class="col-active">
-							<input {% if app.user.AjoutLiveAudio == '0' %}	disabled {% endif %} name='active' type="checkbox" class="jpCheckbox">
+							<input {% if app.user.AjoutLiveAudio == '0' %} disabled {% endif %} form="ajouter_livreaudio_form" name='active' type="checkbox" class="jpCheckbox">
 						</td>
 						<!--l'action -->
 						<td class="col-action">
-						<button type="submit" {% if app.user.AjoutLiveAudio == '0' %}	disabled {% endif %} class="btn btn-info btn-sm">
-								<i data-bs-toggle="tooltip" data-bs-placement="top" title="Ajouter un livre audio" class="glyphicon glyphicon-plus"></i>
-						</button>
+							<div class="livreaudio-action-item">
+								<label class="btn btn-warning btn-xs livreaudio-favori-toggle" style="margin-bottom:0; cursor:pointer;">
+									<input {% if app.user.AjoutLiveAudio == '0' %} disabled {% endif %} form="ajouter_livreaudio_form" name='favoris' type="checkbox" value="1" class="livreaudio-favori-checkbox" onchange="toggleLivreaudioFavoriteState(this)" style="display:none;">
+									<i class="glyphicon glyphicon-star-empty" style="font-size:16px;color:#3087ce;"></i>
+								</label>
+							</div>
+							<div class="livreaudio-action-item">
+								<button type="submit" form="ajouter_livreaudio_form" {% if app.user.AjoutLiveAudio == '0' %} disabled {% endif %} class="btn btn-info btn-sm">
+									<i data-bs-toggle="tooltip" data-bs-placement="top" title="Ajouter un livre audio" class="glyphicon glyphicon-plus"></i>
+								</button>
+							</div>
 						</td>
 					</tr>
 				</tbody>
 			</table>
-		</form>
 		</div>
 	</div>
 </form>
+
+<form id="ajouter_livreaudio_form" action="{{ path('ajouter_livreaudio') }}" method="post" enctype="multipart/form-data" onsubmit="return validateIpForm();" style="display:none;"></form>
 
 	<!-- Formulaire d'ajout dans le même div2 -->
 	{# <form action="{{ path('ajouter_livreaudio')}}" name="form" method="post" enctype="multipart/form-data" onsubmit="return validateIpForm();">
@@ -187,8 +205,6 @@
 							</div>
 
 						</td>
-
-				
 						<!--le status active-->
 						<td class="col-active">
 							<input {% if app.user.AjoutLiveAudio == '0' %}	disabled {% endif %} name='active' type="checkbox" class="jpCheckbox">
@@ -196,7 +212,7 @@
 
 						<!--l'action -->
 						<td class="col-action">
-						<button type="submit" {% if app.user.AjoutLiveAudio == '0' %}	disabled {% endif %} class="btn btn-info btn-sm">
+							<button type="submit" {% if app.user.AjoutLiveAudio == '0' %}	disabled {% endif %} class="btn btn-info btn-sm">
 								<i data-bs-toggle="tooltip" data-bs-placement="top" title="Ajouter un livre audio" class="glyphicon glyphicon-plus"></i>
 							</button>
 						</td>
@@ -312,6 +328,29 @@
         }
     }
     return true;
+	}
+</script>
+
+<script>
+	function toggleLivreaudioFavoriteState(checkbox) {
+		const toggle = checkbox.closest('.livreaudio-favori-toggle');
+		if (!toggle) {
+			return;
+		}
+
+		const icon = toggle.querySelector('.glyphicon');
+		if (!icon) {
+			return;
+		}
+
+		icon.classList.toggle('glyphicon-star', checkbox.checked);
+		icon.classList.toggle('glyphicon-star-empty', !checkbox.checked);
+		icon.style.color = '#3087ce';
+
+		const row = checkbox.closest('tr');
+		if (row) {
+			row.classList.toggle('livreaudio-favori-row', checkbox.checked);
+		}
 	}
 </script>
 

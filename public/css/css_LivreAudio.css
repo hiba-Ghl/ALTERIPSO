@@ -107,11 +107,6 @@ body{
     min-width: 0;
 }
 
-.table-livreaudio .col-favori {
-    width: 10%;
-    min-width: 0;
-}
-
 .table-livreaudio .col-active {
     width: 10%;
     min-width: 0;
@@ -128,8 +123,57 @@ body{
 }
 
 .table-livreaudio .col-action {
-    width: 10%;
+    width: 20%;
     min-width: 0;
+}
+
+.livreaudio-action-item {
+    display: inline-block;
+    margin-right: 2px;
+    vertical-align: middle;
+}
+
+.livreaudio-action-item:last-child {
+    margin-right: 0;
+}
+
+.livreaudio-favori-toggle.btn-warning {
+    background-color: #ffffff !important;
+    border: 1px solid #3087ce !important;
+    color: #3087ce !important;
+}
+
+.livreaudio-favori-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    min-height: 34px;
+    padding: 2px 2px;
+}
+
+.livreaudio-favori-toggle .glyphicon {
+    color: #3087ce !important;
+    text-shadow: 0 0 1px #3087ce, 0 0 1px #3087ce, 0 0 1px #3087ce;
+}
+
+tr.livreaudio-favori-row {
+    border: 2px solid #f1c40f !important;
+    box-sizing: border-box;
+    box-shadow: inset 0 0 0 1px rgba(241, 196, 15, 0.15);
+}
+
+tr.livreaudio-favori-row > td {
+    border-top: 0 !important;
+    border-bottom: 0 !important;
+}
+
+tr.livreaudio-favori-row > td:first-child {
+    border-left: 0 !important;
+}
+
+tr.livreaudio-favori-row > td:last-child {
+    border-right: 0 !important;
 }
 
 .table-livreaudio tbody tr {
@@ -188,6 +232,7 @@ input[type="checkbox"].jpCheckbox {
 /* UPLOAD FICHIER */
 .fileUpload {
     position: relative;
+    overflow: hidden;
     display: inline-block;
     cursor: pointer;
     transition: transform 0.2s ease;
@@ -209,7 +254,15 @@ input[type="checkbox"].jpCheckbox {
 }
 
 .fileUpload input.upload {
-    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
 }
 
 /* BOUTONS */

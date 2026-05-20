@@ -168,6 +168,10 @@ class LivreaudioController extends AbstractController
         return $this->redirectToRoute('app_login');
         $etablissement = $this->getUser()->getEtablissement();
         $configApp = $entityManager->getRepository(ConfigApp::class)->findOneBy(['etablissement' => $etablissement]);
+        $categorieFavori = $entityManager->getRepository(Categories::class)->findOneBy([
+            'etablissement' => $etablissement,
+            'nom' => 'Livre audio'
+        ]);
   
        $livreaudio = $entityManager->getRepository(Livreaudio::class)->find($id);
        $Acce = $this->getUser()->getSupprimerLiveAudio() && $this->getUser()->getLIVREAUDIO() && $configApp->getEnableLIVREAUDIO()=="1" ;
@@ -178,6 +182,27 @@ class LivreaudioController extends AbstractController
             throw $this->createNotFoundException(
                 'No product found for id '.$id
             );
+        }
+
+        $favorisLivreaudio = $entityManager->getRepository(Favoris::class)->findBy([
+            'Etablissement' => $etablissement,
+            'idElement' => $id,
+        ]);
+
+        foreach ($favorisLivreaudio as $favoriLivreaudio) {
+            $isLivreaudioFavorite = false;
+
+            if ($categorieFavori !== null && $favoriLivreaudio->getCategorie() === $categorieFavori) {
+                $isLivreaudioFavorite = true;
+            }
+
+            if ($favoriLivreaudio->getNomCategorie() !== null && in_array(strtolower($favoriLivreaudio->getNomCategorie()), ['livreaudio', 'livre audio'], true)) {
+                $isLivreaudioFavorite = true;
+            }
+
+            if ($isLivreaudioFavorite) {
+                $entityManager->remove($favoriLivreaudio);
+            }
         }
 
         $entityManager->remove($livreaudio);

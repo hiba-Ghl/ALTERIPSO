@@ -493,12 +493,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     
         return $this;
     }
-    public function getEtablissement(): ?etablissement
+    public function getEtablissement(): ?Etablissement
     {
         return $this->etablissement;
     }
 
-    public function setEtablissement(?etablissement $etablissement): static
+    public function setEtablissement(?Etablissement $etablissement): static
     {
         $this->etablissement = $etablissement;
 

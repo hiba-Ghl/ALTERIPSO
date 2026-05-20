@@ -127,7 +127,7 @@
 
 				<tbody id="myTable3">
 					{% for tele in television %}
-						<tr class="odd gradeX">
+						<tr class="odd gradeX {% if tele.id in favorisTelevisionIds %}tv-favorite-row{% endif %}">
 							<td class="tv-th-name" data-label="Nom télévision">
 								<label><input {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} name='listenom[{{tele.Id}}]' type="text" value="{{tele.nom}}" class="form-control tv-font-11"></label>
 								<label class="tv-display-none">{{tele.nom}}</label>
@@ -474,11 +474,11 @@
 
 
 							<td class="tv-td-actions" data-label="Actions">
-								<div style="display:inline-block; margin-right:4px;">
-									<label class="btn btn-warning btn-xs tv-favori-toggle {% if tele.id in favorisTelevisionIds %}is-favorite{% endif %}" onclick="return toggleTvFavorite(this)" style="margin-bottom:0; cursor:pointer;">
+								<div class="tv-favori-action">
+									<div class="btn btn-warning btn-xs tv-favori-toggle {% if tele.id in favorisTelevisionIds %}is-favorite{% endif %}" onclick="return toggleTvFavorite(this)" role="button" tabindex="0">
 										<input {% if app.user.SauvegarderTv == '0' %} disabled {% endif %} name='listefavoris[{{tele.Id}}]' type="checkbox" value="1" {% if tele.id in favorisTelevisionIds %}checked{% endif %} class="tv-favori-checkbox" onchange="toggleTvFavoriteIcon(this)" style="display:none;">
-										<i class="glyphicon {% if tele.id in favorisTelevisionIds %}glyphicon-star{% else %}glyphicon-star-empty{% endif %}" style="font-size:16px;{% if tele.id in favorisTelevisionIds %}color:#3087ce;{% else %}color:#ffffff;{% endif %}"></i>
-									</label>
+										<span class="tv-favori-star">{% if tele.id in favorisTelevisionIds %}&#9733;{% else %}&#9734;{% endif %}</span>
+									</div>
 								</div>
                 			<div data-toggle="modal" data-target="#modal2-{{tele.id}}" data-id ="{{tele.id}}"  data-name="{{tele.nom}}" class="lancer-button">
 								<a  name="send" class="btn btn-info btn-xs">
@@ -833,10 +833,12 @@
 						</td>
 						<td class="tv-th-actions">
 							<label for="ajout-actions" class="tv-label-mobile only-mobile" style="font-weight:bold;text-transform:uppercase;">Action</label>
-							<label class="btn btn-warning btn-xs tv-favori-toggle" onclick="return toggleTvFavorite(this)" style="margin-bottom:0; cursor:pointer;">
+							<div class="tv-favori-action">
+							<div class="btn btn-warning btn-xs tv-favori-toggle" onclick="return toggleTvFavorite(this)" role="button" tabindex="0">
 								<input {% if app.user.AjoutTV == '0' %} disabled {% endif %} name="favoris" type="checkbox" value="1" class="tv-favori-checkbox" onchange="toggleTvFavoriteIcon(this)" style="display:none;">
-								<i class="glyphicon glyphicon-star-empty" style="font-size:16px;color:#ffffff;"></i>
-							</label>
+								<span class="tv-favori-star">&#9734;</span>
+							</div>
+							</div>
 							<button {% if app.user.AjoutTV == '0' %} disabled {% endif %} type="submit" data-toggle="tooltip" data-placement="top" title="Ajouter une chaîne" id="ajout-actions" href="{{path('ajouter_chaine')}}" class="btn btn-info btn-xs">
 								<i data-toggle="tooltip" data-placement="top" title="Ajouter une chaîne" class="glyphicon glyphicon-plus"></i>
 							</button>
@@ -1007,13 +1009,17 @@
 			if (!toggle) {
 				return;
 			}
-			const icon = toggle.querySelector('i');
-			if (!icon) {
+			const star = toggle.querySelector('.tv-favori-star');
+			if (!star) {
 				return;
 			}
-			icon.classList.toggle('glyphicon-star', checkbox.checked);
-			icon.classList.toggle('glyphicon-star-empty', !checkbox.checked);
-			icon.style.color = checkbox.checked ? '#3087ce' : '#ffffff';
+			star.textContent = checkbox.checked ? '★' : '☆';
+			star.style.color = '#3087ce';
+			const row = checkbox.closest('tr');
+			if (row) {
+				row.classList.toggle('tv-favorite-row', checkbox.checked);
+			}
+			toggle.classList.toggle('is-favorite', checkbox.checked);
 		}
 
 		function toggleTvFavorite(button) {
@@ -1023,6 +1029,7 @@
 			}
 			checkbox.checked = !checkbox.checked;
 			toggleTvFavoriteIcon(checkbox);
+			checkbox.dispatchEvent(new Event('change', { bubbles: true }));
 			return false;
 		}
 

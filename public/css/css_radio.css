@@ -12,6 +12,35 @@
     margin-top: 10px;
 }
 
+.radio-favori-toggle.btn-warning {
+		background-color: #ffffff !important;
+		border: 1px solid #3087ce !important;
+		color: #3087ce !important;
+	}
+
+	.radio-favori-toggle {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 25px;
+		min-height: 25px;
+		padding: 2px 2px;
+	}
+
+	.radio-action-item {
+		display: inline-block;
+		margin-right: 2px;
+		vertical-align: middle;
+	}
+
+	.radio-action-item:last-child {
+		margin-right: 0;
+	}
+
+	.radio-favori-toggle .glyphicon {
+		color: #3087ce !important;
+		text-shadow: 0 0 1px #3087ce, 0 0 1px #3087ce, 0 0 1px #3087ce;
+	}
 .fileUpload {
     position: relative;
     overflow: hidden;
