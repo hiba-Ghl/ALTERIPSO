@@ -1,0 +1,6 @@
+doctrine:
+    dbal:
+        url: 'sqlite:///%kernel.project_dir%/var/test.db'
+
+    orm:
+        auto_generate_proxy_classes: true

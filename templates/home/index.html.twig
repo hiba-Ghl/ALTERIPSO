@@ -688,7 +688,7 @@
 						</button>
 					</div>
 					<div	class="form-group ">
-						<a	style="display:flex;gap:5px;align-items:center;"	href="" id="btnUpdateCategories"	{% if app.user.MjTv == '0' %} disabled {% endif %} name="send"	class="btn-danger btn" data-toggle="modal"	data-target="#update_categories">
+						<a	style="display:flex;gap:5px;align-items:center;"	href="" id="btnUpdateCategories"	{% if app.user.MjTv == '0' %} disabled {% endif %} name="send"	class="btn-danger btn home-favorites-button" data-toggle="modal"	data-target="#update_categories">
 							<i	class="glyphicon glyphicon-send"></i>
 							Mise à jour
 						</a>
@@ -711,7 +711,7 @@
 					</div>-->
 					<div	class="form-group">
 
-						<button type="button" id="btnBackground" {% if app.user.FondEcran == '0' %}disabled{% endif %} class="btn btn-info" style="display:flex; gap:5px; align-items:center; width:100%;" data-toggle="modal" data-target="#backa">
+						<button type="button" id="btnBackground" {% if app.user.FondEcran == '0' %}disabled{% endif %} class="btn btn-info home-favorites-button" style="display:flex; gap:5px; align-items:center; width:100%;" data-toggle="modal" data-target="#backa">
 							<i	class="glyphicon glyphicon-picture"></i>
 							Fond d'écran
 						</button>
@@ -734,7 +734,7 @@
 					</div>-->
 					
 					<div class="form-group ">
-						<button	 style="display:flex;gap:5px;align-items:center;" type="button"	{% if app.user.AjoutCategorie == '0' %} disabled {% endif %} class="btn btn-primary" id="btnAddCategory"	data-toggle="modal"	data-target="#exampleModal">
+						<button	 style="display:flex;gap:5px;align-items:center;" type="button"	{% if app.user.AjoutCategorie == '0' %} disabled {% endif %} class="btn btn-primary home-favorites-button" id="btnAddCategory"	data-toggle="modal"	data-target="#exampleModal">
 							<i	class="glyphicon glyphicon-wrench"></i>
 							Ajouter catégorie
 						</button>
@@ -755,7 +755,7 @@
 					</div>
 					{% endif %}
 					<div class="form-group ">
-						<button style="display:flex;gap:5px;align-items:center;" type="button" class="btn btn-warning" data-toggle="modal" data-target="#favoritesModal">
+						<button style="display:flex;gap:5px;align-items:center;" type="button" class="btn btn-warning home-favorites-button" data-toggle="modal" data-target="#favoritesModal">
 							<i class="glyphicon glyphicon-star"></i>
 							Mes favoris
 						</button>

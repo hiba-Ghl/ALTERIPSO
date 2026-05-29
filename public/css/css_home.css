@@ -3,6 +3,29 @@ body {
     line-height: 2.42857143;
 }
 
+.home-favorites-button,
+.home-favorites-button:hover,
+.home-favorites-button:focus,
+.home-favorites-button:active,
+.home-favorites-button:active:focus,
+.home-favorites-button:visited {
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+}
+
+.btn,
+.btn:hover,
+.btn:focus,
+.btn:active,
+.btn:active:focus,
+.btn:visited {
+    outline: 0 !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+}
+
 .modal-footer-icons-mobile {
     margin-bottom: 10px !important;
     padding: 0px 5px !important;
